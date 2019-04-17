@@ -2,12 +2,10 @@ package game;
 
 public abstract class Space {
 
-  private int spaceId;
 	private int xCor;
 	private int yCor;
 	
-	public Space(int id, int x, int y) {
-		spaceId = id;
+	public Space(int x, int y) {
 		xCor = x;
 		yCor = y;
 	}
