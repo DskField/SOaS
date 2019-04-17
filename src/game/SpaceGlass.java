@@ -9,7 +9,7 @@ public class SpaceGlass extends Space{
 		die = null;
 	}
 
-	public void placeDie(Die die) {
+	public void setDie(Die die) {
 		try {
 			this.die = die;
 		}
