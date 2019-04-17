@@ -10,10 +10,6 @@ public abstract class Space {
 		yCor = y;
 	}
 	
-	public int getSpaceId() {
-		return spaceId;
-	}
-	
 	public int getXCor() {
 		return xCor;
 	}
