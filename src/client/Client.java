@@ -8,6 +8,7 @@ import game.Player;
 public class Client {
 	
 	private ArrayList<Lobby> lobbies;
+	private User user;
 
 	public void acceptChallenge() {
 
@@ -29,6 +30,7 @@ public class Client {
 		// Maakt nieuwe lobby aan
 		
 		lobbies.add(new Lobby(dbGameID));
+		
 		
 	}
 
