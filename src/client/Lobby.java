@@ -1,5 +1,9 @@
 package client;
 
+import java.util.ArrayList;
+
+import game.Player;
+
 public class Lobby {
 
 	private int gameID;
@@ -17,8 +21,19 @@ public class Lobby {
 	// Checkt of de user gewonnen heeft
 	private boolean isMyVictory;
 	
+	// De spelers in een lobby
+	private ArrayList<Player> playerList;
+	
 	public Lobby(int id) {
 		
 		this.gameID = id;
+		playerList = new ArrayList<Player>();
 	}
+	
+	public void addPlayerToLobby(Player player) {
+		
+		playerList.add(player);
+		
+	}
+	
 }
