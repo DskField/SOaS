@@ -13,6 +13,7 @@ public class SpacePattern extends Space{
 		this.value = value;
 	}
 
+
 	public int getPatternId(){
 		return patternId;
 	}
