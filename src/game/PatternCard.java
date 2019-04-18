@@ -62,5 +62,26 @@ public class PatternCard {
 	private void createRandomPattern(ResultSet fields) {
 		//TODO stub
 		
+		for(int x = 0; x < 5; x++) {
+			
+			for(int y = 0; y < 4; y++) {
+				
+			}
+		}
+		
+	}
+	
+	private void generatePattern() {
+		int random = rng.nextInt(2);
+	}
+	
+	private int generateValue() {
+		int value = 0;
+		return value;
+	}
+	
+	private String generateColor() {
+		String color = null;
+		return color;
 	}
 }

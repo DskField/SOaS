@@ -9,7 +9,7 @@ public abstract class Space {
 		xCor = x;
 		yCor = y;
 	}
-	
+
 	public int getXCor() {
 		return xCor;
 	}
