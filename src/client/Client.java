@@ -8,6 +8,7 @@ import game.Player;
 public class Client {
 
 	private ArrayList<Lobby> lobbies;
+	@SuppressWarnings("unused")
 	private Player player;
 
 	public void acceptChallenge() {
