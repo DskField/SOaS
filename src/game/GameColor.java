@@ -33,4 +33,6 @@ public enum GameColor {
 //		wanneer je een kleur krijgt uit de database zet die om naar full caps
 //		vervolgens kan je met een try catch (je weet het maar nooit) die string
 //		omzetten in de bijpassende kleur
+	
+//		zie class PersonalGoalCard voor variabele, method en de try catch
 }

@@ -2,7 +2,7 @@ package game;
 
 public class PersonalGoalCard extends Card {
 	
-	public GameColor cardColor;
+	private GameColor cardColor;
 
 	public PersonalGoalCard(String cardName, String cardDescription, String cardColor) {
 		super(cardName, cardDescription);
