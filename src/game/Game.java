@@ -1,9 +1,17 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class Game {
+	private final int totalToolCards = 12;
+	private final int amountToolCars = 3;
+	private final int totalCollectiveGoalCards = 10;
+	private final int amountCollectiveGoalCards = 3;
+	private final int totalPatternCards = 24;
+	private final int amountPatternCards = 8;
+
 	// All arrays are temporary, they can be changed in the future to ArrayLists or HashMaps
 	private PatternCard[] patternCards;
 	private GlassWindow[] glassWindows;
@@ -46,12 +54,9 @@ public class Game {
 		this.gameID = gameID;
 		this.status = status;
 
-		patternCards = new PatternCard[16];
 		glassWindows = new GlassWindow[4];
 		players = new ArrayList<Player>();
 		currencyStones = new CurrencyStone[24];
-		toolCards = new ToolCard[3];
-		collectiveGoalCards = new CollectiveGoalCard[3];
 		dice = new ArrayList<Die>();
 		roundTrack = new Round[10];
 		currentRound = 1;
@@ -68,8 +73,8 @@ public class Game {
 		}
 	}
 
-	public void loadGame() {
-		// TODO write method
+	public void updateDB() {
+		// TODO give the whole game object?
 	}
 
 	/**
@@ -116,16 +121,39 @@ public class Game {
 		this.glassWindows = glassWindows;
 	}
 
-	private void loadRoundTrack() {
-		// TODO write method
-	}
-
+	// TODO needs to be expanded
 	public void shakePiles() {
-		// TODO just a stub
+		// toolCards = getToolCardsFromID(getRandomNotEqualInts(amountToolCars, totalToolCards));
+		// collectiveGoalCards = getCollectiveGoalCardsFromID(getRandomNotEqualInts(amountCollectiveGoalCards, totalCollectiveGoalCards));
 	}
 
+	// TODO needs to be expanded
 	public void dealPatternCards() {
-		// TODO just a stub
+		// patternCards = getPatternCardsFromID(getRandomNotEqualInts(amountPatternCards, totalPatternCards));
+	}
+
+	/**
+	 * This function gives you an array with random numbers chosen from a list with consecutively
+	 * numbers based on you max
+	 * 
+	 * @param amount - the amount of numbers that will be generated, this needs to be less then the max
+	 * @param max - the highest number that can be generated
+	 * @return an array with the random generated numbers
+	 */
+	private int[] getRandomNotEqualInts(int amount, int max) {
+		int[] ints = new int[amount];
+
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		for (int i = 1; i <= max; i++) {
+			list.add(i);
+		}
+		Collections.shuffle(list);
+		for (int i = 0; i < amount; i++) {
+			System.out.println(list.get(i));
+			ints[i] = list.get(i);
+		}
+
+		return ints;
 	}
 
 	/**
@@ -139,6 +167,8 @@ public class Game {
 			table.add(dice.get(index));
 			dice.remove(index);
 		}
+
+		// TODO send a update to the DB with the values of the die that just got added
 	}
 
 	public void nextTurn() {
@@ -146,7 +176,13 @@ public class Game {
 	}
 
 	public void nextRound() {
-		// TODO just a stub
+		if (!table.isEmpty()) {
+			roundTrack[currentRound].addDice(table);
+			table.clear();
+			currentRound++;
+
+			// TODO send the new version of the roundtrack to the DB
+		}
 	}
 
 	public void calculateScore() {
@@ -154,23 +190,29 @@ public class Game {
 	}
 
 	public void calculatePublicScore() {
-		// TODO wait on CardHanler
+		// TODO wait on CardHanler and GlassWindow
 	}
 
 	public void calculateFinalScore() {
-		// TODO wait on CardHandle
+		// TODO wait on CardHandle and GlassWindow
 	}
 
 	public void useToolCard() {
-		// TODO wait on CardHandler
+		// TODO wait on CardHandler and GlassWindow
 	}
 
 	public void placeDie() {
 		// TODO wait on GlassWindow
 	}
 
-	public void updateChat() {
+	/**
+	 * updates the chat
+	 * 
+	 * @param messages - new messages
+	 */
+	public void updateChat(ArrayList<Message> messages) {
 		// TODO wait on Chat
+
 	}
 
 	// GETTERS AND SETTERS
