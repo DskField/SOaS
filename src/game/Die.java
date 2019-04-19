@@ -5,14 +5,37 @@ import java.util.Random;
 public class Die {
 	private int dieId;
 	private int dieValue;
-	private int round;
+	private int round; // If round = 0 it means that the Die is not rolled yet
 
 	private GameColor dieColor;
 
+	/**
+	 * This constructor creates a new Die without a round and a value. Round and Value will be asigned
+	 * after a Die is rolled.
+	 * 
+	 * @param dieId
+	 * @param color
+	 */
 	public Die(int dieId, String color) {
-		// TODO Auto-generated constructor stub
+		this.dieId = dieId;
+		this.round = 0;
+
+		try {
+			dieColor = GameColor.valueOf(color);
+		} catch (Exception e) {
+			System.err.println("Invalid color");
+		}
 	}
 
+	/**
+	 * If a Die is already rolled you need to use this constructor with the right parameters to create.
+	 * the Die
+	 * 
+	 * @param dieId - The id of the die
+	 * @param color - The color of the die
+	 * @param round - The round the die is used
+	 * @param dieValue - The value of the die
+	 */
 	public Die(int dieId, String color, int round, int dieValue) {
 		this.dieId = dieId;
 		this.dieValue = dieValue;
@@ -26,7 +49,7 @@ public class Die {
 
 	/**
 	 * 
-	 * @param round - the round the die gets rolled
+	 * @param round - the Round the die gets rolled
 	 * 
 	 * This method gives a random value to a die and sets the round value
 	 */
@@ -38,36 +61,19 @@ public class Die {
 	}
 
 	// GETTERS AND SETTERS
-	// TODO the current getters and setters are temporary, they will be changed in the future
 	public int getDieId() {
 		return dieId;
-	}
-
-	public void setDieId(int dieId) {
-		this.dieId = dieId;
 	}
 
 	public int getDieValue() {
 		return dieValue;
 	}
 
-	public void setDieValue(int dieValue) {
-		this.dieValue = dieValue;
-	}
-
 	public int getRound() {
 		return round;
 	}
 
-	public void setRound(int round) {
-		this.round = round;
-	}
-
 	public GameColor getDieColor() {
 		return dieColor;
-	}
-
-	public void setDieColor(GameColor dieColor) {
-		this.dieColor = dieColor;
 	}
 }
