@@ -261,7 +261,7 @@ public class Game {
 
 	// TODO rewrite to get messages instead of chat
 	public Chat getChat() {
-		return chat;
+		return chat;	
 	}
 
 	public Player getCurrentPlayer() {
