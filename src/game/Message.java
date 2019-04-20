@@ -12,10 +12,10 @@ public class Message {
 	 * @param message - the text message
 	 * @param player - the player who typed the message
 	 */
-	public Message(String message, Player player) {
+	public Message(String message, Player player, Timestamp timestamp) {
 		this.message = message;
 		this.player = player;
-		timestamp = new Timestamp(System.currentTimeMillis());
+		this.timestamp = timestamp;
 	}
 
 	public String getMessage() {

@@ -2,51 +2,42 @@ package controllers;
 
 import java.util.ArrayList;
 
-import game.Chat;
+import database.MessageDAO;
 import game.Message;
 import game.Player;
 
 public class MainApplication {
 
 	public static void main(String[] args) {
-		ArrayList<Message> messages = new ArrayList<Message>();
-		Player player = new Player();
-		Chat chat = new Chat();
+		MessageDAO messagedao = new MessageDAO();
 		
-		Message message0 = new Message("hallo", player);
-		Message message1 = new Message("dit", player);
-		Message message2 = new Message("is", player);
-		Message message3 = new Message("een", player);
-		Message message4 = new Message("test", player);
+		Player player1 = new Player();
+		Player player2 = new Player();
+		Player player3 = new Player();
+		Player player4 = new Player();
 		
-		Message message5 = new Message("het", player);
-		Message message6 = new Message("werkt", player);
-		Message message7 = new Message("denk", player);
-		Message message8 = new Message("ik", player);
+		player1.setPlayerId(1);
+		player2.setPlayerId(2);
+		player3.setPlayerId(3);
+		player4.setPlayerId(4);
 		
-		message5.timestamp.setTime(1555765940);
-		message6.timestamp.setTime(1);
 		
-		messages.add(message5);
-		messages.add(message6);
-		messages.add(message7);
-		messages.add(message8);
 		
-		chat.addMessage(message0);
-		chat.addMessage(message1);
-		chat.addMessage(message2);
-		chat.addMessage(message3);
-		chat.addMessage(message4);
+		ArrayList<Player> players = new ArrayList<Player>();
+		players.add(player1);
+		players.add(player2);
+		players.add(player3);
+		players.add(player4);
 		
-		if(chat.getChat().get(chat.getChat().size()-1).getTimestamp().before(message6.getTimestamp())) {
-			chat.addMessage(message6);
-		}
-		System.out.println(chat.getChat().get(chat.getChat().size()-1).getTimestamp().before(message6.getTimestamp()));
-		for(Message message : chat.getChat()) {
-			System.out.println(chat.getChat().get(chat.getChat().size()-1).getTimestamp().before(message6.getTimestamp()));
+		
+		
+		ArrayList<Message> messages = messagedao.getMessages(players);
+		
+		for(Message message : messages) {
+			System.out.println(message.getMessage());
 		}
 		
-
+		
 	}
 
 }
