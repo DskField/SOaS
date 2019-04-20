@@ -6,7 +6,7 @@ public class Message {
 	//variables
 	private Player player;
 	private String message;
-	private Timestamp timestamp;
+	public Timestamp timestamp;
 	/**
 	 * 
 	 * @param message - the text message
@@ -21,12 +21,9 @@ public class Message {
 	public String getMessage() {
 		return message;
 	}
-	/**
-	 * 
-	 * @return returns the timestamp as a string in the following format hh:mm
-	 */
-	public String getTimestamp() {
-		return String.format("%1$TH:%1$TM", timestamp );
+
+	public Timestamp getTimestamp() {
+		return timestamp;
 	}
 	
 	public Player getPlayer() {
