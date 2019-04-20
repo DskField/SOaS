@@ -9,7 +9,7 @@ import game.Die;
 public class PersistenceFacade {
 	private GameDAO gameDAO= new GameDAO();
 	private PlayerDAO playerDAO = new PlayerDAO();
-	private MessageDAO chatDAO = new MessageDAO();
+	private MessageDAO messageDAO = new MessageDAO();
 	private DieDAO dieDAO = new DieDAO();
 	private ObjectiveCardDAO objectiveCardDAO = new ObjectiveCardDAO();
 	private PatternCardDAO patternCardDAO = new PatternCardDAO();

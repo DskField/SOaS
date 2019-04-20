@@ -9,27 +9,24 @@ import java.util.List;
 
 import game.Game;
 
+class GameDAO extends BaseDAO {
+	private List<Game> selectGame(String query) {
+		List<Game> results = new ArrayList<Game>();
+		try (Connection con = super.getConnection()) {
+			Statement stmt = con.createStatement();
+			ResultSet dbResultSet = stmt.executeQuery(query);
+			while (dbResultSet.next()) {
+				int gameID = dbResultSet.getInt("idgame");
 
+				Game game = new Game(gameID, 0);// REMOVE 0, IS ONLY A TEST
+				results.add(game);
+			}
+			stmt.close();
+			con.close();
+		} catch (SQLException e) {
+			System.out.println("GameDAO " + e.getMessage());
+		}
+		return results;
+	}
 
-class GameDAO extends BaseDAO{
-     private List<Game> selectGame(String query) {
-        List<Game> results = new ArrayList<Game>();
-        try (Connection con = super.getConnection()) {
-            Statement stmt = con.createStatement();
-            ResultSet dbResultSet = stmt.executeQuery(query);
-            while (dbResultSet.next()) {
-                int gameID = dbResultSet.getInt("idgame");
-
-                Game game = new Game(gameID, 0);//REMOVE 0, IS ONLY A TEST
-                results.add(game);
-            }
-            stmt.close();
-            con.close();
-        } catch (SQLException e) {
-            System.out.println("GameDAO " + e.getMessage());
-        }
-        return results;
-    }
-    
-    
 }
