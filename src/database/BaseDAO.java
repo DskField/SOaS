@@ -15,7 +15,7 @@ class BaseDAO {
         // https://jdbc.postgresql.org/documentation/80/connect.html
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            props.setProperty("user", "amhkempe_db2");
+            props.setProperty("user", "amhkempe");
             props.setProperty("password", "Ab12345");
 //            props.setProperty("ssl", "true");
 //            props.setProperty("sslfactory", "org.postgresql.ssl.NonValidatingFactory");
@@ -30,7 +30,7 @@ class BaseDAO {
     final Connection getConnection() {
         try {
             System.out.println("BaseDAO");
-            String url = "jdbc:mysql://databases.aii.avans.nl:3306/";
+            String url = "jdbc:mysql://databases.aii.avans.nl:3306/amhkempe_db2";
             return DriverManager.getConnection(url, props);
         } catch (SQLException e) {
             throw new RuntimeException(e);
