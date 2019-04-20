@@ -1,1 +1,5 @@
+/client/
+/controllers/
 /database/
+/game/
+/view/
