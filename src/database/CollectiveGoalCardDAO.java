@@ -15,9 +15,12 @@ public class CollectiveGoalCardDAO extends BaseDAO {
 			Statement stmt = con.createStatement();
 			ResultSet dbResultSet = stmt.executeQuery(query);
 			while (dbResultSet.next()) {
-				CollectiveGoalCard collectiveGoalCard = new CollectiveGoalCard("Stub", dbResultSet.getString("description"),
-						dbResultSet.getInt("idpublic_objectivecard"));
-				results.add(collectiveGoalCard);
+				// Separated the variables on purpose for clarity
+				int cardID = dbResultSet.getInt("idpublic_objectivecard");
+				int seqnr = dbResultSet.getInt("seqnr");
+				String description = dbResultSet.getString("description");
+				CollectiveGoalCard card = new CollectiveGoalCard(cardID, seqnr, description);
+				results.add(card);
 			}
 			stmt.close();
 			con.close();
@@ -27,8 +30,18 @@ public class CollectiveGoalCardDAO extends BaseDAO {
 		return results;
 	}
 
-	public ArrayList<CollectiveGoalCard> getCollectiveGoalCards(int[] id) {
-		String query = "SELECT * FROM public_objectivecard WHERE idpublic_objectivecard IN (" + id[0] + "," + id[1] + "," + id[2] + ");";
-		return selectCollectiveGoalCard(query);
+	ArrayList<CollectiveGoalCard> getAllCollectiveGoalCards() {
+		return selectCollectiveGoalCard("SELECT * FROM public_objectivecard");
+	}
+
+	ArrayList<CollectiveGoalCard> getSharedCollectiveGoalCards(int idGame) {
+		return selectCollectiveGoalCard("SELECT * FROM sharedpublic_objectivecard"
+				+ "JOIN public_objectivecard ON sharedpublic_objectivecard.idpublic_objectivecard = public_objectivecard.idpublic_objectivecard"
+				+ "WHERE idGame = " + Integer.toString(idGame));
+	}
+
+	ArrayList<CollectiveGoalCard> getSelectedCollectiveGoalCard(int idpublic_objectivecard) {
+		return selectCollectiveGoalCard("SELECT * FROM public_objectivecard WHERE idpublic_objectivecard = "
+				+ Integer.toString(idpublic_objectivecard));
 	}
 }

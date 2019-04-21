@@ -2,17 +2,17 @@ package game;
 
 public abstract class Card {
 
-	private String cardName;
+	private int cardID;
 	private String cardDescription;
 	
 	// constructor
-	public Card(String cardName, String cardDescription) {
-		this.cardName = cardName;
+	public Card(int cardID, String cardDescription) {
+		this.cardID = cardID;
 		this.cardDescription = cardDescription;
 	}
 	
-	public String getCardName() {
-		return cardName;
+	public int getCardName() {
+		return cardID;
 	}
 	
 	public String getCardDescription() {

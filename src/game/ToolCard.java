@@ -4,17 +4,17 @@ import java.util.ArrayList;
 
 public class ToolCard extends Card {
 
-	private int cardNumber;
+	private int seqnr;
 	private ArrayList<CurrencyStone> usedCurrencyStones;
 	
-	public ToolCard(String cardName, String cardDescription, int cardNumber) {
-		super(cardName, cardDescription);
-		this.cardNumber = cardNumber;
+	public ToolCard(int cardID, int seqnr, String cardDescription) {
+		super(cardID, cardDescription);
+		this.seqnr = seqnr;
 		usedCurrencyStones = new ArrayList<CurrencyStone>();
 	}
 
 	public int getCardNumber() {
-		return cardNumber;
+		return seqnr;
 	}
 	
 	// you return the whole list, because you can get the size with it and

@@ -2,14 +2,14 @@ package game;
 
 public class CollectiveGoalCard extends Card {
 
-	private int value;
+	private int seqnr;
 	
-	public CollectiveGoalCard(String cardName, String cardDescription, int value) {
-		super(cardName, cardDescription);
-		this.value = value;
+	public CollectiveGoalCard(int cardID, int seqnr, String cardDescription) {
+		super(cardID, cardDescription);
+		this.seqnr = seqnr;
 	}
 	
 	public int getValue() {
-		return value;
+		return seqnr;
 	}
 }
