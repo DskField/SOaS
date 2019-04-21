@@ -30,16 +30,19 @@ public class CollectiveGoalCardDAO extends BaseDAO {
 		return results;
 	}
 
+	// Get all the cards from the look up table
 	ArrayList<CollectiveGoalCard> getAllCollectiveGoalCards() {
 		return selectCollectiveGoalCard("SELECT * FROM public_objectivecard");
 	}
 
+	// Get all the cards that are used in the game
 	ArrayList<CollectiveGoalCard> getSharedCollectiveGoalCards(int idGame) {
 		return selectCollectiveGoalCard("SELECT * FROM sharedpublic_objectivecard"
 				+ "JOIN public_objectivecard ON sharedpublic_objectivecard.idpublic_objectivecard = public_objectivecard.idpublic_objectivecard"
 				+ "WHERE idGame = " + Integer.toString(idGame));
 	}
 
+	// Get one specific card
 	ArrayList<CollectiveGoalCard> getSelectedCollectiveGoalCard(int idpublic_objectivecard) {
 		return selectCollectiveGoalCard("SELECT * FROM public_objectivecard WHERE idpublic_objectivecard = "
 				+ Integer.toString(idpublic_objectivecard));

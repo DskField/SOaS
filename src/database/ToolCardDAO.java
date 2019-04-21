@@ -15,8 +15,12 @@ public class ToolCardDAO extends BaseDAO {
 			Statement stmt = con.createStatement();
 			ResultSet dbResultSet = stmt.executeQuery(query);
 			while (dbResultSet.next()) {
-				ToolCard toolCard = new ToolCard("Stub", dbResultSet.getString("description"), dbResultSet.getInt("idtoolcard"));
-				results.add(toolCard);
+				// Separated the variables on purpose for clarity
+				int cardID = dbResultSet.getInt("idpublic_objectivecard");
+				int seqnr = dbResultSet.getInt("seqnr");
+				String description = dbResultSet.getString("description");
+				ToolCard card = new ToolCard(cardID, seqnr, description);
+				results.add(card);
 			}
 			stmt.close();
 			con.close();
@@ -26,8 +30,21 @@ public class ToolCardDAO extends BaseDAO {
 		return results;
 	}
 
-	public ArrayList<ToolCard> getToolCards(int[] id) {
-		String query = "SELECT * FROM toolcard WHERE idtoolcard IN (" + id[0] + "," + id[1] + "," + id[2] + ");";
-		return selectToolCards(query);
+	// Get all the cards from the look up table
+	ArrayList<ToolCard> getAllToolCards() {
+		return selectToolCards("SELECT * FROM toolcard");
+	}
+
+	// Get all the cards that are used in the game
+	ArrayList<ToolCard> getGameToolCards(int idGame) {
+		return selectToolCards("SELECT * FROM gametoolcard"
+				+ "JOIN toolcard ON toolcard.idtoolcard = gametoolcard.idtoolcard"
+				+ "WHERE idGame = " + Integer.toString(idGame));
+	}
+
+	// Get one specific card
+	ArrayList<ToolCard> getSelectedToolCard(int idtoolcard) {
+		return selectToolCards(
+				"SELECT * FROM toolcard WHERE idtoolcard = " + Integer.toString(idtoolcard));
 	}
 }
