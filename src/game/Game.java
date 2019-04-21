@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import database.CollectiveGoalCardDAO;
-import database.ToolCardDAO;
-
 public class Game {
 	private final int totalToolCards = 12;
 	private final int amountToolCards = 3;
@@ -126,16 +123,13 @@ public class Game {
 		this.players.addAll(players);
 	}
 
-	// TODO update
+	// TODO wait on Card
 	public void shakePiles() {
-		ToolCardDAO toolCardDAO = new ToolCardDAO();
-		toolCards = toolCardDAO.getToolCards(getRandomNotEqualInts(amountToolCards, totalToolCards));
-		CollectiveGoalCardDAO collectiveGoalCardDAO = new CollectiveGoalCardDAO();
-		collectiveGoalCards = collectiveGoalCardDAO
-				.getCollectiveGoalCards(getRandomNotEqualInts(amountCollectiveGoalCards, totalCollectiveGoalCards));
+		// toolCards = getToolCards(getRandomNotEqualInts(amountToolCards, totalToolCards));
+		// collectiveGoalCards = getCollectiveGoalCards(getRandomNotEqualInts(amountCollectiveGoalCards, totalCollectiveGoalCards));
 	}
 
-	// TODO needs to be expanded
+	// TODO wait on PatternCard
 	public void dealPatternCards() {
 		// patternCards = getPatternCardsFromID(getRandomNotEqualInts(amountPatternCards, totalPatternCards));
 	}
