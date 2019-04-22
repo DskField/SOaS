@@ -4,7 +4,7 @@ public class PersonalGoalCard extends Card {
 	
 	public GameColor cardColor;
 
-	public PersonalGoalCard(String cardName, String cardDescription, String cardColor) {
+	public PersonalGoalCard(int cardName, String cardDescription, String cardColor) {
 		super(cardName, cardDescription);
 		
 		// only update cardColor if it's in the enum

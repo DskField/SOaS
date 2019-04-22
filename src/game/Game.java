@@ -6,11 +6,11 @@ import java.util.Random;
 
 public class Game {
 	private final int totalToolCards = 12;
-	private final int amountToolCars = 3;
+	private final int amountToolCards = 3;
 	private final int totalCollectiveGoalCards = 10;
 	private final int amountCollectiveGoalCards = 3;
 	private final int totalPatternCards = 24;
-	private final int amountPatternCards = 8;
+	private final int amountPatternCards = 4;
 
 	// All arrays are temporary, they can be changed in the future to ArrayLists or HashMaps
 	private PatternCard[] patternCards;
@@ -18,9 +18,9 @@ public class Game {
 
 	private ArrayList<Player> players;
 
-	private CurrencyStone[] currencyStones;
-	private ToolCard[] toolCards;
-	private CollectiveGoalCard[] collectiveGoalCards;
+	private ArrayList<CurrencyStone> currencyStones;
+	private ArrayList<ToolCard> toolCards;
+	private ArrayList<CollectiveGoalCard> collectiveGoalCards;
 
 	/**
 	 * dice will only contain Die that did not get rolled
@@ -41,7 +41,6 @@ public class Game {
 	private Random random;
 
 	private int gameID;
-	private int status;
 	private int currentRound;
 
 	/**
@@ -50,13 +49,12 @@ public class Game {
 	 * @param gameID - The id of the game
 	 * @param status - The current status of the game
 	 */
-	public Game(int gameID, int status) {
+	public Game(int gameID) {
 		this.gameID = gameID;
-		this.status = status;
 
 		glassWindows = new GlassWindow[4];
 		players = new ArrayList<Player>();
-		currencyStones = new CurrencyStone[24];
+		currencyStones = new ArrayList<CurrencyStone>();
 		dice = new ArrayList<Die>();
 		roundTrack = new Round[10];
 		currentRound = 1;
@@ -82,7 +80,7 @@ public class Game {
 	 * 
 	 * @param dice
 	 */
-	private void loadDice(Die[] dice) {
+	public void loadDice(Die[] dice) {
 		for (int i = 0; i < dice.length; i++) {
 			if (dice[i].getRound() != 0) {
 				roundTrack[dice[i].getRound() - 1].addDie(dice[i]);
@@ -97,7 +95,7 @@ public class Game {
 	 * 
 	 * @param chat - The chat with all messages
 	 */
-	private void loadChat(Chat chat) {
+	public void loadChat(Chat chat) {
 		this.chat = chat;
 	}
 
@@ -107,7 +105,7 @@ public class Game {
 	 * @param toolCards - The used ToolCard
 	 * @param collectiveGoalCards - The used CollectiveGoalCard
 	 */
-	private void loadCards(ToolCard[] toolCards, CollectiveGoalCard[] collectiveGoalCards) {
+	public void loadCards(ArrayList<ToolCard> toolCards, ArrayList<CollectiveGoalCard> collectiveGoalCards) {
 		this.toolCards = toolCards;
 		this.collectiveGoalCards = collectiveGoalCards;
 	}
@@ -117,17 +115,21 @@ public class Game {
 	 * 
 	 * @param glassWindows - GlassWindow with the right PatternCard
 	 */
-	private void loadGlassWindow(GlassWindow[] glassWindows) {
+	public void loadGlassWindow(GlassWindow[] glassWindows) {
 		this.glassWindows = glassWindows;
 	}
 
-	// TODO needs to be expanded
-	public void shakePiles() {
-		// toolCards = getToolCardsFromID(getRandomNotEqualInts(amountToolCars, totalToolCards));
-		// collectiveGoalCards = getCollectiveGoalCardsFromID(getRandomNotEqualInts(amountCollectiveGoalCards, totalCollectiveGoalCards));
+	public void loadPlayers(ArrayList<Player> players) {
+		this.players.addAll(players);
 	}
 
-	// TODO needs to be expanded
+	// TODO wait on Card
+	public void shakePiles() {
+		// toolCards = getToolCards(getRandomNotEqualInts(amountToolCards, totalToolCards));
+		// collectiveGoalCards = getCollectiveGoalCards(getRandomNotEqualInts(amountCollectiveGoalCards, totalCollectiveGoalCards));
+	}
+
+	// TODO wait on PatternCard
 	public void dealPatternCards() {
 		// patternCards = getPatternCardsFromID(getRandomNotEqualInts(amountPatternCards, totalPatternCards));
 	}
@@ -149,7 +151,6 @@ public class Game {
 		}
 		Collections.shuffle(list);
 		for (int i = 0; i < amount; i++) {
-			System.out.println(list.get(i));
 			ints[i] = list.get(i);
 		}
 
@@ -239,15 +240,15 @@ public class Game {
 		this.players = players;
 	}
 
-	public CurrencyStone[] getCurrencyStones() {
+	public ArrayList<CurrencyStone> getCurrencyStones() {
 		return currencyStones;
 	}
 
-	public ToolCard[] getToolCards() {
+	public ArrayList<ToolCard> getToolCards() {
 		return toolCards;
 	}
 
-	public CollectiveGoalCard[] getCollectiveGoalCards() {
+	public ArrayList<CollectiveGoalCard> getCollectiveGoalCards() {
 		return collectiveGoalCards;
 	}
 
@@ -259,7 +260,6 @@ public class Game {
 		return roundTrack;
 	}
 
-	// TODO rewrite to get messages instead of chat
 	public Chat getChat() {
 		return chat;	
 	}
@@ -270,9 +270,5 @@ public class Game {
 
 	public int getGameID() {
 		return gameID;
-	}
-
-	public int getStatus() {
-		return status;
 	}
 }

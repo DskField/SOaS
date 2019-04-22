@@ -2,20 +2,26 @@ package game;
 
 public abstract class Card {
 
-	private String cardName;
+	private int cardID;
+	private int seqnr;
 	private String cardDescription;
-	
+
 	// constructor
-	public Card(String cardName, String cardDescription) {
-		this.cardName = cardName;
+	public Card(int cardID, int seqnr, String cardDescription) {
+		this.cardID = cardID;
 		this.cardDescription = cardDescription;
+		this.seqnr = seqnr;
 	}
-	
-	public String getCardName() {
-		return cardName;
+
+	public int getCardName() {
+		return cardID;
 	}
-	
+
 	public String getCardDescription() {
 		return cardDescription;
+	}
+
+	public int getSeqnr() {
+		return seqnr;
 	}
 }
