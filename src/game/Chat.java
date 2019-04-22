@@ -1,5 +1,6 @@
 package game;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class Chat {
@@ -9,20 +10,22 @@ public class Chat {
 	public Chat() {
 		messages = new ArrayList<Message>();
 	}
-	
-	public ArrayList<Message> getChat() {
-		return messages;
-	}
-	
+	/**
+	 * add's a message to the chat
+	 * @param message - message that gets added to the chat
+	 */
 	public void addMessage(Message message) {
 		messages.add(message);
 	}
-	
-// test methods for checking the timestamp of the last message in the chat
-//against the message that will be added
-//	private void addMessage(Message message) {
-//		if(messages.get(messages.size() -1).getTimestamp().after(message.getTimestamp())) {
-//			messages.add(message);
-//		}
-//	}
+	/**
+	 * 
+	 * @return returns the timestamp of the last message in the chat
+	 */
+	public Timestamp getLastTimestamp() {
+		return messages.get(messages.size() - 1).getTimestamp();
+	}
+	//getters & setters
+	public ArrayList<Message> getChat() {
+		return messages;
+	}
 }

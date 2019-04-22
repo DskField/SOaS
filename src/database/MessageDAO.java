@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import game.Message;
 import game.Player;
 
+//need to implement pushing Message to database !!!!!!!
 public class MessageDAO extends BaseDAO {
 
 	private ArrayList<Message> selectMessage(String query, ArrayList<Player> players) {
@@ -22,7 +23,7 @@ public class MessageDAO extends BaseDAO {
 				int playerId = dbResultSet.getInt("player_idplayer");
 				Timestamp timestamp = dbResultSet.getTimestamp("time");
 				for (Player player : players) {
-					if (player.getPlayerId() == playerId) {
+					if (player.getPlayerID() == playerId) {
 						Message message = new Message(text, player, timestamp);
 						results.add(message);
 					}
@@ -36,9 +37,25 @@ public class MessageDAO extends BaseDAO {
 		return results;
 
 	}
-	
-	public ArrayList<Message> getMessages(ArrayList<Player> players){
-		return selectMessage("select * from chatline", players);
+	/**
+	 * 
+	 * @param players - list of players who's messages will be fetched form the database
+	 * @return returns an ArrayList of Message containing all the messages of the the specified players
+	 * in order of time
+	 */
+	public ArrayList<Message> getALLMessages(ArrayList<Player> players){
+		return selectMessage("SELECT * FROM chatline ORDER BY time DESC", players);
 	}
+	/**
+	 * 
+	 * @param players - list of players who's messages will be fetched form the database
+	 * @param time - all messages later than this timestamp will be fetched from the database
+	 * @return returns an ArrayList of Message containing all the messages of the the specified players
+	 * in order of time
+	 */
+	public ArrayList<Message> updateChat(ArrayList<Player> players, Timestamp time) {
+		return selectMessage("SELECT * FROM chatline WHERE time > " + time + "ORDER BY time DESC", players);
+	}
+	
 
 }

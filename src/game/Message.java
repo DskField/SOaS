@@ -17,7 +17,7 @@ public class Message {
 		this.player = player;
 		this.timestamp = timestamp;
 	}
-
+	//getters & setters
 	public String getMessage() {
 		return message;
 	}
