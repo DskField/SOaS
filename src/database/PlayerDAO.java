@@ -17,11 +17,12 @@ class PlayerDAO extends BaseDAO {
 			Statement stmt = con.createStatement();
 			ResultSet dbResultSet = stmt.executeQuery(query);
 			while (dbResultSet.next()) {
+				// Separated the variables on purpose for clarity
 				int playerID = dbResultSet.getInt("idplayer");
 				int seqnr = dbResultSet.getInt("seqnr");
+				String username = dbResultSet.getString("username");
 				GameColor personalGoalCard;
-				
-				// only set color if it's a valid color
+				// Only set color if it's a valid color
 				try {
 					personalGoalCard = GameColor
 							.valueOf(dbResultSet.getString("private_objectivecard_color").toUpperCase());
@@ -30,7 +31,7 @@ class PlayerDAO extends BaseDAO {
 					personalGoalCard = null;
 					System.out.println("Invalid color at PlayerDAO");
 				}
-				Player player = new Player(playerID, seqnr, personalGoalCard);
+				Player player = new Player(playerID, seqnr, personalGoalCard, username);
 				results.add(player);
 			}
 			stmt.close();
