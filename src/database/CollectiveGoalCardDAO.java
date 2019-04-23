@@ -8,7 +8,8 @@ import java.util.ArrayList;
 
 import game.CollectiveGoalCard;
 
-public class CollectiveGoalCardDAO extends BaseDAO {
+class CollectiveGoalCardDAO extends BaseDAO {
+	
 	private ArrayList<CollectiveGoalCard> selectCollectiveGoalCard(String query) {
 		ArrayList<CollectiveGoalCard> results = new ArrayList<CollectiveGoalCard>();
 		try (Connection con = super.getConnection()) {

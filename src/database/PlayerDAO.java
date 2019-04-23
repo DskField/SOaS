@@ -29,7 +29,7 @@ class PlayerDAO extends BaseDAO {
 				} catch (Exception e) {
 					e.printStackTrace();
 					personalGoalCard = null;
-					System.out.println("Invalid color at PlayerDAO");
+					System.err.println("Invalid color at PlayerDAO");
 				}
 				Player player = new Player(playerID, seqnr, personalGoalCard, username);
 				results.add(player);
@@ -38,7 +38,7 @@ class PlayerDAO extends BaseDAO {
 			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("PlayerDAO " + e.getMessage());
+			System.err.println("PlayerDAO " + e.getMessage());
 		}
 		return results;
 	}

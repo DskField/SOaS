@@ -8,7 +8,6 @@ public class ToolCard extends Card {
 
 	public ToolCard(int cardID, int seqnr, String cardDescription) {
 		super(cardID, seqnr, cardDescription);
-		usedCurrencyStones = new ArrayList<CurrencyStone>();
 	}
 
 	// you return the whole list, because you can get the size with it and
@@ -20,5 +19,9 @@ public class ToolCard extends Card {
 	// TODO: check logic of following method
 	public void payToolCard(CurrencyStone currenctStone) {
 		usedCurrencyStones.add(currenctStone);
+	}
+	
+	public void loadCurrencyStones(ArrayList<CurrencyStone> usedCurrencyStones) {
+		this.usedCurrencyStones = usedCurrencyStones;
 	}
 }

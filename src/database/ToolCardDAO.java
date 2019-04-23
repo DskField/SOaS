@@ -8,7 +8,8 @@ import java.util.ArrayList;
 
 import game.ToolCard;
 
-public class ToolCardDAO extends BaseDAO {
+class ToolCardDAO extends BaseDAO {
+	
 	private ArrayList<ToolCard> selectToolCards(String query) {
 		ArrayList<ToolCard> results = new ArrayList<ToolCard>();
 		try (Connection con = super.getConnection()) {
