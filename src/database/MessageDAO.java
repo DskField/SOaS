@@ -45,7 +45,7 @@ public class MessageDAO extends BaseDAO {
 	 * @param message
 	 *            - Message object
 	 */
-	public void sendMessage(Message message) {
+	private void insertMessage(Message message) {
 		try (Connection con = super.getConnection()) {
 			Statement stmt = con.createStatement();
 			String text = message.getMessage();
@@ -82,6 +82,10 @@ public class MessageDAO extends BaseDAO {
 	 */
 	public ArrayList<Message> updateChat(ArrayList<Player> players, Timestamp time) {
 		return selectMessage("SELECT * FROM chatline WHERE time > " + time + "ORDER BY time DESC", players);
+	}
+	
+	public void sendMessage(Message message) {
+		insertMessage(message);
 	}
 
 }
