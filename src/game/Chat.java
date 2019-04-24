@@ -18,7 +18,7 @@ public class Chat {
 		messages.add(message);
 	}
 	/**
-	 * 
+	 * looks for the last Message in the chat object and returns the timestamp
 	 * @return returns the timestamp of the last message in the chat
 	 */
 	public Timestamp getLastTimestamp() {
