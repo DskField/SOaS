@@ -11,7 +11,6 @@ public class PersistenceFacade {
 	private PlayerDAO playerDAO = new PlayerDAO();
 	private MessageDAO messageDAO = new MessageDAO();
 	private DieDAO dieDAO = new DieDAO();
-	private ObjectiveCardDAO objectiveCardDAO = new ObjectiveCardDAO();
 	private PatternCardDAO patternCardDAO = new PatternCardDAO();
 	private ToolCardDAO toolCardDAO = new ToolCardDAO();
 
