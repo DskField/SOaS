@@ -260,7 +260,7 @@ public class Game {
 	}
 
 	public Chat getChat() {
-		return chat;
+		return chat;	
 	}
 
 	public Player getCurrentPlayer() {
