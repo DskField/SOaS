@@ -14,7 +14,7 @@ public class SpaceGlass extends Space{
 			this.die = die;
 		}
 		catch(Exception e) {
-			System.out.println("ERROR: " + e.getMessage());
+			System.err.println("SpaceGlass: " + e.getMessage());
 		}
 	}
 	
