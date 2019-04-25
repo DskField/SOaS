@@ -10,9 +10,7 @@ import java.util.ArrayList;
 import game.Message;
 import game.Player;
 
-//need to implement pushing Message to database !!!!!!!
-//delete public in front of the class!!!!!!
-public class MessageDAO extends BaseDAO {
+class MessageDAO extends BaseDAO {
 
 	private ArrayList<Message> selectMessage(String query, ArrayList<Player> players) {
 		ArrayList<Message> results = new ArrayList<Message>();
