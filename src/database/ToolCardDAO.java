@@ -18,9 +18,10 @@ class ToolCardDAO extends BaseDAO {
 			while (dbResultSet.next()) {
 				// Separated the variables on purpose for clarity
 				int cardID = dbResultSet.getInt("idpublic_objectivecard");
+				String name = dbResultSet.getString("name");
 				int seqnr = dbResultSet.getInt("seqnr");
 				String description = dbResultSet.getString("description");
-				ToolCard card = new ToolCard(cardID, seqnr, description);
+				ToolCard card = new ToolCard(cardID, name, seqnr, description);
 				results.add(card);
 			}
 			stmt.close();

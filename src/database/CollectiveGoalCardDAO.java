@@ -18,9 +18,10 @@ class CollectiveGoalCardDAO extends BaseDAO {
 			while (dbResultSet.next()) {
 				// Separated the variables on purpose for clarity
 				int cardID = dbResultSet.getInt("idpublic_objectivecard");
-				int seqnr = dbResultSet.getInt("seqnr");
+				String name = dbResultSet.getString("name");
 				String description = dbResultSet.getString("description");
-				CollectiveGoalCard card = new CollectiveGoalCard(cardID, seqnr, description);
+				int points = dbResultSet.getInt("points");
+				CollectiveGoalCard card = new CollectiveGoalCard(cardID, name, description, points);
 				results.add(card);
 			}
 			stmt.close();
