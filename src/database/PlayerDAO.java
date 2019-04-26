@@ -24,6 +24,8 @@ class PlayerDAO extends BaseDAO {
 			while (dbResultSet.next()) {
 				
 				//TODO MAAK PLAYER OBJECTEN
+				
+				
 //				int playerID = dbResultSet.getInt("idplayer");
 //				int seqnr = dbResultSet.getInt("seqnr");
 //				String username = dbResultSet.getString("username");

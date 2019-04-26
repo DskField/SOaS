@@ -31,7 +31,7 @@ class CollectiveGoalCardDAO extends BaseDAO {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("DieDAO " + e.getMessage());
+			System.err.println("CollectiveGoalCardDAO " + e.getMessage());
 			try {
 				con.rollback();
 
