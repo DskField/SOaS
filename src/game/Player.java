@@ -9,15 +9,17 @@ public class Player {
 
 	private int playerID;
 	private int seqnr;
+	private String username;
 
 	private boolean turn;
 
-	public Player(int playerID, int seqnr, GameColor personalGoalCard) {
+	public Player(int playerID, int seqnr, GameColor personalGoalCard, String username) {
 		currencyStones = new ArrayList<>();
 		glassWindow = new GlassWindow();
 		this.personalGoalCard = personalGoalCard;
 		this.playerID = playerID;
 		this.seqnr = seqnr;
+		this.username = username;
 	}
 
 	public void chooseDie() {
@@ -51,6 +53,10 @@ public class Player {
 	
 	public int getPosition() {
 		return seqnr;
+	}
+	
+	public String getUsername() {
+		return username;
 	}
 	
 	public boolean isTurn() {

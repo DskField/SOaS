@@ -47,7 +47,6 @@ public class Game {
 	 * Initialize the game
 	 * 
 	 * @param gameID - The id of the game
-	 * @param status - The current status of the game
 	 */
 	public Game(int gameID) {
 		this.gameID = gameID;
@@ -261,7 +260,7 @@ public class Game {
 	}
 
 	public Chat getChat() {
-		return chat;
+		return chat;	
 	}
 
 	public Player getCurrentPlayer() {

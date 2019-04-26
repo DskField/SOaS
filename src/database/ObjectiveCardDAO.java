@@ -1,5 +1,5 @@
 package database;
 
-class ObjectiveCardDAO extends BaseDAO {
+public class ObjectiveCardDAO {
 
 }

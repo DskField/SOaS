@@ -28,5 +28,4 @@ class GameDAO extends BaseDAO {
 		}
 		return results;
 	}
-
 }
