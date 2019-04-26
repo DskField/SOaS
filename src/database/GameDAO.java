@@ -18,7 +18,7 @@ class GameDAO extends BaseDAO {
 			while (dbResultSet.next()) {
 				int gameID = dbResultSet.getInt("idgame");
 
-				Game game = new Game(gameID);// REMOVE 0, IS ONLY A TEST
+				Game game = new Game(gameID);
 				results.add(game);
 			}
 			stmt.close();
