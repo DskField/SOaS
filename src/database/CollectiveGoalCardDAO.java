@@ -5,11 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import game.CollectiveGoalCard;
 
 class CollectiveGoalCardDAO extends BaseDAO {
-	
+
 	private ArrayList<CollectiveGoalCard> selectCollectiveGoalCard(String query) {
 		ArrayList<CollectiveGoalCard> results = new ArrayList<CollectiveGoalCard>();
 		try (Connection con = super.getConnection()) {
@@ -48,5 +49,19 @@ class CollectiveGoalCardDAO extends BaseDAO {
 	ArrayList<CollectiveGoalCard> getSelectedCollectiveGoalCard(int idpublic_objectivecard) {
 		return selectCollectiveGoalCard("SELECT * FROM public_objectivecard WHERE idpublic_objectivecard = "
 				+ Integer.toString(idpublic_objectivecard));
+	}
+
+	// set 3 random shared CollectiveGoalCards IF no cards have been appointed to the game
+	void setRandomSharedCollectiveGoalCards(int idGame) {
+		if (getSharedCollectiveGoalCards(idGame).size() == 0) {
+			ArrayList<CollectiveGoalCard> list = getAllCollectiveGoalCards();
+			Collections.shuffle(list);
+			selectCollectiveGoalCard("INSERT INTO sharedpublic_objectivecard VALUES " + "( " + Integer.toString(idGame)
+					+ ", " + Integer.toString(list.get(0).getCardID()) + ")" + "( " + Integer.toString(idGame) + ", "
+					+ Integer.toString(list.get(1).getCardID()) + ")" + "( " + Integer.toString(idGame) + ", "
+					+ Integer.toString(list.get(2).getCardID()) + ")");
+		} else {
+			System.err.println("CollectiveGoalCardDAO trying to select 3 random cards for a game that already has 3 cards");
+		}
 	}
 }

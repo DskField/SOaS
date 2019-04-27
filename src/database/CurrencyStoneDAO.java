@@ -31,11 +31,11 @@ class CurrencyStoneDAO extends BaseDAO {
 		return results;
 	}
 	
-	public ArrayList<CurrencyStone> getCurrencyStones(int playerID) {
+	ArrayList<CurrencyStone> getCurrencyStones(int playerID) {
 		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE idplayer = " + Integer.toString(playerID));
 	}
 	
-	public ArrayList<CurrencyStone> getCurrencyStonesOnCard(int gametoolcard) {
+	ArrayList<CurrencyStone> getCurrencyStonesOnCard(int gametoolcard) {
 		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE gametoolcard = " + Integer.toString(gametoolcard));
 	}
 }
