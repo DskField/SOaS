@@ -11,28 +11,34 @@ import game.PatternCard;
 
 public class PatternCardDAO extends BaseDAO {
 
-	private ArrayList<PatternCard> selectPatternCard(String query) {
-		ArrayList<PatternCard> results = new ArrayList<PatternCard>();
-		
-		try (Connection con = super.getConnection()) {
-			Statement stmt = con.createStatement();
-			ResultSet dbResultSet = stmt.executeQuery(query);
-			while(dbResultSet.next()) {
-				int id = dbResultSet.getInt("idpatterncard");
-				String name = dbResultSet.getString("name");
-				int dif = dbResultSet.getInt("difficulty");
-				boolean type = dbResultSet.getBoolean("standard");
-
-				
-				PatternCard pattern = new PatternCard(id, name, dif, type);
-				results.add(pattern);
+	private List<PatternCard> selectPatternCard(String query) {
+		Connection con = super.getConnection();
+			List<PatternCard> results = new ArrayList<PatternCard>();
+			try {
+				Statement stmt = con.createStatement();
+				ResultSet dbResultSet = stmt.executeQuery(query);
+				while(dbResultSet.next()) {
+					int id = dbResultSet.getInt("idpatterncard");
+					String name = dbResultSet.getString("name");
+					int dif = dbResultSet.getInt("difficulty");
+					boolean type = dbResultSet.getBoolean("standard");
+					
+					SpacePattern[][] patterns = selectSpacePattern(null, 0);
+					
+					PatternCard pattern = new PatternCard(id, name, dif, patterns, type);
+					results.add(pattern);
+				}
+				stmt.close();
+			} catch (SQLException e) {
+				System.out.println("PatternCardDAO " + e.getMessage());
 			}
+			return results;
 		}
-		catch(SQLException e) {
-			System.err.println("PatternCardDAO: " + e.getMessage());
-		}
-		return results;
-	}
+	
+	
+	
+	
+
 	
 	
 	List<PatternCard> getAllPatternCards(){

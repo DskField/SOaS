@@ -9,10 +9,11 @@ import java.util.ArrayList;
 import game.ToolCard;
 
 class ToolCardDAO extends BaseDAO {
+	Connection con = super.getConnection();
 	
 	private ArrayList<ToolCard> selectToolCards(String query) {
 		ArrayList<ToolCard> results = new ArrayList<ToolCard>();
-		try (Connection con = super.getConnection()) {
+		try {
 			Statement stmt = con.createStatement();
 			ResultSet dbResultSet = stmt.executeQuery(query);
 			while (dbResultSet.next()) {
@@ -27,7 +28,7 @@ class ToolCardDAO extends BaseDAO {
 			stmt.close();
 			con.close();
 		} catch (SQLException e) {
-			System.err.println("ToolCardDAO: " + e.getMessage());
+			System.out.println("ToolCardDAO " + e.getMessage());
 		}
 		return results;
 	}
