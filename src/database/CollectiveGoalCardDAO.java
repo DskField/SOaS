@@ -5,74 +5,91 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import game.CollectiveGoalCard;
 
 class CollectiveGoalCardDAO extends BaseDAO {
 	Connection con = super.getConnection();
 
-	// This method is only for selects for inserts 'n shit use
-	// super.prepStmnt("REALLY NICE STATEMENT");
-	private ArrayList<CollectiveGoalCard> selectCollectiveGoalCard(String query) {
+	private ArrayList<CollectiveGoalCard> selectCollectiveGoalCards(String query) {
 		ArrayList<CollectiveGoalCard> results = new ArrayList<CollectiveGoalCard>();
 
 		try {
 			PreparedStatement stmt = con.prepareStatement(query);
 			ResultSet dbResultSet = stmt.executeQuery();
-			con.commit();
-			stmt.close();
+
 			while (dbResultSet.next()) {
 				// Separated the variables on purpose for clarity
 				int cardID = dbResultSet.getInt("idpublic_objectivecard");
 				String name = dbResultSet.getString("name");
 				String description = dbResultSet.getString("description");
 				int points = dbResultSet.getInt("points");
+
 				CollectiveGoalCard card = new CollectiveGoalCard(cardID, name, description, points);
 				results.add(card);
 			}
-
+			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("CollectiveGoalCardDAO " + e.getMessage());
-			try {
-				con.rollback();
-
-			} catch (SQLException e1) {
-				System.err.println("The rollback failed: Please check the Database!");
-
-			}
-
 		}
 		return results;
 	}
 
 	// Get all the cards from the look up table
-	ArrayList<CollectiveGoalCard> getAllCollectiveGoalCards() {
-		return selectCollectiveGoalCard("SELECT * FROM public_objectivecard");
+	private ArrayList<CollectiveGoalCard> getAllCollectiveGoalCards() {
+		return selectCollectiveGoalCards("SELECT * FROM public_objectivecard");
 	}
 
 	// Get all the cards that are used in the game
 	ArrayList<CollectiveGoalCard> getSharedCollectiveGoalCards(int idGame) {
-		return selectCollectiveGoalCard("SELECT * FROM sharedpublic_objectivecard"
-				+ "JOIN public_objectivecard ON sharedpublic_objectivecard.idpublic_objectivecard = public_objectivecard.idpublic_objectivecard"
-				+ "WHERE idGame = " + Integer.toString(idGame));
+		return selectCollectiveGoalCards("SELECT * FROM sharedpublic_objectivecard"
+				+ " JOIN public_objectivecard ON sharedpublic_objectivecard.idpublic_objectivecard = public_objectivecard.idpublic_objectivecard"
+				+ " WHERE idGame = " + idGame);
 	}
 
 	// Get one specific card
-	ArrayList<CollectiveGoalCard> getSelectedCollectiveGoalCard(int idpublic_objectivecard) {
-		return selectCollectiveGoalCard("SELECT * FROM public_objectivecard WHERE idpublic_objectivecard = "
-				+ Integer.toString(idpublic_objectivecard));
+	CollectiveGoalCard getSelectedCollectiveGoalCard(int idpublic_objectivecard) {
+		return selectCollectiveGoalCards(
+				"SELECT * FROM public_objectivecard WHERE idpublic_objectivecard = " + idpublic_objectivecard).get(0);
 	}
 
-	// set 3 random shared CollectiveGoalCards IF no cards have been appointed to the game
-	void setRandomSharedCollectiveGoalCards(int idGame) {
+	// set 3 random shared CollectiveGoalCards IF no cards have been appointed to
+	// the game
+	void insertRandomSharedCollectiveGoalCards(int idGame) {
 		if (getSharedCollectiveGoalCards(idGame).size() == 0) {
 			ArrayList<CollectiveGoalCard> list = getAllCollectiveGoalCards();
 			Collections.shuffle(list);
-			selectCollectiveGoalCard("INSERT INTO sharedpublic_objectivecard VALUES " + "( " + Integer.toString(idGame)
-					+ ", " + Integer.toString(list.get(0).getCardID()) + ")" + "( " + Integer.toString(idGame) + ", "
-					+ Integer.toString(list.get(1).getCardID()) + ")" + "( " + Integer.toString(idGame) + ", "
-					+ Integer.toString(list.get(2).getCardID()) + ")");
+
+			try {
+				PreparedStatement stmt = con
+						.prepareStatement("INSERT INTO shared public_objectivecard VALUES (?,?) (?,?) (?,?)");
+				// card 1
+				stmt.setInt(1, idGame);
+				stmt.setInt(2, list.get(0).getCardID());
+
+				// card 2
+				stmt.setInt(3, idGame);
+				stmt.setInt(4, list.get(1).getCardID());
+
+				// card 3
+				stmt.setInt(5, idGame);
+				stmt.setInt(6, list.get(2).getCardID());
+
+				stmt.executeUpdate();
+				con.commit();
+				stmt.close();
+			} catch (SQLException e) {
+				System.err.println("CollectiveGoalCardDAO " + e.getMessage());
+				try {
+					con.rollback();
+				} catch (SQLException e1) {
+					System.err.println("The rollback failed: Please check the Database!");
+				}
+			}
 		} else {
-			System.err.println("CollectiveGoalCardDAO trying to select 3 random cards for a game that already has 3 cards");
+			System.err.println(
+					"CollectiveGoalCardDAO trying to select 3 random cards for a game that already has 3 cards");
 		}
 	}
 }
