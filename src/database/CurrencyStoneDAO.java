@@ -1,20 +1,23 @@
 package database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
-import game.CollectiveGoalCard;
 import game.CurrencyStone;
 
 class CurrencyStoneDAO extends BaseDAO {
+	Connection con = super.getConnection();
+
 	private ArrayList<CurrencyStone> selectCurrencyStone(String query) {
 		ArrayList<CurrencyStone> results = new ArrayList<CurrencyStone>();
-		try (Connection con = super.getConnection()) {
-			Statement stmt = con.createStatement();
-			ResultSet dbResultSet = stmt.executeQuery(query);
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			ResultSet dbResultSet = stmt.executeQuery();
+			con.commit();
+			stmt.close();
 			while (dbResultSet.next()) {
 				// Separated the variables on purpose for clarity
 				int stoneID = dbResultSet.getInt("idfavortoken");
@@ -23,13 +26,22 @@ class CurrencyStoneDAO extends BaseDAO {
 				CurrencyStone currencystone = new CurrencyStone(stoneID, isUsed, playerID);
 				results.add(currencystone);
 			}
-			stmt.close();
-			con.close();
+
 		} catch (SQLException e) {
-			System.err.println("CollectiveGoalCardDAO: " + e.getMessage());
+			System.err.println("CurrencyStoneDAO " + e.getMessage());
+			try {
+				con.rollback();
+
+			} catch (SQLException e1) {
+				System.err.println("The rollback failed: Please check the Database!");
+
+			}
+
 		}
 		return results;
 	}
+		
+		
 	
 	ArrayList<CurrencyStone> getCurrencyStones(int playerID) {
 		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE idplayer = " + Integer.toString(playerID));
