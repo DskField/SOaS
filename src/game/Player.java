@@ -8,10 +8,11 @@ public class Player {
 	private GameColor personalGoalCard;
 
 	private int playerID;
-	private int seqnr;
 	private String username;
-
-	private boolean turn;
+	private int seqnr;
+	private int score;
+	
+	private boolean isCurrentPlayer;
 
 	public Player(int playerID, int seqnr, GameColor personalGoalCard, String username) {
 		currencyStones = new ArrayList<>();
@@ -23,20 +24,24 @@ public class Player {
 	}
 
 	public void chooseDie() {
-		// TODO just a stub
+		// TODO waiting for Sioux
 	}
 
 	public void layDie() {
-		// TODO just a stub
+		// TODO waiting for Sioux
 	}
 
 	public void loadCard() {
-		// TODO just a stub
+		// TODO waiting for Sioux
 	}
 	
 	// GETTERS AND SETTERS
-	public ArrayList<CurrencyStone> getCurrencyStone() {
+	public ArrayList<CurrencyStone> getCurrencyStones() {
 		return currencyStones;
+	}
+	
+	public void setCurrencyStones(ArrayList<CurrencyStone> currencyStones) {
+		this.currencyStones = currencyStones;
 	}
 	
 	public GlassWindow getGlassWindow() {
@@ -59,11 +64,19 @@ public class Player {
 		return username;
 	}
 	
-	public boolean isTurn() {
-		return turn;
+	public boolean isCurrentPlayer() {
+		return isCurrentPlayer;
 	}
 	
-	public void setTurn(boolean turn) {
-		this.turn = turn;
+	public void setCurrentPlayer(boolean isCurrentPlayer) {
+		this.isCurrentPlayer = isCurrentPlayer;
+	}
+	
+	public void setScore(int score) {
+		this.score = score;
+	}
+	
+	public int getScore() {
+		return score;
 	}
 }
