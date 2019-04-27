@@ -22,10 +22,9 @@ public class PatternCardDAO extends BaseDAO {
 					String name = dbResultSet.getString("name");
 					int dif = dbResultSet.getInt("difficulty");
 					boolean type = dbResultSet.getBoolean("standard");
+
 					
-					SpacePattern[][] patterns = selectSpacePattern(null, 0);
-					
-					PatternCard pattern = new PatternCard(id, name, dif, patterns, type);
+					PatternCard pattern = new PatternCard(id, name, dif, type);
 					results.add(pattern);
 				}
 				stmt.close();
