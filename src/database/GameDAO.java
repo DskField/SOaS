@@ -18,14 +18,12 @@ class GameDAO extends BaseDAO {
 			PreparedStatement stmt = con.prepareStatement(query);
 			ResultSet dbResultSet = stmt.executeQuery();
 			con.commit();
-			stmt.close();
 			while (dbResultSet.next()) {
 				int gameID = dbResultSet.getInt("idgame");
 				Game game = new Game(gameID);
 				results.add(game);
 			}
 			stmt.close();
-			con.close();
 		} catch (SQLException e) {
 			System.err.println("CollectiveGoalCardDAO " + e.getMessage());
 		}
