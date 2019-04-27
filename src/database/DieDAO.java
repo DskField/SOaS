@@ -20,23 +20,17 @@ class DieDAO extends BaseDAO {
 			PreparedStatement stmt = con.prepareStatement(query);
 			ResultSet dbResultSet = stmt.executeQuery();
 			con.commit();
-			stmt.close();
 			while (dbResultSet.next()) {
 				int number = dbResultSet.getInt("number");
 				String color = dbResultSet.getString("color");
 				Die die = new Die(number, color);
 				results.add(die);
 			}
+			stmt.close();
+
 
 		} catch (SQLException e) {
 			System.err.println("DieDAO " + e.getMessage());
-			try {
-				con.rollback();
-
-			} catch (SQLException e1) {
-				System.err.println("The rollback failed: Please check the Database!");
-
-			}
 			
 		}
 		return results;

@@ -19,7 +19,6 @@ class MessageDAO extends BaseDAO {
 			PreparedStatement stmt = con.prepareStatement(query);
 			ResultSet dbResultSet = stmt.executeQuery();
 			con.commit();
-			stmt.close();
 			while (dbResultSet.next()) {
 				String text = dbResultSet.getString("message");
 				int playerId = dbResultSet.getInt("player_idplayer");
@@ -31,16 +30,10 @@ class MessageDAO extends BaseDAO {
 					}
 				}
 			}
+			stmt.close();
 
 		} catch (SQLException e) {
 			System.err.println("MessageDAO " + e.getMessage());
-			try {
-				con.rollback();
-
-			} catch (SQLException e1) {
-				System.err.println("The rollback failed: Please check the Database!");
-
-			}
 
 		}
 		return results;

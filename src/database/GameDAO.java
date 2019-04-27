@@ -28,14 +28,6 @@ class GameDAO extends BaseDAO {
 			con.close();
 		} catch (SQLException e) {
 			System.err.println("CollectiveGoalCardDAO " + e.getMessage());
-			try {
-				con.rollback();
-
-			} catch (SQLException e1) {
-				System.err.println("The rollback failed: Please check the Database!");
-
-			}
-
 		}
 		return results;
 	}
