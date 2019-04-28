@@ -9,17 +9,11 @@ public class PatternCard {
 	private SpacePattern pattern[][];
 	private boolean standard;
 	
-	public PatternCard(int id, String name, int dif, SpacePattern[][] patterns, boolean standard) {
-		try {
-			patternCardId = id;
-			this.name = name;
-			difficulty = dif;
-			pattern = patterns;
-			this.standard = standard;
-		}
-		catch(Exception e) {
-			System.err.println("PatternCard: " + e.getMessage());
-		}
+	public PatternCard(int id, String name, int dif, boolean standard) {
+		patternCardId = id;
+		this.name = name;
+		difficulty = dif;
+		this.standard = standard;
 	}
 	
 
@@ -28,10 +22,7 @@ public class PatternCard {
 	}
 	
 	
-	public String GetName() {
-		if(name == null) {
-			name = "";
-		}
+	public String getName() {
 		return name;
 	}
 	
@@ -42,8 +33,7 @@ public class PatternCard {
 	
 	
 	public SpacePattern getSpace(int x, int y) {
-		SpacePattern temp = pattern[x][y];
-		return temp;
+		return pattern[x][y];
 	}
 	
 	
@@ -54,5 +44,9 @@ public class PatternCard {
 	
 	public boolean getType() {
 		return standard;
+	}
+	
+	public void loadPattern(SpacePattern[][] patterns) {
+		pattern = patterns;
 	}
 }
