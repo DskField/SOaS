@@ -5,16 +5,10 @@ public class SpacePattern extends Space{
 	private GameColor patternColor;
 	private int value;
 	
-	public SpacePattern(int x, int y, String color, int value) {
+	public SpacePattern(int x, int y, GameColor color, int value) {
 		super(x, y);
 		this.value = value;
-		
-		try {
-			patternColor = GameColor.valueOf(color);
-		}
-		catch(Exception e) {
-			System.err.println("SpacePattern: Invalid color");
-		}
+		patternColor = color;
 	}
 
 	
