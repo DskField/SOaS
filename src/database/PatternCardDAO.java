@@ -30,7 +30,6 @@ public class PatternCardDAO extends BaseDAO {
 					results.add(pattern);
 				}
 				stmt.close();
-				con.close();
 			} catch (SQLException e) {
 				System.out.println("PatternCardDAO " + e.getMessage());
 			}
