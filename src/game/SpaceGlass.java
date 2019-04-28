@@ -8,15 +8,12 @@ public class SpaceGlass extends Space{
 		super(x, y);
 		die = null;
 	}
+	
 
 	public void setDie(Die die) {
-		try {
-			this.die = die;
-		}
-		catch(Exception e) {
-			System.err.println("SpaceGlass: " + e.getMessage());
-		}
+		this.die = die;
 	}
+	
 	
 	public Die getDie() {
 		return die;

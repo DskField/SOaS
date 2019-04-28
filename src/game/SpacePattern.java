@@ -2,25 +2,20 @@ package game;
 
 public class SpacePattern extends Space{
 
-	private int patternId;
-	private String color;
+	private GameColor patternColor;
 	private int value;
 	
-	public SpacePattern(int x, int y, int id, String color, int value) {
+	public SpacePattern(int x, int y, GameColor color, int value) {
 		super(x, y);
-		patternId = id;
-		this.color = color;
 		this.value = value;
+		patternColor = color;
 	}
 
-
-	public int getPatternId(){
-		return patternId;
+	
+	public GameColor getPatternColor() {
+		return patternColor;
 	}
 	
-	public String getColor() {
-		return color;
-	}
 	
 	public int getValue() {
 		return value;
