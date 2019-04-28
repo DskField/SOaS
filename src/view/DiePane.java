@@ -1,5 +1,6 @@
 package view;
 
+import game.GameColor;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
@@ -12,12 +13,49 @@ import javafx.scene.shape.Circle;
 
 public class DiePane extends Pane {
 	private Circle[] circles;
+	private Color color;
 
-	public DiePane(int size, int eyes) {
-		final double circleSize = (size - 20) / 4;
-		final double circleRadius = circleSize / 2;
-		final double spacing = (size - (circleSize * 3)) / 4;
+	private double circleSize;
+	private double circleRadius;
+	private double spacing;
 
+	private double size;
+
+	private int eyes;
+
+	public DiePane(int eyes) {
+		this.eyes = eyes;
+		size = 79;
+
+		circleSize = size * 0.2;
+		circleRadius = circleSize / 2;
+		spacing = (size - (circleSize * 3)) / 4;
+
+		color = GameColor.getEnum("paars").getColor();
+
+		addCircles();
+
+		setBackground(new Background(new BackgroundFill(color, null, null)));
+		setBorder(new Border(new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.SOLID, null, new BorderWidths(1))));
+		setMinSize(size, size);
+		setMaxSize(size, size);
+	}
+
+	public void resize(double size) {
+		this.size = size - 1;
+
+		circleSize = this.size * 0.2;
+		circleRadius = circleSize / 2;
+		spacing = (this.size - (circleSize * 3)) / 4;
+
+		getChildren().clear();
+		addCircles();
+
+		setMinSize(this.size, this.size);
+		setMaxSize(this.size, this.size);
+	}
+
+	private void addCircles() {
 		circles = new Circle[7];
 
 		circles[0] = new Circle(spacing + circleRadius, spacing + circleRadius, circleRadius, Color.BLACK);
@@ -48,10 +86,5 @@ public class DiePane extends Pane {
 			getChildren().addAll(circles[0], circles[1], circles[2], circles[4], circles[5], circles[6]);
 			break;
 		}
-
-		setBackground(new Background(new BackgroundFill(Color.PURPLE, null, null)));
-		setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, null, new BorderWidths(1))));
-		setMinSize(size, size);
-		setMaxSize(size, size);
 	}
 }
