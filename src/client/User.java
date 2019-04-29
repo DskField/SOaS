@@ -20,8 +20,12 @@ public class User {
 		this.userID = id;
 		this.loginName = name;
 	}
+	
+	public void showStats() {
+		
+	}
 
-	// Getters and setters voor User
+	// Getters and setters for User
 	public int getUserID() {
 		return userID;
 	}

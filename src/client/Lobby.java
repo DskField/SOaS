@@ -2,8 +2,6 @@ package client;
 
 import java.util.ArrayList;
 
-import game.Player;
-
 public class Lobby {
 
 	private int gameID;
@@ -25,17 +23,17 @@ public class Lobby {
 	private boolean isMyVictory;
 
 	// The players in a lobby
-	private ArrayList<Player> playerList;
+	private ArrayList<User> userList;
 
 	public Lobby(int id) {
 
 		this.gameID = id;
-		playerList = new ArrayList<Player>();
+		userList = new ArrayList<User>();
 	}
 
-	public void addPlayerToLobby(Player player) {
+	public void addUserToLobby(User user) {
 
-		playerList.add(player);
+		userList.add(user);
 	}
 
 	public int getGameID() {
@@ -102,12 +100,12 @@ public class Lobby {
 		this.isMyVictory = isMyVictory;
 	}
 
-	public ArrayList<Player> getPlayerList() {
-		return playerList;
+	public ArrayList<User> getUserList() {
+		return userList;
 	}
 
-	public void setPlayerList(ArrayList<Player> playerList) {
-		this.playerList = playerList;
+	public void setPlayerList(ArrayList<User> userList) {
+		this.userList = userList;
 	}
 
 }
