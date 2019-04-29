@@ -12,17 +12,11 @@ public class ToolCard extends Card {
 		this.seqnr = seqnr;
 	}
 
-	// you return the whole list, because you can get the size with it and
-	// know which CurrencyStone is currently on the ToolCard
 	public ArrayList<CurrencyStone> getUsedCurrencyStones() {
 		return usedCurrencyStones;
 	}
 
-	// TODO: check logic of following method
-	public void payToolCard(CurrencyStone currenctStone) {
-		usedCurrencyStones.add(currenctStone);
-	}
-	
+	// TODO: comment
 	public void loadCurrencyStones(ArrayList<CurrencyStone> usedCurrencyStones) {
 		this.usedCurrencyStones = usedCurrencyStones;
 	}

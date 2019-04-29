@@ -13,7 +13,7 @@ public abstract class Card {
 		this.cardDescription = cardDescription;
 	}
 
-	public int getCardName() {
+	public int getCardID() {
 		return cardID;
 	}
 

@@ -4,20 +4,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import game.Message;
 import game.Player;
 
-public class MessageDAO extends BaseDAO {
+class MessageDAO extends BaseDAO {
+	Connection con = super.getConnection();
 
 	private ArrayList<Message> selectMessage(String query, ArrayList<Player> players) {
 		ArrayList<Message> results = new ArrayList<Message>();
-		try (Connection con = super.getConnection()) {
-			Statement stmt = con.createStatement();
-			ResultSet dbResultSet = stmt.executeQuery(query);
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			ResultSet dbResultSet = stmt.executeQuery();
+			con.commit();
 			while (dbResultSet.next()) {
 				String text = dbResultSet.getString("message");
 				int playerId = dbResultSet.getInt("player_idplayer");
@@ -30,9 +31,10 @@ public class MessageDAO extends BaseDAO {
 				}
 			}
 			stmt.close();
-			con.close();
+
 		} catch (SQLException e) {
 			System.err.println("MessageDAO " + e.getMessage());
+
 		}
 		return results;
 	}
@@ -41,27 +43,31 @@ public class MessageDAO extends BaseDAO {
 	 * This method will take a Message object and insert it into the database table
 	 * chatline
 	 * 
-	 * @param message
-	 *            - Message object
+	 * @param message - Message object
 	 */
 	private void insertMessage(Message message) {
-		try (Connection con = super.getConnection()) {
+		try {
 			PreparedStatement stmt = con.prepareStatement("INSERT INTO chatline VALUES (?,?,?)");
 			stmt.setInt(1, message.getPlayer().getPlayerID());
 			stmt.setTimestamp(2, message.getTimestamp());
 			stmt.setString(3, message.getMessage());
 			stmt.executeUpdate();
+			con.commit();
 			stmt.close();
-			con.close();
 		} catch (SQLException e) {
 			System.err.println("MessageDAO " + e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				System.err.println("The rollback failed: Please check the Database!");
+			}
 		}
 	}
 
 	/**
 	 * 
-	 * @param players
-	 *            - list of players who's messages will be fetched form the database
+	 * @param players - list of players who's messages will be fetched form the
+	 *                database
 	 * @return returns an ArrayList of Message containing all the messages of the
 	 *         the specified players in order of time
 	 */
@@ -71,11 +77,10 @@ public class MessageDAO extends BaseDAO {
 
 	/**
 	 * 
-	 * @param players
-	 *            - list of players who's messages will be fetched form the database
-	 * @param time
-	 *            - all messages later than this timestamp will be fetched from the
-	 *            database
+	 * @param players - list of players who's messages will be fetched form the
+	 *                database
+	 * @param time    - all messages later than this timestamp will be fetched from
+	 *                the database
 	 * @return returns an ArrayList of Message containing all the messages of the
 	 *         the specified players in order of time
 	 */

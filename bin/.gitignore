@@ -1,2 +1,4 @@
+/controllers/
+/database/
 /game/
-/client/
+/view/

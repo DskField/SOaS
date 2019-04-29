@@ -3,7 +3,7 @@ package game;
 import javafx.scene.paint.Color;
 
 public enum GameColor {
-	RED(Color.RED), YELLOW(Color.YELLOW), GREEN(Color.GREEN), BLUE(Color.BLUE), PURPLE(Color.PURPLE);
+	RED(Color.RED), YELLOW(Color.YELLOW), GREEN(Color.GREEN), BLUE(Color.BLUE), PURPLE(Color.PURPLE), EMPTY(Color.WHITE);
 
 	private Color color;
 
@@ -14,6 +14,42 @@ public enum GameColor {
 	// getter for the Color connected to the String
 	public Color getColor() {
 		return this.color;
+	}
+	
+	// changing dutch input into an enum
+	public static GameColor getEnum(String key) {
+	    switch (key.toLowerCase()) {
+	    case "rood":
+	        return RED;
+	    case "geel":
+	        return YELLOW;
+	    case "groen":
+	        return GREEN;
+	    case "blauw":
+	        return BLUE;
+	    case "paars":
+	        return PURPLE;
+	    default:
+	        return EMPTY;
+	    }
+	}
+	
+	public static String getDatabaseName(GameColor gamecolor) {
+		switch (gamecolor) {
+		case RED:
+			return "rood";
+		case YELLOW:
+			return "geel";
+		case GREEN:
+			return "groen";
+		case BLUE:
+			return "blauw";
+		case PURPLE:
+			return "paars";
+		default:
+			System.err.println("GameColor that color doesn't exist");
+			return "";
+		}
 	}
 
 	// tijdelijke commentaar voor uitleg van enum voor degene die het nog niet

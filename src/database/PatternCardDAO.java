@@ -1,65 +1,87 @@
 package database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import game.PatternCard;
-import game.SpacePattern;
 
-public class PatternCardDAO extends BaseDAO {
-
+class PatternCardDAO extends BaseDAO {
+	Connection con = super.getConnection();
+	
+	
+	public ArrayList<PatternCard> getAllPatternCards(){
+		return selectPatternCard("SELECT * FROM patterncard");
+	}
+	
+	
+	public ArrayList<PatternCard> getStandardPatternCards(){
+		return selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard <= 24");
+	}
+	
+	
+	public ArrayList<PatternCard> getGeneratedPatternCards(){
+		return selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard > 24");
+	}
+	
+	
+	public ArrayList<PatternCard> getPatternCard(int i){
+		return selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard = " + Integer.toString(i));
+	}
+	
+	public void addPatternCard(PatternCard patternCard) {
+		insertPatternCard(patternCard);
+	}
+	
+	
 	private ArrayList<PatternCard> selectPatternCard(String query) {
-		//TODO unfinished
 		ArrayList<PatternCard> results = new ArrayList<PatternCard>();
-		
-		try (Connection con = super.getConnection()) {
-			Statement stmt = con.createStatement();
-			ResultSet dbResultSet = stmt.executeQuery(query);
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			ResultSet dbResultSet = stmt.executeQuery();
+			con.commit();
+				
 			while(dbResultSet.next()) {
 				int id = dbResultSet.getInt("idpatterncard");
 				String name = dbResultSet.getString("name");
 				int dif = dbResultSet.getInt("difficulty");
 				boolean type = dbResultSet.getBoolean("standard");
-				
-				SpacePattern[][] patterns = selectSpacePattern(null, 0);
-				
-				PatternCard pattern = new PatternCard(id, name, dif, patterns, type);
+
+				PatternCard pattern = new PatternCard(id, name, dif, type);
 				results.add(pattern);
 			}
-		}
-		catch(SQLException e) {
-			System.err.println("PatternCardDAO: " + e.getMessage());
+			stmt.close();
+		} catch (SQLException e) {
+			System.out.println("PatternCardDAO: " + e.getMessage());
 		}
 		return results;
 	}
 	
-	private SpacePattern[][] selectSpacePattern(String query, int id) {
-		SpacePattern[][] pattern = new SpacePattern[5][4];
-		//	Need to ask regarding dbConnection
-		
-		//leftovers from method previously written to get the pattern for a patterncard
-		
-		try {
-//			while(fields.next()) {
-//				int id = fields.getInt("patterncard_idpatterncard");
-//				int x = fields.getInt("position_x");
-//				int y = fields.getInt("position_y");
-//				String color = fields.getString("color");
-//				color.toUpperCase();
-//				int value = fields.getInt("value");
-//				pattern[x][y] = new SpacePattern(x, y, id, color, value);
-////					Query: SELECT position_x, position_y, patterncard_idpatterncard, color, value FROM patterncardfield WHERE ...		
-//			}
-		}
-		catch(Exception e) {
-			System.out.println("PatternCardDAO: " + e.getMessage());
-		}
-		
-		
-		return pattern;
-	}
 	
+	private void insertPatternCard(PatternCard patternCard) {
+		if(patternCard.getType() == false) {
+			try {
+				PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncard VALUES (?,?,?,false)");
+				stmt.setInt(1, patternCard.getPatternCardId());
+				stmt.setString(2, patternCard.getName());
+				stmt.setInt(3, patternCard.getDifficulty());
+				stmt.executeUpdate();
+				stmt.close();
+			}
+			catch (SQLException e1) {
+				System.err.println("PatternCardDAO " + e1.getMessage());
+				try {
+					con.rollback();
+				}
+				catch(SQLException e2) {
+					System.err.println("PatternCardDAO: the rollback failed: Please check the Database!");
+				}
+			}
+		}
+		else {
+			System.err.println("PatternCardDAO: This is not a generated patterncard!");
+		}
+	}
 }
