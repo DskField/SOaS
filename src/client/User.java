@@ -7,6 +7,8 @@ public class User {
 	private int userID;
 	private String loginName;
 
+	private String playStatus;
+
 	private int totalGames;
 	private int totalWins;
 	private int totalLosses;
@@ -19,13 +21,13 @@ public class User {
 
 		this.loginName = name;
 	}
-	
-	public void calcLostGames() {	
-		this.totalLosses = this.totalGames - this.totalWins; 
+
+	public void calcLostGames() {
+		this.totalLosses = this.totalGames - this.totalWins;
 	}
-	
+
 	public void loadStats() {
-		
+
 		// Grab stats from queries in UserDAO
 		// TODO Waiting on ClientController
 	}
@@ -45,5 +47,13 @@ public class User {
 
 	public void setLoginName(String name) {
 		this.loginName = name;
+	}
+	
+	public String getPlayStatus() {
+		return playStatus;
+	}
+
+	public void setPlayStatus(String playStatus) {
+		this.playStatus = playStatus;
 	}
 }
