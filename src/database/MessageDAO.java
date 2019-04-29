@@ -72,7 +72,7 @@ class MessageDAO extends BaseDAO {
 	 *         the specified players in order of time
 	 */
 	public ArrayList<Message> getALLMessages(ArrayList<Player> players) {
-		return selectMessage("SELECT * FROM chatline ORDER BY time DESC", players);
+		return selectMessage("SELECT * FROM chatline ORDER BY time ASC", players);
 	}
 
 	/**
@@ -85,7 +85,7 @@ class MessageDAO extends BaseDAO {
 	 *         the specified players in order of time
 	 */
 	public ArrayList<Message> updateChat(ArrayList<Player> players, Timestamp time) {
-		return selectMessage("SELECT * FROM chatline WHERE time > " + time + "ORDER BY time DESC", players);
+		return selectMessage("SELECT * FROM chatline WHERE time > " + time + "ORDER BY time ASC", players);
 	}
 
 	public void sendMessage(Message message) {

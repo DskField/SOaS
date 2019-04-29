@@ -5,10 +5,10 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
-public class GoalCardPane extends HBox {
+public class DieOfferPane extends HBox {
 	
-	public GoalCardPane() {
-		setBackground(new Background(new BackgroundFill(Color.ORANGE, null, null)));
-		setPrefSize(800, 200);
+	public DieOfferPane() {
+		setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+		setPrefSize(800, 50);
 	}
 }
