@@ -1,6 +1,7 @@
 package database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import game.Message;
 import game.Player;
 
-class MessageDAO extends BaseDAO {
+public class MessageDAO extends BaseDAO {
 
 	private ArrayList<Message> selectMessage(String query, ArrayList<Player> players) {
 		ArrayList<Message> results = new ArrayList<Message>();
@@ -45,11 +46,11 @@ class MessageDAO extends BaseDAO {
 	 */
 	private void insertMessage(Message message) {
 		try (Connection con = super.getConnection()) {
-			Statement stmt = con.createStatement();
-			String text = message.getMessage();
-			int playerId = message.getPlayer().getPlayerID();
-			Timestamp time = message.getTimestamp();
-			stmt.executeUpdate("INSERT INTO chatline VALUES ( '" + playerId + "', '" + time + "', '" + text + "' )");
+			PreparedStatement stmt = con.prepareStatement("INSERT INTO chatline VALUES (?,?,?)");
+			stmt.setInt(1, message.getPlayer().getPlayerID());
+			stmt.setTimestamp(2, message.getTimestamp());
+			stmt.setString(3, message.getMessage());
+			stmt.executeUpdate();
 			stmt.close();
 			con.close();
 		} catch (SQLException e) {
@@ -65,7 +66,7 @@ class MessageDAO extends BaseDAO {
 	 *         the specified players in order of time
 	 */
 	public ArrayList<Message> getALLMessages(ArrayList<Player> players) {
-		return selectMessage("SELECT * FROM chatline ORDER BY time DESC", players);
+		return selectMessage("SELECT * FROM chatline ORDER BY time ASC", players);
 	}
 
 	/**
@@ -79,9 +80,9 @@ class MessageDAO extends BaseDAO {
 	 *         the specified players in order of time
 	 */
 	public ArrayList<Message> updateChat(ArrayList<Player> players, Timestamp time) {
-		return selectMessage("SELECT * FROM chatline WHERE time > " + time + "ORDER BY time DESC", players);
+		return selectMessage("SELECT * FROM chatline WHERE time > " + time + "ORDER BY time ASC", players);
 	}
-	
+
 	public void sendMessage(Message message) {
 		insertMessage(message);
 	}
