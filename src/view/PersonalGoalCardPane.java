@@ -5,9 +5,10 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-public class CurrencyStonePane extends Pane {
-	public CurrencyStonePane() {
-		setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
+public class PersonalGoalCardPane extends Pane {
+	
+	public PersonalGoalCardPane() {
+		setBackground(new Background(new BackgroundFill(Color.GRAY, null, null)));
 		setPrefSize(100, 100);
 	}
 }

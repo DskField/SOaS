@@ -3,6 +3,8 @@ package view;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -19,6 +21,8 @@ public class RoundPane extends Pane {
 	public RoundPane(int x, int y) {
 		this.x = x;
 		this.y = y;
+		
+		setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
 
 		roundTrack = new HashMap<Integer, ArrayList<DiePane>>();
 
