@@ -33,6 +33,24 @@ public enum GameColor {
 	        return EMPTY;
 	    }
 	}
+	
+	public static String getDatabaseName(GameColor gamecolor) {
+		switch (gamecolor) {
+		case RED:
+			return "rood";
+		case YELLOW:
+			return "geel";
+		case GREEN:
+			return "groen";
+		case BLUE:
+			return "blauw";
+		case PURPLE:
+			return "paars";
+		default:
+			System.err.println("GameColor that color doesn't exist");
+			return "";
+		}
+	}
 
 	// tijdelijke commentaar voor uitleg van enum voor degene die het nog niet
 	// kennen
