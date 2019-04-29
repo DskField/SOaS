@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.ArrayList;
+
 import client.Client;
 import client.Lobby;
 import client.User;
@@ -8,10 +10,12 @@ import game.Player;
 public class ClientController {
 
 	private Client client;
+	private ArrayList<Lobby> clientLobbies; // Remote to client's Lobby list
 
 	public ClientController() {
 
 		client = new Client();
+		clientLobbies = client.getLobbies();
 	}
 
 	public void acceptChallenge() {
@@ -32,11 +36,11 @@ public class ClientController {
 
 		// Creates new lobby if the user is not inside of an inviting lobby
 		if (client.isUserInPreLobby() == false) {
-			client.getLobbies().add(new Lobby(dbGameID));
+			clientLobbies.add(new Lobby(dbGameID));
 		}
 
 		// Grabs the lobby that was just created, using dbGameID as the index
-		client.getLobbies().get(dbGameID).addPlayerToLobby(player);
+		clientLobbies.get(dbGameID).addPlayerToLobby(player);
 	}
 
 	public void userLogin() {
@@ -67,7 +71,7 @@ public class ClientController {
 
 	public String findUser(User player) {
 
-		String username = player.getInlognaam();
+		String username = player.getLoginName();
 
 		return username;
 	}

@@ -5,7 +5,7 @@ import game.GameColor;
 public class User {
 
 	private int userID;
-	private String inlognaam;
+	private String loginName;
 
 	private int totalGames;
 	private int totalWins;
@@ -18,7 +18,7 @@ public class User {
 	public User(int id, String name) {
 
 		this.userID = id;
-		this.inlognaam = name;
+		this.loginName = name;
 	}
 
 	// Getters and setters voor User
@@ -30,12 +30,12 @@ public class User {
 		this.userID = userID;
 	}
 
-	public String getInlognaam() {
-		return inlognaam;
+	public String getLoginName() {
+		return loginName;
 	}
 
-	public void setInlognaam(String inlognaam) {
-		this.inlognaam = inlognaam;
+	public void setLoginName(String name) {
+		this.loginName = name;
 	}
 
 	public int getTotalGames() {
