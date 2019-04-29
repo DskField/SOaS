@@ -9,9 +9,16 @@ public class Client {
 
 	private String username;
 	private String password;
+	
+	private User currentUser;
 
 	public Client() {
 		lobbies = new ArrayList<Lobby>();
+	}
+	
+	public void login() {
+		
+		currentUser = new User(this.username);
 	}
 
 	public void acceptChallenge() {
@@ -20,11 +27,10 @@ public class Client {
 
 	public void denyChallenge() {
 		// TODO Set user status to 'geweigerd'
-
 	}
 
 	public void joinMatch() {
-
+		// TODO Waiting on view to be able to transmit a game
 	}
 
 	public void invite(User invUser) {

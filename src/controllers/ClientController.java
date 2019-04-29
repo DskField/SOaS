@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import client.Client;
 import client.Lobby;
-import client.User;
-import game.Player;
 
 public class ClientController {
 
@@ -22,15 +20,15 @@ public class ClientController {
 //	System.exit(0)
 //	}
 
-//	public void logout() {
-//		
-//		// TODO waiting for view so a pane can be set back
-//	}
+	public void logout() {
+		
+		// TODO waiting for view so a pane can be set back
+	}
 
-//	public void updateClient() {
-//
-//		// TODO fetch query to update the current lobbies
-//	}
+	public void updateClient() {
+
+		// TODO fetch query to update the current lobbies
+	}
 
 //	public String findUser(User user) {
 //

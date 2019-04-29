@@ -15,17 +15,22 @@ public class User {
 	private int mostPlacedValue;
 	private int totalOpponents;
 
-	public User(int id, String name) {
+	public User(String name) {
 
-		this.userID = id;
 		this.loginName = name;
 	}
 	
-	public void showStats() {
+	public void calcLostGames() {	
+		this.totalLosses = this.totalGames - this.totalWins; 
+	}
+	
+	public void loadStats() {
 		
+		// Grab stats from queries in UserDAO
+		// TODO Waiting on ClientController
 	}
 
-	// Getters and setters for User
+	// Getters and setters
 	public int getUserID() {
 		return userID;
 	}
@@ -40,61 +45,5 @@ public class User {
 
 	public void setLoginName(String name) {
 		this.loginName = name;
-	}
-
-	public int getTotalGames() {
-		return totalGames;
-	}
-
-	public void setTotalGames(int totalGames) {
-		this.totalGames = totalGames;
-	}
-
-	public int getTotalWins() {
-		return totalWins;
-	}
-
-	public void setTotalWins(int totalWins) {
-		this.totalWins = totalWins;
-	}
-
-	public int getTotalLosses() {
-		return totalLosses;
-	}
-
-	public void setTotalLosses(int totalLosses) {
-		this.totalLosses = totalLosses;
-	}
-
-	public int getMaxScore() {
-		return maxScore;
-	}
-
-	public void setMaxScore(int maxScore) {
-		this.maxScore = maxScore;
-	}
-
-	public GameColor getMostPlacedColor() {
-		return mostPlacedColor;
-	}
-
-	public void setMostPlacedColor(GameColor mostPlacedColor) {
-		this.mostPlacedColor = mostPlacedColor;
-	}
-
-	public int getMostPlacedValue() {
-		return mostPlacedValue;
-	}
-
-	public void setMostPlacedValue(int mostPlacedValue) {
-		this.mostPlacedValue = mostPlacedValue;
-	}
-
-	public int getTotalOpponents() {
-		return totalOpponents;
-	}
-
-	public void setTotalOpponents(int totalOpponents) {
-		this.totalOpponents = totalOpponents;
 	}
 }

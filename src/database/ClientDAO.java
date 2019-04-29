@@ -16,8 +16,8 @@ public class ClientDAO extends BaseDAO {
 
 	public void loginUser(String user, String pass) {
 
-		String loginQuery = "SELECT p.username AS username, a.password AS password\r\n" + "FROM account AS a \r\n"
-				+ "LEFT JOIN player AS p ON a.username = p.username\r\n"
+		String loginQuery = "SELECT p.username AS username, a.password AS password " + "FROM account AS a "
+				+ "LEFT JOIN player AS p ON a.username = p.username "
 				+ "WHERE p.username LIKE '?' AND a.password LIKE '?'";
 
 		try {
@@ -47,7 +47,7 @@ public class ClientDAO extends BaseDAO {
 					}
 
 				} catch (SQLException e) {
-					System.err.println("MessageDAO " + e.getMessage());
+					System.err.println("ClientDAO " + e.getMessage());
 				}
 			}
 			stmt.close();
@@ -67,7 +67,7 @@ public class ClientDAO extends BaseDAO {
 		}
 	}
 
-	private void registerUser(String user, String pass) {
+	public void registerUser(String user, String pass) {
 
 		String registerQuery = "INSERT INTO account VALUES(?,?)";
 
@@ -101,10 +101,10 @@ public class ClientDAO extends BaseDAO {
 	}
 
 	// This method returns the latest player ID from the username provided
-	private int findUser(String user) {
+	public int findUser(String user) {
 
-		String findQuery = "SELECT idplayer\r\n" + "FROM player\r\n" + "WHERE username LIKE '?'\r\n"
-				+ "ORDER BY idplayer DESC\r\n" + "LIMIT 1";
+		String findQuery = "SELECT idplayer " + "FROM player " + "WHERE username LIKE '?' " + "ORDER BY idplayer DESC "
+				+ "LIMIT 1";
 
 		int result = 0;
 
