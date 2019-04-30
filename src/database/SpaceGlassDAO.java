@@ -64,7 +64,7 @@ class SpaceGlassDAO extends BaseDAO{
 			stmt.setInt(3, field.getYCor());
 			stmt.setInt(4, gameId);
 			stmt.setInt(5, die.getDieId());
-			stmt.setString(6, GameColor.getDatabaseName(die.getDieColor());
+			stmt.setString(6, GameColor.getDatabaseName(die.getDieColor()));
 			stmt.executeUpdate();
 			stmt.close();
 		}
@@ -88,7 +88,7 @@ class SpaceGlassDAO extends BaseDAO{
 			stmt.setInt(6, field.getYCor());
 			stmt.setInt(1, gameId);
 			stmt.setInt(2, die.getDieId());
-			stmt.setString(3, GameColor.getDatabaseName(die.getDieColor());
+			stmt.setString(3, GameColor.getDatabaseName(die.getDieColor()));
 			stmt.executeUpdate();
 			stmt.close();
 		}

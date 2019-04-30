@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 import game.GameColor;
 import game.PatternCard;
@@ -69,7 +68,7 @@ class SpacePatternDAO extends BaseDAO{
 			PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncardfield VALUES ("+ i +",?,?,?,?)");
 			stmt.setInt(2, field.getXCor());
 			stmt.setInt(3, field.getYCor());
-			stmt.setString(4, GameColor.getDatabaseName(field.getPatternColor());
+			stmt.setString(4, GameColor.getDatabaseName(field.getPatternColor()));
 			stmt.setInt(5, field.getValue());
 			stmt.executeUpdate();
 			stmt.close();
