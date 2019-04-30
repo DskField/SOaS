@@ -16,23 +16,10 @@ public class Player {
 
 	public Player(int playerID, int seqnr, GameColor personalGoalCard, String username) {
 		currencyStones = new ArrayList<>();
-		glassWindow = new GlassWindow();
 		this.personalGoalCard = personalGoalCard;
 		this.playerID = playerID;
 		this.seqnr = seqnr;
 		this.username = username;
-	}
-
-	public void chooseDie() {
-		// TODO waiting for Sioux
-	}
-
-	public void layDie() {
-		// TODO waiting for Sioux
-	}
-
-	public void loadCard() {
-		// TODO waiting for Sioux
 	}
 	
 	// GETTERS AND SETTERS
@@ -46,6 +33,10 @@ public class Player {
 	
 	public GlassWindow getGlassWindow() {
 		return glassWindow;
+	}
+	
+	public void loadGlassWindow(GlassWindow glassWindow) {
+		this.glassWindow = glassWindow;
 	}
 	
 	public GameColor getPersonalGoalCard() {
