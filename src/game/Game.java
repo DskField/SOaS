@@ -185,18 +185,6 @@ public class Game {
 		}
 	}
 
-	public void calculateScore() {
-		// TODO wait on CardHandler
-	}
-
-	public void calculatePublicScore() {
-		// TODO wait on CardHanler and GlassWindow
-	}
-
-	public void calculateFinalScore() {
-		// TODO wait on CardHandle and GlassWindow
-	}
-
 	public void useToolCard() {
 		// TODO wait on CardHandler and GlassWindow
 	}
@@ -260,7 +248,7 @@ public class Game {
 	}
 
 	public Chat getChat() {
-		return chat;	
+		return chat;
 	}
 
 	public Player getCurrentPlayer() {
