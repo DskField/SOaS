@@ -195,12 +195,15 @@ public class GoalCardHandler {
 
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
-				// check if the color is the same on x-1 & y-1 or x+1 & y-1
 				try {
 					if (glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow.getSpace((x - 1), (y - 1))
 							.getDie().getDieColor()
 							|| glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow
-									.getSpace((x + 1), (y - 1)).getDie().getDieColor())
+									.getSpace((x + 1), (y - 1)).getDie().getDieColor()
+							|| glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow
+									.getSpace((x + 1), (y + 1)).getDie().getDieColor()
+							|| glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow
+									.getSpace((x + 1), (y + 1)).getDie().getDieColor())
 						count++;
 				} catch (Exception e) {
 
