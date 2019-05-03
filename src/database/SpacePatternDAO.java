@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import game.GameColor;
 import game.PatternCard;
@@ -14,40 +13,23 @@ class SpacePatternDAO extends BaseDAO{
 	Connection con = super.getConnection();
 	
 	
-	public SpacePattern[][] getSpacePatterns(int i) {
-		return selectSpacePattern("SELECT * FROM patterncardfield WHERE patterncard_idpatterncard = " + Integer.toString(i));
+	public SpacePattern[][] getPattern(int idPatternCard) {
+		return selectSpacePattern("SELECT * FROM patterncardfield WHERE patterncard_idpatterncard = " + idPatternCard);
 	}
 	
 	
-	public void addSpacePattern(int i, SpacePattern field) {
-		insertSpacePattern(i,field);
+	public void addPattern(PatternCard patternCard) {//
+		insertPattern(patternCard);
 	}
 	
 	
-	public void addPattern(int i, SpacePattern[][] pattern) {
-		for(int x = 0; x < 5; x++) {
-			for(int y = 0; y < 4; y++) {
-				insertSpacePattern(i,pattern[x][y]);
-			}
-		}
-	}
-	
-	
-	public void addPattern(PatternCard patternCard) {
-		for(int x = 0; x < 5; x++) {
-			for(int y = 0; y < 4; y++) {
-				insertSpacePattern(patternCard.getPatternCardId(), patternCard.getSpace(x, y));
-			}
-		}
-	}
-	
-	
+	//Is used to obtain a single PatternCard from the database
 	private SpacePattern[][] selectSpacePattern(String query) {
 		SpacePattern[][] result = new SpacePattern[5][4];
 		
 		try {
-			Statement stmt = con.createStatement();
-			ResultSet dbResultSet = stmt.executeQuery(query);
+			PreparedStatement stmt = con.prepareStatement(query);
+			ResultSet dbResultSet = stmt.executeQuery();
 			while(dbResultSet.next()) {
 				int x = dbResultSet.getInt("position_x");
 				int y = dbResultSet.getInt("position_y");
@@ -56,22 +38,28 @@ class SpacePatternDAO extends BaseDAO{
 				result[x - 1][y - 1] = new SpacePattern(x, y, color, value);
 			}
 		}
-		catch(Exception e) {
-			System.out.println("SpacePatternDAO Select: " + e.getMessage());
+		catch(SQLException e) {
+			System.err.println("SpacePatternDAO Select: " + e.getMessage());
 		}
 		return result;
 	}
 	
 	
-	private void insertSpacePattern(int i, SpacePattern field) {
+	//Inserts a pattern into the database
+	private void insertPattern(PatternCard patternCard) {
 		try {
-			PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncardfield VALUES ("+ i +",?,?,?,?)");
-			stmt.setInt(2, field.getXCor());
-			stmt.setInt(3, field.getYCor());
-			stmt.setString(4, GameColor.getDatabaseName(field.getPatternColor()));
-			stmt.setInt(5, field.getValue());
-			stmt.executeUpdate();
-			stmt.close();
+			for(int x = 0; x < 5; x++) {
+				for(int y = 0; y < 4; y++) {
+					PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncardfield VALUES ("+ patternCard.getPatternCardId() +",?,?,?,?)");
+					stmt.setInt(2, patternCard.getSpace(x, y).getXCor());
+					stmt.setInt(3, patternCard.getSpace(x, y).getYCor());
+					stmt.setString(4, GameColor.getDatabaseName(patternCard.getSpace(x, y).getPatternColor()));
+					stmt.setInt(5, patternCard.getSpace(x, y).getValue());
+					stmt.executeUpdate();
+					stmt.close();
+				}
+			}
+			con.commit();
 		}
 		catch(SQLException e1) {
 			System.err.println("SpacePatternDAO Insert:" + e1.getMessage());
