@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import database.ToolCardDAO;
+
 public class Game {
 	private final int totalToolCards = 12;
 	private final int amountToolCards = 3;
@@ -124,7 +126,9 @@ public class Game {
 
 	// TODO wait on Card
 	public void shakePiles() {
-		// toolCards = getToolCards(getRandomNotEqualInts(amountToolCards, totalToolCards));
+		ToolCardDAO toolCardDAO = new ToolCardDAO();
+		toolCardDAO.insertRandomGameToolCards(gameID);
+		toolCards = toolCardDAO.getGameToolCards(gameID);
 		// collectiveGoalCards = getCollectiveGoalCards(getRandomNotEqualInts(amountCollectiveGoalCards, totalCollectiveGoalCards));
 	}
 
