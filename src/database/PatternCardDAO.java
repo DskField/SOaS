@@ -12,30 +12,39 @@ class PatternCardDAO extends BaseDAO {
 	Connection con = super.getConnection();
 	
 	
-	public ArrayList<PatternCard> getAllPatternCards(){
-		return selectPatternCard("SELECT * FROM patterncard");
+	public ArrayList<PatternCard> getStandardPatternCards() {
+		return selectPatternCard("SELECT * FROM patterncard WHERE standard IS TRUE");
 	}
 	
 	
-	public ArrayList<PatternCard> getStandardPatternCards(){
-		return selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard <= 24");
+	public ArrayList<PatternCard> getGeneratedPatternCards() {
+		return selectPatternCard("SELECT * FROM patterncard WHERE standard IS FALSE");
 	}
 	
 	
-	public ArrayList<PatternCard> getGeneratedPatternCards(){
-		return selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard > 24");
+	//Is used to obtain a player's chosen patterncard
+	public ArrayList<PatternCard> getplayerPatternCard(int idPlayer) {
+		return selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard = (SELECT patterncard_idpatterncard FROM player WHERE idplayer = " + idPlayer + ")");
+	}
+
+	
+	//Is used to obtain the options given to a player at the start of a game
+	public ArrayList<PatternCard> getPlayerOptions(int idPlayer){
+		return selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard = (SELECT patterncard_idpatterncard FROM patterncardoption WHERE player_idplayer = " + idPlayer + ")");
 	}
 	
-	
-	public ArrayList<PatternCard> getPatternCard(int i){
-		return selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard = " + Integer.toString(i));
-	}
 	
 	public void addPatternCard(PatternCard patternCard) {
 		insertPatternCard(patternCard);
 	}
 	
 	
+	public void addPatternCardOptions(int idPlayer, ArrayList<PatternCard> options) {
+		insertPatternCardOptions(idPlayer, options);
+	}
+	
+	
+	//Is used to obtain a PatternCard Object from the database, altough it doesn't contain SpacePattern Objects yet
 	private ArrayList<PatternCard> selectPatternCard(String query) {
 		ArrayList<PatternCard> results = new ArrayList<PatternCard>();
 		try {
@@ -47,41 +56,60 @@ class PatternCardDAO extends BaseDAO {
 				int id = dbResultSet.getInt("idpatterncard");
 				String name = dbResultSet.getString("name");
 				int dif = dbResultSet.getInt("difficulty");
-				boolean type = dbResultSet.getBoolean("standard");
 
-				PatternCard pattern = new PatternCard(id, name, dif, type);
+				PatternCard pattern = new PatternCard(id, name, dif);
 				results.add(pattern);
 			}
 			stmt.close();
 		} catch (SQLException e) {
-			System.out.println("PatternCardDAO: " + e.getMessage());
+			System.err.println("PatternCardDAO: " + e.getMessage());
 		}
 		return results;
 	}
 	
 	
+	//Is used to add a custom PatternCard Object to the database, but only to the patterncard table
 	private void insertPatternCard(PatternCard patternCard) {
-		if(patternCard.getType() == false) {
+		try {
+			PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncard VALUES (?,?,?,FALSE)");
+			stmt.setInt(1, patternCard.getPatternCardId());
+			stmt.setString(2, patternCard.getName());
+			stmt.setInt(3, patternCard.getDifficulty());
+			stmt.executeUpdate();
+			con.commit();
+			stmt.close();
+		}
+		catch (SQLException e1) {
+			System.err.println("PatternCardDAO " + e1.getMessage());
 			try {
-				PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncard VALUES (?,?,?,false)");
-				stmt.setInt(1, patternCard.getPatternCardId());
-				stmt.setString(2, patternCard.getName());
-				stmt.setInt(3, patternCard.getDifficulty());
+				con.rollback();
+			}
+			catch(SQLException e2) {
+				System.err.println("PatternCardDAO: the rollback failed: Please check the Database!");
+			}
+		}
+	}
+	
+	
+	//Is used to insert patterncard IDs into the patterncardoption table based on the options given to a single player
+	private void insertPatternCardOptions(int idPlayer, ArrayList<PatternCard> patternCards) {
+		try {
+			for(int i = 0; i < patternCards.size(); i++) {
+				PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncardoption VALUES (?,idPlayer)");
+				stmt.setInt(1, patternCards.get(i).getPatternCardId());
 				stmt.executeUpdate();
 				stmt.close();
 			}
-			catch (SQLException e1) {
-				System.err.println("PatternCardDAO " + e1.getMessage());
-				try {
-					con.rollback();
-				}
-				catch(SQLException e2) {
-					System.err.println("PatternCardDAO: the rollback failed: Please check the Database!");
-				}
-			}
+		con.commit();
 		}
-		else {
-			System.err.println("PatternCardDAO: This is not a generated patterncard!");
+		catch (SQLException e1) {
+			System.err.println("PatternCardDAO " + e1.getMessage());
+			try {
+				con.rollback();
+			}
+			catch(SQLException e2) {
+				System.err.println("PatternCardDAO: the rollback failed: Please check the Database!");
+			}
 		}
 	}
 }
