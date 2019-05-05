@@ -13,7 +13,8 @@ public class Game {
 	private final int totalPatternCards = 24;
 	private final int amountPatternCards = 4;
 
-	// All arrays are temporary, they can be changed in the future to ArrayLists or HashMaps
+	// All arrays are temporary, they can be changed in the future to ArrayLists or
+	// HashMaps
 	private PatternCard[] patternCards;
 	private GlassWindow[] glassWindows;
 
@@ -30,8 +31,8 @@ public class Game {
 	private Round[] roundTrack;
 
 	/**
-	 * table is the list with die that are rolled but not placed or in the round track. That means they
-	 * are the dice to choose out of this round
+	 * table is the list with die that are rolled but not placed or in the round
+	 * track. That means they are the dice to choose out of this round
 	 */
 	private ArrayList<Die> table;
 
@@ -51,6 +52,14 @@ public class Game {
 	 * 
 	 * @param gameID - The id of the game
 	 */
+
+	// YOU
+	private Player clientUser;
+
+	public Player getClientUser() {
+		return clientUser;
+	}
+
 	public Game(int gameID) {
 		this.gameID = gameID;
 
@@ -107,7 +116,7 @@ public class Game {
 	/**
 	 * Loads all the used cards
 	 * 
-	 * @param toolCards - The used ToolCard
+	 * @param toolCards           - The used ToolCard
 	 * @param collectiveGoalCards - The used CollectiveGoalCard
 	 */
 	public void loadCards(ArrayList<ToolCard> toolCards, ArrayList<CollectiveGoalCard> collectiveGoalCards) {
@@ -155,7 +164,8 @@ public class Game {
 	}
 
 	/**
-	 * Removes the die from the list with dice and places them on the list table. It also rolls the dice
+	 * Removes the die from the list with dice and places them on the list table. It
+	 * also rolls the dice
 	 */
 	public void shakeSack() {
 		int numDice = players.size() * 2 + 1;
