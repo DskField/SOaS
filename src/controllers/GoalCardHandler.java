@@ -1,0 +1,233 @@
+package controllers;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+import game.CollectiveGoalCard;
+import game.GameColor;
+import game.GlassWindow;
+
+public class GoalCardHandler {
+
+	private GlassWindow glasswindow;
+
+	public int getGoalCardHandler(GlassWindow glasswindow, ArrayList<CollectiveGoalCard> collectiveGoalCards) {
+		this.glasswindow = glasswindow;
+		int points = 0;
+
+		for (CollectiveGoalCard c : collectiveGoalCards) {
+			switch (c.getName().toLowerCase()) {
+			case "kleurenvariëteit per kolom":
+				points += handleKleurvarieteitPerKolom() * c.getPoints();
+				break;
+			case "tintveriëteit per kolom":
+				points += handleTintvarieteitPerKolom() * c.getPoints();
+				break;
+			case "halfdonkere tinten":
+				points += handleDonkereTinten(3, 4) * c.getPoints();
+				break;
+			case "tintveriëteit":
+				points += handleTintvarieteit() * c.getPoints();
+				break;
+			case "kleurvariëteit per rij":
+				points += handleKleurvareiteitPerRij() * c.getPoints();
+				break;
+			case "kleurvariëteit":
+				points += handleKleurvarieteit() * c.getPoints();
+				break;
+			case "donkere tinten":
+				points += handleDonkereTinten(5, 6) * c.getPoints();
+				break;
+			case "tintvariëteit per rij":
+				points += handleTintvarieteitPerRij() * c.getPoints();
+				break;
+			case "lichte tinten":
+				points += handleDonkereTinten(1, 2) * c.getPoints();
+				break;
+			case "kleurdiagonalen":
+				points += handleKleurdiagonalen();
+				break;
+			default:
+				System.err.println("GoalCardHandler: none existing CollectiveGoalCard");
+				break;
+			}
+		}
+		return points;
+	}
+
+	private int handleTintvarieteit() {
+		ArrayList<Integer> values = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 0));
+
+		for (int y = 0; y < 4; y++) {
+			for (int x = 0; x < 5; x++) {
+				switch (glasswindow.getSpace(x, y).getDie().getDieValue()) {
+				case (1):
+					values.set(0, values.get(0) + 1);
+					break;
+				case (2):
+					values.set(1, values.get(1) + 1);
+					break;
+				case (3):
+					values.set(2, values.get(2) + 1);
+					break;
+				case (4):
+					values.set(3, values.get(3) + 1);
+					break;
+				case (5):
+					values.set(4, values.get(4) + 1);
+					break;
+				case (6):
+					values.set(5, values.get(5) + 1);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		Collections.sort(values);
+		return values.get(0);
+	}
+
+	private int handleTintvarieteitPerKolom() {
+		ArrayList<Integer> values = new ArrayList<>();
+		int column = 0;
+
+		for (int x = 0; x < 5; x++) {
+			values.clear();
+			for (int y = 0; y < 4; y++) {
+				if (values.contains(glasswindow.getSpace(x, y).getDie().getDieValue()))
+					break;
+				else
+					values.add(glasswindow.getSpace(x, y).getDie().getDieValue());
+			}
+			if (values.size() == 4)
+				column++;
+		}
+		return column;
+	}
+
+	private int handleKleurvarieteitPerKolom() {
+		ArrayList<GameColor> colors = new ArrayList<>();
+		int column = 0;
+
+		for (int x = 0; x < 5; x++) {
+			colors.clear();
+			for (int y = 0; y < 4; y++) {
+				if (colors.contains(glasswindow.getSpace(x, y).getDie().getDieColor()))
+					break;
+				else
+					colors.add(glasswindow.getSpace(x, y).getDie().getDieColor());
+			}
+			if (colors.size() == 4)
+				column++;
+		}
+		return column;
+	}
+
+	// handles Halfdonkere, Donkere en Lichte Tinten
+	private int handleDonkereTinten(int dieA, int dieB) {
+		int countA = 0;
+		int countB = 0;
+
+		for (int y = 0; y < 4; y++) {
+			for (int x = 0; x < 5; x++) {
+				if (glasswindow.getSpace(x, y).getDie().getDieValue() == dieA)
+					countA++;
+				else if (glasswindow.getSpace(x, y).getDie().getDieValue() == dieB)
+					countB++;
+			}
+		}
+		// if dieThree is smaller return dieThree else dieFour
+		return countA < countB ? countA : countB;
+	}
+
+	private int handleKleurvarieteit() {
+		ArrayList<Integer> colors = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0));
+
+		for (int y = 0; y < 4; y++) {
+			for (int x = 0; x < 5; x++) {
+				switch (glasswindow.getSpace(x, y).getDie().getDieColor()) {
+				case RED:
+					colors.set(0, colors.get(0) + 1);
+					break;
+				case YELLOW:
+					colors.set(1, colors.get(1) + 1);
+					break;
+				case GREEN:
+					colors.set(2, colors.get(2) + 1);
+					break;
+				case BLUE:
+					colors.set(3, colors.get(3) + 1);
+					break;
+				case PURPLE:
+					colors.set(4, colors.get(4) + 1);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		Collections.sort(colors);
+		return colors.get(0);
+	}
+
+	private int handleKleurvareiteitPerRij() {
+		ArrayList<GameColor> colors = new ArrayList<>();
+		int column = 0;
+
+		for (int y = 0; y < 5; y++) {
+			colors.clear();
+			for (int x = 0; x < 4; x++) {
+				if (colors.contains(glasswindow.getSpace(x, y).getDie().getDieColor()))
+					break;
+				else
+					colors.add(glasswindow.getSpace(x, y).getDie().getDieColor());
+			}
+			if (colors.size() == 4)
+				column++;
+		}
+		return column;
+	}
+
+	private int handleKleurdiagonalen() {
+		int count = 0;
+
+		for (int y = 0; y < 4; y++) {
+			for (int x = 0; x < 5; x++) {
+				try {
+					if (glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow.getSpace((x - 1), (y - 1))
+							.getDie().getDieColor()
+							|| glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow
+									.getSpace((x + 1), (y - 1)).getDie().getDieColor()
+							|| glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow
+									.getSpace((x + 1), (y + 1)).getDie().getDieColor()
+							|| glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow
+									.getSpace((x + 1), (y + 1)).getDie().getDieColor())
+						count++;
+				} catch (Exception e) {
+
+				}
+			}
+		}
+		return count;
+	}
+
+	private int handleTintvarieteitPerRij() {
+		ArrayList<Integer> values = new ArrayList<>();
+		int column = 0;
+
+		for (int x = 0; x < 5; x++) {
+			values.clear();
+			for (int y = 0; y < 4; y++) {
+				if (values.contains(glasswindow.getSpace(x, y).getDie().getDieValue()))
+					break;
+				else
+					values.add(glasswindow.getSpace(x, y).getDie().getDieValue());
+			}
+			if (values.size() == 4)
+				column++;
+		}
+		return column;
+	}
+}

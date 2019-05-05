@@ -5,6 +5,7 @@ public class SpacePattern extends Space{
 	private GameColor patternColor;
 	private int value;
 	
+	
 	public SpacePattern(int x, int y, GameColor color, int value) {
 		super(x, y);
 		this.value = value;
@@ -12,6 +13,7 @@ public class SpacePattern extends Space{
 	}
 
 	
+	// GETTERS AND SETTERS
 	public GameColor getPatternColor() {
 		return patternColor;
 	}

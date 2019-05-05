@@ -7,16 +7,23 @@ public class PatternCard {
 	private String name;
 	private int difficulty;
 	private SpacePattern pattern[][];
-	private boolean standard;
 	
-	public PatternCard(int id, String name, int dif, boolean standard) {
+	
+	public PatternCard(int id, String name, int dif) {
 		patternCardId = id;
 		this.name = name;
 		difficulty = dif;
-		this.standard = standard;
+		pattern = new SpacePattern[5][4];
 	}
 	
-
+	
+	// GETTERS AND SETTERS
+	//Is used to add the actual pattern to the patterncard
+	public void addPattern(SpacePattern[][] pattern) {
+		this.pattern = pattern;
+	}
+	
+	
 	public int getPatternCardId() {
 		return patternCardId;
 	}
@@ -34,19 +41,5 @@ public class PatternCard {
 	
 	public SpacePattern getSpace(int x, int y) {
 		return pattern[x][y];
-	}
-	
-	
-	public SpacePattern[][] getPattern(){
-		return pattern;
-	}
-	
-	
-	public boolean getType() {
-		return standard;
-	}
-	
-	public void loadPattern(SpacePattern[][] patterns) {
-		pattern = patterns;
 	}
 }
