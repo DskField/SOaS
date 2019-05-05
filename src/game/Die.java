@@ -38,13 +38,9 @@ public class Die {
 	 */
 	public Die(int dieId, String color, int round, int dieValue) {
 		this.dieId = dieId;
+		dieColor = GameColor.getEnum(color);
+		this.round = round;
 		this.dieValue = dieValue;
-
-		try {
-			dieColor = GameColor.valueOf(color);
-		} catch (Exception e) {
-			System.err.println("Invalid color");
-		}
 	}
 
 	/**

@@ -1,8 +1,9 @@
 package game;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
+
+import database.PersistenceFacade;
 
 public class Game {
 	private final int totalToolCards = 12;
@@ -12,7 +13,8 @@ public class Game {
 	private final int totalPatternCards = 24;
 	private final int amountPatternCards = 4;
 
-	// All arrays are temporary, they can be changed in the future to ArrayLists or HashMaps
+	// All arrays are temporary, they can be changed in the future to ArrayLists or
+	// HashMaps
 	private PatternCard[] patternCards;
 	private GlassWindow[] glassWindows;
 
@@ -29,8 +31,8 @@ public class Game {
 	private Round[] roundTrack;
 
 	/**
-	 * table is the list with die that are rolled but not placed or in the round track. That means they
-	 * are the dice to choose out of this round
+	 * table is the list with die that are rolled but not placed or in the round
+	 * track. That means they are the dice to choose out of this round
 	 */
 	private ArrayList<Die> table;
 
@@ -43,11 +45,21 @@ public class Game {
 	private int gameID;
 	private int currentRound;
 
+	private PersistenceFacade persistenceFacade;
+
 	/**
 	 * Initialize the game
 	 * 
 	 * @param gameID - The id of the game
 	 */
+
+	// YOU
+	private Player clientUser;
+
+	public Player getClientUser() {
+		return clientUser;
+	}
+
 	public Game(int gameID) {
 		this.gameID = gameID;
 
@@ -65,6 +77,8 @@ public class Game {
 
 		random = new Random();
 
+		persistenceFacade = new PersistenceFacade();
+
 		for (int i = 0; i < roundTrack.length; i++) {
 			roundTrack[i] = new Round();
 		}
@@ -79,12 +93,13 @@ public class Game {
 	 * 
 	 * @param dice
 	 */
-	public void loadDice(Die[] dice) {
-		for (int i = 0; i < dice.length; i++) {
-			if (dice[i].getRound() != 0) {
-				roundTrack[dice[i].getRound() - 1].addDie(dice[i]);
+	public void loadDice() {
+		ArrayList<Die> dbDice = new ArrayList<Die>();
+		for (Die die : dbDice) {
+			if (die.getRound() != 0) {
+				roundTrack[die.getRound() - 1].addDie(die);
 			} else {
-				this.dice.add(dice[i]);
+				this.dice.add(die);
 			}
 		}
 	}
@@ -94,14 +109,14 @@ public class Game {
 	 * 
 	 * @param chat - The chat with all messages
 	 */
-	public void loadChat(Chat chat) {
-		this.chat = chat;
+	public void loadChat() {
+
 	}
 
 	/**
 	 * Loads all the used cards
 	 * 
-	 * @param toolCards - The used ToolCard
+	 * @param toolCards           - The used ToolCard
 	 * @param collectiveGoalCards - The used CollectiveGoalCard
 	 */
 	public void loadCards(ArrayList<ToolCard> toolCards, ArrayList<CollectiveGoalCard> collectiveGoalCards) {
@@ -115,17 +130,32 @@ public class Game {
 	 * @param glassWindows - GlassWindow with the right PatternCard
 	 */
 	public void loadGlassWindow(GlassWindow[] glassWindows) {
+		//TODO rewrite this function
 		this.glassWindows = glassWindows;
 	}
 
-	public void loadPlayers(ArrayList<Player> players) {
-		this.players.addAll(players);
+	/**
+	 * Load the players from this game
+	 */
+	public void loadPlayers() {
+		this.players = persistenceFacade.getAllPlayersInGame(gameID);
 	}
 
-	// TODO wait on Card
+	/**
+	 * Pick random Tool and Goal cards
+	 */
 	public void shakePiles() {
-		// toolCards = getToolCards(getRandomNotEqualInts(amountToolCards, totalToolCards));
-		// collectiveGoalCards = getCollectiveGoalCards(getRandomNotEqualInts(amountCollectiveGoalCards, totalCollectiveGoalCards));
+		persistenceFacade.insertRandomGameToolCards(gameID);
+		persistenceFacade.insertRandomSharedCollectiveGoalCards(gameID);
+		loadCards();
+	}
+
+	/**
+	 * Get the Tool and Goal cards form the DB
+	 */
+	public void loadCards() {
+		toolCards = persistenceFacade.getGameToolCards(gameID);
+		collectiveGoalCards = persistenceFacade.getSharedCollectiveGoalCards(gameID);
 	}
 
 	// TODO wait on PatternCard
@@ -134,30 +164,8 @@ public class Game {
 	}
 
 	/**
-	 * This function gives you an array with random numbers chosen from a list with consecutively
-	 * numbers based on you max
-	 * 
-	 * @param amount - the amount of numbers that will be generated, this needs to be less then the max
-	 * @param max - the highest number that can be generated
-	 * @return an array with the random generated numbers
-	 */
-	private int[] getRandomNotEqualInts(int amount, int max) {
-		int[] ints = new int[amount];
-
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		for (int i = 1; i <= max; i++) {
-			list.add(i);
-		}
-		Collections.shuffle(list);
-		for (int i = 0; i < amount; i++) {
-			ints[i] = list.get(i);
-		}
-
-		return ints;
-	}
-
-	/**
-	 * Removes the die from the list with dice and places them on the list table. It also rolls the dice
+	 * Removes the die from the list with dice and places them on the list table. It
+	 * also rolls the dice
 	 */
 	public void shakeSack() {
 		int numDice = players.size() * 2 + 1;
@@ -168,7 +176,7 @@ public class Game {
 			dice.remove(index);
 		}
 
-		// TODO send a update to the DB with the values of the die that just got added
+		persistenceFacade.updateDiceRoll(gameID, table);
 	}
 
 	public void nextTurn() {
@@ -178,15 +186,14 @@ public class Game {
 	public void nextRound() {
 		if (!table.isEmpty()) {
 			roundTrack[currentRound].addDice(table);
+			persistenceFacade.updateDiceRound(gameID, currentRound, table);
 			table.clear();
 			currentRound++;
-
-			// TODO send the new version of the roundtrack to the DB
 		}
 	}
 
 	public void useToolCard() {
-		// TODO wait on CardHandler and GlassWindow
+		// TODO wait on CardHandler
 	}
 
 	public void placeDie() {
@@ -194,26 +201,15 @@ public class Game {
 	}
 
 	/**
-	 * updates the chat
-	 * 
-	 * @param messages - new messages
+	 * Updates the chat
 	 */
-	public void updateChat(ArrayList<Message> messages) {
+	public void updateChat() {
 		// TODO wait on Chat
 
 	}
 
 	// GETTERS AND SETTERS
 	// TODO the current getters and setters are temporary, they will be changed in the future
-	public PatternCard[] getPatternCards() {
-		return patternCards;
-	}
-
-	// TODO rewrite method
-	public void setPatternCards(PatternCard[] patternCards) {
-		this.patternCards = patternCards;
-	}
-
 	public GlassWindow[] getGlassWindows() {
 		return glassWindows;
 	}
