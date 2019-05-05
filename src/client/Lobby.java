@@ -5,7 +5,12 @@ import java.util.ArrayList;
 public class Lobby {
 
 	private int gameID;
-	private String gameState;
+	private enum gameState{
+		
+		CREATING,
+		PLAYING,
+		TERMINATED
+	}
 
 	// The model described this as "turn". I renamed it "isMyTurn" to prevent any
 	// confusion
@@ -22,7 +27,7 @@ public class Lobby {
 	// in a lobby or not
 	private boolean isMyVictory;
 
-	// The players in a lobby
+	// The users  in a lobby
 	private ArrayList<User> userList;
 
 	public Lobby(int id) {
