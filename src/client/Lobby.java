@@ -17,7 +17,6 @@ public class Lobby {
 	private boolean isMyTurn;
 
 	private int currentRound;
-	private int lobbyResponse;
 	private int lobbySize;
 	private int finalScore;
 
@@ -49,14 +48,6 @@ public class Lobby {
 		this.gameID = gameID;
 	}
 
-	public String getGameState() {
-		return gameState;
-	}
-
-	public void setGameState(String gameState) {
-		this.gameState = gameState;
-	}
-
 	public boolean isMyTurn() {
 		return isMyTurn;
 	}
@@ -71,14 +62,6 @@ public class Lobby {
 
 	public void setCurrentRound(int currentRound) {
 		this.currentRound = currentRound;
-	}
-
-	public int getLobbyResponse() {
-		return lobbyResponse;
-	}
-
-	public void setLobbyResponse(int lobbyResponse) {
-		this.lobbyResponse = lobbyResponse;
 	}
 
 	public int getLobbySize() {
