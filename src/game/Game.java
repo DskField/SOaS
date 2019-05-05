@@ -12,7 +12,8 @@ public class Game {
 	private final int totalPatternCards = 24;
 	private final int amountPatternCards = 4;
 
-	// All arrays are temporary, they can be changed in the future to ArrayLists or HashMaps
+	// All arrays are temporary, they can be changed in the future to ArrayLists or
+	// HashMaps
 	private PatternCard[] patternCards;
 	private GlassWindow[] glassWindows;
 
@@ -29,8 +30,8 @@ public class Game {
 	private Round[] roundTrack;
 
 	/**
-	 * table is the list with die that are rolled but not placed or in the round track. That means they
-	 * are the dice to choose out of this round
+	 * table is the list with die that are rolled but not placed or in the round
+	 * track. That means they are the dice to choose out of this round
 	 */
 	private ArrayList<Die> table;
 
@@ -48,6 +49,14 @@ public class Game {
 	 * 
 	 * @param gameID - The id of the game
 	 */
+
+	// YOU
+	private Player clientUser;
+
+	public Player getClientUser() {
+		return clientUser;
+	}
+
 	public Game(int gameID) {
 		this.gameID = gameID;
 
@@ -101,7 +110,7 @@ public class Game {
 	/**
 	 * Loads all the used cards
 	 * 
-	 * @param toolCards - The used ToolCard
+	 * @param toolCards           - The used ToolCard
 	 * @param collectiveGoalCards - The used CollectiveGoalCard
 	 */
 	public void loadCards(ArrayList<ToolCard> toolCards, ArrayList<CollectiveGoalCard> collectiveGoalCards) {
@@ -124,21 +133,27 @@ public class Game {
 
 	// TODO wait on Card
 	public void shakePiles() {
-		// toolCards = getToolCards(getRandomNotEqualInts(amountToolCards, totalToolCards));
-		// collectiveGoalCards = getCollectiveGoalCards(getRandomNotEqualInts(amountCollectiveGoalCards, totalCollectiveGoalCards));
+		// toolCards = getToolCards(getRandomNotEqualInts(amountToolCards,
+		// totalToolCards));
+		// collectiveGoalCards =
+		// getCollectiveGoalCards(getRandomNotEqualInts(amountCollectiveGoalCards,
+		// totalCollectiveGoalCards));
 	}
 
 	// TODO wait on PatternCard
 	public void dealPatternCards() {
-		// patternCards = getPatternCardsFromID(getRandomNotEqualInts(amountPatternCards, totalPatternCards));
+		// patternCards =
+		// getPatternCardsFromID(getRandomNotEqualInts(amountPatternCards,
+		// totalPatternCards));
 	}
 
 	/**
-	 * This function gives you an array with random numbers chosen from a list with consecutively
-	 * numbers based on you max
+	 * This function gives you an array with random numbers chosen from a list with
+	 * consecutively numbers based on you max
 	 * 
-	 * @param amount - the amount of numbers that will be generated, this needs to be less then the max
-	 * @param max - the highest number that can be generated
+	 * @param amount - the amount of numbers that will be generated, this needs to
+	 *               be less then the max
+	 * @param max    - the highest number that can be generated
 	 * @return an array with the random generated numbers
 	 */
 	private int[] getRandomNotEqualInts(int amount, int max) {
@@ -157,7 +172,8 @@ public class Game {
 	}
 
 	/**
-	 * Removes the die from the list with dice and places them on the list table. It also rolls the dice
+	 * Removes the die from the list with dice and places them on the list table. It
+	 * also rolls the dice
 	 */
 	public void shakeSack() {
 		int numDice = players.size() * 2 + 1;
@@ -204,7 +220,8 @@ public class Game {
 	}
 
 	// GETTERS AND SETTERS
-	// TODO the current getters and setters are temporary, they will be changed in the future
+	// TODO the current getters and setters are temporary, they will be changed in
+	// the future
 	public PatternCard[] getPatternCards() {
 		return patternCards;
 	}

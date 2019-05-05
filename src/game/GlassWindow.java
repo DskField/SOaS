@@ -4,7 +4,7 @@ public class GlassWindow {
 
 	private SpaceGlass[][] spaces;
 	private PatternCard patterncard;
-	
+	private GameColor windowcolor;
 	
 	public GlassWindow(SpaceGlass[][] spaces) {
 			this.spaces = spaces;
@@ -24,9 +24,10 @@ public class GlassWindow {
 		return spaces[x][y];
 	}
 	
-	
 	public SpaceGlass[][] getSpaces() {
 		return spaces;
 	}
-	
+	public GameColor getColor() {
+		return windowcolor;
+	}
 }
