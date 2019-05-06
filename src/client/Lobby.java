@@ -5,14 +5,18 @@ import java.util.ArrayList;
 public class Lobby {
 
 	private int gameID;
-	private String gameState;
+	private enum gameState{
+		
+		CREATING,
+		PLAYING,
+		TERMINATED
+	}
 
 	// The model described this as "turn". I renamed it "isMyTurn" to prevent any
 	// confusion
 	private boolean isMyTurn;
 
 	private int currentRound;
-	private int lobbyResponse;
 	private int lobbySize;
 	private int finalScore;
 
@@ -22,7 +26,7 @@ public class Lobby {
 	// in a lobby or not
 	private boolean isMyVictory;
 
-	// The players in a lobby
+	// The users  in a lobby
 	private ArrayList<User> userList;
 
 	public Lobby(int id) {
@@ -44,14 +48,6 @@ public class Lobby {
 		this.gameID = gameID;
 	}
 
-	public String getGameState() {
-		return gameState;
-	}
-
-	public void setGameState(String gameState) {
-		this.gameState = gameState;
-	}
-
 	public boolean isMyTurn() {
 		return isMyTurn;
 	}
@@ -66,14 +62,6 @@ public class Lobby {
 
 	public void setCurrentRound(int currentRound) {
 		this.currentRound = currentRound;
-	}
-
-	public int getLobbyResponse() {
-		return lobbyResponse;
-	}
-
-	public void setLobbyResponse(int lobbyResponse) {
-		this.lobbyResponse = lobbyResponse;
 	}
 
 	public int getLobbySize() {
