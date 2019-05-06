@@ -19,12 +19,7 @@ public class Die {
 	public Die(int dieId, String color) {
 		this.dieId = dieId;
 		this.round = 0;
-
-		try {
-			dieColor = GameColor.valueOf(color);
-		} catch (Exception e) {
-			System.err.println("Invalid color");
-		}
+		dieColor = GameColor.getEnum(color);
 	}
 
 	/**

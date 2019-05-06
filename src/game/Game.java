@@ -6,12 +6,6 @@ import java.util.Random;
 import database.PersistenceFacade;
 
 public class Game {
-	private final int totalToolCards = 12;
-	private final int amountToolCards = 3;
-	private final int totalCollectiveGoalCards = 10;
-	private final int amountCollectiveGoalCards = 3;
-	private final int totalPatternCards = 24;
-	private final int amountPatternCards = 4;
 
 	// All arrays are temporary, they can be changed in the future to ArrayLists or
 	// HashMaps
@@ -31,8 +25,8 @@ public class Game {
 	private Round[] roundTrack;
 
 	/**
-	 * table is the list with die that are rolled but not placed or in the round
-	 * track. That means they are the dice to choose out of this round
+	 * table is the list with die that are rolled but not placed or in the round track. That means they
+	 * are the dice to choose out of this round
 	 */
 	private ArrayList<Die> table;
 
@@ -47,18 +41,14 @@ public class Game {
 
 	private PersistenceFacade persistenceFacade;
 
+	// YOU
+	private Player clientUser;
+
 	/**
 	 * Initialize the game
 	 * 
 	 * @param gameID - The id of the game
 	 */
-
-	// YOU
-	private Player clientUser;
-
-	public Player getClientUser() {
-		return clientUser;
-	}
 
 	public Game(int gameID) {
 		this.gameID = gameID;
@@ -84,7 +74,7 @@ public class Game {
 		}
 	}
 
-	public void updateDB() {
+	public void updateGame() {
 		// TODO give the whole game object?
 	}
 
@@ -111,17 +101,6 @@ public class Game {
 	 */
 	public void loadChat() {
 
-	}
-
-	/**
-	 * Loads all the used cards
-	 * 
-	 * @param toolCards           - The used ToolCard
-	 * @param collectiveGoalCards - The used CollectiveGoalCard
-	 */
-	public void loadCards(ArrayList<ToolCard> toolCards, ArrayList<CollectiveGoalCard> collectiveGoalCards) {
-		this.toolCards = toolCards;
-		this.collectiveGoalCards = collectiveGoalCards;
 	}
 
 	/**
@@ -164,8 +143,7 @@ public class Game {
 	}
 
 	/**
-	 * Removes the die from the list with dice and places them on the list table. It
-	 * also rolls the dice
+	 * Removes the die from the list with dice and places them on the list table. It also rolls the dice
 	 */
 	public void shakeSack() {
 		int numDice = players.size() * 2 + 1;
@@ -205,11 +183,14 @@ public class Game {
 	 */
 	public void updateChat() {
 		// TODO wait on Chat
-
 	}
 
 	// GETTERS AND SETTERS
 	// TODO the current getters and setters are temporary, they will be changed in the future
+	public Player getClientUser() {
+		return clientUser;
+	}
+
 	public GlassWindow[] getGlassWindows() {
 		return glassWindows;
 	}
