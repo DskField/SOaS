@@ -52,6 +52,7 @@ public class ChatPane extends BorderPane {
 		playerMessage.setOnKeyPressed(myTextfieldHandler);
 		scrollPane.setContent(chat);
 		chat.setWrapText(true);
+		chat.setEditable(false);
 		// sets everything to the ChatPane
 		bottom.getChildren().addAll(playerMessage, sendMessage);
 		setCenter(chat);
