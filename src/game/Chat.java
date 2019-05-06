@@ -18,6 +18,15 @@ public class Chat {
 		messages.add(message);
 	}
 	/**
+	 * add's multiple messages to the chat
+	 * @param messages ArrayList of messages that get added to the chat
+	 */
+	public void addMessages(ArrayList<Message> messages) {
+		for(Message message : messages) {
+			this.messages.add(message);
+		}
+	}
+	/**
 	 * looks for the last Message in the chat object and returns the timestamp
 	 * @return returns the timestamp of the last message in the chat
 	 */
