@@ -34,8 +34,8 @@ public enum GameColor {
 	    }
 	}
 	
-	public static String getDatabaseName(GameColor gamecolor) {
-		switch (gamecolor) {
+	public String getDatabaseName() {
+		switch (this) {
 		case RED:
 			return "rood";
 		case YELLOW:
