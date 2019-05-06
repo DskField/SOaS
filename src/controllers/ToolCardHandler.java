@@ -7,7 +7,6 @@ import game.Die;
 import game.Game;
 import game.GameColor;
 import game.GlassWindow;
-import game.Round;
 import game.SpaceGlass;
 import game.SpacePattern;
 
@@ -186,8 +185,7 @@ public class ToolCardHandler {
 			checkDieValuePerm(chosenSpace.getXCor(), chosenSpace.getYCor(), currDie);
 
 			if (canPlace) {
-				handleMoveDie(currentSpace.getXCor(), currentSpace.getYCor(), chosenSpace.getXCor(),
-						chosenSpace.getYCor(), currDie);
+				handleMoveDie(currentSpace.getXCor(), currentSpace.getYCor(), chosenSpace.getXCor(), chosenSpace.getYCor(), currDie);
 			}
 
 		} catch (Exception e) {
@@ -205,8 +203,7 @@ public class ToolCardHandler {
 			checkDieColorPerm(chosenSpace.getXCor(), chosenSpace.getYCor(), currDie);
 
 			if (canPlace) {
-				handleMoveDie(currentSpace.getXCor(), currentSpace.getYCor(), chosenSpace.getXCor(),
-						chosenSpace.getYCor(), currDie);
+				handleMoveDie(currentSpace.getXCor(), currentSpace.getYCor(), chosenSpace.getXCor(), chosenSpace.getYCor(), currDie);
 			}
 
 		} catch (Exception e) {
@@ -378,7 +375,7 @@ public class ToolCardHandler {
 
 	// Remove a die from the draft pile (table), 
 	// and grab a new one from the sack (dice)
-	
+
 	// The die value is to be chosen by the player
 	public void handleFluxRemover(Die die, int dieValue) {
 
