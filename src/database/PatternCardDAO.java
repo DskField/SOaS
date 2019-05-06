@@ -30,7 +30,7 @@ class PatternCardDAO extends BaseDAO {
 	
 	//Is used to obtain the options given to a player at the start of a game
 	public ArrayList<PatternCard> getPlayerOptions(int idPlayer){
-		return selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard = (SELECT patterncard_idpatterncard FROM patterncardoption WHERE player_idplayer = " + idPlayer + ")");
+		return selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard IN (SELECT patterncard_idpatterncard FROM patterncardoption WHERE player_idplayer = " + idPlayer + ")");
 	}
 	
 	
@@ -95,7 +95,7 @@ class PatternCardDAO extends BaseDAO {
 	private void insertPatternCardOptions(int idPlayer, ArrayList<PatternCard> patternCards) {
 		try {
 			for(int i = 0; i < patternCards.size(); i++) {
-				PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncardoption VALUES (?,idPlayer)");
+				PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncardoption VALUES (?," + idPlayer + ")");
 				stmt.setInt(1, patternCards.get(i).getPatternCardId());
 				stmt.executeUpdate();
 				stmt.close();
