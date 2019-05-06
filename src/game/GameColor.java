@@ -17,7 +17,7 @@ public enum GameColor {
 	}
 	
 	// changing dutch input into an enum
-	public static GameColor getEnum(String key) {
+	public GameColor getEnum(String key) {
 	    switch (key.toLowerCase()) {
 	    case "rood":
 	        return RED;
@@ -34,8 +34,8 @@ public enum GameColor {
 	    }
 	}
 	
-	public static String getDatabaseName(GameColor gamecolor) {
-		switch (gamecolor) {
+	public String getDatabaseName() {
+		switch (this) {
 		case RED:
 			return "rood";
 		case YELLOW:
