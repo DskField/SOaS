@@ -3,57 +3,59 @@ package client;
 import game.GameColor;
 
 public class User {
-
-	private int userID;
-	private String loginName;
-
-	private String playStatus;
-
-	private int totalGames;
-	private int totalWins;
-	private int totalLosses;
+	
+	private String username;
+	
+	// User stats
+	private int gamesPlayed;
+	private int gamesWon;
+	private int gamesLost;
 	private int maxScore;
 	private GameColor mostPlacedColor;
 	private int mostPlacedValue;
 	private int totalOpponents;
-
-	public User(String name) {
-
-		this.loginName = name;
-	}
-
-	public void calcLostGames() {
-		this.totalLosses = this.totalGames - this.totalWins;
-	}
-
-	public void loadStats() {
-
-		// Grab stats from queries in UserDAO
-		// TODO Waiting on ClientController
-	}
-
-	// Getters and setters
-	public int getUserID() {
-		return userID;
-	}
-
-	public void setUserID(int userID) {
-		this.userID = userID;
-	}
-
-	public String getLoginName() {
-		return loginName;
-	}
-
-	public void setLoginName(String name) {
-		this.loginName = name;
-	}
 	
-	public String getPlayStatus() {
-		return playStatus;
+	public User(String username, int gamesPlayed, int gamesWon, int gamesLost, int maxScore, GameColor mostPlacedColor, int mostPlacedValue, int totalOpponents) {
+		this.username = username;
+		this.gamesPlayed = gamesPlayed;
+		this.gamesWon = gamesWon;
+		this.gamesLost = gamesLost;
+		this.maxScore = maxScore;
+		this.mostPlacedColor = mostPlacedColor;
+		this.mostPlacedValue = mostPlacedValue;
+		this.totalOpponents = totalOpponents;
 	}
 
-	public void setPlayStatus(String playStatus) {
-		this.playStatus = playStatus;
+	// GETTERS
+	public String getUsername() {
+		return username;
+	}
+
+	public int getGamesPlayed() {
+		return gamesPlayed;
+	}
+
+	public int getGamesWon() {
+		return gamesWon;
+	}
+
+	public int getGamesLost() {
+		return gamesLost;
+	}
+
+	public int getMaxScore() {
+		return maxScore;
+	}
+
+	public GameColor getMostPlacedColor() {
+		return mostPlacedColor;
+	}
+
+	public int getMostPlacedValue() {
+		return mostPlacedValue;
+	}
+
+	public int getTotalOpponents() {
+		return totalOpponents;
 	}
 }

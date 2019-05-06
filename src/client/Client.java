@@ -5,73 +5,33 @@ import java.util.ArrayList;
 public class Client {
 
 	private ArrayList<Lobby> lobbies;
-	private boolean userInPreLobby; // This exists to check if the client user is already inviting people to a lobby
-
-	private String username;
-	private String password;
+	private User user;
+	private ArrayList<Challenge> challenges;
 	
-	private User currentUser;
-
-	public Client() {
-		lobbies = new ArrayList<Lobby>();
+	public Client(ArrayList<Lobby> lobbies, User user, ArrayList<Challenge> challenges) {
+		this.lobbies = lobbies;
+		this.user = user;
+		this.challenges = challenges;
 	}
 	
-	public void login() {
-		
-		currentUser = new User(this.username);
-	}
-
-	public void acceptChallenge() {
-		// TODO Set user status to 'geaccepteerd'
-	}
-
-	public void denyChallenge() {
-		// TODO Set user status to 'geweigerd'
-	}
-
-	public void joinMatch() {
-		// TODO Waiting on view to be able to transmit a game
-	}
-
-	public void invite(User invUser) {
-
-		int dbGameID = 0; // Set a stub value to stop the compiler from complaining
-
-		// Creates new lobby if the user is not inside of an inviting lobby
-		if (this.isUserInPreLobby() == false) {
-			lobbies.add(new Lobby(dbGameID));
-		}
-
-		// Grabs the lobby that was just created, using dbGameID as the index
-		lobbies.get(dbGameID).addUserToLobby(invUser);
-	}
-
+	// GETTERS
 	public ArrayList<Lobby> getLobbies() {
 		return lobbies;
 	}
-
-	public boolean isUserInPreLobby() {
-		return userInPreLobby;
+	
+	public User getUser() {
+		return user;
 	}
-
-	public void setUserInPreLobby(boolean userIsInPreLobby) {
-		this.userInPreLobby = userIsInPreLobby;
+	
+	public ArrayList<Challenge> getChallenges() {
+		return challenges;
 	}
-
-	public String getUsername() {
-		return username;
+	
+	// TODO check if needed
+	public Lobby getLobby(int gameID) {
+		for (Lobby lob : lobbies) {
+			if (lob.getGameID() == gameID) return lob;
+		}
+		return null;
 	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 }
