@@ -185,7 +185,8 @@ public class ToolCardHandler {
 			checkDieValuePerm(chosenSpace.getXCor(), chosenSpace.getYCor(), currDie);
 
 			if (canPlace) {
-				handleMoveDie(currentSpace.getXCor(), currentSpace.getYCor(), chosenSpace.getXCor(), chosenSpace.getYCor(), currDie);
+				handleMoveDie(currentSpace.getXCor(), currentSpace.getYCor(), chosenSpace.getXCor(),
+						chosenSpace.getYCor(), currDie);
 			}
 
 		} catch (Exception e) {
@@ -203,7 +204,8 @@ public class ToolCardHandler {
 			checkDieColorPerm(chosenSpace.getXCor(), chosenSpace.getYCor(), currDie);
 
 			if (canPlace) {
-				handleMoveDie(currentSpace.getXCor(), currentSpace.getYCor(), chosenSpace.getXCor(), chosenSpace.getYCor(), currDie);
+				handleMoveDie(currentSpace.getXCor(), currentSpace.getYCor(), chosenSpace.getXCor(),
+						chosenSpace.getYCor(), currDie);
 			}
 
 		} catch (Exception e) {
@@ -373,15 +375,11 @@ public class ToolCardHandler {
 		}
 	}
 
-	// Remove a die from the draft pile (table), 
+	// Remove a die from the draft pile (table),
 	// and grab a new one from the sack (dice)
 
 	// The die value is to be chosen by the player
 	public void handleFluxRemover(Die die, int dieValue) {
-
-		Die handDie;
-
-		String dieCol = translateColor(handDie.getDieColor());
 
 		ArrayList<Die> dice = game.getDice();
 		ArrayList<Die> table = game.getTable(); // Stub for getTable
@@ -391,8 +389,10 @@ public class ToolCardHandler {
 
 		int index = random.nextInt(dice.size());
 		dice.get(index).roll(game.getCurrentRound()); // Stub for getCurrentRound
-		handDie = dice.get(index);
+		Die handDie = dice.get(index);
 		dice.remove(index);
+
+		String dieCol = translateColor(handDie.getDieColor());
 
 		handDie = new Die(handDie.getDieId(), dieCol, die.getRound(), dieValue);
 
