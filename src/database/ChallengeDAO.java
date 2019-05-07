@@ -41,10 +41,10 @@ public class ChallengeDAO extends BaseDAO {
 					String username = dbResultSet.getString("username");
 					String playstatus = dbResultSet.getString("playstatus_playstatus");
 					players.put(username, playstatus);
-
-					Challenge challenge = new Challenge(i, players);
-					results.add(challenge);
 				}
+				Challenge challenge = new Challenge(i, players);
+				results.add(challenge);
+				
 				stmt.close();
 			} catch (SQLException e1) {
 				System.err.println("ChallengeDAO " + e1.getMessage());
