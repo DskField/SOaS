@@ -1,7 +1,10 @@
 package view;
 
+import java.util.ArrayList;
+
 import controllers.GameController;
 import game.Game;
+import game.Message;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -71,9 +74,8 @@ public class GameScene extends Scene {
 		createRight();
 	}
 	
-	public void updateChat(String string) {
-		System.out.println("6");
-		chatPane.updateChat(string);
+	public void updateChat(ArrayList<Message> messages) {
+		chatPane.updateChat(messages);
 	}
 
 	/**

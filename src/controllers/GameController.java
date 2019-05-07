@@ -1,11 +1,13 @@
 package controllers;
 
+import java.sql.Timestamp;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import game.Game;
 import game.Message;
 import game.Player;
+import javafx.scene.control.ScrollPane;
 import view.GameScene;
 
 public class GameController {
@@ -20,23 +22,24 @@ public class GameController {
 		game.loadPlayers();
 		mainApplication.setScene(gameScene);
 
-		game.loadChat();
+		gameScene.updateChat(game.loadChat());
 
-		Timer timer = new Timer();
-		timer.schedule(new update(), 3000);
+//		Timer timer = new Timer();
+//		timer.scheduleAtFixedRate(new update(), 3000, 3000);
 	}
 
 	public Player getClientUser() {
 		return game.getClientUser();
 	}
 
-	public void sendMessages(Message message) {
+	public void sendMessages(String text) {
+		Message message = new Message(text, getClientUser(), new Timestamp(System.currentTimeMillis()));
 		gameScene.updateChat(game.sendMessage(message));
 	}
 
-	class update extends TimerTask {
-		public void run() {
-			gameScene.updateChat(game.updateChat());
-		}
-	}
+//	class update extends TimerTask {
+//		public void run() {
+//			gameScene.updateChat(game.updateChat());
+//		}
+//	}
 }

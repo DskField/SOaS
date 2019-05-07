@@ -1,6 +1,7 @@
 package game;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class Message {
 	//variables
@@ -28,8 +29,17 @@ public class Message {
 		return timestamp;
 	}
 	
-	public Player getPlayer() {
-		return player;
+	public int getPlayerId() {
+		return player.getPlayerID();
+	}
+	
+	public String getUserName() {
+		return player.getUsername();
+	}
+	
+	public String getChatTime() {
+		String s = new SimpleDateFormat("kk:mm:ss").format(timestamp);
+		return s;
 	}
 	
 

@@ -40,7 +40,7 @@ public class Chat {
 		if (!messages.isEmpty()) {
 			return messages.get(messages.size() - 1).getTimestamp();
 		} else {
-			return new Timestamp(System.currentTimeMillis());
+			return new Timestamp(0);
 		}
 
 	}
