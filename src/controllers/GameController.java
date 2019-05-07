@@ -1,5 +1,8 @@
 package controllers;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import game.Game;
 import game.Message;
 import game.Player;
@@ -18,7 +21,9 @@ public class GameController {
 		mainApplication.setScene(gameScene);
 
 		game.loadChat();
-		gameScene.updateChat(game.updateChat());
+
+		Timer timer = new Timer();
+		timer.schedule(new update(), 3000);
 	}
 
 	public Player getClientUser() {
@@ -29,4 +34,9 @@ public class GameController {
 		gameScene.updateChat(game.sendMessage(message));
 	}
 
+	class update extends TimerTask {
+		public void run() {
+			gameScene.updateChat(game.updateChat());
+		}
+	}
 }
