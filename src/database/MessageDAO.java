@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import game.Message;
@@ -39,7 +39,7 @@ class MessageDAO extends BaseDAO {
 		}
 		return results;
 	}
-	
+
 	private ArrayList<Message> selectMessage(String query, ArrayList<Player> players, Timestamp time) {
 		ArrayList<Message> results = new ArrayList<Message>();
 		try {
@@ -68,8 +68,7 @@ class MessageDAO extends BaseDAO {
 	}
 
 	/**
-	 * This method will take a Message object and insert it into the database table
-	 * chatline
+	 * This method will take a Message object and insert it into the database table chatline
 	 * 
 	 * @param message - Message object
 	 */
@@ -94,10 +93,9 @@ class MessageDAO extends BaseDAO {
 
 	/**
 	 * 
-	 * @param players - list of players who's messages will be fetched form the
-	 *                database
-	 * @return returns an ArrayList of Message containing all the messages of the
-	 *         the specified players in order of time
+	 * @param players - list of players who's messages will be fetched form the database
+	 * @return returns an ArrayList of Message containing all the messages of the the specified players
+	 * in order of time
 	 */
 	public ArrayList<Message> getALLMessages(ArrayList<Player> players) {
 		return selectMessage("SELECT * FROM chatline ORDER BY time ASC", players);
@@ -105,15 +103,14 @@ class MessageDAO extends BaseDAO {
 
 	/**
 	 * 
-	 * @param players - list of players who's messages will be fetched form the
-	 *                database
-	 * @param time    - all messages later than this timestamp will be fetched from
-	 *                the database
-	 * @return returns an ArrayList of Message containing all the messages of the
-	 *         the specified players in order of time
+	 * @param players - list of players who's messages will be fetched form the database
+	 * @param time - all messages later than this timestamp will be fetched from the database
+	 * @return returns an ArrayList of Message containing all the messages of the the specified players
+	 * in order of time
 	 */
 	public ArrayList<Message> updateChat(ArrayList<Player> players, Timestamp time) {
-		return selectMessage("SELECT * FROM chatline WHERE time > " + "?" + "ORDER BY time ASC", players, time);
+		String s = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss").format(time);
+		return selectMessage("SELECT * FROM chatline WHERE time > '" + s + "' ORDER BY time ASC", players);
 	}
 
 	public void sendMessage(Message message) {

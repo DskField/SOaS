@@ -72,7 +72,7 @@ public class Game {
 		for (int i = 0; i < roundTrack.length; i++) {
 			roundTrack[i] = new Round();
 		}
-		
+
 		//kevin stuff sets a client user for testing
 		clientUser = new Player(5, 3, GameColor.BLUE, "Lavyra");
 	}
@@ -179,12 +179,14 @@ public class Game {
 		System.out.println("1.1");
 		chat.addMessages(persistenceFacade.updateChat(getPlayers(), chat.getLastTimestamp()));
 		System.out.println("1.2");
-		for(Message message : chat.getChat()) {
+		for (Message message : chat.getChat()) {
 			messages = messages + "\n" + message.getMessage();
 		}
 		System.out.println("1.3");
+		System.out.println(chat.getChat().size());
 		return messages;
 	}
+
 	// temporary kevin method
 	public String sendMessage(Message message) {
 		System.out.println("3");

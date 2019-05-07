@@ -67,7 +67,6 @@ public class ChatPane extends BorderPane {
 	}
 
 	public void updateChat(String string) {
-		System.out.println("7");
 		chat.setText(string);
 	}
 
@@ -93,6 +92,6 @@ public class ChatPane extends BorderPane {
 		System.out.println("1");
 		gameController.sendMessages(message);
 		playerMessage.clear();
-		
+
 	}
 }

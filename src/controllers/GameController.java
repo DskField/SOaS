@@ -1,7 +1,5 @@
 package controllers;
 
-import java.util.ArrayList;
-
 import game.Game;
 import game.Message;
 import game.Player;
@@ -18,6 +16,9 @@ public class GameController {
 		this.game = new Game(2);
 		game.loadPlayers();
 		mainApplication.setScene(gameScene);
+
+		game.loadChat();
+		gameScene.updateChat(game.updateChat());
 	}
 
 	public Player getClientUser() {
@@ -25,10 +26,7 @@ public class GameController {
 	}
 
 	public void sendMessages(Message message) {
-		System.out.println("2");
 		gameScene.updateChat(game.sendMessage(message));
-		
-
 	}
 
 }
