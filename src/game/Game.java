@@ -80,37 +80,24 @@ public class Game {
 
 	/**
 	 * This method loads all Dice from the DB to the Game.
-	 * 
-	 * @param dice
 	 */
 	public void loadDice() {
-		ArrayList<Die> dbDice = new ArrayList<Die>();
-		for (Die die : dbDice) {
-			if (die.getRound() != 0) {
-				roundTrack[die.getRound() - 1].addDie(die);
-			} else {
-				this.dice.add(die);
-			}
-		}
+		dice = persistenceFacade.getGameDice(gameID);
+		roundTrack = persistenceFacade.getRoundTrack(gameID);
 	}
 
 	/**
 	 * Loads the chat
-	 * 
-	 * @param chat - The chat with all messages
 	 */
 	public void loadChat() {
-
+		chat.addMessages(persistenceFacade.getALLMessages(players));
 	}
 
 	/**
 	 * Load the GlassWindow with the right PatternCard
-	 * 
-	 * @param glassWindows - GlassWindow with the right PatternCard
 	 */
-	public void loadGlassWindow(GlassWindow[] glassWindows) {
-		//TODO rewrite this function
-		this.glassWindows = glassWindows;
+	public void loadGlassWindow() {
+		//TODO write this function
 	}
 
 	/**
@@ -182,7 +169,7 @@ public class Game {
 	 * Updates the chat
 	 */
 	public void updateChat() {
-		// TODO wait on Chat
+		chat.addMessages(persistenceFacade.updateChat(players, chat.getLastTimestamp()));
 	}
 
 	// GETTERS AND SETTERS
@@ -197,6 +184,14 @@ public class Game {
 
 	public ArrayList<Player> getPlayers() {
 		return players;
+	}
+
+	public ArrayList<Die> getTable() {
+		return table;
+	}
+
+	public int getCurrentRound() {
+		return currentRound;
 	}
 
 	// TODO rewrite method

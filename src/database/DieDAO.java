@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import game.Die;
-import game.GameColor;
 import game.Round;
 
 class DieDAO extends BaseDAO {
@@ -85,7 +84,7 @@ class DieDAO extends BaseDAO {
 				stmt.setInt(2, die.getRound());
 				stmt.setInt(3, gameID);
 				stmt.setInt(4, die.getDieId());
-				stmt.setString(5, GameColor.getDatabaseName(die.getDieColor()));
+				stmt.setString(5, die.getDieColor().getDatabaseName());
 				stmt.executeUpdate();
 				con.commit();
 				stmt.close();
@@ -116,7 +115,7 @@ class DieDAO extends BaseDAO {
 				stmt.setInt(3, round);
 				stmt.setInt(4, gameID);
 				stmt.setInt(5, die.getDieId());
-				stmt.setString(6, GameColor.getDatabaseName(die.getDieColor()));
+				stmt.setString(6, die.getDieColor().getDatabaseName());
 				stmt.executeUpdate();
 				con.commit();
 				stmt.close();
