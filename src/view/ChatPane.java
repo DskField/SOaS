@@ -1,5 +1,9 @@
 package view;
 
+import java.sql.Timestamp;
+
+import controllers.GameController;
+import game.Message;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -28,8 +32,11 @@ public class ChatPane extends BorderPane {
 	HBox bottom;
 	MyButtonHandler myButtonHandler;
 	MyTextfieldHandler myTextfieldHandler;
+	GameController gameController;
 
-	public ChatPane() {
+	public ChatPane(GameController gameController) {
+		this.gameController = gameController;
+
 		setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
 		setPrefSize(chatPaneWidth, chatPaneheight);
 
@@ -52,6 +59,7 @@ public class ChatPane extends BorderPane {
 		playerMessage.setOnKeyPressed(myTextfieldHandler);
 		scrollPane.setContent(chat);
 		chat.setWrapText(true);
+		chat.setEditable(false);
 		// sets everything to the ChatPane
 		bottom.getChildren().addAll(playerMessage, sendMessage);
 		setCenter(chat);
@@ -59,7 +67,8 @@ public class ChatPane extends BorderPane {
 	}
 
 	public void updateChat(String string) {
-		chat.setText(chat.getText() + "\n" + string);
+		System.out.println("7");
+		chat.setText(string);
 	}
 
 	private class MyButtonHandler implements EventHandler<ActionEvent> {
@@ -68,18 +77,22 @@ public class ChatPane extends BorderPane {
 			sendMessage();
 		}
 	}
-	
+
 	private class MyTextfieldHandler implements EventHandler<KeyEvent> {
 		@Override
 		public void handle(KeyEvent event) {
-			if (event.getCode() == KeyCode.ENTER)  {
-	             sendMessage();
-	        }
+			if (event.getCode() == KeyCode.ENTER) {
+				sendMessage();
+			}
 		}
 
 	}
-	
+
 	private void sendMessage() {
+		Message message = new Message(playerMessage.getText(), gameController.getClientUser(), new Timestamp(System.currentTimeMillis()));
+		System.out.println("1");
+		gameController.sendMessages(message);
 		playerMessage.clear();
+		
 	}
 }
