@@ -104,4 +104,8 @@ public class PersistenceFacade {
 	public ArrayList<Message> updateChat(ArrayList<Player> players, Timestamp time) {
 		return messageDAO.updateChat(players, time);
 	}
+	
+	public void insertMessage(Message message) {
+		messageDAO.sendMessage(message);
+	}
 }

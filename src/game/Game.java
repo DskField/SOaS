@@ -72,6 +72,9 @@ public class Game {
 		for (int i = 0; i < roundTrack.length; i++) {
 			roundTrack[i] = new Round();
 		}
+		
+		//kevin stuff sets a client user for testing
+		clientUser = new Player(5, 3, GameColor.BLUE, "Lavyra");
 	}
 
 	public void updateGame() {
@@ -181,8 +184,25 @@ public class Game {
 	/**
 	 * Updates the chat
 	 */
-	public void updateChat() {
+	//themporary kevin method
+	public String updateChat() {
 		// TODO wait on Chat
+		System.out.println("4");
+		String messages = new String();
+		System.out.println("1.1");
+		chat.addMessages(persistenceFacade.updateChat(getPlayers(), chat.getLastTimestamp()));
+		System.out.println("1.2");
+		for(Message message : chat.getChat()) {
+			messages = messages + "\n" + message.getMessage();
+		}
+		System.out.println("1.3");
+		return messages;
+	}
+	// temporary kevin method
+	public String sendMessage(Message message) {
+		System.out.println("3");
+		persistenceFacade.insertMessage(message);
+		return updateChat();
 	}
 
 	// GETTERS AND SETTERS

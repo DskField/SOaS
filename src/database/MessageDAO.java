@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -17,6 +18,33 @@ class MessageDAO extends BaseDAO {
 		ArrayList<Message> results = new ArrayList<Message>();
 		try {
 			PreparedStatement stmt = con.prepareStatement(query);
+			ResultSet dbResultSet = stmt.executeQuery();
+			con.commit();
+			while (dbResultSet.next()) {
+				String text = dbResultSet.getString("message");
+				int playerId = dbResultSet.getInt("player_idplayer");
+				Timestamp timestamp = dbResultSet.getTimestamp("time");
+				for (Player player : players) {
+					if (player.getPlayerID() == playerId) {
+						Message message = new Message(text, player, timestamp);
+						results.add(message);
+					}
+				}
+			}
+			stmt.close();
+
+		} catch (SQLException e) {
+			System.err.println("MessageDAO " + e.getMessage());
+
+		}
+		return results;
+	}
+	
+	private ArrayList<Message> selectMessage(String query, ArrayList<Player> players, Timestamp time) {
+		ArrayList<Message> results = new ArrayList<Message>();
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			stmt.setTimestamp(1, time);
 			ResultSet dbResultSet = stmt.executeQuery();
 			con.commit();
 			while (dbResultSet.next()) {
@@ -85,7 +113,7 @@ class MessageDAO extends BaseDAO {
 	 *         the specified players in order of time
 	 */
 	public ArrayList<Message> updateChat(ArrayList<Player> players, Timestamp time) {
-		return selectMessage("SELECT * FROM chatline WHERE time > " + time + "ORDER BY time ASC", players);
+		return selectMessage("SELECT * FROM chatline WHERE time > " + "?" + "ORDER BY time ASC", players, time);
 	}
 
 	public void sendMessage(Message message) {

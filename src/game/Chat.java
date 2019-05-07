@@ -31,7 +31,13 @@ public class Chat {
 	 * @return returns the timestamp of the last message in the chat
 	 */
 	public Timestamp getLastTimestamp() {
-		return messages.get(messages.size() - 1).getTimestamp();
+		if(!messages.isEmpty()) {
+			return messages.get(messages.size() - 1).getTimestamp();
+		}
+		else {
+			return new Timestamp(System.currentTimeMillis());
+		}
+		
 	}
 	//getters & setters
 	public ArrayList<Message> getChat() {
