@@ -68,7 +68,6 @@ public class GameController {
 	}
 
 	private void update() {
-		System.out.println("HEY");
 		gameScene.updateChat(game.updateChat());
 	}
 }

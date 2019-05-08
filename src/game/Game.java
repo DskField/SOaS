@@ -74,7 +74,7 @@ public class Game {
 		}
 
 		//kevin stuff sets a client user for testing
-		clientUser = new Player(6, 3, GameColor.BLUE, "Lavyra");
+		clientUser = new Player(5, 3, GameColor.RED, "Adri");
 	}
 
 	public void updateGame() {
