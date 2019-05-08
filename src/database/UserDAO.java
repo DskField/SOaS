@@ -5,7 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import client.Client;
+import client.User;
+import game.GameColor;
 
 public class UserDAO {
 
@@ -22,135 +23,120 @@ public class UserDAO {
 		String totGameQuery = "SELECT COUNT(game_idgame) AS totalGames " + "FROM player " + "WHERE username LIKE '?' AND playstatus_playstatus LIKE 'uitgespeeld' " + "GROUP BY username";
 
 		int result = 0;
+	}
 
+	private User selectUser(String username) {
+		User result = null;
 		try {
+			PreparedStatement stmt = con.prepareStatement(
+					"SELECT idplayer, username, score, MAX(score) AS maxscore, playstatus_playstatus FROM player GROUP BY idplayer");
+			ResultSet dbResultSet = stmt.executeQuery();
 
-			PreparedStatement stmt = con.prepareStatement(totGameQuery);
-			stmt.setString(1, user);
+			int gamesPlayed = 0;
+			int maxScore = 0;
+			while (dbResultSet.next()) {
+				// Separated the variables on purpose for clarity
 
-			final ResultSet resultSet = stmt.executeQuery();
-
-			con.commit();
-
-			while (resultSet.next()) {
-				result = resultSet.getInt("totalGames");
+				// GamesPlayed
+				if (dbResultSet.getString("playstatus_playstatus").equals("uitgespeeld")) {
+					if (dbResultSet.getString("username").equals(username))
+						gamesPlayed++;
+				}
+				
+				// MaxScore
+				maxScore = maxScore < dbResultSet.getInt("score") && dbResultSet.getString("username").equals(username)
+						? dbResultSet.getInt("score")
+						: maxScore;
 			}
-
 			stmt.close();
 
-		} catch (SQLException e) {
-
-			System.err.println("ClientDAO " + e.getMessage());
-
-			try {
-
-				con.rollback();
-
-			} catch (SQLException e1) {
-
-				System.err.println("The rollback failed: Please check the Database!");
+			// MostPlacedColor
+			// TODO review this, don't know how to do this more efficient
+			GameColor mostPlacedColor = GameColor.EMPTY;
+			int totalPlacedColor = 0;
+			PreparedStatement stmtMostPlacedColor = con
+					.prepareStatement("SELECT SUM(CASE WHEN diecolor = \"rood\" THEN 1 ELSE 0 END) AS totalred,\r\n"
+							+ "SUM(CASE WHEN diecolor = \"geel\" THEN 1 ELSE 0 END) AS totalyellow,\r\n"
+							+ "SUM(CASE WHEN diecolor = \"groen\" THEN 1 ELSE 0 END) AS totalgreen,\r\n"
+							+ "SUM(CASE WHEN diecolor = \"blauw\" THEN 1 ELSE 0 END) AS totalblue,\r\n"
+							+ "SUM(CASE WHEN diecolor = \"paars\" THEN 1 ELSE 0 END) AS totalpurple\r\n"
+							+ "FROM playerframefield\r\n" + "JOIN player ON player_idplayer = idplayer\r\n"
+							+ "WHERE dienumber IS NOT NULL AND username = ?");
+			stmtMostPlacedColor.setString(1, username);
+			ResultSet dbResultSetMostPlacedColor = stmtMostPlacedColor.executeQuery();
+			dbResultSetMostPlacedColor.next();
+			if (dbResultSetMostPlacedColor.getInt("totalred") > totalPlacedColor) {
+				totalPlacedColor = dbResultSetMostPlacedColor.getInt("totalred");
+				mostPlacedColor = GameColor.RED;
 			}
-		}
+			if (dbResultSetMostPlacedColor.getInt("totalyellow") > totalPlacedColor) {
+				totalPlacedColor = dbResultSetMostPlacedColor.getInt("totalyellow");
+				mostPlacedColor = GameColor.YELLOW;
+			}
+			if (dbResultSetMostPlacedColor.getInt("totalgreen") > totalPlacedColor) {
+				totalPlacedColor = dbResultSetMostPlacedColor.getInt("totalgreen");
+				mostPlacedColor = GameColor.GREEN;
+			}
+			if (dbResultSetMostPlacedColor.getInt("totalblue") > totalPlacedColor) {
+				totalPlacedColor = dbResultSetMostPlacedColor.getInt("totalblue");
+				mostPlacedColor = GameColor.BLUE;
+			}
+			if (dbResultSetMostPlacedColor.getInt("totalpurple") > totalPlacedColor) {
+				totalPlacedColor = dbResultSetMostPlacedColor.getInt("totalpurple");
+				mostPlacedColor = GameColor.PURPLE;
+			}
+			stmtMostPlacedColor.close();
 
+			// MostPlacedValue
+			// TODO review this, don't know how to do this more efficient
+			int mostPlacedValue = 0;
+			int totalPlacedValue = 0;
+			PreparedStatement stmtMostPlacedValue = con
+					.prepareStatement("SELECT SUM(CASE WHEN dienumber = 1 THEN 1 ELSE 0 END) AS totalone,\r\n"
+							+ "SUM(CASE WHEN dienumber = 2 THEN 1 ELSE 0 END) AS totaltwo,\r\n"
+							+ "SUM(CASE WHEN dienumber = 3 THEN 1 ELSE 0 END) AS totalthree,\r\n"
+							+ "SUM(CASE WHEN dienumber = 4 THEN 1 ELSE 0 END) AS totalfour,\r\n"
+							+ "SUM(CASE WHEN dienumber = 5 THEN 1 ELSE 0 END) AS totalfive,\r\n"
+							+ "SUM(CASE WHEN dienumber = 6 THEN 1 ELSE 0 END) AS totalsix\r\n"
+							+ "FROM playerframefield\r\n" + "JOIN player ON player_idplayer = idplayer\r\n"
+							+ "WHERE dienumber IS NOT NULL AND username = ?");
+			stmtMostPlacedValue.setString(1, username);
+			ResultSet dbResultSetMostPlacedValue = stmtMostPlacedValue.executeQuery();
+			dbResultSetMostPlacedValue.next();
+			if (dbResultSetMostPlacedValue.getInt("totalone") > totalPlacedValue) {
+				totalPlacedValue = dbResultSetMostPlacedValue.getInt("totalone");
+				mostPlacedValue = 1;
+			}
+			if (dbResultSetMostPlacedValue.getInt("totaltwo") > totalPlacedValue) {
+				totalPlacedValue = dbResultSetMostPlacedValue.getInt("totaltwo");
+				mostPlacedValue = 2;
+			}
+			if (dbResultSetMostPlacedValue.getInt("totalthree") > totalPlacedValue) {
+				totalPlacedValue = dbResultSetMostPlacedValue.getInt("totalthree");
+				mostPlacedValue = 3;
+			}
+			if (dbResultSetMostPlacedValue.getInt("totalfour") > totalPlacedValue) {
+				totalPlacedValue = dbResultSetMostPlacedValue.getInt("totalfour");
+				mostPlacedValue = 4;
+			}
+			if (dbResultSetMostPlacedValue.getInt("totalfive") > totalPlacedValue) {
+				totalPlacedValue = dbResultSetMostPlacedValue.getInt("totalfive");
+				mostPlacedValue = 5;
+			}
+			if (dbResultSetMostPlacedValue.getInt("totalsix") > totalPlacedValue) {
+				totalPlacedValue = dbResultSetMostPlacedValue.getInt("totalsix");
+				mostPlacedValue = 6;
+			}
+			stmtMostPlacedValue.close();
+
+			result = new User(username, gamesPlayed, maxScore, mostPlacedColor, mostPlacedValue);
+		} catch (SQLException e) {
+			System.err.println("UserDAO " + e.getMessage());
+		}
 		return result;
 	}
 
-	public int getWonGames(String user) {
-
-		String wonGameQuery = "SELECT game_idgame, MAX(score), username " + "FROM player " + "WHERE playstatus_playstatus LIKE 'uitgespeeld' " + "GROUP BY game_idgame";
-
-		int amountOfWonGames = 0;
-
-		try {
-
-			PreparedStatement stmt = con.prepareStatement(wonGameQuery);
-
-			final ResultSet resultSet = stmt.executeQuery();
-
-			con.commit();
-
-			while (resultSet.next()) {
-
-				try {
-					String username = resultSet.getString("username");
-
-					if (username.equals(user)) {
-
-						amountOfWonGames++;
-					}
-
-				} catch (SQLException e) {
-					System.err.println("ClientDAO " + e.getMessage());
-				}
-
-			}
-
-			stmt.close();
-
-		} catch (SQLException e) {
-
-			System.err.println("ClientDAO " + e.getMessage());
-
-			try {
-
-				con.rollback();
-
-			} catch (SQLException e1) {
-
-				System.err.println("The rollback failed: Please check the Database!");
-			}
-		}
-
-		return amountOfWonGames;
+	public User getUser(String username) {
+		return selectUser(username);
 	}
-
-	public int getHighestScore(String user) {
-
-		String highestScoreQuery = "SELECT username, MAX(score) " + "FROM player " + "WHERE username LIKE '?'";
-
-		int highestScore = 0;
-
-		try {
-
-			PreparedStatement stmt = con.prepareStatement(highestScoreQuery);
-			stmt.setString(1, user);
-			final ResultSet resultSet = stmt.executeQuery();
-
-			con.commit();
-
-			while (resultSet.next()) {
-
-				highestScore = resultSet.getInt("score");
-
-			}
-
-			stmt.close();
-
-		} catch (SQLException e) {
-
-			System.err.println("ClientDAO " + e.getMessage());
-
-			try {
-
-				con.rollback();
-
-			} catch (SQLException e1) {
-
-				System.err.println("The rollback failed: Please check the Database!");
-			}
-		}
-
-		return highestScore;
-	}
-
-	public void getMostPlacedColor() {
-
-		// TODO Get a script to grab the highest picked color in the DB
-	}
-
-	public void getMostPlacedValue() {
-
-		// TODO Nigga I don't know what this means
-	}
-
 }

@@ -3,53 +3,69 @@ package client;
 import game.GameColor;
 
 public class User {
-
-	private int userID;
-	private String loginName;
-
-	private String playStatus;
-
-	private int totalGames;
-	private int totalWins;
-	private int totalLosses;
+	
+	private String username;
+	
+	// User stats
+	private int gamesPlayed;
+	private int gamesWon;
+	private int gamesLost;
 	private int maxScore;
 	private GameColor mostPlacedColor;
 	private int mostPlacedValue;
 	private int totalOpponents;
-
-	public User(String name) {
-
-		this.loginName = name;
+	
+	public User(String username, int gamesPlayed, int maxScore, GameColor mostPlacedColor, int mostPlacedValue) {
+		this.username = username;
+		this.gamesPlayed = gamesPlayed;
+		this.maxScore = maxScore;
+		this.mostPlacedColor = mostPlacedColor;
+		this.mostPlacedValue = mostPlacedValue;
 	}
 
-	public void calcLostGames() {
-		this.totalLosses = this.totalGames - this.totalWins;
+	// SETTERS
+	public void setGamesWon(int gamesWon) {
+		this.gamesWon = gamesWon;
+	}
+	
+	public void setGamesLost(int gamesLost) {
+		this.gamesLost = gamesLost;
+	}
+	
+	public void setTotalOpponents(int totalOpponents) {
+		this.totalOpponents = totalOpponents;
+	}
+	
+	// GETTERS
+	public String getUsername() {
+		return username;
 	}
 
-	public void loadStats() {
-
-		// Grab stats from queries in UserDAO
-		// TODO Waiting on ClientController
+	public int getGamesPlayed() {
+		return gamesPlayed;
 	}
 
-	// Getters and setters
-	public int getUserID() {
-		return userID;
+	public int getGamesWon() {
+		return gamesWon;
 	}
 
-	public void setUserID(int userID) {
-		this.userID = userID;
+	public int getGamesLost() {
+		return gamesLost;
 	}
 
-	public String getLoginName() {
-		return loginName;
+	public int getMaxScore() {
+		return maxScore;
 	}
 
-	public String getPlayStatus() {
-		return playStatus;
+	public GameColor getMostPlacedColor() {
+		return mostPlacedColor;
 	}
 
-	public void setPlayStatus(String playStatus) {
-		this.playStatus = playStatus;
+	public int getMostPlacedValue() {
+		return mostPlacedValue;
+	}
+
+	public int getTotalOpponents() {
+		return totalOpponents;
 	}
 }
