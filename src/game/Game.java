@@ -108,7 +108,7 @@ public class Game {
 		this.players = persistenceFacade.getAllPlayersInGame(gameID);
 		currentPlayer = persistenceFacade.getCurrentPlayer(gameID);
 		for (Player player : players) {
-			if (player.getUsername().equals(clientUser.getLoginName())) {
+			if (player.getUsername().equals(clientUser.getUsername())) {
 				clientPlayer = player;
 				break;
 			}

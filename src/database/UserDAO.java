@@ -9,27 +9,16 @@ import client.User;
 import game.GameColor;
 
 public class UserDAO {
-
-	Client client;
-
 	private Connection con;
 
 	public UserDAO(Connection connection) {
 		con = connection;
 	}
 
-	public int getTotalGames(String user) {
-
-		String totGameQuery = "SELECT COUNT(game_idgame) AS totalGames " + "FROM player " + "WHERE username LIKE '?' AND playstatus_playstatus LIKE 'uitgespeeld' " + "GROUP BY username";
-
-		int result = 0;
-	}
-
 	private User selectUser(String username) {
 		User result = null;
 		try {
-			PreparedStatement stmt = con.prepareStatement(
-					"SELECT idplayer, username, score, MAX(score) AS maxscore, playstatus_playstatus FROM player GROUP BY idplayer");
+			PreparedStatement stmt = con.prepareStatement("SELECT idplayer, username, score, MAX(score) AS maxscore, playstatus_playstatus FROM player GROUP BY idplayer");
 			ResultSet dbResultSet = stmt.executeQuery();
 
 			int gamesPlayed = 0;
@@ -42,11 +31,9 @@ public class UserDAO {
 					if (dbResultSet.getString("username").equals(username))
 						gamesPlayed++;
 				}
-				
+
 				// MaxScore
-				maxScore = maxScore < dbResultSet.getInt("score") && dbResultSet.getString("username").equals(username)
-						? dbResultSet.getInt("score")
-						: maxScore;
+				maxScore = maxScore < dbResultSet.getInt("score") && dbResultSet.getString("username").equals(username) ? dbResultSet.getInt("score") : maxScore;
 			}
 			stmt.close();
 
@@ -54,14 +41,10 @@ public class UserDAO {
 			// TODO review this, don't know how to do this more efficient
 			GameColor mostPlacedColor = GameColor.EMPTY;
 			int totalPlacedColor = 0;
-			PreparedStatement stmtMostPlacedColor = con
-					.prepareStatement("SELECT SUM(CASE WHEN diecolor = \"rood\" THEN 1 ELSE 0 END) AS totalred,\r\n"
-							+ "SUM(CASE WHEN diecolor = \"geel\" THEN 1 ELSE 0 END) AS totalyellow,\r\n"
-							+ "SUM(CASE WHEN diecolor = \"groen\" THEN 1 ELSE 0 END) AS totalgreen,\r\n"
-							+ "SUM(CASE WHEN diecolor = \"blauw\" THEN 1 ELSE 0 END) AS totalblue,\r\n"
-							+ "SUM(CASE WHEN diecolor = \"paars\" THEN 1 ELSE 0 END) AS totalpurple\r\n"
-							+ "FROM playerframefield\r\n" + "JOIN player ON player_idplayer = idplayer\r\n"
-							+ "WHERE dienumber IS NOT NULL AND username = ?");
+			PreparedStatement stmtMostPlacedColor = con.prepareStatement("SELECT SUM(CASE WHEN diecolor = \"rood\" THEN 1 ELSE 0 END) AS totalred,\r\n"
+					+ "SUM(CASE WHEN diecolor = \"geel\" THEN 1 ELSE 0 END) AS totalyellow,\r\n" + "SUM(CASE WHEN diecolor = \"groen\" THEN 1 ELSE 0 END) AS totalgreen,\r\n"
+					+ "SUM(CASE WHEN diecolor = \"blauw\" THEN 1 ELSE 0 END) AS totalblue,\r\n" + "SUM(CASE WHEN diecolor = \"paars\" THEN 1 ELSE 0 END) AS totalpurple\r\n" + "FROM playerframefield\r\n"
+					+ "JOIN player ON player_idplayer = idplayer\r\n" + "WHERE dienumber IS NOT NULL AND username = ?");
 			stmtMostPlacedColor.setString(1, username);
 			ResultSet dbResultSetMostPlacedColor = stmtMostPlacedColor.executeQuery();
 			dbResultSetMostPlacedColor.next();
@@ -91,15 +74,10 @@ public class UserDAO {
 			// TODO review this, don't know how to do this more efficient
 			int mostPlacedValue = 0;
 			int totalPlacedValue = 0;
-			PreparedStatement stmtMostPlacedValue = con
-					.prepareStatement("SELECT SUM(CASE WHEN dienumber = 1 THEN 1 ELSE 0 END) AS totalone,\r\n"
-							+ "SUM(CASE WHEN dienumber = 2 THEN 1 ELSE 0 END) AS totaltwo,\r\n"
-							+ "SUM(CASE WHEN dienumber = 3 THEN 1 ELSE 0 END) AS totalthree,\r\n"
-							+ "SUM(CASE WHEN dienumber = 4 THEN 1 ELSE 0 END) AS totalfour,\r\n"
-							+ "SUM(CASE WHEN dienumber = 5 THEN 1 ELSE 0 END) AS totalfive,\r\n"
-							+ "SUM(CASE WHEN dienumber = 6 THEN 1 ELSE 0 END) AS totalsix\r\n"
-							+ "FROM playerframefield\r\n" + "JOIN player ON player_idplayer = idplayer\r\n"
-							+ "WHERE dienumber IS NOT NULL AND username = ?");
+			PreparedStatement stmtMostPlacedValue = con.prepareStatement("SELECT SUM(CASE WHEN dienumber = 1 THEN 1 ELSE 0 END) AS totalone,\r\n" + "SUM(CASE WHEN dienumber = 2 THEN 1 ELSE 0 END) AS totaltwo,\r\n"
+					+ "SUM(CASE WHEN dienumber = 3 THEN 1 ELSE 0 END) AS totalthree,\r\n" + "SUM(CASE WHEN dienumber = 4 THEN 1 ELSE 0 END) AS totalfour,\r\n"
+					+ "SUM(CASE WHEN dienumber = 5 THEN 1 ELSE 0 END) AS totalfive,\r\n" + "SUM(CASE WHEN dienumber = 6 THEN 1 ELSE 0 END) AS totalsix\r\n" + "FROM playerframefield\r\n"
+					+ "JOIN player ON player_idplayer = idplayer\r\n" + "WHERE dienumber IS NOT NULL AND username = ?");
 			stmtMostPlacedValue.setString(1, username);
 			ResultSet dbResultSetMostPlacedValue = stmtMostPlacedValue.executeQuery();
 			dbResultSetMostPlacedValue.next();
