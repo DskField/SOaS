@@ -12,13 +12,14 @@ import client.Challenge;
 public class ChallengeDAO extends BaseDAO {
 	Connection con = super.getConnection();
 
-	private ArrayList<Challenge> selectChallenges(String query) {
+	private ArrayList<Challenge> selectChallenges(String query, String username) {
 		ArrayList<Challenge> results = new ArrayList<>();
 
 		// Get all challenges gameID
 		ArrayList<Integer> distinctGameID = new ArrayList<>();
 		try {
-			PreparedStatement stmtDistinctGameID = con.prepareStatement("");
+			PreparedStatement stmtDistinctGameID = con.prepareStatement(query);
+			stmtDistinctGameID.setString(1, username);
 			ResultSet dbResultSetDistinctGameID = stmtDistinctGameID.executeQuery();
 			while (dbResultSetDistinctGameID.next()) {
 				distinctGameID.add(dbResultSetDistinctGameID.getInt("game_idgame"));
@@ -38,13 +39,13 @@ public class ChallengeDAO extends BaseDAO {
 					// Separated the variables on purpose for clarity
 
 					// Hashmap
-					String username = dbResultSet.getString("username");
+					String playername = dbResultSet.getString("username");
 					String playstatus = dbResultSet.getString("playstatus_playstatus");
-					players.put(username, playstatus);
+					players.put(playername, playstatus);
 				}
 				Challenge challenge = new Challenge(i, players);
 				results.add(challenge);
-				
+
 				stmt.close();
 			} catch (SQLException e1) {
 				System.err.println("ChallengeDAO " + e1.getMessage());
@@ -53,10 +54,10 @@ public class ChallengeDAO extends BaseDAO {
 		return results;
 	}
 
-	ArrayList<Challenge> getChallenges(String username) {
+	public ArrayList<Challenge> getChallenges(String username) {
 		return selectChallenges("SELECT DISTINCT(game_idgame)\r\n" + "FROM player\r\n"
-				+ "WHERE playstatus_playstatus IN (\"uitdager\", \"uitgedaagde\", \"geaccepteerd\", \"geweigerd\") AND username = "
-				+ username);
+				+ "WHERE playstatus_playstatus IN (\"uitdager\", \"uitgedaagde\", \"geaccepteerd\", \"geweigerd\") AND username = ?",
+				username);
 	}
 
 }
