@@ -75,7 +75,7 @@ class MessageDAO extends BaseDAO {
 	private void insertMessage(Message message) {
 		try {
 			PreparedStatement stmt = con.prepareStatement("INSERT INTO chatline VALUES (?,?,?)");
-			stmt.setInt(1, message.getPlayer().getPlayerID());
+			stmt.setInt(1, message.getPlayerId());
 			stmt.setTimestamp(2, message.getTimestamp());
 			stmt.setString(3, message.getMessage());
 			stmt.executeUpdate();

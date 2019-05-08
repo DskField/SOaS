@@ -92,8 +92,10 @@ public class Game {
 	/**
 	 * Loads the chat
 	 */
-	public void loadChat() {
-		chat.addMessages(persistenceFacade.getALLMessages(players));
+	public ArrayList<Message> loadChat() {
+		ArrayList<Message> messages = persistenceFacade.getALLMessages(players);
+		chat.addMessages(messages);
+		return messages;
 	}
 
 	/**
@@ -172,23 +174,15 @@ public class Game {
 	 * Updates the chat
 	 */
 	//themporary kevin method
-	public String updateChat() {
+	public ArrayList<Message> updateChat() {
 		// TODO wait on Chat
-		System.out.println("4");
-		String messages = new String();
-		System.out.println("1.1");
-		chat.addMessages(persistenceFacade.updateChat(getPlayers(), chat.getLastTimestamp()));
-		System.out.println("1.2");
-		for (Message message : chat.getChat()) {
-			messages = messages + "\n" + message.getMessage();
-		}
-		System.out.println("1.3");
-		System.out.println(chat.getChat().size());
+		ArrayList<Message> messages = persistenceFacade.updateChat(getPlayers(), chat.getLastTimestamp());
+		chat.addMessages(messages);
 		return messages;
 	}
 
 	// temporary kevin method
-	public String sendMessage(Message message) {
+	public ArrayList<Message> sendMessage(Message message) {
 		System.out.println("3");
 		persistenceFacade.insertMessage(message);
 		return updateChat();
