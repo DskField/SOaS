@@ -26,8 +26,8 @@ class DieDAO extends BaseDAO {
 			ResultSet dbResultSet = stmt.executeQuery();
 			con.commit();
 			while (dbResultSet.next()) {
-				int number = dbResultSet.getInt("number");
-				String color = dbResultSet.getString("color");
+				int number = dbResultSet.getInt("dienumber");
+				String color = dbResultSet.getString("diecolor");
 				Die die = new Die(number, color);
 				results.add(die);
 			}
@@ -106,7 +106,7 @@ class DieDAO extends BaseDAO {
 	 * @param round - The ID of the currentRound
 	 * @param dice - The dice that didn't got picked
 	 */
-	private void updateDice(int gameID, int round, ArrayList<Die> dice) {
+	private void updateRound(int gameID, int round, ArrayList<Die> dice) {
 		try {
 			for (Die die : dice) {
 				PreparedStatement stmt = con.prepareStatement("UPDATE gameDie SET eyes = ?, round = ?, roundtrack = ? WHERE idgame = ? AND dienumber = ? AND diecolor = ?;");
@@ -125,7 +125,12 @@ class DieDAO extends BaseDAO {
 		}
 	}
 
+	private void insertDice() {
+
+	}
+
 	ArrayList<Die> getGameDice(int gameID) {
+		//TODO Tweak to let this return no round dice and no placed dice
 		return selectDie("Select * from gameDie WHERE idgame = " + gameID);
 	}
 
@@ -138,6 +143,6 @@ class DieDAO extends BaseDAO {
 	}
 
 	void updateDiceRound(int gameID, int round, ArrayList<Die> dice) {
-		updateDice(gameID, round, dice);
+		updateRound(gameID, round, dice);
 	}
 }

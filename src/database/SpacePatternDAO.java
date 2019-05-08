@@ -12,11 +12,11 @@ import game.SpacePattern;
 class SpacePatternDAO extends BaseDAO {
 	Connection con = super.getConnection();
 
-	public SpacePattern[][] getPattern(int idPatternCard) {
+	SpacePattern[][] getPattern(int idPatternCard) {
 		return selectSpacePattern("SELECT * FROM patterncardfield WHERE patterncard_idpatterncard = " + idPatternCard);
 	}
 
-	public void addPattern(PatternCard patternCard) {//
+	void addPattern(PatternCard patternCard) {
 		insertPattern(patternCard);
 	}
 

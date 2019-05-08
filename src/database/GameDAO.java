@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import client.User;
 import game.Game;
 
 class GameDAO extends BaseDAO {
@@ -20,7 +21,7 @@ class GameDAO extends BaseDAO {
 			con.commit();
 			while (dbResultSet.next()) {
 				int gameID = dbResultSet.getInt("idgame");
-				Game game = new Game(gameID);
+				Game game = new Game(gameID, new User("test"));
 				results.add(game);
 			}
 			stmt.close();

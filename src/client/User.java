@@ -45,10 +45,6 @@ public class User {
 		return loginName;
 	}
 
-	public void setLoginName(String name) {
-		this.loginName = name;
-	}
-	
 	public String getPlayStatus() {
 		return playStatus;
 	}

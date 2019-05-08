@@ -2,6 +2,7 @@ package controllers;
 
 import java.sql.Timestamp;
 
+import client.User;
 import game.Game;
 import game.Message;
 import game.Player;
@@ -17,22 +18,23 @@ public class GameController {
 	public GameController(MainApplication mainApplication) {
 		this.mainApplication = mainApplication;
 		gameScene = new GameScene(this);
-		this.game = new Game(2);
-		game.loadPlayers();
+		User clientUser = new User("speler1");
+		this.game = new Game(2, clientUser);
+		game.loadGame();
 		mainApplication.setScene(gameScene);
 
-		gameScene.updateChat(game.loadChat());
+		gameScene.updateChat(game.updateChat());
 
 		createTimer();
 	}
 
-	public Player getClientUser() {
-		return game.getClientUser();
+	public void sendMessages(String text) {
+		Message message = new Message(text, getClientPlayer(), new Timestamp(System.currentTimeMillis()));
+		gameScene.updateChat(game.sendMessage(message));
 	}
 
-	public void sendMessages(String text) {
-		Message message = new Message(text, getClientUser(), new Timestamp(System.currentTimeMillis()));
-		gameScene.updateChat(game.sendMessage(message));
+	public Player getClientPlayer() {
+		return game.getClientPlayer();
 	}
 
 	public abstract class AnimationTimerExt extends AnimationTimer {

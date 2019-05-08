@@ -11,15 +11,15 @@ import game.SpaceGlass;
 class SpaceGlassDAO extends BaseDAO {
 	Connection con = super.getConnection();
 
-	public GlassWindow getGlassWindow(int idPlayer) {
+	GlassWindow getGlassWindow(int idPlayer) {
 		return selectSpaceGlass("SELECT * FROM playerframefield WHERE player_idplayer =" + idPlayer);
 	}
 
-	public void addGlassWindow(int idPlayer, GlassWindow glassWindow) {
+	void addGlassWindow(int idPlayer, GlassWindow glassWindow) {
 		insertSpaceGlass(idPlayer, glassWindow);
 	}
 
-	public void updatePlayerFields(int idPlayer, int gameId, GlassWindow glassWindow) {
+	void updatePlayerFields(int idPlayer, int gameId, GlassWindow glassWindow) {
 		updateSpaceGlass(idPlayer, glassWindow, gameId);
 	}
 

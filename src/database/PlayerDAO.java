@@ -56,8 +56,33 @@ class PlayerDAO extends BaseDAO {
 		return results;
 	}
 
+	private void updatePlayer(Player oldPlayer, Player newPlayer) {
+		try {
+			PreparedStatement stmtOldPlayer = con.prepareStatement("UPDATE player SET seqnr = ?, isCurrentPlayer = FALSE WHERE idPlayer = ?;");
+			stmtOldPlayer.setInt(1, oldPlayer.getSeqnr());
+			stmtOldPlayer.setInt(2, oldPlayer.getPlayerID());
+			PreparedStatement stmtNewPlayer = con.prepareStatement("UPDATE player SET isCurrentPlayer = TRUE WHERE idPlayer = ?;");
+			stmtNewPlayer.setInt(1, newPlayer.getPlayerID());
+			stmtOldPlayer.executeUpdate();
+			stmtNewPlayer.executeUpdate();
+			con.commit();
+			stmtOldPlayer.close();
+			stmtNewPlayer.close();
+		} catch (SQLException e) {
+			System.err.println("PlayerDAO " + e.getMessage());
+		}
+	}
+
+	void updatePlayerTurn(Player oldPlayer, Player newPlayer) {
+		updatePlayer(oldPlayer, newPlayer);
+	}
+
 	ArrayList<Player> getAllPlayers() {
 		return selectPlayer("SELECT * FROM player");
+	}
+
+	Player getCurrentPlayer(int idGame) {
+		return selectPlayer("SELECT * FROM player WHERE isCurrentPlayer = TRUE AND game_idgame = " + idGame).get(0);
 	}
 
 	ArrayList<Player> getAllPlayersInGame(int idGame) {
@@ -72,8 +97,7 @@ class PlayerDAO extends BaseDAO {
 				for (int i = 0; i < username.size(); i++) {
 					String status = i == 0 ? "uitdager" : "uitgedaagde";
 
-					PreparedStatement stmt = con
-							.prepareStatement("INSERT INTO player VALUES (null,?,?,?,null,false,?,null,null)");
+					PreparedStatement stmt = con.prepareStatement("INSERT INTO player VALUES (null,?,?,?,null,false,?,null,null)");
 					stmt.setString(1, username.get(i));
 					stmt.setInt(2, idGame);
 					stmt.setString(3, status);

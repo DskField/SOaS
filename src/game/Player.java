@@ -47,8 +47,12 @@ public class Player {
 		return playerID;
 	}
 
-	public int getPosition() {
+	public int getSeqnr() {
 		return seqnr;
+	}
+
+	public void setSeqnr(int seqnr) {
+		this.seqnr = seqnr;
 	}
 
 	public String getUsername() {

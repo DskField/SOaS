@@ -14,14 +14,14 @@ class ToolCardDAO extends BaseDAO {
 
 	private ArrayList<ToolCard> selectToolCards(String query) {
 		ArrayList<ToolCard> results = new ArrayList<ToolCard>();
-		
+
 		try {
 			PreparedStatement stmt = con.prepareStatement(query);
 			ResultSet dbResultSet = stmt.executeQuery(query);
-			
+
 			while (dbResultSet.next()) {
 				// Separated the variables on purpose for clarity
-				int cardID = dbResultSet.getInt("idpublic_objectivecard");
+				int cardID = dbResultSet.getInt("idtoolcard");
 				String name = dbResultSet.getString("name");
 				int seqnr = dbResultSet.getInt("seqnr");
 				String description = dbResultSet.getString("description");
@@ -43,34 +43,33 @@ class ToolCardDAO extends BaseDAO {
 
 	// Get all the cards that are used in the game
 	ArrayList<ToolCard> getGameToolCards(int idGame) {
-		return selectToolCards("SELECT * FROM gametoolcard"
-				+ " JOIN toolcard ON toolcard.idtoolcard = gametoolcard.idtoolcard" + " WHERE idGame = " + idGame);
+		return selectToolCards("SELECT * FROM gametoolcard" + " JOIN toolcard ON toolcard.idtoolcard = gametoolcard.idtoolcard" + " WHERE idGame = " + idGame);
 	}
 
 	// Get one specific card
 	ToolCard getSelectedToolCard(int idtoolcard) {
 		return selectToolCards("SELECT * FROM toolcard WHERE idtoolcard = " + idtoolcard).get(0);
 	}
-	
+
 	void insertRandomGameToolCards(int idGame) {
 		if (getGameToolCards(idGame).size() == 0) {
 			ArrayList<ToolCard> list = getAllToolCards();
 			Collections.shuffle(list);
-			
+
 			try {
-				PreparedStatement stmt = con.prepareStatement("INSERT INTO gametoolcard VALUES (null,?,?) (null,?,?) (null,?,?)");
+				PreparedStatement stmt = con.prepareStatement("INSERT INTO gametoolcard VALUES (null,?,?), (null,?,?), (null,?,?)");
 				// card 1
 				stmt.setInt(1, list.get(0).getCardID());
 				stmt.setInt(2, idGame);
-				
+
 				// card 2
 				stmt.setInt(3, list.get(1).getCardID());
 				stmt.setInt(4, idGame);
-				
+
 				// card 3
 				stmt.setInt(5, list.get(2).getCardID());
 				stmt.setInt(6, idGame);
-				
+
 				con.commit();
 				stmt.close();
 			} catch (SQLException e) {
