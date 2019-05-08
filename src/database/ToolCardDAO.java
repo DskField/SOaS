@@ -9,8 +9,12 @@ import java.util.Collections;
 
 import game.ToolCard;
 
-class ToolCardDAO extends BaseDAO {
-	Connection con = super.getConnection();
+class ToolCardDAO {
+	private Connection con;
+
+	public ToolCardDAO(Connection connection) {
+		con = connection;
+	}
 
 	private ArrayList<ToolCard> selectToolCards(String query) {
 		ArrayList<ToolCard> results = new ArrayList<ToolCard>();

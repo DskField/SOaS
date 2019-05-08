@@ -7,16 +7,19 @@ import java.sql.SQLException;
 
 import client.Client;
 
-public class UserDAO extends BaseDAO {
+public class UserDAO {
 
 	Client client;
 
-	Connection con = super.getConnection();
+	private Connection con;
+
+	public UserDAO(Connection connection) {
+		con = connection;
+	}
 
 	public int getTotalGames(String user) {
 
-		String totGameQuery = "SELECT COUNT(game_idgame) AS totalGames " + "FROM player "
-				+ "WHERE username LIKE '?' AND playstatus_playstatus LIKE 'uitgespeeld' " + "GROUP BY username";
+		String totGameQuery = "SELECT COUNT(game_idgame) AS totalGames " + "FROM player " + "WHERE username LIKE '?' AND playstatus_playstatus LIKE 'uitgespeeld' " + "GROUP BY username";
 
 		int result = 0;
 
@@ -54,8 +57,7 @@ public class UserDAO extends BaseDAO {
 
 	public int getWonGames(String user) {
 
-		String wonGameQuery = "SELECT game_idgame, MAX(score), username " + "FROM player "
-				+ "WHERE playstatus_playstatus LIKE 'uitgespeeld' " + "GROUP BY game_idgame";
+		String wonGameQuery = "SELECT game_idgame, MAX(score), username " + "FROM player " + "WHERE playstatus_playstatus LIKE 'uitgespeeld' " + "GROUP BY game_idgame";
 
 		int amountOfWonGames = 0;
 
@@ -140,16 +142,15 @@ public class UserDAO extends BaseDAO {
 
 		return highestScore;
 	}
-	
+
 	public void getMostPlacedColor() {
-		
+
 		// TODO Get a script to grab the highest picked color in the DB
 	}
-	
+
 	public void getMostPlacedValue() {
-		
+
 		// TODO Nigga I don't know what this means
 	}
-	
-	
+
 }

@@ -10,8 +10,12 @@ import java.util.List;
 import client.User;
 import game.Game;
 
-class GameDAO extends BaseDAO {
-	Connection con = super.getConnection();
+class GameDAO {
+	private Connection con;
+
+	public GameDAO(Connection connection) {
+		con = connection;
+	}
 
 	private List<Game> selectGame(String query) {
 		List<Game> results = new ArrayList<Game>();

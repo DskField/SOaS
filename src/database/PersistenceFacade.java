@@ -15,15 +15,16 @@ import game.ToolCard;
 //A nice facade so to hide the complexity and ugly shit behind this, you can also call this 
 //the gate to hell. It's pretty much like at a Chinese restaurant
 public class PersistenceFacade {
-	private GameDAO gameDAO = new GameDAO();
-	private PlayerDAO playerDAO = new PlayerDAO();
-	private MessageDAO messageDAO = new MessageDAO();
-	private DieDAO dieDAO = new DieDAO();
-	private PatternCardDAO patternCardDAO = new PatternCardDAO();
-	private ToolCardDAO toolCardDAO = new ToolCardDAO();
-	private CollectiveGoalCardDAO collectiveGoalCardDAO = new CollectiveGoalCardDAO();
-	private CurrencyStoneDAO currencyStoneDAO = new CurrencyStoneDAO();
-	private SpaceGlassDAO spaceGlassDAO = new SpaceGlassDAO();
+	private BaseDAO baseDAO = new BaseDAO();
+	private GameDAO gameDAO = new GameDAO(baseDAO.getConnection());
+	private PlayerDAO playerDAO = new PlayerDAO(baseDAO.getConnection());
+	private MessageDAO messageDAO = new MessageDAO(baseDAO.getConnection());
+	private DieDAO dieDAO = new DieDAO(baseDAO.getConnection());
+	private PatternCardDAO patternCardDAO = new PatternCardDAO(baseDAO.getConnection());
+	private ToolCardDAO toolCardDAO = new ToolCardDAO(baseDAO.getConnection());
+	private CollectiveGoalCardDAO collectiveGoalCardDAO = new CollectiveGoalCardDAO(baseDAO.getConnection());
+	private CurrencyStoneDAO currencyStoneDAO = new CurrencyStoneDAO(baseDAO.getConnection());
+	private SpaceGlassDAO spaceGlassDAO = new SpaceGlassDAO(baseDAO.getConnection());
 
 	// CollectiveGoalCardDAO
 	public ArrayList<CollectiveGoalCard> getSharedCollectiveGoalCards(int idGame) {

@@ -10,8 +10,12 @@ import java.util.Collections;
 import game.GameColor;
 import game.Player;
 
-class PlayerDAO extends BaseDAO {
-	Connection con = super.getConnection();
+class PlayerDAO {
+	private Connection con;
+
+	public PlayerDAO(Connection connection) {
+		con = connection;
+	}
 
 	private ArrayList<Player> selectPlayer(String query) {
 		ArrayList<Player> results = new ArrayList<Player>();

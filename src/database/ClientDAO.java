@@ -7,18 +7,19 @@ import java.sql.SQLException;
 
 import client.Client;
 
-@SuppressWarnings("unused")
 public class ClientDAO extends BaseDAO {
 
 	Client client;
 
-	Connection con = super.getConnection();
+	private Connection con;
+
+	public ClientDAO(Connection connection) {
+		con = connection;
+	}
 
 	public void loginUser(String user, String pass) {
 
-		String loginQuery = "SELECT p.username AS username, a.password AS password " + "FROM account AS a "
-				+ "LEFT JOIN player AS p ON a.username = p.username "
-				+ "WHERE p.username LIKE '?' AND a.password LIKE '?'";
+		String loginQuery = "SELECT p.username AS username, a.password AS password " + "FROM account AS a " + "LEFT JOIN player AS p ON a.username = p.username " + "WHERE p.username LIKE '?' AND a.password LIKE '?'";
 
 		try {
 
@@ -103,8 +104,7 @@ public class ClientDAO extends BaseDAO {
 	// This method returns the latest player ID from the username provided
 	public int findUser(String user) {
 
-		String findQuery = "SELECT idplayer " + "FROM player " + "WHERE username LIKE '?' " + "ORDER BY idplayer DESC "
-				+ "LIMIT 1";
+		String findQuery = "SELECT idplayer " + "FROM player " + "WHERE username LIKE '?' " + "ORDER BY idplayer DESC " + "LIMIT 1";
 
 		int result = 0;
 

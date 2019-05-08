@@ -9,8 +9,12 @@ import java.util.Collections;
 
 import game.PatternCard;
 
-class PatternCardDAO extends BaseDAO {
-	Connection con = super.getConnection();
+class PatternCardDAO {
+	private Connection con;
+
+	public PatternCardDAO(Connection connection) {
+		con = connection;
+	}
 
 	ArrayList<PatternCard> getStandardPatternCards() {
 		return selectPatternCard("SELECT * FROM patterncard WHERE standard IS TRUE");

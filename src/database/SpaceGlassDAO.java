@@ -8,8 +8,12 @@ import java.sql.SQLException;
 import game.GlassWindow;
 import game.SpaceGlass;
 
-class SpaceGlassDAO extends BaseDAO {
-	Connection con = super.getConnection();
+class SpaceGlassDAO {
+	private Connection con;
+
+	public SpaceGlassDAO(Connection connection) {
+		con = connection;
+	}
 
 	GlassWindow getGlassWindow(int idPlayer) {
 		return selectSpaceGlass("SELECT * FROM playerframefield WHERE player_idplayer =" + idPlayer);

@@ -10,7 +10,7 @@ class BaseDAO {
 	private Properties props = new Properties();
 	private Connection con;
 
-	BaseDAO() {
+	public BaseDAO() {
 		// https://jdbc.postgresql.org/documentation/80/connect.html
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -20,8 +20,7 @@ class BaseDAO {
 			// props.setProperty("sslfactory", "org.postgresql.ssl.NonValidatingFactory");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.err.println("Contact the developer with a screenshot of this error" + e.getClass().getName() + ": "
-					+ e.getMessage());
+			System.err.println("Contact the developer with a screenshot of this error" + e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
 		}
 		System.out.println("Opened database successfully");

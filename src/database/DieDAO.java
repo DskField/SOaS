@@ -9,8 +9,12 @@ import java.util.ArrayList;
 import game.Die;
 import game.Round;
 
-class DieDAO extends BaseDAO {
-	Connection con = super.getConnection();
+class DieDAO {
+	private Connection con;
+
+	public DieDAO(Connection connection) {
+		con = connection;
+	}
 
 	/**
 	 * Load dice

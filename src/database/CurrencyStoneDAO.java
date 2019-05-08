@@ -8,8 +8,12 @@ import java.util.ArrayList;
 
 import game.CurrencyStone;
 
-class CurrencyStoneDAO extends BaseDAO {
-	Connection con = super.getConnection();
+class CurrencyStoneDAO {
+	private Connection con;
+
+	public CurrencyStoneDAO(Connection connection) {
+		con = connection;
+	}
 
 	private ArrayList<CurrencyStone> selectCurrencyStone(String query) {
 		ArrayList<CurrencyStone> results = new ArrayList<CurrencyStone>();
@@ -34,13 +38,11 @@ class CurrencyStoneDAO extends BaseDAO {
 	}
 
 	private boolean isUsed(int stoneID, int idGame) {
-		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE idfavortoken = " + stoneID + " AND idgame = "
-				+ idGame + " AND gametoolcard IS NULL").size() == 0;
+		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE idfavortoken = " + stoneID + " AND idgame = " + idGame + " AND gametoolcard IS NULL").size() == 0;
 	}
 
 	private int stonesLeft(int idGame, int idPlayer) {
-		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE (idplayer IS NULL OR idplayer = " + idPlayer
-				+ ") AND idgame = " + idGame).size();
+		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE (idplayer IS NULL OR idplayer = " + idPlayer + ") AND idgame = " + idGame).size();
 	}
 
 	ArrayList<CurrencyStone> getAllStonesInGame(int idGame) {
@@ -48,14 +50,11 @@ class CurrencyStoneDAO extends BaseDAO {
 	}
 
 	ArrayList<CurrencyStone> getCurrencyStonesPlayer(int idGame, int playerID) {
-		return selectCurrencyStone(
-				"SELECT * FROM gamefavortoken WHERE idGame = " + idGame + " AND idplayer = " + playerID);
+		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE idGame = " + idGame + " AND idplayer = " + playerID);
 	}
 
 	ArrayList<CurrencyStone> getCurrencyStonesOnCard(int idToolCard, int idGame) {
-		return selectCurrencyStone(
-				"SELECT * FROM gamefavortoken JOIN gametoolcard ON gamefavortoken.gametoolcard = gametoolcard.gametoolcard WHERE idtoolcard = "
-						+ idToolCard + " AND idgame = " + idGame);
+		return selectCurrencyStone("SELECT * FROM gamefavortoken JOIN gametoolcard ON gamefavortoken.gametoolcard = gametoolcard.gametoolcard WHERE idtoolcard = " + idToolCard + " AND idgame = " + idGame);
 	}
 
 	// TODO: check possible logic when actually using this to buy stones
@@ -63,8 +62,7 @@ class CurrencyStoneDAO extends BaseDAO {
 		if (!isUsed(stoneID, idGame)) {
 
 			try {
-				PreparedStatement stmt = con.prepareStatement("UPDATE gamefavortoken SET gametoolcard = " + gametoolcard
-						+ " WHERE idfavortoken = " + stoneID + " AND idgame = " + idGame);
+				PreparedStatement stmt = con.prepareStatement("UPDATE gamefavortoken SET gametoolcard = " + gametoolcard + " WHERE idfavortoken = " + stoneID + " AND idgame = " + idGame);
 				stmt.executeUpdate();
 
 				con.commit();
@@ -88,10 +86,8 @@ class CurrencyStoneDAO extends BaseDAO {
 
 			System.out.println(stonesLeft(idGame, idPlayer));
 			try {
-				for (int i = (25 - stonesLeft(idGame, idPlayer)); i < ((25 - stonesLeft(idGame, idPlayer))
-						+ ammount); i++) {
-					PreparedStatement stmt = con.prepareStatement(
-							"UPDATE gamefavortoken SET idplayer = ? WHERE idfavortoken = ? AND idgame = ?");
+				for (int i = (25 - stonesLeft(idGame, idPlayer)); i < ((25 - stonesLeft(idGame, idPlayer)) + ammount); i++) {
+					PreparedStatement stmt = con.prepareStatement("UPDATE gamefavortoken SET idplayer = ? WHERE idfavortoken = ? AND idgame = ?");
 					stmt.setInt(1, idPlayer);
 					stmt.setInt(2, i);
 					stmt.setInt(3, idGame);
