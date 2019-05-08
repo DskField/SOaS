@@ -72,6 +72,9 @@ public class Game {
 		for (int i = 0; i < roundTrack.length; i++) {
 			roundTrack[i] = new Round();
 		}
+
+		//kevin stuff sets a client user for testing
+		clientUser = new Player(5, 3, GameColor.RED, "Adri");
 	}
 
 	public void updateGame() {
@@ -80,37 +83,26 @@ public class Game {
 
 	/**
 	 * This method loads all Dice from the DB to the Game.
-	 * 
-	 * @param dice
 	 */
 	public void loadDice() {
-		ArrayList<Die> dbDice = new ArrayList<Die>();
-		for (Die die : dbDice) {
-			if (die.getRound() != 0) {
-				roundTrack[die.getRound() - 1].addDie(die);
-			} else {
-				this.dice.add(die);
-			}
-		}
+		dice = persistenceFacade.getGameDice(gameID);
+		roundTrack = persistenceFacade.getRoundTrack(gameID);
 	}
 
 	/**
 	 * Loads the chat
-	 * 
-	 * @param chat - The chat with all messages
 	 */
-	public void loadChat() {
-
+	public ArrayList<Message> loadChat() {
+		ArrayList<Message> messages = persistenceFacade.getALLMessages(players);
+		chat.addMessages(messages);
+		return messages;
 	}
 
 	/**
 	 * Load the GlassWindow with the right PatternCard
-	 * 
-	 * @param glassWindows - GlassWindow with the right PatternCard
 	 */
-	public void loadGlassWindow(GlassWindow[] glassWindows) {
-		//TODO rewrite this function
-		this.glassWindows = glassWindows;
+	public void loadGlassWindow() {
+		//TODO write this function
 	}
 
 	/**
@@ -178,11 +170,15 @@ public class Game {
 		// TODO wait on GlassWindow
 	}
 
-	/**
-	 * Updates the chat
-	 */
-	public void updateChat() {
-		// TODO wait on Chat
+	public ArrayList<Message> updateChat() {
+		ArrayList<Message> messages = persistenceFacade.updateChat(getPlayers(), chat.getLastTimestamp());
+		chat.addMessages(messages);
+		return messages;
+	}
+
+	public ArrayList<Message> sendMessage(Message message) {
+		persistenceFacade.insertMessage(message);
+		return updateChat();
 	}
 
 	// GETTERS AND SETTERS
@@ -197,6 +193,14 @@ public class Game {
 
 	public ArrayList<Player> getPlayers() {
 		return players;
+	}
+
+	public ArrayList<Die> getTable() {
+		return table;
+	}
+
+	public int getCurrentRound() {
+		return currentRound;
 	}
 
 	// TODO rewrite method

@@ -2,13 +2,13 @@ package database;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
 
 import game.CollectiveGoalCard;
 import game.CurrencyStone;
 import game.Die;
 import game.Message;
 import game.Player;
+import game.Round;
 import game.ToolCard;
 
 //A nice facade so to hide the complexity and ugly shit behind this, you can also call this 
@@ -22,10 +22,6 @@ public class PersistenceFacade {
 	private ToolCardDAO toolCardDAO = new ToolCardDAO();
 	private CollectiveGoalCardDAO collectiveGoalCardDAO = new CollectiveGoalCardDAO();
 	private CurrencyStoneDAO currencyStoneDAO = new CurrencyStoneDAO();
-
-	public List<Die> getAllDies(int idGame) {
-		return dieDAO.getGameDice(idGame);
-	}
 
 	// CollectiveGoalCardDAO
 	public ArrayList<CollectiveGoalCard> getSharedCollectiveGoalCards(int idGame) {
@@ -96,6 +92,14 @@ public class PersistenceFacade {
 		dieDAO.updateDiceRound(gameID, round, dice);
 	}
 
+	public ArrayList<Die> getGameDice(int gameID) {
+		return dieDAO.getGameDice(gameID);
+	}
+
+	public Round[] getRoundTrack(int gameID) {
+		return dieDAO.getRoundTrack(gameID);
+	}
+
 	//MessageDAO
 	public ArrayList<Message> getALLMessages(ArrayList<Player> players) {
 		return messageDAO.getALLMessages(players);
@@ -103,5 +107,9 @@ public class PersistenceFacade {
 
 	public ArrayList<Message> updateChat(ArrayList<Player> players, Timestamp time) {
 		return messageDAO.updateChat(players, time);
+	}
+	
+	public void insertMessage(Message message) {
+		messageDAO.sendMessage(message);
 	}
 }

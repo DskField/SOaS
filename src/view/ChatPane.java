@@ -1,10 +1,14 @@
 package view;
 
+import java.util.ArrayList;
+
+import controllers.GameController;
+import game.Message;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -12,6 +16,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class ChatPane extends BorderPane {
@@ -21,15 +26,18 @@ public class ChatPane extends BorderPane {
 	private final int sendButtonWidth = 100;
 	private final int sendButtonHeight = 20;
 	// variables
-	TextArea chat;
-	TextField playerMessage;
-	Button sendMessage;
-	ScrollPane scrollPane;
-	HBox bottom;
-	MyButtonHandler myButtonHandler;
-	MyTextfieldHandler myTextfieldHandler;
+	private TextField playerMessage;
+	private Button sendMessage;
+	private HBox bottom;
+	private VBox center;
+	private MyButtonHandler myButtonHandler;
+	private MyMessageSendHandler myMessageSendHandler;
+	private GameController gameController;
+	private ScrollPane scrollPane;
 
-	public ChatPane() {
+	public ChatPane(GameController gameController) {
+		this.gameController = gameController;
+
 		setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
 		setPrefSize(chatPaneWidth, chatPaneheight);
 
@@ -38,48 +46,56 @@ public class ChatPane extends BorderPane {
 
 	private void createChat() {
 		// initialize
-		chat = new TextArea();
 		playerMessage = new TextField();
 		sendMessage = new Button("verstuur");
 		bottom = new HBox();
-		scrollPane = new ScrollPane();
+		center = new VBox();
 		myButtonHandler = new MyButtonHandler();
-		myTextfieldHandler = new MyTextfieldHandler();
+		myMessageSendHandler = new MyMessageSendHandler();
+		scrollPane = new ScrollPane();
 		// Handels makeup
 		sendMessage.setPrefSize(sendButtonWidth, sendButtonHeight);
 		sendMessage.setOnAction(myButtonHandler);
 		playerMessage.setPrefWidth(chatPaneWidth - sendButtonWidth);
-		playerMessage.setOnKeyPressed(myTextfieldHandler);
-		scrollPane.setContent(chat);
-		chat.setWrapText(true);
+		playerMessage.setOnKeyPressed(myMessageSendHandler);
+		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+		scrollPane.setFitToWidth(true);
+		;
+		scrollPane.setContent(center);
 		// sets everything to the ChatPane
 		bottom.getChildren().addAll(playerMessage, sendMessage);
-		setCenter(chat);
+		setCenter(scrollPane);
 		setBottom(bottom);
 	}
 
-	public void updateChat(String string) {
-		chat.setText(chat.getText() + "\n" + string);
+	public void updateChat(ArrayList<Message> messages) {
+		for (Message message : messages) {
+			center.getChildren().add(new MessagePane(message.getUserName(), message.getMessage(), message.getChatTime()));
+		}
+		scrollPane.vvalueProperty().bind(center.heightProperty());
 	}
 
 	private class MyButtonHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event) {
 			sendMessage();
+			scrollPane.setVvalue(scrollPane.getVmax());
 		}
 	}
-	
-	private class MyTextfieldHandler implements EventHandler<KeyEvent> {
+
+	private class MyMessageSendHandler implements EventHandler<KeyEvent> {
 		@Override
 		public void handle(KeyEvent event) {
-			if (event.getCode() == KeyCode.ENTER)  {
-	             sendMessage();
-	        }
+			if (event.getCode() == KeyCode.ENTER) {
+				sendMessage();
+			}
 		}
 
 	}
-	
+
 	private void sendMessage() {
+		gameController.sendMessages(playerMessage.getText());
 		playerMessage.clear();
+
 	}
 }

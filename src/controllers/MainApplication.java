@@ -1,26 +1,34 @@
 package controllers;
 
+import database.PersistenceFacade;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import view.GameScene;
 
 public class MainApplication extends Application {
-
+	private Stage stage;
+	private GameController gameController;
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		GameScene gameScene = new GameScene();
+		this.stage = stage;
+		gameController = new GameController(this);
 		stage.setTitle("Sagrada");
-		stage.setScene(gameScene);
 		stage.setFullScreen(true);
 		// Remove the exit hint
 		stage.setFullScreenExitHint("");
 		// This line is to disable the Esc key to make sure you can't exit full screen
 		//		stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 		stage.show();
+	}
+	
+	public void setScene(Scene scene) {
+		stage.setScene(scene);
 	}
 
 }

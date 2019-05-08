@@ -381,7 +381,7 @@ public class ToolCardHandler {
 
 		Die handDie;
 
-		String dieCol = translateColor(handDie.getDieColor());
+		//		String dieCol = translateColor(handDie.getDieColor());
 
 		ArrayList<Die> dice = game.getDice();
 		ArrayList<Die> table = game.getTable(); // Stub for getTable
@@ -394,7 +394,7 @@ public class ToolCardHandler {
 		handDie = dice.get(index);
 		dice.remove(index);
 
-		handDie = new Die(handDie.getDieId(), dieCol, die.getRound(), dieValue);
+		//		handDie = new Die(handDie.getDieId(), dieCol, die.getRound(), dieValue);
 
 		// Player.layDie()
 	}
