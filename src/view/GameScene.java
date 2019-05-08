@@ -1,6 +1,10 @@
 package view;
 
+import java.util.ArrayList;
+
 import controllers.GameController;
+import game.Game;
+import game.Message;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -49,14 +53,16 @@ public class GameScene extends Scene {
 	ToolCardPane toolCardPane;
 	DieOfferPane dieOfferPane;
 	Button button;
+	GameController gameController;
 
 	/**
 	 * Creates the GameScene
 	 */
-	public GameScene() {
+	public GameScene(GameController gameController) {
 		super(new BorderPane());
 		// initialize
 		rootPane = new BorderPane();
+		this.gameController = gameController;
 
 		// sets the rootPane and handles makeup
 		setRoot(rootPane);
@@ -67,6 +73,10 @@ public class GameScene extends Scene {
 		createLeft();
 		createRight();
 	}
+	
+	public void updateChat(ArrayList<Message> messages) {
+		chatPane.updateChat(messages);
+	}
 
 	/**
 	 * Creates the center of the screen containing the following aspects: PersonalGoalCard,
@@ -76,7 +86,7 @@ public class GameScene extends Scene {
 	private void createCenter() {
 		// initialize everything for personalInfo
 		personalInfo = new HBox();
-		currencyStonesPane = new CurrencyStonesPane(new GameController());// remove new GameController. Is only a test
+		currencyStonesPane = new CurrencyStonesPane(gameController	);// remove new GameController. Is only a test
 		personalGoalCardPane = new PersonalGoalCardPane();
 
 		// initialize everything for the center box
@@ -116,7 +126,7 @@ public class GameScene extends Scene {
 		// Initialize everything for the leftBox
 		leftBox = new VBox();
 		glassWindowPane1 = new GlassWindowPane();
-		chatPane = new ChatPane();
+		chatPane = new ChatPane(gameController);
 
 		// adds everything to the leftBox and handles makeup
 		leftBox.getChildren().addAll(glassWindowPane1, chatPane);
