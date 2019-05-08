@@ -1,6 +1,5 @@
 package view;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import controllers.GameController;
@@ -9,9 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
@@ -36,7 +34,6 @@ public class ChatPane extends BorderPane {
 	private MyMessageSendHandler myMessageSendHandler;
 	private GameController gameController;
 	private ScrollPane scrollPane;
-	
 
 	public ChatPane(GameController gameController) {
 		this.gameController = gameController;
@@ -62,7 +59,8 @@ public class ChatPane extends BorderPane {
 		playerMessage.setPrefWidth(chatPaneWidth - sendButtonWidth);
 		playerMessage.setOnKeyPressed(myMessageSendHandler);
 		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-		scrollPane.setFitToWidth(true);;
+		scrollPane.setFitToWidth(true);
+		;
 		scrollPane.setContent(center);
 		// sets everything to the ChatPane
 		bottom.getChildren().addAll(playerMessage, sendMessage);
@@ -71,7 +69,7 @@ public class ChatPane extends BorderPane {
 	}
 
 	public void updateChat(ArrayList<Message> messages) {
-		for(Message message : messages) {
+		for (Message message : messages) {
 			center.getChildren().add(new MessagePane(message.getUserName(), message.getMessage(), message.getChatTime()));
 		}
 		scrollPane.vvalueProperty().bind(center.heightProperty());
@@ -96,7 +94,6 @@ public class ChatPane extends BorderPane {
 	}
 
 	private void sendMessage() {
-		System.out.println("1");
 		gameController.sendMessages(playerMessage.getText());
 		playerMessage.clear();
 

@@ -170,20 +170,13 @@ public class Game {
 		// TODO wait on GlassWindow
 	}
 
-	/**
-	 * Updates the chat
-	 */
-	//themporary kevin method
 	public ArrayList<Message> updateChat() {
-		// TODO wait on Chat
 		ArrayList<Message> messages = persistenceFacade.updateChat(getPlayers(), chat.getLastTimestamp());
 		chat.addMessages(messages);
 		return messages;
 	}
 
-	// temporary kevin method
 	public ArrayList<Message> sendMessage(Message message) {
-		System.out.println("3");
 		persistenceFacade.insertMessage(message);
 		return updateChat();
 	}
