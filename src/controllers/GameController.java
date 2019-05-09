@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 import client.User;
 import game.Game;
+import game.GameColor;
 import game.Message;
 import game.Player;
 import javafx.animation.AnimationTimer;
@@ -17,13 +18,17 @@ public class GameController {
 
 	public GameController(MainApplication mainApplication) {
 		this.mainApplication = mainApplication;
-		gameScene = new GameScene(this);
-		User clientUser = new User("speler1");
-		this.game = new Game(2, clientUser);
-		game.loadGame();
-		mainApplication.setScene(gameScene);
+		//TODO temporary call, when the game will be created the ClientController needs to give the information to the GameController
+		joinGame(2, new User("speler1", 0, 0, GameColor.RED, 0));
 
 		gameScene.updateChat(game.updateChat());
+	}
+
+	public void joinGame(int idGame, User clientUser) {
+		gameScene = new GameScene(this);
+		game = new Game(idGame, clientUser);
+		game.loadGame();
+		mainApplication.setScene(gameScene);
 
 		createTimer();
 	}
