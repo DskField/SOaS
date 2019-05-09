@@ -1,4 +1,5 @@
 package view;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -9,8 +10,8 @@ import javafx.scene.paint.Color;
 
 class RuleDrawPane extends Pane {
 	// constants
-	private final int paneWidth = 100;
-	private final int paneHeight = 100;
+	private final int paneWidth = 800;
+	private final int paneHeight = 750;
 
 	// instance variables
 	private ImageView imageView;
@@ -25,22 +26,23 @@ class RuleDrawPane extends Pane {
 		imageView.fitHeightProperty().bind(heightProperty());
 		imageView.setPreserveRatio(true);
 
-
 		StackPane stackPaneWrapper = new StackPane(imageView);
 		stackPaneWrapper.prefWidthProperty().bind(widthProperty());
 		stackPaneWrapper.prefHeightProperty().bind(heightProperty());
 
 		getChildren().add(stackPaneWrapper);
-		
+
 	}
 
 	public void showProgression() {
-		imageView.setImage(new Image("/images/Spelverloop.png"));
+		imageView.setImage(new Image("file:Resources/images/Spelverloop.png"));
 	}
+
 	public void showDiePlacing() {
-		imageView.setImage(new Image("/images/Dobbelsteenplaatsen.png"));
+		imageView.setImage(new Image("file:Resources/images/Dobbelsteenplaatsen.png"));
 	}
+
 	public void showToolCard() {
-		imageView.setImage(new Image("/images/Gereedschapskaarten.png"));
+		imageView.setImage(new Image("file:Resources/images/Gereedschapskaarten.png"));
 	}
 }
