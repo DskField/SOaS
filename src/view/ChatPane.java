@@ -79,7 +79,6 @@ public class ChatPane extends BorderPane {
 		@Override
 		public void handle(ActionEvent event) {
 			sendMessage();
-			scrollPane.setVvalue(scrollPane.getVmax());
 		}
 	}
 
