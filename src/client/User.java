@@ -3,9 +3,9 @@ package client;
 import game.GameColor;
 
 public class User {
-	
+
 	private String username;
-	
+
 	// User stats
 	private int gamesPlayed;
 	private int gamesWon;
@@ -14,7 +14,7 @@ public class User {
 	private GameColor mostPlacedColor;
 	private int mostPlacedValue;
 	private int totalOpponents;
-	
+
 	public User(String username, int gamesPlayed, int maxScore, GameColor mostPlacedColor, int mostPlacedValue) {
 		this.username = username;
 		this.gamesPlayed = gamesPlayed;
@@ -27,15 +27,15 @@ public class User {
 	public void setGamesWon(int gamesWon) {
 		this.gamesWon = gamesWon;
 	}
-	
+
 	public void setGamesLost(int gamesLost) {
 		this.gamesLost = gamesLost;
 	}
-	
+
 	public void setTotalOpponents(int totalOpponents) {
 		this.totalOpponents = totalOpponents;
 	}
-	
+
 	// GETTERS
 	public String getUsername() {
 		return username;
