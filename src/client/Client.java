@@ -6,11 +6,13 @@ public class Client {
 
 	private ArrayList<Lobby> lobbies;
 	private User user;
+	private User opponent;
 	private ArrayList<Challenge> challenges;
 
-	public Client(ArrayList<Lobby> lobbies, User user, ArrayList<Challenge> challenges) {
+	public Client(ArrayList<Lobby> lobbies, User user,User opponent, ArrayList<Challenge> challenges) {
 		this.lobbies = lobbies;
 		this.user = user;
+		this.opponent = opponent;
 		this.challenges = challenges;
 
 		user.setGamesWon(calcWon());
@@ -54,11 +56,15 @@ public class Client {
 	public User getUser() {
 		return user;
 	}
+	
+	public User getOpponent() {
+		return opponent;
+	}
 
 	public ArrayList<Challenge> getChallenges() {
 		return challenges;
 	}
-
+	
 	// TODO check if needed
 	public Lobby getLobby(int gameID) {
 		for (Lobby lob : lobbies) {

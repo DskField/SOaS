@@ -20,8 +20,6 @@ public class GameController {
 		this.mainApplication = mainApplication;
 		//TODO temporary call, when the game will be created the ClientController needs to give the information to the GameController
 		joinGame(2, new User("speler1", 0, 0, GameColor.RED, 0));
-
-		gameScene.updateChat(game.updateChat());
 	}
 
 	public void joinGame(int idGame, User clientUser) {
