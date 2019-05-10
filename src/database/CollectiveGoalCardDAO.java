@@ -9,8 +9,12 @@ import java.util.Collections;
 
 import game.CollectiveGoalCard;
 
-class CollectiveGoalCardDAO extends BaseDAO {
-	Connection con = super.getConnection();
+class CollectiveGoalCardDAO {
+	private Connection con;
+
+	public CollectiveGoalCardDAO(Connection connection) {
+		con = connection;
+	}
 
 	private ArrayList<CollectiveGoalCard> selectCollectiveGoalCards(String query) {
 		ArrayList<CollectiveGoalCard> results = new ArrayList<CollectiveGoalCard>();
@@ -43,15 +47,12 @@ class CollectiveGoalCardDAO extends BaseDAO {
 
 	// Get all the cards that are used in the game
 	ArrayList<CollectiveGoalCard> getSharedCollectiveGoalCards(int idGame) {
-		return selectCollectiveGoalCards("SELECT * FROM sharedpublic_objectivecard"
-				+ " JOIN public_objectivecard ON sharedpublic_objectivecard.idpublic_objectivecard = public_objectivecard.idpublic_objectivecard"
-				+ " WHERE idGame = " + idGame);
+		return selectCollectiveGoalCards("SELECT * FROM sharedpublic_objectivecard" + " JOIN public_objectivecard ON sharedpublic_objectivecard.idpublic_objectivecard = public_objectivecard.idpublic_objectivecard" + " WHERE idGame = " + idGame);
 	}
 
 	// Get one specific card
 	CollectiveGoalCard getSelectedCollectiveGoalCard(int idpublic_objectivecard) {
-		return selectCollectiveGoalCards(
-				"SELECT * FROM public_objectivecard WHERE idpublic_objectivecard = " + idpublic_objectivecard).get(0);
+		return selectCollectiveGoalCards("SELECT * FROM public_objectivecard WHERE idpublic_objectivecard = " + idpublic_objectivecard).get(0);
 	}
 
 	// set 3 random shared CollectiveGoalCards IF no cards have been appointed to
@@ -62,8 +63,7 @@ class CollectiveGoalCardDAO extends BaseDAO {
 			Collections.shuffle(list);
 
 			try {
-				PreparedStatement stmt = con
-						.prepareStatement("INSERT INTO shared public_objectivecard VALUES (?,?) (?,?) (?,?)");
+				PreparedStatement stmt = con.prepareStatement("INSERT INTO shared public_objectivecard VALUES (?,?) (?,?) (?,?)");
 				// card 1
 				stmt.setInt(1, idGame);
 				stmt.setInt(2, list.get(0).getCardID());
@@ -88,8 +88,7 @@ class CollectiveGoalCardDAO extends BaseDAO {
 				}
 			}
 		} else {
-			System.err.println(
-					"CollectiveGoalCardDAO trying to select 3 random cards for a game that already has 3 cards");
+			System.err.println("CollectiveGoalCardDAO trying to select 3 random cards for a game that already has 3 cards");
 		}
 	}
 }

@@ -11,8 +11,12 @@ import java.util.ArrayList;
 import game.Message;
 import game.Player;
 
-class MessageDAO extends BaseDAO {
-	Connection con = super.getConnection();
+class MessageDAO {
+	private Connection con;
+
+	public MessageDAO(Connection connection) {
+		con = connection;
+	}
 
 	private ArrayList<Message> selectMessage(String query, ArrayList<Player> players) {
 		ArrayList<Message> results = new ArrayList<Message>();

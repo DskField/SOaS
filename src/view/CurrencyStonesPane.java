@@ -30,7 +30,6 @@ public class CurrencyStonesPane extends FlowPane {
 			i += 1;
 		}
 		for (CurrencyStone cs : currencyStones) {
-			System.out.println("ur mum");
 			getChildren().add(new CurrencyStonePane(GameColor.BLUE));
 		}
 	}

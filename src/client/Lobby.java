@@ -1,99 +1,63 @@
 package client;
 
-import java.util.ArrayList;
-
 public class Lobby {
 
 	private int gameID;
-	private enum gameState{
-		
-		CREATING,
-		PLAYING,
-		TERMINATED
-	}
-
-	// The model described this as "turn". I renamed it "isMyTurn" to prevent any
-	// confusion
-	private boolean isMyTurn;
-
+	private String gameState;
+	private boolean isCurrentPlayer;
 	private int currentRound;
+	private int lobbyResponse;
 	private int lobbySize;
 	private int finalScore;
+	private boolean won;
 
-	// In the model it says 'won', I named it isMyVictory instead to prevent
-	// confusion
-	// It holds the value determining wether the client user has won a certain game
-	// in a lobby or not
-	private boolean isMyVictory;
-
-	// The users  in a lobby
-	private ArrayList<User> userList;
-
-	public Lobby(int id) {
-
-		this.gameID = id;
-		userList = new ArrayList<User>();
+	public Lobby(int gameID, String gameState, boolean isCurrentPlayer, int lobbyResponse, int lobbySize,
+			int finalScore, boolean won, int currentRound) {
+		this.gameID = gameID;
+		this.gameState = gameState;
+		this.isCurrentPlayer = isCurrentPlayer;
+		this.lobbyResponse = lobbyResponse;
+		this.lobbySize = lobbySize;
+		this.finalScore = finalScore;
+		this.won = won;
+		this.currentRound = currentRound;
 	}
 
-	public void addUserToLobby(User user) {
-
-		userList.add(user);
+	// SETTERS
+	public void setWon(boolean won) {
+		this.won = won;
 	}
 
+	// GETTERS
 	public int getGameID() {
 		return gameID;
 	}
 
-	public void setGameID(int gameID) {
-		this.gameID = gameID;
+	public String getGameState() {
+		return gameState;
 	}
 
-	public boolean isMyTurn() {
-		return isMyTurn;
-	}
-
-	public void setMyTurn(boolean isMyTurn) {
-		this.isMyTurn = isMyTurn;
+	public boolean isCurrentPlayer() {
+		return isCurrentPlayer;
 	}
 
 	public int getCurrentRound() {
 		return currentRound;
 	}
 
-	public void setCurrentRound(int currentRound) {
-		this.currentRound = currentRound;
+	public int getLobbyResponse() {
+		return lobbyResponse;
 	}
 
 	public int getLobbySize() {
 		return lobbySize;
 	}
 
-	public void setLobbySize(int lobbySize) {
-		this.lobbySize = lobbySize;
-	}
-
 	public int getFinalScore() {
 		return finalScore;
 	}
 
-	public void setFinalScore(int finalScore) {
-		this.finalScore = finalScore;
+	public boolean isWon() {
+		return won;
 	}
-
-	public boolean isMyVictory() {
-		return isMyVictory;
-	}
-
-	public void setMyVictory(boolean isMyVictory) {
-		this.isMyVictory = isMyVictory;
-	}
-
-	public ArrayList<User> getUserList() {
-		return userList;
-	}
-
-	public void setPlayerList(ArrayList<User> userList) {
-		this.userList = userList;
-	}
-
 }

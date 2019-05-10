@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import game.CollectiveGoalCard;
 import game.CurrencyStone;
 import game.Die;
+import game.GlassWindow;
 import game.Message;
 import game.Player;
 import game.Round;
@@ -14,14 +15,16 @@ import game.ToolCard;
 //A nice facade so to hide the complexity and ugly shit behind this, you can also call this 
 //the gate to hell. It's pretty much like at a Chinese restaurant
 public class PersistenceFacade {
-	private GameDAO gameDAO = new GameDAO();
-	private PlayerDAO playerDAO = new PlayerDAO();
-	private MessageDAO messageDAO = new MessageDAO();
-	private DieDAO dieDAO = new DieDAO();
-	private PatternCardDAO patternCardDAO = new PatternCardDAO();
-	private ToolCardDAO toolCardDAO = new ToolCardDAO();
-	private CollectiveGoalCardDAO collectiveGoalCardDAO = new CollectiveGoalCardDAO();
-	private CurrencyStoneDAO currencyStoneDAO = new CurrencyStoneDAO();
+	private BaseDAO baseDAO = new BaseDAO();
+	private GameDAO gameDAO = new GameDAO(baseDAO.getConnection());
+	private PlayerDAO playerDAO = new PlayerDAO(baseDAO.getConnection());
+	private MessageDAO messageDAO = new MessageDAO(baseDAO.getConnection());
+	private DieDAO dieDAO = new DieDAO(baseDAO.getConnection());
+	private PatternCardDAO patternCardDAO = new PatternCardDAO(baseDAO.getConnection());
+	private ToolCardDAO toolCardDAO = new ToolCardDAO(baseDAO.getConnection());
+	private CollectiveGoalCardDAO collectiveGoalCardDAO = new CollectiveGoalCardDAO(baseDAO.getConnection());
+	private CurrencyStoneDAO currencyStoneDAO = new CurrencyStoneDAO(baseDAO.getConnection());
+	private SpaceGlassDAO spaceGlassDAO = new SpaceGlassDAO(baseDAO.getConnection());
 
 	// CollectiveGoalCardDAO
 	public ArrayList<CollectiveGoalCard> getSharedCollectiveGoalCards(int idGame) {
@@ -66,8 +69,16 @@ public class PersistenceFacade {
 		return playerDAO.getAllPlayersInGame(idGame);
 	}
 
+	public Player getCurrentPlayer(int idGame) {
+		return playerDAO.getCurrentPlayer(idGame);
+	}
+
 	public void insertPlayer(int idGame, ArrayList<String> username) {
 		playerDAO.insertPlayer(idGame, username);
+	}
+
+	public void updatePlayerTurn(Player oldPlayer, Player newPlayer) {
+		playerDAO.updatePlayerTurn(oldPlayer, newPlayer);
 	}
 
 	// ToolCardDAO
@@ -108,8 +119,18 @@ public class PersistenceFacade {
 	public ArrayList<Message> updateChat(ArrayList<Player> players, Timestamp time) {
 		return messageDAO.updateChat(players, time);
 	}
-	
+
 	public void insertMessage(Message message) {
 		messageDAO.sendMessage(message);
+	}
+
+	//SpaceGlassDAO
+	public GlassWindow getGlassWindow(int idPlayer) {
+		return spaceGlassDAO.getGlassWindow(idPlayer);
+	}
+
+	//PatternCardDAO
+	public void insertPatternCardOptions(int idPlayer) {
+		patternCardDAO.insertPatternCardOptions(idPlayer);
 	}
 }

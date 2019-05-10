@@ -3,6 +3,7 @@ package game;
 import java.util.ArrayList;
 import java.util.Random;
 
+import client.User;
 import database.PersistenceFacade;
 
 public class Game {
@@ -42,7 +43,8 @@ public class Game {
 	private PersistenceFacade persistenceFacade;
 
 	// YOU
-	private Player clientUser;
+	private Player clientPlayer;
+	private User clientUser;
 
 	/**
 	 * Initialize the game
@@ -50,8 +52,9 @@ public class Game {
 	 * @param gameID - The id of the game
 	 */
 
-	public Game(int gameID) {
+	public Game(int gameID, User clientUser) {
 		this.gameID = gameID;
+		this.clientUser = clientUser;
 
 		glassWindows = new GlassWindow[4];
 		players = new ArrayList<Player>();
@@ -72,13 +75,13 @@ public class Game {
 		for (int i = 0; i < roundTrack.length; i++) {
 			roundTrack[i] = new Round();
 		}
-
-		//kevin stuff sets a client user for testing
-		clientUser = new Player(5, 3, GameColor.RED, "Adri");
 	}
 
-	public void updateGame() {
-		// TODO give the whole game object?
+	public void loadGame() {
+		loadDice();
+		loadPlayers();
+		loadCards();
+		loadGlassWindow();
 	}
 
 	/**
@@ -90,19 +93,12 @@ public class Game {
 	}
 
 	/**
-	 * Loads the chat
-	 */
-	public ArrayList<Message> loadChat() {
-		ArrayList<Message> messages = persistenceFacade.getALLMessages(players);
-		chat.addMessages(messages);
-		return messages;
-	}
-
-	/**
 	 * Load the GlassWindow with the right PatternCard
 	 */
 	public void loadGlassWindow() {
-		//TODO write this function
+		for (Player player : players) {
+			player.loadGlassWindow(persistenceFacade.getGlassWindow(player.getPlayerID()));
+		}
 	}
 
 	/**
@@ -110,15 +106,13 @@ public class Game {
 	 */
 	public void loadPlayers() {
 		this.players = persistenceFacade.getAllPlayersInGame(gameID);
-	}
-
-	/**
-	 * Pick random Tool and Goal cards
-	 */
-	public void shakePiles() {
-		persistenceFacade.insertRandomGameToolCards(gameID);
-		persistenceFacade.insertRandomSharedCollectiveGoalCards(gameID);
-		loadCards();
+		currentPlayer = persistenceFacade.getCurrentPlayer(gameID);
+		for (Player player : players) {
+			if (player.getUsername().equals(clientUser.getUsername())) {
+				clientPlayer = player;
+				break;
+			}
+		}
 	}
 
 	/**
@@ -129,9 +123,10 @@ public class Game {
 		collectiveGoalCards = persistenceFacade.getSharedCollectiveGoalCards(gameID);
 	}
 
-	// TODO wait on PatternCard
 	public void dealPatternCards() {
-		// patternCards = getPatternCardsFromID(getRandomNotEqualInts(amountPatternCards, totalPatternCards));
+		for (Player player : players) {
+			persistenceFacade.insertPatternCardOptions(player.getPlayerID());
+		}
 	}
 
 	/**
@@ -149,8 +144,90 @@ public class Game {
 		persistenceFacade.updateDiceRoll(gameID, table);
 	}
 
+	/**
+	 * Pick random Tool and Goal cards
+	 */
+	public void shakePiles() {
+		persistenceFacade.insertRandomGameToolCards(gameID);
+		persistenceFacade.insertRandomSharedCollectiveGoalCards(gameID);
+		loadCards();
+	}
+
 	public void nextTurn() {
-		// TODO just a stub
+		int totalPlayers = players.size();
+		int maxSeqnr = totalPlayers * 2;
+		int nextSeqnr = 0;
+
+		switch (currentPlayer.getSeqnr()) {
+		case 1:
+			currentPlayer.setSeqnr(maxSeqnr);
+			nextSeqnr = 2;
+			break;
+		case 2:
+			currentPlayer.setSeqnr(maxSeqnr - 1);
+			nextSeqnr = 3;
+			break;
+		case 3:
+			if (totalPlayers == 2) {
+				currentPlayer.setSeqnr(1);
+			} else {
+				currentPlayer.setSeqnr(maxSeqnr - 2);
+			}
+			nextSeqnr = 4;
+			break;
+		case 4:
+			if (totalPlayers == 2) {
+				currentPlayer.setSeqnr(2);
+				nextSeqnr = 1;
+				break;
+			} else if (totalPlayers == 3) {
+				currentPlayer.setSeqnr(2);
+			} else if (totalPlayers == 4) {
+				currentPlayer.setSeqnr(maxSeqnr - 3);
+			}
+			nextSeqnr = 5;
+			break;
+		case 5:
+			if (totalPlayers == 3) {
+				currentPlayer.setSeqnr(1);
+			} else if (totalPlayers == 4) {
+				currentPlayer.setSeqnr(3);
+			}
+			nextSeqnr = 6;
+			break;
+		case 6:
+			if (totalPlayers == 3) {
+				currentPlayer.setSeqnr(3);
+				nextSeqnr = 1;
+				break;
+			} else if (totalPlayers == 4) {
+				currentPlayer.setSeqnr(2);
+				nextSeqnr = 7;
+				break;
+			}
+		case 7:
+			currentPlayer.setSeqnr(1);
+			nextSeqnr = 8;
+			break;
+		case 8:
+			currentPlayer.setSeqnr(4);
+			nextSeqnr = 1;
+			break;
+		}
+
+		Player oldPlayer = currentPlayer;
+
+		for (Player player : players) {
+			if (player.getSeqnr() == nextSeqnr) {
+				currentPlayer = player;
+			}
+		}
+
+		persistenceFacade.updatePlayerTurn(oldPlayer, currentPlayer);
+
+		if (nextSeqnr == 1) {
+			nextRound();
+		}
 	}
 
 	public void nextRound() {
@@ -171,7 +248,7 @@ public class Game {
 	}
 
 	public ArrayList<Message> updateChat() {
-		ArrayList<Message> messages = persistenceFacade.updateChat(getPlayers(), chat.getLastTimestamp());
+		ArrayList<Message> messages = persistenceFacade.updateChat(players, chat.getLastTimestamp());
 		chat.addMessages(messages);
 		return messages;
 	}
@@ -183,16 +260,12 @@ public class Game {
 
 	// GETTERS AND SETTERS
 	// TODO the current getters and setters are temporary, they will be changed in the future
-	public Player getClientUser() {
-		return clientUser;
+	public Player getClientPlayer() {
+		return clientPlayer;
 	}
 
 	public GlassWindow[] getGlassWindows() {
 		return glassWindows;
-	}
-
-	public ArrayList<Player> getPlayers() {
-		return players;
 	}
 
 	public ArrayList<Die> getTable() {

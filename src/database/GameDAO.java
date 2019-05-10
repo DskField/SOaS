@@ -9,8 +9,12 @@ import java.util.List;
 
 import game.Game;
 
-class GameDAO extends BaseDAO {
-	Connection con = super.getConnection();
+class GameDAO {
+	private Connection con;
+
+	public GameDAO(Connection connection) {
+		con = connection;
+	}
 
 	private List<Game> selectGame(String query) {
 		List<Game> results = new ArrayList<Game>();
@@ -20,8 +24,8 @@ class GameDAO extends BaseDAO {
 			con.commit();
 			while (dbResultSet.next()) {
 				int gameID = dbResultSet.getInt("idgame");
-				Game game = new Game(gameID);
-				results.add(game);
+				//				Game game = new Game(gameID, new User("test"));
+				//				results.add(game);
 			}
 			stmt.close();
 		} catch (SQLException e) {

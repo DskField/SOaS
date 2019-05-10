@@ -85,6 +85,8 @@ public class DiePane extends Pane {
 		case 6:
 			getChildren().addAll(circles[0], circles[1], circles[2], circles[4], circles[5], circles[6]);
 			break;
+		default:
+			break;
 		}
 	}
 }
