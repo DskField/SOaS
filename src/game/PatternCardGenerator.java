@@ -16,29 +16,30 @@ public class PatternCardGenerator {
 			for(int y = 0; y < 4; y++) {
 				SpacePattern generatedPattern = null;
 				
+				//This will keep trying to add a new SpacePattern to the array until it doesn't have the same value or color as those above it/left of it
 				while(generatedPattern == null) {
 					generatedPattern = null;
 					Boolean noY = false;
 					
 					SpacePattern tempPattern = generateSpacePattern(x + 1, y + 1);
+					//Checks if the die above has the same value or color
+					//If this is the case "generatedPattern" will become null, and the boolean "noY" will be true, preventing a check on the x axis if it isn't the first row
 					if(y > 0) {
 						if( (tempPattern.getPatternColor().getColor().equals(pattern[x][y - 1].getPatternColor().getColor()) && tempPattern.getPatternColor() != GameColor.EMPTY) || (tempPattern.getValue() == pattern[x][y - 1].getValue() && tempPattern.getValue() != 0)) {
-							System.out.println("NO Y");
+							//System.out.println("NO Y");
 							noY = true;
 							generatedPattern = null;
 						}
 						else {
-							System.err.println("Neat");
 							generatedPattern = tempPattern;
 						}
 					}
 					else {
-						System.err.println("Cool");
 						generatedPattern = tempPattern;
 					}
+					//Checks if the die to the left has the same value or color, but will not do so if "noY"
 					if(x > 0) {
 						if( ((tempPattern.getPatternColor().getColor().equals(pattern[x - 1][y].getPatternColor().getColor()) && tempPattern.getPatternColor() != GameColor.EMPTY) || (tempPattern.getValue() == pattern[x - 1][y].getValue() && tempPattern.getValue() != 0)) || noY == true ) {
-							System.out.println("NO X");
 							generatedPattern = null;
 						}
 						else {
@@ -47,7 +48,6 @@ public class PatternCardGenerator {
 					}
 					
 				}
-				System.out.println("X: "+generatedPattern.getXCor() + " Y: " + generatedPattern.getYCor() + " Value: " + generatedPattern.getValue() + " Color: " + generatedPattern.getPatternColor());
 				pattern[x][y] = generatedPattern;
 			}
 		}
@@ -59,39 +59,29 @@ public class PatternCardGenerator {
 	
 	private int generateDifficulty(SpacePattern[][] pattern) {
 		return 0;
-		
+		//TODO make an algorithm for calculating the difficulty
 	}
 	
+	//Creates a new SpacePattern that is either blank or has a random value/color
 	private SpacePattern generateSpacePattern(int x, int y) {
 		rng = new Random();
-		int random = rng.nextInt(4);
+		int random = rng.nextInt(7);
 		SpacePattern generatedPattern = null;
 		
-		if(random == 0 || random == 3) {
+		if(random == 0 || random == 3 || random == 6) {
 			generatedPattern = new SpacePattern(x, y, GameColor.EMPTY, 0);
-			System.out.println("Empty");
 		}
 		else {
-			if(random == 1) {
+			if(random == 1 || random == 4) {
 				int value = rng.nextInt(6) + 1;
 				generatedPattern = new SpacePattern(x, y, GameColor.EMPTY, value);
-				System.out.println("Number");
 			}
 			else {
 				int value = rng.nextInt(5);
 				GameColor[] colors = new GameColor[] {GameColor.RED, GameColor.YELLOW, GameColor.GREEN, GameColor.BLUE, GameColor.PURPLE};
 				generatedPattern = new SpacePattern(x, y, colors[value], 0);
-				System.out.println("Color");
 			}
 		}
-		
-		
 		return generatedPattern;
-	}
-	
-	private boolean checkPattern() {
-		return true;
-	}
-
-	
+	}	
 }

@@ -10,9 +10,9 @@ import javafx.scene.paint.Color;
 
 public class PatternPane extends FlowPane{
 
-	private final int patternWidth = 270;// - 10
-	private final int patternHeight = 220;// - 10
-	private final int squareSize = 50;
+	private final int patternWidth = 360;
+	private final int patternHeight = 280;
+	private final int squareSize = 64;
 	private static int squareGap = 4;
 	
 	public PatternPane(PatternCard pattern, Boolean isSmall) {
@@ -49,26 +49,30 @@ public class PatternPane extends FlowPane{
 	}
 	
 	public void addRectangle(int eyes, GameColor color) {
-		DiePane die = new DiePane(eyes, color);
-		die.resize(squareSize);
+		PatternSpacePane space = new PatternSpacePane(eyes, color);
+		space.resize(squareSize);
 		if(color.getColor() == Color.WHITE && eyes > 0) {
-			die.setBackground(new Background(new BackgroundFill(Color.GRAY, null, null)));
+			space.setBackground(new Background(new BackgroundFill(Color.GRAY, null, null)));
 		}
 		else {
-			die.setBackground(new Background(new BackgroundFill(color.getColor(), null, null)));
+			space.setBackground(new Background(new BackgroundFill(color.getColor(), null, null)));
 		}
-		getChildren().add(die);
+		getChildren().add(space);
 	}
 	
 	public void addSmallRectangle(int eyes, GameColor color) {
-		DiePane die = new DiePane(eyes, color);
-		die.resize(squareSize / 2.1);
+		PatternSpacePane space = new PatternSpacePane(eyes, color);
+		space.resize(squareSize / 2.2);
 		if(color.getColor() == Color.WHITE && eyes > 0) {
-			die.setBackground(new Background(new BackgroundFill(Color.GRAY, null, null)));
+			space.setBackground(new Background(new BackgroundFill(Color.GRAY, null, null)));
 		}
 		else {
-			die.setBackground(new Background(new BackgroundFill(color.getColor(), null, null)));
+			space.setBackground(new Background(new BackgroundFill(color.getColor(), null, null)));
 		}
-		getChildren().add(die);
+		getChildren().add(space);
+	}
+	
+	public void addDie(int position, int eyes, GameColor color) {
+		((PatternSpacePane) getChildren().get(position)).setDie(eyes, color);
 	}
 }
