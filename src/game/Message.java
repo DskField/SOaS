@@ -20,6 +20,15 @@ public class Message {
 		this.timestamp = timestamp;
 	}
 	
+	/**
+	 * returns Timestamp as a string in the format used for the chat.
+	 * @return String chatTime
+	 */
+	public String getChatTime() {
+		String s = new SimpleDateFormat("kk	:mm:ss").format(timestamp);
+		return s;
+	}
+	
 	//getters & setters
 	public String getMessage() {
 		return message;
@@ -37,10 +46,6 @@ public class Message {
 		return player.getUsername();
 	}
 	
-	public String getChatTime() {
-		String s = new SimpleDateFormat("kk:mm:ss").format(timestamp);
-		return s;
-	}
 	
 
 }

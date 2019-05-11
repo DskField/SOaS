@@ -21,7 +21,7 @@ import javafx.scene.paint.Color;
 
 public class ChatPane extends BorderPane {
 	// constants
-	private final int chatPaneWidth = 600;
+	private final int chatPaneWidth = 400;
 	private final int chatPaneheight = 200;
 	private final int sendButtonWidth = 100;
 	private final int sendButtonHeight = 20;
@@ -36,14 +36,19 @@ public class ChatPane extends BorderPane {
 	private ScrollPane scrollPane;
 
 	public ChatPane(GameController gameController) {
+		//setting the GameController
 		this.gameController = gameController;
-
+		
+		//handles the makeup of the ChatPane
 		setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
 		setPrefSize(chatPaneWidth, chatPaneheight);
-
+		
+		//creates the Chat
 		createChat();
 	}
-
+	/**
+	 * Creates the entire chat. Including the send button and the player input bar.
+	 */
 	private void createChat() {
 		// initialize
 		playerMessage = new TextField();
@@ -53,35 +58,45 @@ public class ChatPane extends BorderPane {
 		myButtonHandler = new MyButtonHandler();
 		myMessageSendHandler = new MyMessageSendHandler();
 		scrollPane = new ScrollPane();
-		// Handels makeup
+		
+		// Handles makeup
 		sendMessage.setPrefSize(sendButtonWidth, sendButtonHeight);
 		sendMessage.setOnAction(myButtonHandler);
 		playerMessage.setPrefWidth(chatPaneWidth - sendButtonWidth);
 		playerMessage.setOnKeyPressed(myMessageSendHandler);
 		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
 		scrollPane.setFitToWidth(true);
-		;
 		scrollPane.setContent(center);
+		
 		// sets everything to the ChatPane
 		bottom.getChildren().addAll(playerMessage, sendMessage);
 		setCenter(scrollPane);
 		setBottom(bottom);
 	}
-
+	/**
+	 * adds Messages to the Chat.
+	 * @param messages - ArrayList<Message> this list of Messages will be added to the chat
+	 */
 	public void updateChat(ArrayList<Message> messages) {
 		for (Message message : messages) {
 			center.getChildren().add(new MessagePane(message.getUserName(), message.getMessage(), message.getChatTime()));
 		}
 		scrollPane.vvalueProperty().bind(center.heightProperty());
 	}
-
+/**
+ *  calls upon the sendMessage method when the "Verzenden" button is pressed.
+ *
+ */
 	private class MyButtonHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event) {
 			sendMessage();
 		}
 	}
-
+/**
+ * calls upon the sendMessage method when the enter key is pressed.
+ *
+ */
 	private class MyMessageSendHandler implements EventHandler<KeyEvent> {
 		@Override
 		public void handle(KeyEvent event) {
@@ -91,9 +106,12 @@ public class ChatPane extends BorderPane {
 		}
 
 	}
-
+/**
+ * Gives the the String from playerMessage to the sendMessage method of the game controller
+ * and clears the playerMessage field.
+ */
 	private void sendMessage() {
-		gameController.sendMessages(playerMessage.getText());
+		gameController.sendMessage(playerMessage.getText());
 		playerMessage.clear();
 
 	}

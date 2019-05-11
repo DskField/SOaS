@@ -34,13 +34,27 @@ public class Chat {
 	/**
 	 * looks for the last Message in the chat object and returns the timestamp
 	 * 
-	 * @return returns the timestamp of the last message in the chat
+	 * @return returns the Timestamp of the last message in the chat
 	 */
 	public Timestamp getLastTimestamp() {
 		if (!messages.isEmpty()) {
 			return messages.get(messages.size() - 1).getTimestamp();
 		} else {
 			return new Timestamp(0);
+		}
+
+	}
+	
+	/**
+	 * looks for the last Message in the chat object and returns the chat time
+	 * 
+	 * @return returns the chat time of the last message in the chat
+	 */
+	public String getLastChatTime() {
+		if (!messages.isEmpty()) {
+			return messages.get(messages.size() - 1).getChatTime();
+		} else {
+			return "0";
 		}
 
 	}
