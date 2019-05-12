@@ -74,18 +74,19 @@ public class GameScene extends Scene {
 		createLeft();
 		createRight();
 	}
-/**
- * gives a list of messages to the ChatPane
- * @param messages ArrayList<Message> list of messages that will be added to the chat.
- */
+
+	/**
+	 * gives a list of messages to the ChatPane
+	 * 
+	 * @param messages ArrayList<Message> list of messages that will be added to the chat.
+	 */
 	public void updateChat(ArrayList<Message> messages) {
 		chatPane.updateChat(messages);
 	}
 
 	/**
-	 * Creates the center of the screen containing the following aspects:
-	 * PersonalGoalCard, Currencystones, Roundtrack, PublicGoalCards, ToolCards,
-	 * Dice offer and the necessary buttons.
+	 * Creates the center of the screen containing the following aspects: PersonalGoalCard,
+	 * Currencystones, Roundtrack, PublicGoalCards, ToolCards, Dice offer and the necessary buttons.
 	 */
 
 	private void createCenter() {
@@ -127,16 +128,14 @@ public class GameScene extends Scene {
 		centerBox.getChildren().addAll(roundPane, cardBox, dieOfferPane, button);
 		centerBox.setAlignment(Pos.CENTER);
 		centerBox.setSpacing(personalInfoSpacing);
-		centerBox.setPadding(
-				new Insets(centerBoxPaddingTop, centerBoxPaddingRight, centerBoxPaddingBottom, centerBoxPaddingLeft));
+		centerBox.setPadding(new Insets(centerBoxPaddingTop, centerBoxPaddingRight, centerBoxPaddingBottom, centerBoxPaddingLeft));
 
 		// adds the centerBox to the rootPane
 		rootPane.setCenter(centerBox);
 	}
 
 	/**
-	 * Creates the left column of the screen containing the following aspects:
-	 * Glaswindow(large), Chat
+	 * Creates the left column of the screen containing the following aspects: Glaswindow(large), Chat
 	 */
 	private void createLeft() {
 		// Initialize everything for the leftBox
@@ -148,16 +147,14 @@ public class GameScene extends Scene {
 		leftBox.getChildren().addAll(glassWindowPane1, chatPane);
 		leftBox.setAlignment(Pos.BOTTOM_CENTER);
 		leftBox.setSpacing(leftBoxSpacing);
-		leftBox.setPadding(
-				new Insets(leftBoxPaddingTop, leftBoxPaddingRight, leftBoxPaddingBottom, leftBoxPaddingLeft));
+		leftBox.setPadding(new Insets(leftBoxPaddingTop, leftBoxPaddingRight, leftBoxPaddingBottom, leftBoxPaddingLeft));
 
 		// adds the leftBox to the rootPane
 		rootPane.setLeft(leftBox);
 	}
 
 	/**
-	 * Creates the right column on the screen containing the following aspects: 3
-	 * Glaswindows(small)
+	 * Creates the right column on the screen containing the following aspects: 3 Glaswindows(small)
 	 */
 	private void createRight() {
 		// Initialize everything for the rightBox
@@ -175,8 +172,7 @@ public class GameScene extends Scene {
 		rightBox.getChildren().addAll(glassWindowPane2, glassWindowPane3, glassWindowPane4);
 		rightBox.setSpacing(rightBoxSpacing);
 		rightBox.setAlignment(Pos.BOTTOM_CENTER);
-		rightBox.setPadding(
-				new Insets(rightBoxPaddingTop, rightBoxPaddingRight, rightBoxPaddingBottom, rightBoxPaddingLeft));
+		rightBox.setPadding(new Insets(rightBoxPaddingTop, rightBoxPaddingRight, rightBoxPaddingBottom, rightBoxPaddingLeft));
 
 		// adds the rightBox to the rootPane
 		rootPane.setRight(rightBox);

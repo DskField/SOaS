@@ -1,15 +1,12 @@
 package controllers;
 
-import database.PersistenceFacade;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import view.GameScene;
 
 public class MainApplication extends Application {
 	private Stage stage;
-	private GameController gameController;
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -17,7 +14,7 @@ public class MainApplication extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		this.stage = stage;
-		gameController = new GameController(this);
+		new GameController(this);
 		stage.setTitle("Sagrada");
 		stage.setFullScreen(true);
 		// Remove the exit hint
@@ -26,7 +23,7 @@ public class MainApplication extends Application {
 		//		stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 		stage.show();
 	}
-	
+
 	public void setScene(Scene scene) {
 		stage.setScene(scene);
 	}

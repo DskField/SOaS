@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import client.User;
 import game.GameColor;
 
-public class UserDAO {
+class UserDAO {
 	private Connection con;
 
 	public UserDAO(Connection connection) {

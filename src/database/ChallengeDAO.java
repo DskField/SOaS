@@ -9,8 +9,12 @@ import java.util.HashMap;
 
 import client.Challenge;
 
-public class ChallengeDAO extends BaseDAO {
-	Connection con = super.getConnection();
+class ChallengeDAO {
+	Connection con;
+
+	public ChallengeDAO(Connection con) {
+		this.con = con;
+	}
 
 	private ArrayList<Challenge> selectChallenges(String query, String username) {
 		ArrayList<Challenge> results = new ArrayList<>();
@@ -55,9 +59,7 @@ public class ChallengeDAO extends BaseDAO {
 	}
 
 	public ArrayList<Challenge> getChallenges(String username) {
-		return selectChallenges("SELECT DISTINCT(game_idgame)\r\n" + "FROM player\r\n"
-				+ "WHERE playstatus_playstatus IN (\"uitdager\", \"uitgedaagde\", \"geaccepteerd\", \"geweigerd\") AND username = ?",
-				username);
+		return selectChallenges("SELECT DISTINCT(game_idgame)\r\n" + "FROM player\r\n" + "WHERE playstatus_playstatus IN (\"uitdager\", \"uitgedaagde\", \"geaccepteerd\", \"geweigerd\") AND username = ?", username);
 	}
 
 }
