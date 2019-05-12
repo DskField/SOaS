@@ -10,22 +10,24 @@ import javafx.scene.paint.Color;
 
 class RuleDrawPane extends Pane {
 	// constants
-	private final int paneWidth = 800;
-	private final int paneHeight = 750;
+	private final int PANEWIDTH = 800;
+	private final int PANEHEIGHT = 750;
 
 	// instance variables
 	private ImageView imageView;
 
 	// constructor
 	public RuleDrawPane() {
-		setPrefSize(paneWidth, paneHeight);
 		setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 		imageView = new ImageView();
 
 		// this make the images look good on the pane
-		imageView.fitWidthProperty().bind(widthProperty());
-		imageView.fitHeightProperty().bind(heightProperty());
-		imageView.setPreserveRatio(true);
+		setPrefHeight(PANEHEIGHT);
+		setMinHeight(PANEHEIGHT);
+		setMaxHeight(PANEHEIGHT);
+		setPrefWidth(PANEWIDTH);
+		setMinWidth(PANEWIDTH);
+		setMaxWidth(PANEWIDTH);
 
 		StackPane stackPaneWrapper = new StackPane(imageView);
 		stackPaneWrapper.prefWidthProperty().bind(widthProperty());

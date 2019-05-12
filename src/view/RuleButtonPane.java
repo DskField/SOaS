@@ -8,7 +8,8 @@ import javafx.scene.paint.Color;
 
 class ButtonPane extends BorderPane {
 	// constants
-	private final int paneheight = 50;
+	private final int PANEHEIGHT = 50;
+	private final int PANEWIDTH = 800;
 
 	// instance variables
 	private Button btn_GameProgress;
@@ -18,9 +19,12 @@ class ButtonPane extends BorderPane {
 	// constructor
 	public ButtonPane(RuleDrawPane drawPane) {
 		// set the size
-		setPrefHeight(paneheight);
-		setMinHeight(paneheight);
-		setMaxHeight(paneheight);
+		setPrefHeight(PANEHEIGHT);
+		setMinHeight(PANEHEIGHT);
+		setMaxHeight(PANEHEIGHT);
+		setPrefWidth(PANEWIDTH);
+		setMinWidth(PANEWIDTH);
+		setMaxWidth(PANEWIDTH);
 		// set background and make the button
 		setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
 		btn_GameProgress = new Button("Spel verloop");

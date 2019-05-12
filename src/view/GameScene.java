@@ -85,14 +85,12 @@ public class GameScene extends Scene {
 			public void handle(KeyEvent ke) {
 				if (ke.getCode() == KeyCode.ESCAPE) {
 					stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
-					Popup gameMenupp = new Popup();
+					Popup gameMenuPopup = new Popup();
 					GameMenuPane gameMenu = new GameMenuPane();
-					gameMenu.setMinSize(800, 800);
-					gameMenupp.getContent().add(gameMenu);
-					gameMenupp.setAutoHide(false);
-					gameMenupp.show(stage.getScene().getWindow());
-					gameMenupp.setX((stage.getWidth() - stage.getWidth()) / 2);
-					gameMenupp.setY((stage.getHeight() - stage.getHeight()) / 2);
+					gameMenuPopup.getContent().add(gameMenu);
+					gameMenuPopup.setAutoHide(false);
+					gameMenuPopup.show(stage);
+					gameMenuPopup.centerOnScreen();
 				}
 			}
 		});
@@ -101,7 +99,8 @@ public class GameScene extends Scene {
 	/**
 	 * gives a list of messages to the ChatPane
 	 * 
-	 * @param messages ArrayList<Message> list of messages that will be added to the chat.
+	 * @param messages ArrayList<Message> list of messages that will be added to the
+	 *                 chat.
 	 */
 	public void updateChat(ArrayList<Message> messages) {
 		chatPane.updateChat(messages);
