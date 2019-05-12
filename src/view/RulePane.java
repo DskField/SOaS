@@ -16,7 +16,7 @@ public class RulePane extends VBox {
 	// constructor
 	public RulePane() {
 		drawPane = new RuleDrawPane();
-		buttonPane = new ButtonPane(this, drawPane);
+		buttonPane = new ButtonPane(drawPane);
 		// make the draw and buttonpane and add them to this panes
 		getChildren().add(drawPane);
 		getChildren().add(buttonPane);
