@@ -17,7 +17,7 @@ class ButtonPane extends BorderPane {
 	private Button btn_ToolCards;
 
 	// constructor
-	public ButtonPane(RuleDrawPane drawPane) {
+	ButtonPane(RuleDrawPane drawPane) {
 		// set the size
 		setPrefHeight(PANEHEIGHT);
 		setMinHeight(PANEHEIGHT);
@@ -30,7 +30,7 @@ class ButtonPane extends BorderPane {
 		btn_GameProgress = new Button("Spel verloop");
 		btn_PlaceDie = new Button("Dobbelsteen plaatsen");
 		btn_ToolCards = new Button("Gereedschapskaarten");
-		// plaec the buttons
+		// place the buttons
 		setLeft(btn_GameProgress);
 		setCenter(btn_PlaceDie);
 		setRight(btn_ToolCards);

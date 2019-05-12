@@ -4,11 +4,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
-class RuleDrawPane extends Pane {
+class RuleDrawPane extends StackPane {
 	// constants
 	private final int PANEWIDTH = 800;
 	private final int PANEHEIGHT = 750;
@@ -17,38 +16,36 @@ class RuleDrawPane extends Pane {
 	private ImageView imageView;
 
 	// constructor
-	public RuleDrawPane() {
-		setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+	RuleDrawPane() {
+		setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.7), null, null)));
 		imageView = new ImageView();
-
-		// this make the images look good on the pane
 		setPrefHeight(PANEHEIGHT);
 		setMinHeight(PANEHEIGHT);
 		setMaxHeight(PANEHEIGHT);
 		setPrefWidth(PANEWIDTH);
 		setMinWidth(PANEWIDTH);
 		setMaxWidth(PANEWIDTH);
+		// this make the images look good on the pane
+		imageView.fitWidthProperty().bind(widthProperty());
+		imageView.fitHeightProperty().bind(heightProperty());
+		imageView.setPreserveRatio(true);
 
-		StackPane stackPaneWrapper = new StackPane(imageView);
-		stackPaneWrapper.prefWidthProperty().bind(widthProperty());
-		stackPaneWrapper.prefHeightProperty().bind(heightProperty());
-
-		getChildren().add(stackPaneWrapper);
-
+		getChildren().add(imageView);
+		showProgression();
 	}
 
 //show rules about progression
-	public void showProgression() {
+	void showProgression() {
 		imageView.setImage(new Image("file:Resources/images/Spelverloop.png"));
 	}
 
 	// show rules about die placing
-	public void showDiePlacing() {
+	void showDiePlacing() {
 		imageView.setImage(new Image("file:Resources/images/Dobbelsteenplaatsen.png"));
 	}
 
 //show rules about toolcards
-	public void showToolCard() {
+	void showToolCard() {
 		imageView.setImage(new Image("file:Resources/images/Gereedschapskaarten.png"));
 	}
 }

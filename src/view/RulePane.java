@@ -10,14 +10,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class RulePane extends VBox {
+class RulePane extends VBox {
 	// instance variables
 	private RuleDrawPane drawPane;
 	private ButtonPane buttonPane;
 	private Stage stage;
 
 	// constructor
-	public RulePane() {
+	RulePane() {
 		this.stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
 
 		setMinWidth(stage.getWidth());
