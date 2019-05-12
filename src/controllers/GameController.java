@@ -11,6 +11,7 @@ import javafx.animation.AnimationTimer;
 import view.GameScene;
 
 public class GameController {
+	//variables
 	private Game game;
 	private MainApplication mainApplication;
 	private GameScene gameScene;
@@ -30,8 +31,13 @@ public class GameController {
 
 		createTimer();
 	}
-
-	public void sendMessages(String text) {
+/**
+ * Uses the player text to make a new Message Object.
+ * sends the Message to model for processing
+ * and receives and Arraylist<Message> to update the chatPane with
+ * @param text - the text that the player sends to the chat
+ */
+	public void sendMessage(String text) {
 		Message message = new Message(text, getClientPlayer(), new Timestamp(System.currentTimeMillis()));
 		gameScene.updateChat(game.sendMessage(message));
 	}
@@ -71,7 +77,9 @@ public class GameController {
 
 		timer.start();
 	}
-
+/**
+ * updates the catPane by using information out of the game model.
+ */
 	private void update() {
 		gameScene.updateChat(game.updateChat());
 	}

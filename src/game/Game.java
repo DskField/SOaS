@@ -1,5 +1,6 @@
 package game;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -247,15 +248,39 @@ public class Game {
 		// TODO wait on GlassWindow
 	}
 
+	/**
+	 * gets new Messages from the database and adds it to the chat.
+	 * 
+	 * @return ArrayList<Messages> list of Messages that need to be added to the ChatPane
+	 */
 	public ArrayList<Message> updateChat() {
 		ArrayList<Message> messages = persistenceFacade.updateChat(players, chat.getLastTimestamp());
 		chat.addMessages(messages);
 		return messages;
 	}
 
+	/**
+	 * Checks if the new Message has the same primary key as the message before it. If this is the case
+	 * the method wil return an ArrayList<Message> containing an error message. Otherwise the message
+	 * will be send to the database for insertion. After insertion this method will call upon the
+	 * updateChat function to update the chat from the database.
+	 * 
+	 * @param message - the Message that needs to be send to the database
+	 * @return ArrayList<Message> list of messages that need to be added to the ChatPane
+	 */
 	public ArrayList<Message> sendMessage(Message message) {
-		persistenceFacade.insertMessage(message);
-		return updateChat();
+		if (message.getChatTime().equals(chat.getLastChatTime())) {
+			Message error = new Message("please don't spam you can only send 1 message a second", getClientPlayer(), new Timestamp(System.currentTimeMillis()));
+			ArrayList<Message> messages = new ArrayList<Message>();
+			messages.add(error);
+			return messages;
+		} else {
+			System.out.println(message.getChatTime());
+			System.out.println(chat.getLastChatTime());
+			persistenceFacade.insertMessage(message);
+			return updateChat();
+		}
+
 	}
 
 	// GETTERS AND SETTERS
