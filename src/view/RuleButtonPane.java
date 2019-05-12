@@ -16,20 +16,21 @@ class ButtonPane extends BorderPane {
 	private Button btn_ToolCards;
 
 	// constructor
-	public ButtonPane(RuleScene myscene, RuleDrawPane drawPane) {
+	public ButtonPane(RuleDrawPane drawPane) {
+		// set the size
 		setPrefHeight(paneheight);
 		setMinHeight(paneheight);
 		setMaxHeight(paneheight);
-
+		// set background and make the button
 		setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
 		btn_GameProgress = new Button("Spel verloop");
 		btn_PlaceDie = new Button("Dobbelsteen plaatsen");
 		btn_ToolCards = new Button("Gereedschapskaarten");
-
+		// plaec the buttons
 		setLeft(btn_GameProgress);
 		setCenter(btn_PlaceDie);
 		setRight(btn_ToolCards);
-
+		// give the buttons actions
 		btn_GameProgress.setOnMouseClicked(e -> drawPane.showProgression());
 		btn_PlaceDie.setOnMouseClicked(e -> drawPane.showDiePlacing());
 		btn_ToolCards.setOnMouseClicked(e -> drawPane.showToolCard());

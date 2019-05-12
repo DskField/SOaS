@@ -3,18 +3,22 @@ package view;
 import java.util.ArrayList;
 
 import controllers.GameController;
-import game.Game;
 import game.Message;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
 
 public class GameScene extends Scene {
 	// constants
@@ -54,6 +58,7 @@ public class GameScene extends Scene {
 	DieOfferPane dieOfferPane;
 	Button button;
 	GameController gameController;
+	Stage stage;
 
 	/**
 	 * Creates the GameScene
@@ -72,21 +77,39 @@ public class GameScene extends Scene {
 		createCenter();
 		createLeft();
 		createRight();
+
+		// Listener for escape key to open in game menu
+		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			public void handle(KeyEvent ke) {
+				if (ke.getCode() == KeyCode.ESCAPE) {
+					stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
+					Popup gameMenupp = new Popup();
+					GameMenuPane gameMenu = new GameMenuPane();
+					gameMenu.setMinSize(800, 800);
+					gameMenupp.getContent().add(gameMenu);
+					gameMenupp.setAutoHide(false);
+					gameMenupp.show(stage.getScene().getWindow());
+					gameMenupp.setX((stage.getWidth() - stage.getWidth()) / 2);
+					gameMenupp.setY((stage.getHeight() - stage.getHeight()) / 2);
+				}
+			}
+		});
 	}
-	
+
 	public void updateChat(ArrayList<Message> messages) {
 		chatPane.updateChat(messages);
 	}
 
 	/**
-	 * Creates the center of the screen containing the following aspects: PersonalGoalCard,
-	 * Currencystones, Roundtrack, PublicGoalCards, ToolCards, Dice offer and the necessary buttons.
+	 * Creates the center of the screen containing the following aspects:
+	 * PersonalGoalCard, Currencystones, Roundtrack, PublicGoalCards, ToolCards,
+	 * Dice offer and the necessary buttons.
 	 */
 
 	private void createCenter() {
 		// initialize everything for personalInfo
 		personalInfo = new HBox();
-		currencyStonesPane = new CurrencyStonesPane(gameController	);// remove new GameController. Is only a test
+		currencyStonesPane = new CurrencyStonesPane(gameController);// remove new GameController. Is only a test
 		personalGoalCardPane = new PersonalGoalCardPane();
 
 		// initialize everything for the center box
@@ -113,14 +136,16 @@ public class GameScene extends Scene {
 		centerBox.getChildren().addAll(personalInfo, roundPane, goalCardPane, toolCardPane, dieOfferPane, button);
 		centerBox.setAlignment(Pos.CENTER);
 		centerBox.setSpacing(personalInfoSpacing);
-		centerBox.setPadding(new Insets(centerBoxPaddingTop, centerBoxPaddingRight, centerBoxPaddingBottom, centerBoxPaddingLeft));
+		centerBox.setPadding(
+				new Insets(centerBoxPaddingTop, centerBoxPaddingRight, centerBoxPaddingBottom, centerBoxPaddingLeft));
 
 		// adds the centerBox to the rootPane
 		rootPane.setCenter(centerBox);
 	}
 
 	/**
-	 * Creates the left column of the screen containing the following aspects: Glaswindow(large), Chat
+	 * Creates the left column of the screen containing the following aspects:
+	 * Glaswindow(large), Chat
 	 */
 	private void createLeft() {
 		// Initialize everything for the leftBox
@@ -132,14 +157,16 @@ public class GameScene extends Scene {
 		leftBox.getChildren().addAll(glassWindowPane1, chatPane);
 		leftBox.setAlignment(Pos.BOTTOM_CENTER);
 		leftBox.setSpacing(leftBoxSpacing);
-		leftBox.setPadding(new Insets(leftBoxPaddingTop, leftBoxPaddingRight, leftBoxPaddingBottom, leftBoxPaddingLeft));
+		leftBox.setPadding(
+				new Insets(leftBoxPaddingTop, leftBoxPaddingRight, leftBoxPaddingBottom, leftBoxPaddingLeft));
 
 		// adds the leftBox to the rootPane
 		rootPane.setLeft(leftBox);
 	}
 
 	/**
-	 * Creates the right column on the screen containing the following aspects: 3 Glaswindows(small)
+	 * Creates the right column on the screen containing the following aspects: 3
+	 * Glaswindows(small)
 	 */
 	private void createRight() {
 		// Initialize everything for the rightBox
@@ -157,7 +184,8 @@ public class GameScene extends Scene {
 		rightBox.getChildren().addAll(glassWindowPane2, glassWindowPane3, glassWindowPane4);
 		rightBox.setSpacing(rightBoxSpacing);
 		rightBox.setAlignment(Pos.BOTTOM_CENTER);
-		rightBox.setPadding(new Insets(rightBoxPaddingTop, rightBoxPaddingRight, rightBoxPaddingBottom, rightBoxPaddingLeft));
+		rightBox.setPadding(
+				new Insets(rightBoxPaddingTop, rightBoxPaddingRight, rightBoxPaddingBottom, rightBoxPaddingLeft));
 
 		// adds the rightBox to the rootPane
 		rootPane.setRight(rightBox);
