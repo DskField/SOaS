@@ -114,7 +114,7 @@ public class GameScene extends Scene {
 	private void createCenter() {
 		// initialize everything for personalInfo
 		personalInfo = new VBox();
-		currencyStonesPane = new CurrencyStonesPane(gameController);// remove new GameController. Is only a test
+		currencyStonesPane = new CurrencyStonesPane(gameController);
 		personalGoalCardPane = new PersonalGoalCardPane();
 
 		// initialize everything for the cardBox
@@ -162,7 +162,7 @@ public class GameScene extends Scene {
 	private void createLeft() {
 		// Initialize everything for the leftBox
 		leftBox = new VBox();
-		glassWindowPane1 = new GlassWindowPane(false, GameColor.RED);
+		glassWindowPane1 = new GlassWindowPane(GameColor.RED, gameController.getClientPlayer().getGlassWindow());
 		chatPane = new ChatPane(gameController);
 
 		// adds everything to the leftBox and handles makeup
@@ -181,14 +181,14 @@ public class GameScene extends Scene {
 	private void createRight() {
 		// Initialize everything for the rightBox
 		rightBox = new VBox();
-		glassWindowPane2 = new GlassWindowPane(true, GameColor.GREEN);
-		glassWindowPane3 = new GlassWindowPane(true, GameColor.BLUE);
-		glassWindowPane4 = new GlassWindowPane(true, GameColor.YELLOW);
+		glassWindowPane2 = new GlassWindowPane(GameColor.GREEN, gameController.getClientPlayer().getGlassWindow());
+		glassWindowPane3 = new GlassWindowPane(GameColor.BLUE, gameController.getClientPlayer().getGlassWindow());
+		glassWindowPane4 = new GlassWindowPane(GameColor.YELLOW, gameController.getClientPlayer().getGlassWindow());
 
 		// changes the glassWindow size to it's small size
-		glassWindowPane2.setSizeSmall();
-		glassWindowPane3.setSizeSmall();
-		glassWindowPane4.setSizeSmall();
+		glassWindowPane2.toggleIsSmall();
+		glassWindowPane3.toggleIsSmall();
+		glassWindowPane4.toggleIsSmall();
 
 		// adds everything to the rightBox and handles makeup
 		rightBox.getChildren().addAll(glassWindowPane2, glassWindowPane3, glassWindowPane4);

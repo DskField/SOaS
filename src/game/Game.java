@@ -83,30 +83,22 @@ public class Game {
 		loadPlayers();
 		loadCards();
 		loadGlassWindow();
+		loadCurrencyStones();
 	}
 
 	/**
 	 * This method loads all Dice from the DB to the Game.
 	 */
-	public void loadDice() {
+	private void loadDice() {
 		dice = persistenceFacade.getGameDice(gameID);
 		roundTrack = persistenceFacade.getRoundTrack(gameID);
 	}
 
 	/**
-	 * Load the GlassWindow with the right PatternCard
-	 */
-	public void loadGlassWindow() {
-		for (Player player : players) {
-			player.loadGlassWindow(persistenceFacade.getGlassWindow(player.getPlayerID()));
-		}
-	}
-
-	/**
 	 * Load the players from this game
 	 */
-	public void loadPlayers() {
-		this.players = persistenceFacade.getAllPlayersInGame(gameID);
+	private void loadPlayers() {
+		players = persistenceFacade.getAllPlayersInGame(gameID);
 		currentPlayer = persistenceFacade.getCurrentPlayer(gameID);
 		for (Player player : players) {
 			if (player.getUsername().equals(clientUser.getUsername())) {
@@ -119,9 +111,40 @@ public class Game {
 	/**
 	 * Get the Tool and Goal cards form the DB
 	 */
-	public void loadCards() {
+	private void loadCards() {
 		toolCards = persistenceFacade.getGameToolCards(gameID);
 		collectiveGoalCards = persistenceFacade.getSharedCollectiveGoalCards(gameID);
+	}
+
+	/**
+	 * Load the GlassWindow with the right PatternCard
+	 */
+	private void loadGlassWindow() {
+		final GameColor colors[] = { GameColor.RED, GameColor.GREEN, GameColor.BLUE, GameColor.PURPLE };
+		int num = 0;
+		for (Player player : players) {
+			player.loadGlassWindow(persistenceFacade.getGlassWindow(player.getPlayerID()));
+			player.getGlassWindow().loadPatternCard(persistenceFacade.getplayerPatternCard(player.getPlayerID()).get(0));
+			player.getGlassWindow().setColor(colors[num++]);
+		}
+
+	}
+
+	private void loadCurrencyStones() {
+		currencyStones = persistenceFacade.getAllStonesInGame(gameID);
+
+		for (CurrencyStone cs : currencyStones) {
+			for (Player player : players) {
+				if (cs.getPlayerID() == player.getPlayerID()) {
+					player.addCurrencyStone(cs);
+				}
+			}
+			for (ToolCard toolCard : toolCards) {
+				if (cs.getCardID() == toolCard.getCardID()) {
+					toolCard.addCurrencyStone(cs);
+				}
+			}
+		}
 	}
 
 	public void dealPatternCards() {

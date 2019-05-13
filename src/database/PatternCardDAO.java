@@ -13,7 +13,7 @@ class PatternCardDAO {
 	private Connection con;
 
 	public PatternCardDAO(Connection connection) {
-		con = connection;
+		this.con = connection;
 	}
 
 	ArrayList<PatternCard> getStandardPatternCards() {

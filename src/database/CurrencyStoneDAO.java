@@ -26,8 +26,9 @@ class CurrencyStoneDAO {
 				// Separated the variables on purpose for clarity
 				int stoneID = dbResultSet.getInt("idfavortoken");
 				int playerID = dbResultSet.getInt("idplayer");
+				int toolcardID = dbResultSet.getInt("gametoolcard");
 
-				CurrencyStone currencystone = new CurrencyStone(stoneID, playerID);
+				CurrencyStone currencystone = new CurrencyStone(stoneID, playerID, toolcardID);
 				results.add(currencystone);
 			}
 			stmt.close();

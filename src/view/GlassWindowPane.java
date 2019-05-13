@@ -1,9 +1,8 @@
 package view;
 
-import game.Die;
 import game.GameColor;
+import game.GlassWindow;
 import game.PatternCard;
-import game.PatternCardGenerator;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
@@ -23,76 +22,91 @@ public class GlassWindowPane extends BorderPane {
 	private final int glassWindowWidth = 400;
 	private final int glassWindowHeight = 800;
 	private final int spacingAmount = 20;
-	private Insets spacing;
+
 	private PatternPane patternField;
 	private StackPane scoreField;
 	private CornerRadii windowCurve;
-	
-	private PatternCardGenerator yay;
-	
-	
-	
-	public GlassWindowPane(boolean isSmall, GameColor color) {
-		windowCurve = new CornerRadii(5,3,3,5,0,0,0,0,true,true,true,true,false,false,false,false);
-		spacing = new Insets(spacingAmount);
+	private GameColor color;
+	private Circle circle;
+	private Label label;
+
+	private boolean isSmall = false;
+
+	public GlassWindowPane(GameColor color, GlassWindow glassWindow) {
+		this.color = color;
+		patternField = new PatternPane(glassWindow.getPatternCard());
+		windowCurve = new CornerRadii(5, 3, 3, 5, 0, 0, 0, 0, true, true, true, true, false, false, false, false);
+
 		setBackground(new Background(new BackgroundFill(Color.rgb(68, 47, 25), windowCurve, null)));
 		setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, windowCurve, new BorderWidths(5))));
-		setPrefSize(glassWindowWidth, glassWindowHeight);
-		setMaxSize(glassWindowWidth, glassWindowHeight);
-		
-		yay = new PatternCardGenerator();
-		setScore(color, isSmall);
-		setPattern(yay.getCard(), isSmall);
+		patternField.loadGlassWindow(glassWindow);
+
+		resize();
 	}
-	
-	public void addContent(PatternCard pattern, Boolean small) {
-		setPattern(pattern, small);
+
+	//	public void addContent(PatternCard pattern) {
+	//		setPattern(pattern);
+	//	}
+
+	public void toggleIsSmall() {
+		isSmall = !isSmall;
+		System.out.println("FALSE");
+		resize();
 	}
-	
-	public void setSizeSmall() {
-		setPrefSize(glassWindowWidth / 2, glassWindowHeight / 2.5);
-		setMargin(patternField, new Insets(10));
-	}
-	
-	public void setPattern(PatternCard pattern, Boolean isSmall) {
-		setBottom(patternField = new PatternPane(pattern, isSmall));
-		setMargin(patternField, spacing);
-	}
-	
-	private void setPlayerList() {
-		
-	}
-	
-	private void setPlayerName() {
-			
-	}
-	
-	private void setScore(GameColor color, Boolean isSmall) {
-		scoreField = new StackPane();
-		Circle circle = null;
-		Label label = new Label();
-		label.setText("HELLO");
-		label.setTextFill(Color.ALICEBLUE);
-		setTop(scoreField);
-		if(isSmall == true) {
-			circle = new Circle(180, 180, 60);
+
+	private void resize() {
+		if (isSmall) {
+			setPrefSize(glassWindowWidth / 2, glassWindowHeight / 2.5);
+			setMaxSize(glassWindowWidth / 2, glassWindowHeight / 2.5);
+			setMargin(patternField, new Insets(10));
+			circle.setRadius(60);
 			label.setFont(Font.font(20));
 			setMargin(scoreField, new Insets(10, 20, 0, 20));
-
-		}
-		else {
-			circle = new Circle(180, 180, 140);
+		} else {
+			setPrefSize(glassWindowWidth, glassWindowHeight);
+			setMaxSize(glassWindowWidth, glassWindowHeight);
+			circle.setRadius(140);
 			label.setFont(Font.font(40));
-			setMargin(scoreField, spacing);
+			setMargin(scoreField, new Insets(spacingAmount));
+			setMargin(patternField, new Insets(spacingAmount));
 		}
-		circle.setFill(color.getColor());
-		circle.setStroke(Color.BLACK);
-		scoreField.getChildren().addAll(circle,label);
 
+		patternField.resize(isSmall);
+	}
+
+	//	public void setSizeSmall() {
+	//		setPrefSize(glassWindowWidth / 2, glassWindowHeight / 2.5);
+	//		setMargin(patternField, new Insets(10));
+	//	}
+
+	public void setPattern(PatternCard pattern) {
+		patternField = new PatternPane(pattern);
+		setBottom(patternField);
+	}
+
+	//TODO: ???
+	private void setPlayerList() {
 
 	}
-	
-	public void addDie(Die die, int position) {
-		patternField.addDie(position, die.getDieValue(), die.getDieColor());
+
+	private void setPlayerName() {
+
+	}
+
+	private void setScore() {
+		scoreField = new StackPane();
+		label = new Label();
+		label.setText("HELLO");
+		label.setTextFill(Color.BLACK);
+		label.setFont(Font.font(40));
+
+		circle = new Circle(180, 180, 140);
+		circle.setFill(color.getColor());
+		circle.setStroke(Color.BLACK);
+
+		setMargin(scoreField, new Insets(spacingAmount));
+
+		scoreField.getChildren().addAll(circle, label);
+		setTop(scoreField);
 	}
 }
