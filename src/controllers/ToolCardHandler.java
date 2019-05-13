@@ -379,7 +379,7 @@ public class ToolCardHandler {
 	// The die value is to be chosen by the player
 	public void handleFluxRemover(Die die, int dieValue) {
 
-		Die handDie;
+		//		Die handDie;
 
 		//		String dieCol = translateColor(handDie.getDieColor());
 
@@ -391,7 +391,7 @@ public class ToolCardHandler {
 
 		int index = random.nextInt(dice.size());
 		dice.get(index).roll(game.getCurrentRound()); // Stub for getCurrentRound
-		handDie = dice.get(index);
+		//		handDie = dice.get(index);
 		dice.remove(index);
 
 		//		handDie = new Die(handDie.getDieId(), dieCol, die.getRound(), dieValue);

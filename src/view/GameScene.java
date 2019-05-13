@@ -4,16 +4,21 @@ import java.util.ArrayList;
 
 import controllers.GameController;
 import game.Message;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
 
 public class GameScene extends Scene {
 	// constants
@@ -55,6 +60,7 @@ public class GameScene extends Scene {
 	DieOfferPane dieOfferPane;
 	Button button;
 	GameController gameController;
+	Stage stage;
 
 	/**
 	 * Creates the GameScene
@@ -73,11 +79,29 @@ public class GameScene extends Scene {
 		createCenter();
 		createLeft();
 		createRight();
+
+		// Listener for escape key to open in game menu
+		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			public void handle(KeyEvent ke) {
+				if (ke.getCode() == KeyCode.ESCAPE) {
+					stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
+					Popup gameMenuPopup = new Popup();
+					GameMenuPane gameMenu = new GameMenuPane();
+					gameMenuPopup.getContent().add(gameMenu);
+					gameMenuPopup.setAutoHide(false);
+					gameMenuPopup.show(stage);
+					gameMenuPopup.centerOnScreen();
+				}
+			}
+		});
 	}
-/**
- * gives a list of messages to the ChatPane
- * @param messages ArrayList<Message> list of messages that will be added to the chat.
- */
+
+	/**
+	 * gives a list of messages to the ChatPane
+	 * 
+	 * @param messages ArrayList<Message> list of messages that will be added to the
+	 *                 chat.
+	 */
 	public void updateChat(ArrayList<Message> messages) {
 		chatPane.updateChat(messages);
 	}

@@ -1,5 +1,5 @@
-/game/
-/controllers/
-/database/
 /view/
+/controllers/
 /client/
+/database/
+/game/

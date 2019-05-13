@@ -9,7 +9,7 @@ public class Client {
 	private User opponent;
 	private ArrayList<Challenge> challenges;
 
-	public Client(ArrayList<Lobby> lobbies, User user,User opponent, ArrayList<Challenge> challenges) {
+	public Client(ArrayList<Lobby> lobbies, User user, User opponent, ArrayList<Challenge> challenges) {
 		this.lobbies = lobbies;
 		this.user = user;
 		this.opponent = opponent;
@@ -56,7 +56,7 @@ public class Client {
 	public User getUser() {
 		return user;
 	}
-	
+
 	public User getOpponent() {
 		return opponent;
 	}
@@ -64,7 +64,7 @@ public class Client {
 	public ArrayList<Challenge> getChallenges() {
 		return challenges;
 	}
-	
+
 	// TODO check if needed
 	public Lobby getLobby(int gameID) {
 		for (Lobby lob : lobbies) {

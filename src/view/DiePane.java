@@ -31,8 +31,6 @@ public class DiePane extends Pane {
 		circleRadius = circleSize / 2;
 		spacing = (size - (circleSize * 3)) / 4;
 
-		color = GameColor.PURPLE;
-
 		addCircles();
 
 		setBackground(new Background(new BackgroundFill(color.getColor(), null, null)));
