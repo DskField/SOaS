@@ -8,8 +8,10 @@ public class Message {
 	private Player player;
 	private String message;
 	public Timestamp timestamp;
+
 	/**
 	 * Constructor used to create a Message object
+	 * 
 	 * @param message - String containing the text
 	 * @param player - Player who typed the message
 	 * @param timestamp - Timestamp from when the message was created
@@ -19,16 +21,17 @@ public class Message {
 		this.player = player;
 		this.timestamp = timestamp;
 	}
-	
+
 	/**
 	 * returns Timestamp as a string in the format used for the chat.
+	 * 
 	 * @return String chatTime
 	 */
 	public String getChatTime() {
-		String s = new SimpleDateFormat("kk	:mm:ss").format(timestamp);
+		String s = new SimpleDateFormat("kk:mm:ss").format(timestamp);
 		return s;
 	}
-	
+
 	//getters & setters
 	public String getMessage() {
 		return message;
@@ -37,15 +40,13 @@ public class Message {
 	public Timestamp getTimestamp() {
 		return timestamp;
 	}
-	
+
 	public int getPlayerId() {
 		return player.getPlayerID();
 	}
-	
+
 	public String getUserName() {
 		return player.getUsername();
 	}
-	
-	
 
 }

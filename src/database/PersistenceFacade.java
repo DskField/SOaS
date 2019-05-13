@@ -20,7 +20,7 @@ public class PersistenceFacade {
 	private PlayerDAO playerDAO = new PlayerDAO(baseDAO.getConnection());
 	private MessageDAO messageDAO = new MessageDAO(baseDAO.getConnection());
 	private DieDAO dieDAO = new DieDAO(baseDAO.getConnection());
-	private PatternCardDAO patternCardDAO = new PatternCardDAO(baseDAO.getConnection());
+	//	private PatternCardDAO patternCardDAO = new PatternCardDAO(baseDAO.getConnection());
 	private ToolCardDAO toolCardDAO = new ToolCardDAO(baseDAO.getConnection());
 	private CollectiveGoalCardDAO collectiveGoalCardDAO = new CollectiveGoalCardDAO(baseDAO.getConnection());
 	private CurrencyStoneDAO currencyStoneDAO = new CurrencyStoneDAO(baseDAO.getConnection());
@@ -130,7 +130,7 @@ public class PersistenceFacade {
 	}
 
 	//PatternCardDAO
-	public void insertPatternCardOptions(int idPlayer) {
-		patternCardDAO.insertPatternCardOptions(idPlayer);
-	}
+	//	public void insertPatternCardOptions(int idPlayer) {
+	//		patternCardDAO.insertPatternCardOptions(idPlayer);
+	//	}
 }

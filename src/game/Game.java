@@ -126,7 +126,7 @@ public class Game {
 
 	public void dealPatternCards() {
 		for (Player player : players) {
-			persistenceFacade.insertPatternCardOptions(player.getPlayerID());
+			//			persistenceFacade.insertPatternCardOptions(player.getPlayerID());
 		}
 	}
 
@@ -275,8 +275,6 @@ public class Game {
 			messages.add(error);
 			return messages;
 		} else {
-			System.out.println(message.getChatTime());
-			System.out.println(chat.getLastChatTime());
 			persistenceFacade.insertMessage(message);
 			return updateChat();
 		}
