@@ -17,7 +17,12 @@ class MessageDAO {
 	public MessageDAO(Connection connection) {
 		con = connection;
 	}
-
+	/**
+	 * runs a query on the database to get messages from the database for the specified Players.
+	 * @param query - An SQL query as string that will be run on the database
+	 * @param players - list of players in the current game
+	 * @return ArrayList<Message> list of messages 
+	 */
 	private ArrayList<Message> selectMessage(String query, ArrayList<Player> players) {
 		ArrayList<Message> results = new ArrayList<Message>();
 		try {
@@ -74,7 +79,7 @@ class MessageDAO {
 	 * @return returns an ArrayList of Message containing all the messages of the the specified players
 	 * in order of time
 	 */
-	public ArrayList<Message> getALLMessages(ArrayList<Player> players) {
+	ArrayList<Message> getALLMessages(ArrayList<Player> players) {
 		return selectMessage("SELECT * FROM chatline ORDER BY time ASC", players);
 	}
 
@@ -85,12 +90,15 @@ class MessageDAO {
 	 * @return returns an ArrayList of Message containing all the messages of the the specified players
 	 * in order of time
 	 */
-	public ArrayList<Message> updateChat(ArrayList<Player> players, Timestamp time) {
+	ArrayList<Message> updateChat(ArrayList<Player> players, Timestamp time) {
 		String s = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss").format(time);
 		return selectMessage("SELECT * FROM chatline WHERE time > '" + s + "' ORDER BY time ASC", players);
 	}
-
-	public void sendMessage(Message message) {
+	/**
+	 * 
+	 * @param message - The message that wil be inserted into the database.
+	 */
+	void sendMessage(Message message) {
 		insertMessage(message);
 	}
 

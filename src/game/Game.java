@@ -273,8 +273,6 @@ public class Game {
 			return messages;
 		}
 		else {
-			System.out.println(message.getChatTime());
-			System.out.println(chat.getLastChatTime());
 			persistenceFacade.insertMessage(message);
 			return updateChat();
 		}
