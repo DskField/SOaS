@@ -27,8 +27,8 @@ public class Game {
 	private Round[] roundTrack;
 
 	/**
-	 * table is the list with die that are rolled but not placed or in the round track. That means they
-	 * are the dice to choose out of this round
+	 * table is the list with die that are rolled but not placed or in the round
+	 * track. That means they are the dice to choose out of this round
 	 */
 	private ArrayList<Die> table;
 
@@ -83,30 +83,22 @@ public class Game {
 		loadPlayers();
 		loadCards();
 		loadGlassWindow();
+		loadCurrencyStones();
 	}
 
 	/**
 	 * This method loads all Dice from the DB to the Game.
 	 */
-	public void loadDice() {
+	private void loadDice() {
 		dice = persistenceFacade.getGameDice(gameID);
 		roundTrack = persistenceFacade.getRoundTrack(gameID);
 	}
 
 	/**
-	 * Load the GlassWindow with the right PatternCard
-	 */
-	public void loadGlassWindow() {
-		for (Player player : players) {
-			player.loadGlassWindow(persistenceFacade.getGlassWindow(player.getPlayerID()));
-		}
-	}
-
-	/**
 	 * Load the players from this game
 	 */
-	public void loadPlayers() {
-		this.players = persistenceFacade.getAllPlayersInGame(gameID);
+	private void loadPlayers() {
+		players = persistenceFacade.getAllPlayersInGame(gameID);
 		currentPlayer = persistenceFacade.getCurrentPlayer(gameID);
 		for (Player player : players) {
 			if (player.getUsername().equals(clientUser.getUsername())) {
@@ -119,19 +111,51 @@ public class Game {
 	/**
 	 * Get the Tool and Goal cards form the DB
 	 */
-	public void loadCards() {
+	private void loadCards() {
 		toolCards = persistenceFacade.getGameToolCards(gameID);
 		collectiveGoalCards = persistenceFacade.getSharedCollectiveGoalCards(gameID);
 	}
 
+	/**
+	 * Load the GlassWindow with the right PatternCard
+	 */
+	private void loadGlassWindow() {
+		final GameColor colors[] = { GameColor.RED, GameColor.GREEN, GameColor.BLUE, GameColor.PURPLE };
+		int num = 0;
+		for (Player player : players) {
+			player.loadGlassWindow(persistenceFacade.getGlassWindow(player.getPlayerID()));
+			player.getGlassWindow().loadPatternCard(persistenceFacade.getplayerPatternCard(player.getPlayerID()).get(0));
+			player.getGlassWindow().setColor(colors[num++]);
+		}
+
+	}
+
+	private void loadCurrencyStones() {
+		currencyStones = persistenceFacade.getAllStonesInGame(gameID);
+
+		for (CurrencyStone cs : currencyStones) {
+			for (Player player : players) {
+				if (cs.getPlayerID() == player.getPlayerID()) {
+					player.addCurrencyStone(cs);
+				}
+			}
+			for (ToolCard toolCard : toolCards) {
+				if (cs.getCardID() == toolCard.getCardID()) {
+					toolCard.addCurrencyStone(cs);
+				}
+			}
+		}
+	}
+
 	public void dealPatternCards() {
 		for (Player player : players) {
-			persistenceFacade.insertPatternCardOptions(player.getPlayerID());
+			//			persistenceFacade.insertPatternCardOptions(player.getPlayerID());
 		}
 	}
 
 	/**
-	 * Removes the die from the list with dice and places them on the list table. It also rolls the dice
+	 * Removes the die from the list with dice and places them on the list table. It
+	 * also rolls the dice
 	 */
 	public void shakeSack() {
 		int numDice = players.size() * 2 + 1;
@@ -251,7 +275,8 @@ public class Game {
 	/**
 	 * gets new Messages from the database and adds it to the chat.
 	 * 
-	 * @return ArrayList<Messages> list of Messages that need to be added to the ChatPane
+	 * @return ArrayList<Messages> list of Messages that need to be added to the
+	 *         ChatPane
 	 */
 	public ArrayList<Message> updateChat() {
 		ArrayList<Message> messages = persistenceFacade.updateChat(players, chat.getLastTimestamp());
@@ -260,22 +285,24 @@ public class Game {
 	}
 
 	/**
-	 * Checks if the new Message has the same primary key as the message before it. If this is the case
-	 * the method wil return an ArrayList<Message> containing an error message. Otherwise the message
-	 * will be send to the database for insertion. After insertion this method will call upon the
-	 * updateChat function to update the chat from the database.
+	 * Checks if the new Message has the same primary key as the message before it.
+	 * If this is the case the method wil return an ArrayList<Message> containing an
+	 * error message. Otherwise the message will be send to the database for
+	 * insertion. After insertion this method will call upon the updateChat function
+	 * to update the chat from the database.
 	 * 
 	 * @param message - the Message that needs to be send to the database
-	 * @return ArrayList<Message> list of messages that need to be added to the ChatPane
+	 * @return ArrayList<Message> list of messages that need to be added to the
+	 *         ChatPane
 	 */
 	public ArrayList<Message> sendMessage(Message message) {
 		if (message.getChatTime().equals(chat.getLastChatTime())) {
-			Message error = new Message("please don't spam you can only send 1 message a second", getClientPlayer(), new Timestamp(System.currentTimeMillis()));
+			Message error = new Message("please don't spam you can only send 1 message a second", getClientPlayer(),
+					new Timestamp(System.currentTimeMillis()));
 			ArrayList<Message> messages = new ArrayList<Message>();
 			messages.add(error);
 			return messages;
-		}
-		else {
+		} else {
 			persistenceFacade.insertMessage(message);
 			return updateChat();
 		}
@@ -283,7 +310,8 @@ public class Game {
 	}
 
 	// GETTERS AND SETTERS
-	// TODO the current getters and setters are temporary, they will be changed in the future
+	// TODO the current getters and setters are temporary, they will be changed in
+	// the future
 	public Player getClientPlayer() {
 		return clientPlayer;
 	}

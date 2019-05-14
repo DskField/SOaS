@@ -20,23 +20,24 @@ public class GameController {
 	public GameController(MainApplication mainApplication) {
 		this.mainApplication = mainApplication;
 		//TODO temporary call, when the game will be created the ClientController needs to give the information to the GameController
-		joinGame(2, new User("speler1", 0, 0, GameColor.RED, 0));
+		joinGame(1, new User("speler1", 0, 0, GameColor.RED, 0));
 	}
 
 	public void joinGame(int idGame, User clientUser) {
-		gameScene = new GameScene(this);
 		game = new Game(idGame, clientUser);
 		game.loadGame();
+		gameScene = new GameScene(this);
 		mainApplication.setScene(gameScene);
 
 		createTimer();
 	}
-/**
- * Uses the player text to make a new Message Object.
- * sends the Message to model for processing
- * and receives and Arraylist<Message> to update the chatPane with
- * @param text - the text that the player sends to the chat
- */
+
+	/**
+	 * Uses the player text to make a new Message Object. sends the Message to model for processing and
+	 * receives and Arraylist<Message> to update the chatPane with
+	 * 
+	 * @param text - the text that the player sends to the chat
+	 */
 	public void sendMessage(String text) {
 		Message message = new Message(text, getClientPlayer(), new Timestamp(System.currentTimeMillis()));
 		gameScene.updateChat(game.sendMessage(message));
@@ -77,9 +78,10 @@ public class GameController {
 
 		timer.start();
 	}
-/**
- * updates the catPane by using information out of the game model.
- */
+
+	/**
+	 * updates the catPane by using information out of the game model.
+	 */
 	private void update() {
 		gameScene.updateChat(game.updateChat());
 	}

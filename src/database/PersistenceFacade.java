@@ -8,6 +8,7 @@ import game.CurrencyStone;
 import game.Die;
 import game.GlassWindow;
 import game.Message;
+import game.PatternCard;
 import game.Player;
 import game.Round;
 import game.ToolCard;
@@ -132,5 +133,9 @@ public class PersistenceFacade {
 	//PatternCardDAO
 	public void insertPatternCardOptions(int idPlayer) {
 		patternCardDAO.insertPatternCardOptions(idPlayer);
+	}
+
+	public ArrayList<PatternCard> getplayerPatternCard(int idPlayer) {
+		return patternCardDAO.getplayerPatternCard(idPlayer);
 	}
 }

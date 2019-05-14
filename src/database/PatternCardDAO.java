@@ -7,13 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import game.GameColor;
 import game.PatternCard;
+import game.SpacePattern;
 
 class PatternCardDAO {
 	private Connection con;
 
 	public PatternCardDAO(Connection connection) {
-		con = connection;
+		this.con = connection;
 	}
 
 	ArrayList<PatternCard> getStandardPatternCards() {
@@ -87,13 +89,38 @@ class PatternCardDAO {
 				int dif = dbResultSet.getInt("difficulty");
 
 				PatternCard pattern = new PatternCard(id, name, dif);
+				pattern.addPattern(selectSpacePatterns(id));
 				results.add(pattern);
 			}
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("PatternCardDAO: " + e.getMessage());
+			System.err.println("PatternCardDAO --> selectPatternCard: " + e.getMessage());
 		}
 		return results;
+	}
+
+	private SpacePattern[][] selectSpacePatterns(int cardID) {
+		SpacePattern[][] result = new SpacePattern[5][4];
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM patterncardfield WHERE patterncard_idpatterncard = ?;");
+			stmt.setInt(1, cardID);
+			ResultSet dbResultSet = stmt.executeQuery();
+			con.commit();
+
+			while (dbResultSet.next()) {
+				int x = dbResultSet.getInt("position_x");
+				int y = dbResultSet.getInt("position_y");
+				GameColor color = GameColor.getEnum((dbResultSet.getString("color") == null) ? " " : dbResultSet.getString("color"));
+				int value = dbResultSet.getInt("value");
+
+				SpacePattern spacePattern = new SpacePattern(x - 1, y - 1, color, value);
+				result[x - 1][y - 1] = spacePattern;
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("PatternCardDAO --> selectSpacePatterns: " + e.getMessage());
+		}
+		return result;
 	}
 
 	//Is used to add a custom PatternCard Object to the database, but only to the patterncard table

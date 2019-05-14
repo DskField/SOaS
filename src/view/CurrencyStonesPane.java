@@ -1,6 +1,7 @@
 package view;
 
 import controllers.GameController;
+import game.CurrencyStone;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.FlowPane;
@@ -15,14 +16,14 @@ public class CurrencyStonesPane extends FlowPane {
 		setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
 		setPrefSize(size, size);
 
-		showStones();
+//		showStones();
 	}
 
 	// Draws a stone for each currencystone from player
 
 	private void showStones() {
-//		for (CurrencyStone cs : gc.getClientPlayer().getCurrencyStones()) {
-//			getChildren().add(new CurrencyStonePane(gc.getClientPlayer().getGlassWindow().getColor()));
-//		}
+		for (CurrencyStone cs : gc.getClientPlayer().getCurrencyStones()) {
+			getChildren().add(new CurrencyStonePane(gc.getClientPlayer().getGlassWindow().getColor()));
+		}
 	}
 }
