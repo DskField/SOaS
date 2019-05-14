@@ -2,6 +2,7 @@ package view;
 
 import game.GameColor;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
@@ -13,6 +14,7 @@ public class CurrencyStonePane extends Pane {
 	// Might change it so that it gets a currency stone
 	CurrencyStonePane(GameColor color) {
 		Shape stone = new Circle(CENTERX, CENTERY, RADIUS, color.getColor());
+		stone.setStroke(Color.BLACK);
 		getChildren().add(stone);
 	}
 }

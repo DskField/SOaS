@@ -12,16 +12,16 @@ public class ClientController {
 
 	public ClientController() {
 
-		client = new Client();
+		//		client = new Client();
 		clientLobbies = client.getLobbies();
 	}
 
-//	public void exit() {
-//	System.exit(0)
-//	}
+	//	public void exit() {
+	//	System.exit(0)
+	//	}
 
 	public void logout() {
-		
+
 		// TODO waiting for view so a pane can be set back
 	}
 
@@ -30,10 +30,10 @@ public class ClientController {
 		// TODO fetch query to update the current lobbies
 	}
 
-//	public String findUser(User user) {
-//
-//		String username = user.getLoginName();
-//
-//		return username;
-//	}
+	//	public String findUser(User user) {
+	//
+	//		String username = user.getLoginName();
+	//
+	//		return username;
+	//	}
 }

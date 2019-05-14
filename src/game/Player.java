@@ -22,13 +22,13 @@ public class Player {
 		this.username = username;
 	}
 
+	public void addCurrencyStone(CurrencyStone currencyStone) {
+		this.currencyStones.add(currencyStone);
+	}
+
 	// GETTERS AND SETTERS
 	public ArrayList<CurrencyStone> getCurrencyStones() {
 		return currencyStones;
-	}
-
-	public void setCurrencyStones(ArrayList<CurrencyStone> currencyStones) {
-		this.currencyStones = currencyStones;
 	}
 
 	public GlassWindow getGlassWindow() {

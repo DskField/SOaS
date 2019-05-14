@@ -90,7 +90,7 @@ class PlayerDAO {
 	}
 
 	ArrayList<Player> getAllPlayersInGame(int idGame) {
-		return selectPlayer("SELECT * FROM player WHERE game_idgame = " + idGame);
+		return selectPlayer("SELECT * FROM player WHERE game_idgame = " + idGame + " ORDER BY idplayer ASC");
 	}
 
 	void insertPlayer(int idGame, ArrayList<String> username) {
