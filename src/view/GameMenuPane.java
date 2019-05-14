@@ -32,25 +32,25 @@ class GameMenuPane extends VBox {
 		setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.7), null, null)));
 
 		// TODO FIX CSS
-		setStyle(".button {"
-				+ " -fx-background-color: green; -fx-text-fill: white; -fx-font: normal bold 25px 'serif';}");
+//		setStyle(".button {"
+//				+ " -fx-background-color: green; -fx-text-fill: white; -fx-font: normal bold 25px 'serif';}");
 		// set size
 		setMinSize(stage.getWidth(), stage.getHeight());
 		// Give buttons text and style
 		btn_resume = new Button("Hervatten");
 		btn_resume.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
-//		btn_resume.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-font: normal bold 25px 'serif'; ");
+		btn_resume.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-font: normal bold 25px 'serif'; ");
 		btn_rules = new Button("Regels");
 		btn_rules.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
-//		btn_rules.setStyle(
-//				"-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
+		btn_rules.setStyle(
+				"-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
 		btn_toMenu = new Button("Terug naar hoofd menu");
 		btn_toMenu.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
-//		btn_toMenu.setStyle(
-//				"-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
+		btn_toMenu.setStyle(
+				"-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
 		btn_exit = new Button("Afsluiten");
 		btn_exit.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
-//		btn_exit.setStyle("-fx-background-color: red; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
+		btn_exit.setStyle("-fx-background-color: red; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
 		// give actions to buttons
 		btn_resume.setOnAction(e -> resume());
 		btn_rules.setOnAction(e -> showRules());
@@ -58,8 +58,6 @@ class GameMenuPane extends VBox {
 		btn_exit.setOnAction(e -> exit());
 		// add button to pane
 		getChildren().addAll(btn_resume, btn_rules, btn_toMenu, btn_exit);
-		// disable everything on gamescene
-		Stage.getWindows().filtered(window -> window.isShowing()).get(0).getScene().getRoot().setDisable(true);
 
 		// If escape key is pressed it registers it as if btn_resume is clicked
 		btn_resume.setCancelButton(true);
@@ -68,7 +66,6 @@ class GameMenuPane extends VBox {
 	// Resumes game, enables everything in the game en hides the gamemenu
 	private void resume() {
 		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
-		stage.getScene().getRoot().setDisable(false);
 	}
 
 //loads the rules and hides game menu
@@ -76,9 +73,10 @@ class GameMenuPane extends VBox {
 		Popup rulePopup = new Popup();
 		RulePane rules = new RulePane();
 		rulePopup.getContent().add(rules);
-		rulePopup.setAutoHide(false);
+		rulePopup.setAutoHide(true);
 		rulePopup.show(stage);
-		rulePopup.centerOnScreen();
+		rulePopup.setX(stage.getWidth() / 2);
+		rulePopup.setY(stage.getHeight() / 2);
 		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
 	}
 

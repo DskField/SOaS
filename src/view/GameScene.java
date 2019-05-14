@@ -70,7 +70,6 @@ public class GameScene extends Scene {
 		// initialize
 		rootPane = new BorderPane();
 		this.gameController = gameController;
-
 		// sets the rootPane and handles makeup
 		setRoot(rootPane);
 		rootPane.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
@@ -88,12 +87,14 @@ public class GameScene extends Scene {
 					Popup gameMenuPopup = new Popup();
 					GameMenuPane gameMenu = new GameMenuPane();
 					gameMenuPopup.getContent().add(gameMenu);
-					gameMenuPopup.setAutoHide(false);
+					gameMenuPopup.setAutoHide(true);
 					gameMenuPopup.show(stage);
-					gameMenuPopup.centerOnScreen();
+					gameMenuPopup.setX(stage.getWidth() / 2);
+					gameMenuPopup.setY(stage.getHeight() / 2);
 				}
 			}
 		});
+
 	}
 
 	/**
