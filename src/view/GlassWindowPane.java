@@ -2,7 +2,6 @@ package view;
 
 import game.GameColor;
 import game.GlassWindow;
-import game.PatternCard;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
@@ -39,18 +38,15 @@ public class GlassWindowPane extends BorderPane {
 
 		setBackground(new Background(new BackgroundFill(Color.rgb(68, 47, 25), windowCurve, null)));
 		setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, windowCurve, new BorderWidths(5))));
-		patternField.loadGlassWindow(glassWindow);
+		//		patternField.loadGlassWindow(glassWindow);
+		setScore();
+		setBottom(patternField);
 
 		resize();
 	}
 
-	//	public void addContent(PatternCard pattern) {
-	//		setPattern(pattern);
-	//	}
-
 	public void toggleIsSmall() {
 		isSmall = !isSmall;
-		System.out.println("FALSE");
 		resize();
 	}
 
@@ -74,15 +70,10 @@ public class GlassWindowPane extends BorderPane {
 		patternField.resize(isSmall);
 	}
 
-	//	public void setSizeSmall() {
-	//		setPrefSize(glassWindowWidth / 2, glassWindowHeight / 2.5);
-	//		setMargin(patternField, new Insets(10));
+	//	public void setPattern(PatternCard pattern) {
+	//		patternField = new PatternPane(pattern);
+	//		setBottom(patternField);
 	//	}
-
-	public void setPattern(PatternCard pattern) {
-		patternField = new PatternPane(pattern);
-		setBottom(patternField);
-	}
 
 	//TODO: ???
 	private void setPlayerList() {

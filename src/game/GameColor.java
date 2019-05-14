@@ -3,7 +3,7 @@ package game;
 import javafx.scene.paint.Color;
 
 public enum GameColor {
-	RED(Color.RED), YELLOW(Color.YELLOW), GREEN(Color.GREEN), BLUE(Color.BLUE), PURPLE(Color.PURPLE), EMPTY(Color.WHITE);
+	RED(Color.RED), YELLOW(Color.YELLOW), GREEN(Color.GREEN), BLUE(Color.BLUE), PURPLE(Color.PURPLE), EMPTY(Color.WHITE), GREY(Color.GREY);
 
 	private Color color;
 
@@ -15,25 +15,25 @@ public enum GameColor {
 	public Color getColor() {
 		return this.color;
 	}
-	
+
 	// changing dutch input into an enum
 	public static GameColor getEnum(String key) {
-	    switch (key.toLowerCase()) {
-	    case "rood":
-	        return RED;
-	    case "geel":
-	        return YELLOW;
-	    case "groen":
-	        return GREEN;
-	    case "blauw":
-	        return BLUE;
-	    case "paars":
-	        return PURPLE;
-	    default:
-	        return EMPTY;
-	    }
+		switch (key.toLowerCase()) {
+		case "rood":
+			return RED;
+		case "geel":
+			return YELLOW;
+		case "groen":
+			return GREEN;
+		case "blauw":
+			return BLUE;
+		case "paars":
+			return PURPLE;
+		default:
+			return EMPTY;
+		}
 	}
-	
+
 	public String getDatabaseName() {
 		switch (this) {
 		case RED:

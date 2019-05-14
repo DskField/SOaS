@@ -24,7 +24,9 @@ public class PatternPane extends FlowPane {
 
 	public PatternPane(PatternCard pattern) {
 		super(squareGap, squareGap);
+
 		spaces = new ArrayList<DiePane>();
+		dice = new ArrayList<>();
 
 		setAlignment(Pos.CENTER);
 		setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
@@ -38,7 +40,7 @@ public class PatternPane extends FlowPane {
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
 				SpaceGlass space = glassWindow.getSpace(x, y);
-				if (space != null) {
+				if (space.getDie() != null) {
 					dice.add(new DiePane(space.getDie().getDieValue(), space.getDie().getDieColor()));
 				} else {
 					dice.add(null);
@@ -53,18 +55,16 @@ public class PatternPane extends FlowPane {
 				addRectangle(pattern.getSpaceValue(x, y), pattern.getSpaceColor(x, y));
 			}
 		}
+		getChildren().addAll(spaces);
 	}
 
 	public void addRectangle(int eyes, GameColor color) {
+		if (color == GameColor.EMPTY && eyes > 0) {
+			color = GameColor.GREY;
+		}
 		DiePane space = new DiePane(eyes, color);
 		space.resize(squareSize);
-		if (color == GameColor.EMPTY && eyes > 0) {
-			space.setBackground(new Background(new BackgroundFill(Color.GRAY, null, null)));
-		} else {
-			space.setBackground(new Background(new BackgroundFill(color.getColor(), null, null)));
-		}
 		spaces.add(space);
-		getChildren().add(space);
 	}
 
 	public void resize(boolean isSmall) {
