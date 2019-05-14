@@ -3,7 +3,6 @@ package view;
 import java.util.ArrayList;
 
 import controllers.GameController;
-import game.GameColor;
 import game.Message;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -162,11 +161,11 @@ public class GameScene extends Scene {
 	private void createLeft() {
 		// Initialize everything for the leftBox
 		leftBox = new VBox();
-		glassWindowPane1 = new GlassWindowPane(GameColor.RED, gameController.getClientPlayer().getGlassWindow());
+		//		glassWindowPane1 = new GlassWindowPane(GameColor.RED, gameController.getClientPlayer().getGlassWindow());
 		chatPane = new ChatPane(gameController);
 
 		// adds everything to the leftBox and handles makeup
-		leftBox.getChildren().addAll(glassWindowPane1, chatPane);
+		leftBox.getChildren().addAll(/* glassWindowPane1, */chatPane);
 		leftBox.setAlignment(Pos.BOTTOM_CENTER);
 		leftBox.setSpacing(leftBoxSpacing);
 		leftBox.setPadding(new Insets(leftBoxPaddingTop, leftBoxPaddingRight, leftBoxPaddingBottom, leftBoxPaddingLeft));
@@ -181,17 +180,17 @@ public class GameScene extends Scene {
 	private void createRight() {
 		// Initialize everything for the rightBox
 		rightBox = new VBox();
-		glassWindowPane2 = new GlassWindowPane(GameColor.GREEN, gameController.getClientPlayer().getGlassWindow());
-		glassWindowPane3 = new GlassWindowPane(GameColor.BLUE, gameController.getClientPlayer().getGlassWindow());
-		glassWindowPane4 = new GlassWindowPane(GameColor.YELLOW, gameController.getClientPlayer().getGlassWindow());
+		//		glassWindowPane2 = new GlassWindowPane(GameColor.GREEN, gameController.getClientPlayer().getGlassWindow());
+		//		glassWindowPane3 = new GlassWindowPane(GameColor.BLUE, gameController.getClientPlayer().getGlassWindow());
+		//		glassWindowPane4 = new GlassWindowPane(GameColor.YELLOW, gameController.getClientPlayer().getGlassWindow());
 
 		// changes the glassWindow size to it's small size
-		glassWindowPane2.toggleIsSmall();
-		glassWindowPane3.toggleIsSmall();
-		glassWindowPane4.toggleIsSmall();
+		//		glassWindowPane2.toggleIsSmall();
+		//		glassWindowPane3.toggleIsSmall();
+		//		glassWindowPane4.toggleIsSmall();
 
 		// adds everything to the rightBox and handles makeup
-		rightBox.getChildren().addAll(glassWindowPane2, glassWindowPane3, glassWindowPane4);
+		//		rightBox.getChildren().addAll(glassWindowPane2, glassWindowPane3, glassWindowPane4);
 		rightBox.setSpacing(rightBoxSpacing);
 		rightBox.setAlignment(Pos.BOTTOM_CENTER);
 		rightBox.setPadding(new Insets(rightBoxPaddingTop, rightBoxPaddingRight, rightBoxPaddingBottom, rightBoxPaddingLeft));
