@@ -22,9 +22,11 @@ public class DiePane extends Pane {
 	private double size;
 
 	private int eyes;
+	private GameColor color;
 
 	public DiePane(int eyes, GameColor color) {
 		this.eyes = eyes;
+		this.color = color;
 		size = 79;
 
 		circleSize = size * 0.2;
@@ -86,5 +88,9 @@ public class DiePane extends Pane {
 		default:
 			break;
 		}
+	}
+
+	public GameColor getColor() {
+		return color;
 	}
 }

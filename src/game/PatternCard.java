@@ -37,7 +37,7 @@ public class PatternCard {
 	}
 
 	public GameColor getSpaceColor(int x, int y) {
-		return pattern[x][y].getPatternColor();
+		return pattern[x][y].getColor();
 	}
 
 	public int getSpaceValue(int x, int y) {

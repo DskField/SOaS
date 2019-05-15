@@ -3,8 +3,8 @@ package view;
 import java.util.ArrayList;
 
 import controllers.GameController;
-import game.GameColor;
 import game.Message;
+import game.Player;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,44 +24,52 @@ import javafx.stage.Stage;
 public class GameScene extends Scene {
 	// constants
 	private final int personalInfoSpacing = 10;
+
 	private final int buttonWidth = 200;
 	private final int buttonheigt = 50;
+
 	private final int centerBoxPaddingTop = 0;
 	private final int centerBoxPaddingRight = 100;
 	private final int centerBoxPaddingBottom = 0;
 	private final int centerBoxPaddingLeft = 100;
+
 	private final int leftBoxSpacing = 10;
 	private final int leftBoxPaddingTop = 0;
 	private final int leftBoxPaddingRight = 0;
 	private final int leftBoxPaddingBottom = 0;
 	private final int leftBoxPaddingLeft = 10;
+
 	private final int rightBoxSpacing = 10;
 	private final int rightBoxPaddingTop = 0;
 	private final int rightBoxPaddingRight = 10;
 	private final int rightBoxPaddingBottom = 60;
 	private final int rightBoxPaddingLeft = 0;
+
 	// variables
-	BorderPane rootPane;
-	HBox cardBox;
-	VBox personalInfo;
-	VBox centerBox;
-	VBox rightBox;
-	VBox leftBox;
-	VBox PublicCardsBox;
-	CurrencyStonesPane currencyStonesPane;
-	ChatPane chatPane;
-	GlassWindowPane glassWindowPane1;
-	GlassWindowPane glassWindowPane2;
-	GlassWindowPane glassWindowPane3;
-	GlassWindowPane glassWindowPane4;
-	PersonalGoalCardPane personalGoalCardPane;
-	RoundPane roundPane;
-	GoalCardPane goalCardPane;
-	ToolCardPane toolCardPane;
-	DieOfferPane dieOfferPane;
-	Button button;
-	GameController gameController;
-	Stage stage;
+	private BorderPane rootPane;
+	private HBox cardBox;
+	private VBox personalInfo;
+	private VBox centerBox;
+	private VBox rightBox;
+	private VBox leftBox;
+	private VBox PublicCardsBox;
+
+	private GlassWindowPane glassWindowPane1;
+	private GlassWindowPane glassWindowPane2;
+	private GlassWindowPane glassWindowPane3;
+	private GlassWindowPane glassWindowPane4;
+
+	private ChatPane chatPane;
+	private RoundPane roundPane;
+	private PersonalGoalCardPane personalGoalCardPane;
+	private CurrencyStonesPane currencyStonesPane;
+	private GoalCardPane goalCardPane;
+	private ToolCardPane toolCardPane;
+	private DieOfferPane dieOfferPane;
+	private Button button;
+
+	private GameController gameController;
+	private Stage stage;
 
 	/**
 	 * Creates the GameScene
@@ -163,7 +171,8 @@ public class GameScene extends Scene {
 	private void createLeft() {
 		// Initialize everything for the leftBox
 		leftBox = new VBox();
-		glassWindowPane1 = new GlassWindowPane(GameColor.RED, gameController.getClientPlayer().getGlassWindow());
+		Player clientPlayer = gameController.getClientPlayer();
+		glassWindowPane1 = new GlassWindowPane(clientPlayer.getGlassWindow().getColor(), clientPlayer.getGlassWindow());
 		chatPane = new ChatPane(gameController);
 
 		// adds everything to the leftBox and handles makeup
@@ -182,9 +191,10 @@ public class GameScene extends Scene {
 	private void createRight() {
 		// Initialize everything for the rightBox
 		rightBox = new VBox();
-		glassWindowPane2 = new GlassWindowPane(GameColor.GREEN, gameController.getClientPlayer().getGlassWindow());
-		glassWindowPane3 = new GlassWindowPane(GameColor.BLUE, gameController.getClientPlayer().getGlassWindow());
-		glassWindowPane4 = new GlassWindowPane(GameColor.YELLOW, gameController.getClientPlayer().getGlassWindow());
+		ArrayList<Player> players = gameController.getPlayers();
+		glassWindowPane2 = new GlassWindowPane(players.get(1).getGlassWindow().getColor(), players.get(1).getGlassWindow());
+		glassWindowPane3 = new GlassWindowPane(players.get(2).getGlassWindow().getColor(), players.get(2).getGlassWindow());
+		glassWindowPane4 = new GlassWindowPane(players.get(3).getGlassWindow().getColor(), players.get(3).getGlassWindow());
 
 		// changes the glassWindow size to it's small size
 		glassWindowPane2.toggleIsSmall();
