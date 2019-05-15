@@ -2,8 +2,10 @@ package view;
 
 import game.GameColor;
 import game.GlassWindow;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
@@ -30,9 +32,12 @@ public class GlassWindowPane extends BorderPane {
 	private Circle circle;
 	private Label label;
 
+	private int switchingNumber;
+
 	private boolean isSmall = false;
 
-	public GlassWindowPane(GameColor color, GlassWindow glassWindow) {
+	public GlassWindowPane(int number, GameColor color, GlassWindow glassWindow, GameScene gameScene) {
+		switchingNumber = number;
 		this.color = color;
 
 		fieldPane = new FieldPane(glassWindow);
@@ -44,6 +49,16 @@ public class GlassWindowPane extends BorderPane {
 
 		setScore();
 		setBottom(fieldPane);
+
+		setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (isSmall) {
+					gameScene.switchGlassWindows(switchingNumber);
+				}
+			}
+		});
 
 		resize();
 	}
@@ -102,5 +117,9 @@ public class GlassWindowPane extends BorderPane {
 
 		scoreField.getChildren().addAll(circle, label);
 		setTop(scoreField);
+	}
+
+	public void setSwitchingNumber(int num) {
+		switchingNumber = num;
 	}
 }

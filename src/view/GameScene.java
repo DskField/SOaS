@@ -54,10 +54,10 @@ public class GameScene extends Scene {
 	private VBox leftBox;
 	private VBox PublicCardsBox;
 
-	private GlassWindowPane glassWindowPane1;
-	private GlassWindowPane glassWindowPane2;
-	private GlassWindowPane glassWindowPane3;
-	private GlassWindowPane glassWindowPane4;
+	private GlassWindowPane mainGlassWindow;
+	private GlassWindowPane smallGlassWindow1;
+	private GlassWindowPane smallGlassWindow2;
+	private GlassWindowPane smallGlassWindow3;
 
 	private ChatPane chatPane;
 	private RoundPane roundPane;
@@ -172,11 +172,11 @@ public class GameScene extends Scene {
 		// Initialize everything for the leftBox
 		leftBox = new VBox();
 		Player clientPlayer = gameController.getClientPlayer();
-		glassWindowPane1 = new GlassWindowPane(clientPlayer.getGlassWindow().getColor(), clientPlayer.getGlassWindow());
+		mainGlassWindow = new GlassWindowPane(0, clientPlayer.getGlassWindow().getColor(), clientPlayer.getGlassWindow(), this);
 		chatPane = new ChatPane(gameController);
 
 		// adds everything to the leftBox and handles makeup
-		leftBox.getChildren().addAll(glassWindowPane1, chatPane);
+		leftBox.getChildren().addAll(mainGlassWindow, chatPane);
 		leftBox.setAlignment(Pos.BOTTOM_CENTER);
 		leftBox.setSpacing(leftBoxSpacing);
 		leftBox.setPadding(new Insets(leftBoxPaddingTop, leftBoxPaddingRight, leftBoxPaddingBottom, leftBoxPaddingLeft));
@@ -192,22 +192,60 @@ public class GameScene extends Scene {
 		// Initialize everything for the rightBox
 		rightBox = new VBox();
 		ArrayList<Player> players = gameController.getPlayers();
-		glassWindowPane2 = new GlassWindowPane(players.get(1).getGlassWindow().getColor(), players.get(1).getGlassWindow());
-		glassWindowPane3 = new GlassWindowPane(players.get(2).getGlassWindow().getColor(), players.get(2).getGlassWindow());
-		glassWindowPane4 = new GlassWindowPane(players.get(3).getGlassWindow().getColor(), players.get(3).getGlassWindow());
+		smallGlassWindow1 = new GlassWindowPane(1, players.get(1).getGlassWindow().getColor(), players.get(1).getGlassWindow(), this);
+		smallGlassWindow2 = new GlassWindowPane(2, players.get(2).getGlassWindow().getColor(), players.get(2).getGlassWindow(), this);
+		smallGlassWindow3 = new GlassWindowPane(3, players.get(3).getGlassWindow().getColor(), players.get(3).getGlassWindow(), this);
 
 		// changes the glassWindow size to it's small size
-		glassWindowPane2.toggleIsSmall();
-		glassWindowPane3.toggleIsSmall();
-		glassWindowPane4.toggleIsSmall();
+		smallGlassWindow1.toggleIsSmall();
+		smallGlassWindow2.toggleIsSmall();
+		smallGlassWindow3.toggleIsSmall();
 
 		// adds everything to the rightBox and handles makeup
-		rightBox.getChildren().addAll(glassWindowPane2, glassWindowPane3, glassWindowPane4);
+		rightBox.getChildren().addAll(smallGlassWindow1, smallGlassWindow2, smallGlassWindow3);
 		rightBox.setSpacing(rightBoxSpacing);
 		rightBox.setAlignment(Pos.BOTTOM_CENTER);
 		rightBox.setPadding(new Insets(rightBoxPaddingTop, rightBoxPaddingRight, rightBoxPaddingBottom, rightBoxPaddingLeft));
 
 		// adds the rightBox to the rootPane
 		rootPane.setRight(rightBox);
+	}
+
+	public void switchGlassWindows(int source) {
+		leftBox.getChildren().remove(mainGlassWindow);
+		GlassWindowPane temp = mainGlassWindow;
+		switch (source) {
+		case 1:
+			rightBox.getChildren().remove(smallGlassWindow1);
+			mainGlassWindow = smallGlassWindow1;
+			smallGlassWindow1 = temp;
+			mainGlassWindow.toggleIsSmall();
+			smallGlassWindow1.toggleIsSmall();
+			mainGlassWindow.setSwitchingNumber(0);
+			smallGlassWindow1.setSwitchingNumber(1);
+			rightBox.getChildren().add(0, smallGlassWindow1);
+			break;
+		case 2:
+			rightBox.getChildren().remove(smallGlassWindow2);
+			mainGlassWindow = smallGlassWindow2;
+			smallGlassWindow2 = temp;
+			mainGlassWindow.toggleIsSmall();
+			smallGlassWindow2.toggleIsSmall();
+			mainGlassWindow.setSwitchingNumber(0);
+			smallGlassWindow2.setSwitchingNumber(2);
+			rightBox.getChildren().add(1, smallGlassWindow2);
+			break;
+		case 3:
+			rightBox.getChildren().remove(smallGlassWindow3);
+			mainGlassWindow = smallGlassWindow3;
+			smallGlassWindow3 = temp;
+			mainGlassWindow.toggleIsSmall();
+			smallGlassWindow3.toggleIsSmall();
+			mainGlassWindow.setSwitchingNumber(0);
+			smallGlassWindow3.setSwitchingNumber(3);
+			rightBox.getChildren().add(2, smallGlassWindow3);
+			break;
+		}
+		leftBox.getChildren().add(0, mainGlassWindow);
 	}
 }
