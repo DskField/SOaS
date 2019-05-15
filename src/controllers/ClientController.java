@@ -1,39 +1,25 @@
 package controllers;
 
-import java.util.ArrayList;
-
 import client.Client;
-import client.Lobby;
 
 public class ClientController {
 
+	private boolean checkUpdateClient = false;
+	
 	private Client client;
-	private ArrayList<Lobby> clientLobbies; // Remote to client's Lobby list
+	private GameController gamecontroller;
+	private MainApplication mainapplication;
 
-	public ClientController() {
-
-		//		client = new Client();
-		clientLobbies = client.getLobbies();
+	public ClientController(MainApplication mainapplication, String username) {
+		this.mainapplication = mainapplication;
+		this.gamecontroller = new GameController(mainapplication);
+		client = new Client(username);
 	}
 
-	//	public void exit() {
-	//	System.exit(0)
-	//	}
-
-	public void logout() {
-
-		// TODO waiting for view so a pane can be set back
+	public void updateClient() {		
+		// 3 to 6 seconds
+		while (checkUpdateClient) {
+			client.updateClient();
+		}
 	}
-
-	public void updateClient() {
-
-		// TODO fetch query to update the current lobbies
-	}
-
-	//	public String findUser(User user) {
-	//
-	//		String username = user.getLoginName();
-	//
-	//		return username;
-	//	}
 }

@@ -2,22 +2,38 @@ package client;
 
 import java.util.ArrayList;
 
+import database.PersistenceFacade;
+
 public class Client {
+
+	private String username;
 
 	private ArrayList<Lobby> lobbies;
 	private User user;
 	private User opponent;
 	private ArrayList<Challenge> challenges;
+	private PersistenceFacade persistencefacade;
 
-	public Client(ArrayList<Lobby> lobbies, User user, User opponent, ArrayList<Challenge> challenges) {
-		this.lobbies = lobbies;
-		this.user = user;
-		this.opponent = opponent;
-		this.challenges = challenges;
+	public Client(String username) {
+		this.username = username;
+		this.persistencefacade = new PersistenceFacade();
+		this.lobbies = persistencefacade.getLobbies(username);
+		this.user = persistencefacade.getUser(username);
+		this.challenges = persistencefacade.getChallenges(username);
 
 		user.setGamesWon(calcWon());
 		user.setGamesLost(calcLost());
 		user.setTotalOpponents(calcOpponents());
+	}
+
+	// Update
+	public void updateClient() {
+		if (persistencefacade.updateChallenge(username, challenges))
+			this.challenges = persistencefacade.getChallenges(username);
+		if (persistencefacade.updateUser(username, user))
+			this.user = persistencefacade.getUser(username);
+		if (persistencefacade.updateLobby(username, lobbies))
+			this.lobbies = persistencefacade.getLobbies(username);
 	}
 
 	// calculaters
@@ -63,6 +79,18 @@ public class Client {
 
 	public ArrayList<Challenge> getChallenges() {
 		return challenges;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public User getOpponent(String username) {
+		this.opponent = persistencefacade.getUser(username);
+		opponent.setGamesWon(calcWon());
+		opponent.setGamesLost(calcLost());
+		opponent.setTotalOpponents(calcOpponents());
+		return opponent;
 	}
 
 	// TODO check if needed
