@@ -49,6 +49,10 @@ public class GameController {
 		return game.getClientPlayer();
 	}
 
+	public ArrayList<Player> getPlayers() {
+		return game.getPlayers();
+	}
+
 	public abstract class AnimationTimerExt extends AnimationTimer {
 		private long sleepNs = 0;
 		long prevTime = 0;

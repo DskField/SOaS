@@ -28,13 +28,15 @@ public class ChatPane extends BorderPane {
 	private final int chatPaneheight = 200;
 	private final int sendButtonWidth = 100;
 	private final int sendButtonHeight = 20;
+
 	// variables
 	private TextField playerMessage;
 	private Button sendMessage;
+
+	private ScrollPane scrollPane;
 	private HBox bottom;
 	private VBox center;
 	private GameController gameController;
-	private ScrollPane scrollPane;
 
 	public ChatPane(GameController gameController) {
 		// setting the GameController
@@ -56,6 +58,7 @@ public class ChatPane extends BorderPane {
 		// initialize
 		playerMessage = new TextField();
 		sendMessage = new Button("verstuur");
+		scrollPane = new ScrollPane();
 		bottom = new HBox();
 		center = new VBox();
 		scrollPane = new ScrollPane();
@@ -124,6 +127,5 @@ public class ChatPane extends BorderPane {
 	private void sendMessage() {
 		gameController.sendMessage(playerMessage.getText());
 		playerMessage.clear();
-
 	}
 }

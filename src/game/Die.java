@@ -19,7 +19,12 @@ public class Die {
 	public Die(int dieId, String color) {
 		this.dieId = dieId;
 		this.round = 0;
-		dieColor = GameColor.getEnum(color);
+
+		if (dieId == 0 && color == null) {
+			dieColor = GameColor.EMPTY;
+		} else {
+			dieColor = GameColor.getEnum(color);
+		}
 	}
 
 	/**
