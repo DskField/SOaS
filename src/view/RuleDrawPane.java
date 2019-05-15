@@ -34,18 +34,18 @@ class RuleDrawPane extends StackPane {
 		showProgression();
 	}
 
-//show rules about progression
+	//show rules about progression
 	void showProgression() {
-		imageView.setImage(new Image("file:Resources/images/Spelverloop.png"));
+		imageView.setImage(new Image("file:Resources/images/Rules/Spelverloop.png"));
 	}
 
 	// show rules about die placing
 	void showDiePlacing() {
-		imageView.setImage(new Image("file:Resources/images/Dobbelsteenplaatsen.png"));
+		imageView.setImage(new Image("file:Resources/images/Rules/Dobbelsteenplaatsen.png"));
 	}
 
-//show rules about toolcards
+	//show rules about toolcards
 	void showToolCard() {
-		imageView.setImage(new Image("file:Resources/images/Gereedschapskaarten.png"));
+		imageView.setImage(new Image("file:Resources/images/Rules/Gereedschapskaarten.png"));
 	}
 }

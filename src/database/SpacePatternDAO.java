@@ -52,7 +52,7 @@ class SpacePatternDAO {
 					PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncardfield VALUES (" + patternCard.getPatternCardId() + ",?,?,?,?)");
 					stmt.setInt(2, patternCard.getSpace(x, y).getXCor());
 					stmt.setInt(3, patternCard.getSpace(x, y).getYCor());
-					stmt.setString(4, patternCard.getSpace(x, y).getPatternColor().getDatabaseName());
+					stmt.setString(4, patternCard.getSpace(x, y).getColor().getDatabaseName());
 					stmt.setInt(5, patternCard.getSpace(x, y).getValue());
 					stmt.executeUpdate();
 					stmt.close();

@@ -2,9 +2,10 @@ package view;
 
 import game.GameColor;
 import game.GlassWindow;
-import game.PatternCard;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
@@ -23,34 +24,47 @@ public class GlassWindowPane extends BorderPane {
 	private final int glassWindowHeight = 800;
 	private final int spacingAmount = 20;
 
-	private PatternPane patternField;
+	private FieldPane fieldPane;
+
 	private StackPane scoreField;
 	private CornerRadii windowCurve;
 	private GameColor color;
 	private Circle circle;
 	private Label label;
 
+	private int switchingNumber;
+
 	private boolean isSmall = false;
 
-	public GlassWindowPane(GameColor color, GlassWindow glassWindow) {
+	public GlassWindowPane(int number, GameColor color, GlassWindow glassWindow, GameScene gameScene) {
+		switchingNumber = number;
 		this.color = color;
-		patternField = new PatternPane(glassWindow.getPatternCard());
+
+		fieldPane = new FieldPane(glassWindow);
+
 		windowCurve = new CornerRadii(5, 3, 3, 5, 0, 0, 0, 0, true, true, true, true, false, false, false, false);
 
 		setBackground(new Background(new BackgroundFill(Color.rgb(68, 47, 25), windowCurve, null)));
 		setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, windowCurve, new BorderWidths(5))));
-		patternField.loadGlassWindow(glassWindow);
+
+		setScore();
+		setBottom(fieldPane);
+
+		setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (isSmall) {
+					gameScene.switchGlassWindows(switchingNumber);
+				}
+			}
+		});
 
 		resize();
 	}
 
-	//	public void addContent(PatternCard pattern) {
-	//		setPattern(pattern);
-	//	}
-
 	public void toggleIsSmall() {
 		isSmall = !isSmall;
-		System.out.println("FALSE");
 		resize();
 	}
 
@@ -58,7 +72,7 @@ public class GlassWindowPane extends BorderPane {
 		if (isSmall) {
 			setPrefSize(glassWindowWidth / 2, glassWindowHeight / 2.5);
 			setMaxSize(glassWindowWidth / 2, glassWindowHeight / 2.5);
-			setMargin(patternField, new Insets(10));
+			setMargin(fieldPane, new Insets(10));
 			circle.setRadius(60);
 			label.setFont(Font.font(20));
 			setMargin(scoreField, new Insets(10, 20, 0, 20));
@@ -68,21 +82,16 @@ public class GlassWindowPane extends BorderPane {
 			circle.setRadius(140);
 			label.setFont(Font.font(40));
 			setMargin(scoreField, new Insets(spacingAmount));
-			setMargin(patternField, new Insets(spacingAmount));
+			setMargin(fieldPane, new Insets(spacingAmount));
 		}
 
-		patternField.resize(isSmall);
+		fieldPane.resize(isSmall);
 	}
 
-	//	public void setSizeSmall() {
-	//		setPrefSize(glassWindowWidth / 2, glassWindowHeight / 2.5);
-	//		setMargin(patternField, new Insets(10));
+	//	public void setPattern(PatternCard pattern) {
+	//		patternField = new PatternPane(pattern);
+	//		setBottom(patternField);
 	//	}
-
-	public void setPattern(PatternCard pattern) {
-		patternField = new PatternPane(pattern);
-		setBottom(patternField);
-	}
 
 	//TODO: ???
 	private void setPlayerList() {
@@ -108,5 +117,9 @@ public class GlassWindowPane extends BorderPane {
 
 		scoreField.getChildren().addAll(circle, label);
 		setTop(scoreField);
+	}
+
+	public void setSwitchingNumber(int num) {
+		switchingNumber = num;
 	}
 }

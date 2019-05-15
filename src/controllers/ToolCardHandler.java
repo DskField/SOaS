@@ -46,7 +46,7 @@ public class ToolCardHandler {
 		// Compare chosen tile's color to die
 		SpacePattern patternSpace = glassWindow.getPatternCard().getSpace(xCor, yCor);
 
-		if (patternSpace.getPatternColor() == die.getDieColor()) {
+		if (patternSpace.getColor() == die.getDieColor()) {
 			canPlace = false;
 			return;
 		}
@@ -298,7 +298,7 @@ public class ToolCardHandler {
 		// Compare chosen tile's color to die
 		SpacePattern patternSpace = glassWindow.getPatternCard().getSpace(xCor, yCor);
 
-		if (patternSpace.getPatternColor() == die.getDieColor()) {
+		if (patternSpace.getColor() == die.getDieColor()) {
 			canPlace = false;
 			return;
 		}

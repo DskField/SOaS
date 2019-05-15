@@ -1,6 +1,7 @@
 package controllers;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import client.User;
 import game.Game;
@@ -45,6 +46,10 @@ public class GameController {
 
 	public Player getClientPlayer() {
 		return game.getClientPlayer();
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return game.getPlayers();
 	}
 
 	public abstract class AnimationTimerExt extends AnimationTimer {

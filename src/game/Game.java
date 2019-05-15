@@ -305,9 +305,14 @@ public class Game {
 	}
 
 	// GETTERS AND SETTERS
-	// TODO the current getters and setters are temporary, they will be changed in the future
+	// TODO the current getters and setters are temporary, they will be changed in
+	// the future
 	public Player getClientPlayer() {
 		return clientPlayer;
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return players;
 	}
 
 	public GlassWindow[] getGlassWindows() {

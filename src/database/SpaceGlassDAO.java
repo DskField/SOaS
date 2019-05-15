@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import game.Die;
 import game.GlassWindow;
 import game.SpaceGlass;
 
@@ -16,7 +17,7 @@ class SpaceGlassDAO {
 	}
 
 	GlassWindow getGlassWindow(int idPlayer) {
-		return selectSpaceGlass("SELECT * FROM playerframefield WHERE player_idplayer =" + idPlayer);
+		return selectSpaceGlass("SELECT * FROM playerframefield p LEFT JOIN gamedie d ON d.idgame = p.idgame AND d.dienumber = p.dienumber AND d.diecolor = p.diecolor WHERE player_idplayer = " + idPlayer);
 	}
 
 	void addGlassWindow(int idPlayer, GlassWindow glassWindow) {
@@ -38,7 +39,16 @@ class SpaceGlassDAO {
 			while (dbResultSet.next()) {
 				int x = dbResultSet.getInt("position_x");
 				int y = dbResultSet.getInt("position_y");
-				result[x - 1][y - 1] = new SpaceGlass(x, y);
+				SpaceGlass spaceGlass = new SpaceGlass(x, y);
+
+				int dienumber = dbResultSet.getInt("dienumber");
+				int eyes = dbResultSet.getInt("eyes");
+				int round = dbResultSet.getInt("round");
+				String color = dbResultSet.getString("diecolor");
+				Die die = new Die(dienumber, (color != null) ? color : "", round, eyes);
+				spaceGlass.setDie(die);
+
+				result[x - 1][y - 1] = spaceGlass;
 			}
 		} catch (SQLException e) {
 			System.err.println("SpaceGlassDAO Select: " + e.getMessage());
