@@ -2,7 +2,10 @@ package view;
 
 import java.util.ArrayList;
 
+import javax.tools.Tool;
+
 import controllers.GameController;
+import game.CollectiveGoalCard;
 import game.GameColor;
 import game.Message;
 import javafx.event.EventHandler;
@@ -41,27 +44,29 @@ public class GameScene extends Scene {
 	private final int rightBoxPaddingBottom = 60;
 	private final int rightBoxPaddingLeft = 0;
 	// variables
-	BorderPane rootPane;
-	HBox cardBox;
-	VBox personalInfo;
-	VBox centerBox;
-	VBox rightBox;
-	VBox leftBox;
-	VBox PublicCardsBox;
-	CurrencyStonesPane currencyStonesPane;
-	ChatPane chatPane;
-	GlassWindowPane glassWindowPane1;
-	GlassWindowPane glassWindowPane2;
-	GlassWindowPane glassWindowPane3;
-	GlassWindowPane glassWindowPane4;
-	PersonalGoalCardPane personalGoalCardPane;
-	RoundPane roundPane;
-	GoalCardPane goalCardPane;
-	ToolCardPane toolCardPane;
-	DieOfferPane dieOfferPane;
-	Button button;
-	GameController gameController;
-	Stage stage;
+	private BorderPane rootPane;
+	private HBox cardBox;
+	private HBox goalCardsBox;
+	private HBox toolCardBox;
+	private VBox personalInfo;
+	private VBox centerBox;
+	private VBox rightBox;
+	private VBox leftBox;
+	private VBox PublicCardsBox;
+	private CurrencyStonesPane currencyStonesPane;
+	private ChatPane chatPane;
+	private GlassWindowPane glassWindowPane1;
+	private GlassWindowPane glassWindowPane2;
+	private GlassWindowPane glassWindowPane3;
+	private GlassWindowPane glassWindowPane4;
+	private GoalCardPane[] goalCardPanes;
+	private ToolCardPane[] toolCardPanes;
+	private PersonalGoalCardPane personalGoalCardPane;
+	private RoundPane roundPane;
+	private DieOfferPane dieOfferPane;
+	private Button button;
+	private GameController gameController;
+	private Stage stage;
 
 	/**
 	 * Creates the GameScene
@@ -121,9 +126,10 @@ public class GameScene extends Scene {
 		// initialize everything for the cardBox
 		cardBox = new HBox();
 		PublicCardsBox = new VBox();
-		goalCardPane = new GoalCardPane();
-		toolCardPane = new ToolCardPane();
-
+		goalCardsBox = new HBox();
+		toolCardBox = new HBox();
+		goalCardPanes = new GoalCardPane[3];
+		toolCardPanes = new ToolCardPane[3];
 		// initialize everything for the center box
 		centerBox = new VBox();
 		centerBox.setMaxWidth(800);
@@ -141,7 +147,28 @@ public class GameScene extends Scene {
 		personalInfo.setSpacing(10);
 
 		// handles everything regarding the cardBox
-		PublicCardsBox.getChildren().addAll(goalCardPane, toolCardPane);
+		//adds goaldCards to the goalCardPanes array
+		for(int i = 0; i < 3; i++) {
+			 goalCardPanes[i] = new GoalCardPane(i+1);
+		}
+		//adds the goalCardPanes to the goalCardBox
+		for(GoalCardPane goalCardPane: goalCardPanes) {
+			goalCardsBox.getChildren().add(goalCardPane);
+		}
+		//adds toolCards to the toolCards Array
+		for(int i = 0; i < 3; i++) {
+			toolCardPanes[i] = new ToolCardPane(i+1);
+		}
+		//adds the toolCardPanes to the toolCardBox
+		for(ToolCardPane toolCardPane : toolCardPanes) {
+			toolCardBox.getChildren().add(toolCardPane);
+		}
+		//handles the makeup of the various boxes
+		goalCardsBox.setSpacing(10);
+		goalCardsBox.setAlignment(Pos.CENTER);
+		toolCardBox.setSpacing(10);
+		goalCardsBox.setAlignment(Pos.CENTER);
+		PublicCardsBox.getChildren().addAll(goalCardsBox, toolCardBox);
 		PublicCardsBox.setSpacing(10);
 		cardBox.getChildren().addAll(personalInfo, PublicCardsBox);
 		cardBox.setAlignment(Pos.CENTER_LEFT);
