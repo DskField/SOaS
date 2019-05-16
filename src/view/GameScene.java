@@ -89,8 +89,8 @@ public class GameScene extends Scene {
 
 		// Listener for escape key to open in game menu
 		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			public void handle(KeyEvent ke) {
-				if (ke.getCode() == KeyCode.ESCAPE) {
+			public void handle(KeyEvent key) {
+				if (key.getCode() == KeyCode.ESCAPE) {
 					stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
 					Popup gameMenuPopup = new Popup();
 					GameMenuPane gameMenu = new GameMenuPane();
@@ -150,19 +150,19 @@ public class GameScene extends Scene {
 
 		// handles everything regarding the cardBox
 		//adds goaldCards to the goalCardPanes array
-		for(int i = 0; i < 3; i++) {
-			 goalCardPanes[i] = new GoalCardPane(i+1);
+		for (int i = 0; i < 3; i++) {
+			goalCardPanes[i] = new GoalCardPane(i + 1);
 		}
 		//adds the goalCardPanes to the goalCardBox
-		for(GoalCardPane goalCardPane: goalCardPanes) {
+		for (GoalCardPane goalCardPane : goalCardPanes) {
 			goalCardsBox.getChildren().add(goalCardPane);
 		}
 		//adds toolCards to the toolCards Array
-		for(int i = 0; i < 3; i++) {
-			toolCardPanes[i] = new ToolCardPane(i+1);
+		for (int i = 0; i < 3; i++) {
+			toolCardPanes[i] = new ToolCardPane(i + 1);
 		}
 		//adds the toolCardPanes to the toolCardBox
-		for(ToolCardPane toolCardPane : toolCardPanes) {
+		for (ToolCardPane toolCardPane : toolCardPanes) {
 			toolCardBox.getChildren().add(toolCardPane);
 		}
 		//handles the makeup of the various boxes
@@ -213,9 +213,18 @@ public class GameScene extends Scene {
 		// Initialize everything for the rightBox
 		rightBox = new VBox();
 		ArrayList<Player> players = gameController.getPlayers();
-		smallGlassWindow1 = new GlassWindowPane(1, players.get(1).getGlassWindow().getColor(), players.get(1).getGlassWindow(), this);
-		smallGlassWindow2 = new GlassWindowPane(2, players.get(2).getGlassWindow().getColor(), players.get(2).getGlassWindow(), this);
-		smallGlassWindow3 = new GlassWindowPane(3, players.get(3).getGlassWindow().getColor(), players.get(3).getGlassWindow(), this);
+		Player clientPlayer = gameController.getClientPlayer();
+		for (Player player : players) {
+			if (player.getPlayerID() != clientPlayer.getPlayerID()) {
+				if (smallGlassWindow1 == null) {
+					smallGlassWindow1 = new GlassWindowPane(1, player.getGlassWindow().getColor(), player.getGlassWindow(), this);
+				} else if (smallGlassWindow2 == null) {
+					smallGlassWindow2 = new GlassWindowPane(2, player.getGlassWindow().getColor(), player.getGlassWindow(), this);
+				} else if (smallGlassWindow3 == null) {
+					smallGlassWindow3 = new GlassWindowPane(3, player.getGlassWindow().getColor(), player.getGlassWindow(), this);
+				}
+			}
+		}
 
 		// changes the glassWindow size to it's small size
 		smallGlassWindow1.toggleIsSmall();
