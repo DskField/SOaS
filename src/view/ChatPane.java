@@ -84,6 +84,9 @@ public class ChatPane extends BorderPane {
 				if (event.getCode() == KeyCode.ENTER) {
 					sendMessage();
 				}
+				else if(event.getCode() == KeyCode.ESCAPE) {
+					event.consume();
+				}
 			}
 		});
 

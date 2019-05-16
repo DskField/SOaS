@@ -2,8 +2,6 @@ package view;
 
 import java.util.ArrayList;
 
-import javax.tools.Tool;
-
 import controllers.GameController;
 import game.Message;
 import game.Player;
@@ -59,10 +57,10 @@ public class GameScene extends Scene {
 	private VBox PublicCardsBox;
 	private CurrencyStonesPane currencyStonesPane;
 	private ChatPane chatPane;
-	private GlassWindowPane glassWindowPane1;
-	private GlassWindowPane glassWindowPane2;
-	private GlassWindowPane glassWindowPane3;
-	private GlassWindowPane glassWindowPane4;
+	private GlassWindowPane mainGlassWindow;
+	private GlassWindowPane smallGlassWindow1;
+	private GlassWindowPane smallGlassWindow2;
+	private GlassWindowPane smallGlassWindow3;
 	private GoalCardPane[] goalCardPanes;
 	private ToolCardPane[] toolCardPanes;
 	private PersonalGoalCardPane personalGoalCardPane;
@@ -270,5 +268,6 @@ public class GameScene extends Scene {
 			break;
 		}
 		leftBox.getChildren().add(0, mainGlassWindow);
+
 	}
 }
