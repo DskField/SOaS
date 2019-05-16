@@ -121,11 +121,16 @@ public class Game {
 	 */
 	private void loadGlassWindow() {
 		final GameColor colors[] = { GameColor.RED, GameColor.GREEN, GameColor.BLUE, GameColor.PURPLE };
-		int num = 0;
+		int num = 1;
 		for (Player player : players) {
 			player.loadGlassWindow(persistenceFacade.getGlassWindow(player.getPlayerID()));
 			player.getGlassWindow().loadPatternCard(persistenceFacade.getplayerPatternCard(player.getPlayerID()).get(0));
-			player.getGlassWindow().setColor(colors[num++]);
+
+			if (player.getPlayerID() == clientPlayer.getPlayerID()) {
+				player.getGlassWindow().setColor(colors[0]);
+			} else {
+				player.getGlassWindow().setColor(colors[num++]);
+			}
 		}
 
 	}

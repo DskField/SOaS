@@ -32,8 +32,8 @@ class GameMenuPane extends VBox {
 		setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.7), null, null)));
 
 		// TODO FIX CSS
-//		setStyle(".button {"
-//				+ " -fx-background-color: green; -fx-text-fill: white; -fx-font: normal bold 25px 'serif';}");
+		//		setStyle(".button {"
+		//				+ " -fx-background-color: green; -fx-text-fill: white; -fx-font: normal bold 25px 'serif';}");
 		// set size
 		setMinSize(stage.getWidth(), stage.getHeight());
 		// Give buttons text and style
@@ -42,12 +42,10 @@ class GameMenuPane extends VBox {
 		btn_resume.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-font: normal bold 25px 'serif'; ");
 		btn_rules = new Button("Regels");
 		btn_rules.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
-		btn_rules.setStyle(
-				"-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
+		btn_rules.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
 		btn_toMenu = new Button("Terug naar hoofd menu");
 		btn_toMenu.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
-		btn_toMenu.setStyle(
-				"-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
+		btn_toMenu.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
 		btn_exit = new Button("Afsluiten");
 		btn_exit.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
 		btn_exit.setStyle("-fx-background-color: red; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
@@ -68,7 +66,7 @@ class GameMenuPane extends VBox {
 		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
 	}
 
-//loads the rules and hides game menu
+	//loads the rules and hides game menu
 	private void showRules() {
 		Popup rulePopup = new Popup();
 		RulePane rules = new RulePane();

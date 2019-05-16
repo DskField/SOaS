@@ -1,28 +1,71 @@
 package view;
 
-import javafx.geometry.Pos;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
-public class ToolCardPane extends HBox {
+public class ToolCardPane extends AnchorPane {
 
-	public ToolCardPane() {
-		setBackground(new Background(new BackgroundFill(Color.YELLOW, null, null)));
-		createCards();
-		createCards();
-		createCards();
-		setAlignment(Pos.CENTER);
-		setSpacing(10);
+	public ToolCardPane(int seqNr) {
+		ImageView imageView = new ImageView();
+		lookForImage(seqNr, imageView);
+		getChildren().add(imageView);
 	}
 	
-	private void createCards() {
-		Rectangle rectangle = new Rectangle();
-		rectangle.setHeight(240);
-		rectangle.setWidth(160);
-		rectangle.setFill(Color.GREEN);
-		getChildren().add(rectangle);
+	private void lookForImage(int seqNr, ImageView imageView) {
+		switch(seqNr) {
+		
+		case 1:
+			 imageView.setImage(new Image(
+					 "file:Resources\\images\\Toolcards\\card1.png"));
+			 break;
+		case 2:
+			 imageView.setImage(new Image(
+					 "file:Resources\\images\\Toolcards\\card2.png"));
+			 break;
+		case 3:
+			 imageView.setImage(new Image(
+					 "file:Resources\\images\\Toolcards\\card3.png"));
+			 break;
+		case 4:
+			 imageView.setImage(new Image(
+					 "file:Resources\\images\\Toolcards\\card4.png"));
+			 break;
+		case 5:
+			 imageView.setImage(new Image(
+					 "file:Resources\\images\\Toolcards\\card5.png"));
+			 break;
+		case 6:
+			 imageView.setImage(new Image(
+					 "file:Resources\\images\\Toolcards\\card6.png"));
+			 break;
+		case 7:
+			 imageView.setImage(new Image(
+					 "file:Resources\\images\\Toolcards\\card7.png"));
+			 break;
+		case 8:
+			 imageView.setImage(new Image(
+					 "file:Resources\\images\\Toolcards\\card8.png"));
+			 break;
+		case 9:
+			 imageView.setImage(new Image(
+					 "file:Resources\\images\\Toolcards\\card9.png"));
+			 break;
+		case 10:
+			 imageView.setImage(new Image(
+					 "file:Resources\\images\\Toolcards\\card10.png"));
+			 break;
+		case 11:
+			 imageView.setImage(new Image(
+					 "file:Resources\\images\\Toolcards\\card11.png"));
+			 break;
+		case 12:
+			 imageView.setImage(new Image(
+					 "file:Resources\\images\\Toolcards\\card12.png"));
+			 break;
+		default:
+			imageView.setImage(new Image(
+					"file:Resources\\images\\Private Goalcards\\back.png"));
+			}
 	}
 }
