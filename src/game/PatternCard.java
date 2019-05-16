@@ -15,7 +15,7 @@ public class PatternCard {
 	}
 
 	// GETTERS AND SETTERS
-	//Is used to add the actual pattern to the patterncard
+	// Is used to add the actual pattern to the patterncard
 	public void addPattern(SpacePattern[][] pattern) {
 		this.pattern = pattern;
 	}
@@ -34,6 +34,10 @@ public class PatternCard {
 
 	public SpacePattern getSpace(int x, int y) {
 		return pattern[x][y];
+	}
+
+	public SpacePattern[][] getSpaces() {
+		return pattern;
 	}
 
 	public GameColor getSpaceColor(int x, int y) {
