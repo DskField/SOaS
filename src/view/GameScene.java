@@ -150,19 +150,19 @@ public class GameScene extends Scene {
 
 		// handles everything regarding the cardBox
 		//adds goaldCards to the goalCardPanes array
-		for(int i = 0; i < 3; i++) {
-			 goalCardPanes[i] = new GoalCardPane(i+1);
+		for (int i = 0; i < 3; i++) {
+			goalCardPanes[i] = new GoalCardPane(i + 1);
 		}
 		//adds the goalCardPanes to the goalCardBox
-		for(GoalCardPane goalCardPane: goalCardPanes) {
+		for (GoalCardPane goalCardPane : goalCardPanes) {
 			goalCardsBox.getChildren().add(goalCardPane);
 		}
 		//adds toolCards to the toolCards Array
-		for(int i = 0; i < 3; i++) {
-			toolCardPanes[i] = new ToolCardPane(i+1);
+		for (int i = 0; i < 3; i++) {
+			toolCardPanes[i] = new ToolCardPane(i + 1);
 		}
 		//adds the toolCardPanes to the toolCardBox
-		for(ToolCardPane toolCardPane : toolCardPanes) {
+		for (ToolCardPane toolCardPane : toolCardPanes) {
 			toolCardBox.getChildren().add(toolCardPane);
 		}
 		//handles the makeup of the various boxes
