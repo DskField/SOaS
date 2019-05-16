@@ -14,9 +14,9 @@ public class Client {
 	private ArrayList<Challenge> challenges;
 	private PersistenceFacade persistencefacade;
 
-	public Client(String username) {
+	public Client(String username, PersistenceFacade persistencefacade) {
 		this.username = username;
-		this.persistencefacade = new PersistenceFacade();
+		this.persistencefacade = persistencefacade;
 		this.lobbies = persistencefacade.getLobbies(username);
 		this.user = persistencefacade.getUser(username);
 		this.challenges = persistencefacade.getChallenges(username);
@@ -71,10 +71,6 @@ public class Client {
 
 	public User getUser() {
 		return user;
-	}
-
-	public User getOpponent() {
-		return opponent;
 	}
 
 	public ArrayList<Challenge> getChallenges() {

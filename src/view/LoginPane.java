@@ -1,5 +1,6 @@
 package view;
 
+import controllers.ClientController;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,13 +13,35 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-public class LoginPane extends BorderPane{
+public class LoginPane extends BorderPane {
 
 	private HBox buttons;
+	private ClientController clientcontroller;
+	private TextField username;
+	private PasswordField password;
 
-	public LoginPane() {
-		setPrefSize(500, 500);
-		setBackground(new Background(new BackgroundFill(Color.GRAY, null, null)));
+	// Magic Numbers constructor
+	final private static int paneWidth = 500;
+	final private static int paneHeight = 500;
+	final private static Color backgroundColor = Color.GRAY;
+
+	// Magic Numbers buttons
+	final private static int buttonWidth = 100;
+	final private static int buttonHeight = 50;
+	final private static int buttonSpacing = 30;
+
+	// Magic Numbers textfields
+	final private static int textfieldsSpacing = 20;
+	final private static int fieldsSpacing = 10;
+	final private static int butAndfieldsSpacing = 10;
+	final private static int butAndfieldsWidth = 200;
+	final private static int butAndfieldsHeight = 50;
+	final private static double textfieldsScaling = 1.3;
+
+	public LoginPane(ClientController clientcontroller) {
+		this.clientcontroller = clientcontroller;
+		setPrefSize(paneWidth, paneHeight);
+		setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
 		createButtons();
 		createTextFields();
 	}
@@ -27,14 +50,14 @@ public class LoginPane extends BorderPane{
 		buttons = new HBox();
 
 		Button login = new Button("Login");
-		login.setPrefSize(100, 50);
+		login.setPrefSize(buttonWidth, buttonHeight);
 		login.setOnAction(e -> handleLogin());
 
 		Button register = new Button("Registreer");
-		register.setPrefSize(100, 50);
+		register.setPrefSize(buttonWidth, buttonHeight);
 		register.setOnAction(e -> handleRegister());
 
-		buttons.setSpacing(30);
+		buttons.setSpacing(buttonSpacing);
 		buttons.getChildren().addAll(login, register);
 		buttons.setAlignment(Pos.CENTER);
 	}
@@ -43,28 +66,27 @@ public class LoginPane extends BorderPane{
 		Label sagrada = new Label("Sagrada");
 		sagrada.setStyle(" -fx-font-size:60px;-fx-text-fill: white");
 
-		TextField username = new TextField();
+		this.username = new TextField();
 		username.setPromptText("Gebruikersnaam");
 		username.setAlignment(Pos.CENTER);
 
-		PasswordField password = new PasswordField();
+		password = new PasswordField();
 		password.setPromptText("Wachtwoord");
 		password.setAlignment(Pos.CENTER);
 
 		VBox textfields = new VBox();
-		textfields.setSpacing(20);
+		textfields.setSpacing(textfieldsSpacing);
 
 		VBox fields = new VBox(username, password);
-		fields.setSpacing(10);
+		fields.setSpacing(fieldsSpacing);
 		fields.setStyle("-fx-font-size:20px;");
 
 		VBox butAndfields = new VBox(fields, buttons);
-		butAndfields.setSpacing(10);
-		butAndfields.setMinHeight(50);
-		butAndfields.setMinWidth(200);
-		butAndfields.setMaxWidth(200);
-		textfields.setScaleX(1.3);
-		textfields.setScaleY(1.3);
+		butAndfields.setSpacing(butAndfieldsSpacing);
+		butAndfields.setMinSize(butAndfieldsWidth, butAndfieldsHeight);
+		butAndfields.setMaxWidth(butAndfieldsWidth);
+		textfields.setScaleX(textfieldsScaling);
+		textfields.setScaleY(textfieldsScaling);
 
 		textfields.getChildren().addAll(sagrada, butAndfields);
 		textfields.setAlignment(Pos.CENTER);
@@ -76,7 +98,6 @@ public class LoginPane extends BorderPane{
 	}
 
 	private void handleLogin() {
-
+		clientcontroller.handleLogin(username.getText(), password.getText());
 	}
-
 }
