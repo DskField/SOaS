@@ -41,9 +41,9 @@ class UserDAO {
 			stmt.close();
 
 			// MostPlacedColor
-			PreparedStatement stmtMostPlacedColor = con.prepareStatement("SELECT diecolor FROM player AS p1"
-					+ "LEFT JOIN playerframefield AS p2 ON p1.idplayer = p2.player_idplayer"
-					+ "WHERE username = ? GROUP BY diecolor ORDER BY COUNT(diecolor) DESC LIMIT 1");
+			PreparedStatement stmtMostPlacedColor = con.prepareStatement("SELECT diecolor FROM player AS p1 "
+					+ "JOIN playerframefield AS p2 ON p1.idplayer = p2.player_idplayer " + "WHERE username = ? "
+					+ "GROUP BY diecolor " + "ORDER BY COUNT(diecolor) DESC " + "LIMIT 1");
 			stmtMostPlacedColor.setString(1, username);
 			ResultSet dbResultSetMostPlacedColor = stmtMostPlacedColor.executeQuery();
 			dbResultSetMostPlacedColor.next();
@@ -51,10 +51,11 @@ class UserDAO {
 			stmtMostPlacedColor.close();
 
 			// MostPlacedValue
-			PreparedStatement stmtMostPlacedValue = con.prepareStatement("SELECT eyes"
-					+ "FROM player AS p1 LEFT JOIN playerframefield AS p2 ON p1.idplayer = p2.player_idplayer"
-					+ "LEFT JOIN gamedie AS gd ON p2.idgame = gd.idgame AND p2.dienumber = gd.dienumber AND p2.diecolor = gd.diecolor"
-					+ "WHERE username = 'speler3' GROUP BY eyes ORDER BY COUNT(eyes) DESC LIMIT 1");
+			PreparedStatement stmtMostPlacedValue = con.prepareStatement("SELECT eyes\r\n" + "FROM player AS p1\r\n"
+					+ "JOIN playerframefield AS p2 ON p1.idplayer = p2.player_idplayer\r\n"
+					+ "JOIN gamedie AS gd ON p2.idgame = gd.idgame AND p2.dienumber = gd.dienumber AND p2.diecolor = gd.diecolor\r\n"
+					+ "WHERE username = ?\r\n" + "GROUP BY eyes\r\n" + "ORDER BY COUNT(eyes) DESC\r\n"
+					+ "LIMIT 1");
 			stmtMostPlacedValue.setString(1, username);
 			ResultSet dbResultSetMostPlacedValue = stmtMostPlacedValue.executeQuery();
 			dbResultSetMostPlacedValue.next();

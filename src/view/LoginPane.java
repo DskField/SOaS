@@ -51,11 +51,11 @@ public class LoginPane extends BorderPane {
 
 		Button login = new Button("Login");
 		login.setPrefSize(buttonWidth, buttonHeight);
-		login.setOnAction(e -> handleLogin());
+		login.setOnAction(e -> clientcontroller.handleLogin(username.getText(), password.getText()));
 
 		Button register = new Button("Registreer");
 		register.setPrefSize(buttonWidth, buttonHeight);
-		register.setOnAction(e -> handleRegister());
+		register.setOnAction(e -> clientcontroller.handleRegister(username.getText(), password.getText()));
 
 		buttons.setSpacing(buttonSpacing);
 		buttons.getChildren().addAll(login, register);
@@ -91,13 +91,5 @@ public class LoginPane extends BorderPane {
 		textfields.getChildren().addAll(sagrada, butAndfields);
 		textfields.setAlignment(Pos.CENTER);
 		setCenter(textfields);
-	}
-
-	private void handleRegister() {
-
-	}
-
-	private void handleLogin() {
-		clientcontroller.handleLogin(username.getText(), password.getText());
 	}
 }
