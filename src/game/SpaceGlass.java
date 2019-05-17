@@ -17,6 +17,10 @@ public class SpaceGlass extends Space {
 		return die.getDieColor();
 	}
 
+	public int getDieId() {
+		return die.getDieId();
+	}
+
 	// GETTERS AND SETTERS
 	public void setDie(Die die) {
 		this.die = die;
