@@ -129,8 +129,8 @@ public class GameController {
 	public ArrayList<Die> getDiagonalDice(SpaceGlass space) {
 		SpaceGlass[][] spaces = getClientPlayer().getGlassWindow().getSpaces();
 		ArrayList<Die> diagonal = new ArrayList<>();
-		for (SpaceGlass[] spaceGlasRow : spaces) {
-			for (SpaceGlass spaceGlass : spaceGlasRow) {
+		for (SpaceGlass[] spaceGlassRow : spaces) {
+			for (SpaceGlass spaceGlass : spaceGlassRow) {
 				if (((spaceGlass.getYCor() == space.getYCor() - 1
 						&& (spaceGlass.getXCor() == space.getXCor() - 1 
 						|| spaceGlass.getXCor() == space.getXCor() + 1))//first the the top left and top right
@@ -154,8 +154,8 @@ public class GameController {
 	public ArrayList<Die> getOrthogonalDice(SpaceGlass space) {
 		SpaceGlass[][] spaces = getClientPlayer().getGlassWindow().getSpaces();
 		ArrayList<Die> surrounding = new ArrayList<>();
-		for (SpaceGlass[] spaceGlasRow : spaces) {
-			for (SpaceGlass spaceGlass : spaceGlasRow) {
+		for (SpaceGlass[] spaceGlassRow : spaces) {
+			for (SpaceGlass spaceGlass : spaceGlassRow) {
 				if (((spaceGlass.getYCor() == space.getYCor()
 						&& (spaceGlass.getXCor() == space.getXCor() - 1 || spaceGlass.getXCor() == space.getXCor() + 1)) //get dice horizontally neighboring that space
 							|| (spaceGlass.getXCor() == space.getXCor()
