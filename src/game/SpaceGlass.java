@@ -9,12 +9,17 @@ public class SpaceGlass extends Space {
 		die = null;
 	}
 
+//TODO maybe useless?
 	public int getDieValue() {
 		return die.getDieValue();
 	}
 
 	public GameColor getDieColor() {
 		return die.getDieColor();
+	}
+
+	public int getDieId() {
+		return die.getDieId();
 	}
 
 	// GETTERS AND SETTERS
