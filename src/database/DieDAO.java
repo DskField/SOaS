@@ -134,8 +134,8 @@ class DieDAO {
 	}
 
 	ArrayList<Die> getGameDice(int gameID) {
-		//TODO Tweak to let this return no round dice and no placed dice
-		return selectDie("Select * from gameDie WHERE idgame = " + gameID);
+		return selectDie("SELECT * FROM gameDie g LEFT JOIN playerframefield p ON g.idgame = p.idgame AND g.dienumber = p.dienumber AND g.diecolor = p.diecolor WHERE g.idgame = " + gameID
+				+ " AND g.roundtrack IS NULL AND p.idgame IS NULL;");
 	}
 
 	Round[] getRoundTrack(int gameID) {
