@@ -41,7 +41,8 @@ public class GlassWindowPane extends BorderPane {
 		switchingNumber = number;
 		this.color = player.getColor();
 
-		fieldPane = new FieldPane(player.getGlassWindow());
+		fieldPane = new FieldPane(player.getGlassWindow().getPatternCard());
+		fieldPane.loadGlassWindow(player.getGlassWindow());
 
 		windowCurve = new CornerRadii(5, 3, 3, 5, 0, 0, 0, 0, true, true, true, true, false, false, false, false);
 

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import game.Die;
+import game.GameColor;
 import game.Round;
 
 class DieDAO {
@@ -94,7 +95,7 @@ class DieDAO {
 				stmt.close();
 			}
 		} catch (SQLException e) {
-			System.err.println("MessageDAO " + e.getMessage());
+			System.err.println("DieDAO: " + e.getMessage());
 			try {
 				con.rollback();
 			} catch (SQLException e1) {
@@ -125,12 +126,30 @@ class DieDAO {
 				stmt.close();
 			}
 		} catch (SQLException e) {
-			System.err.println("The rollback failed: Please check the Database!");
+			System.err.println("DieDAO: " + e.getMessage());
 		}
 	}
 
-	private void insertDice() {
+	public void insertDice(int idGame) {
+		GameColor[] possibleColors = { GameColor.RED, GameColor.GREEN, GameColor.YELLOW, GameColor.PURPLE, GameColor.BLUE };
 
+		try {
+			for (GameColor color : possibleColors) {
+				for (int i = 0; i < 18; i++) {
+					PreparedStatement stmt = con.prepareStatement("INSERT INTO gamedie VALUES (?, ?, ?, NULL, NULL, NULL);");
+					stmt.setInt(1, idGame);
+					stmt.setInt(2, i);
+					stmt.setString(3, color.getDatabaseName());
+				}
+			}
+		} catch (SQLException e) {
+			System.err.println("DieDAO: " + e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				System.err.println("The rollback failed: Please check the Database!");
+			}
+		}
 	}
 
 	ArrayList<Die> getGameDice(int gameID) {

@@ -11,17 +11,20 @@ public class SpacePane extends Pane {
 	private int x;
 	private int y;
 
-	public SpacePane(int x, int y, int eyes, GameColor color) {
+	public SpacePane(int x, int y) {
 		this.x = x;
 		this.y = y;
+
+		space = new DiePane(0, 0, GameColor.EMPTY);
+	}
+
+	public void loadPattern(int eyes, GameColor color) {
 		space = new DiePane(-1, eyes, color);
 		space.resize(squareSize);
 		getChildren().add(space);
 	}
 
-	public SpacePane(int x, int y, DiePane diePane) {
-		this.x = x;
-		this.y = y;
+	public void loadGlass(DiePane diePane) {
 		space = diePane;
 		space.resize(squareSize);
 		getChildren().add(space);

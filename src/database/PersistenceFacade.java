@@ -27,6 +27,10 @@ public class PersistenceFacade {
 	private CurrencyStoneDAO currencyStoneDAO = new CurrencyStoneDAO(baseDAO.getConnection());
 	private SpaceGlassDAO spaceGlassDAO = new SpaceGlassDAO(baseDAO.getConnection());
 
+	public void createGame(/* ArrayList<User> users */) {
+		gameDAO.createGame();
+	}
+
 	// CollectiveGoalCardDAO
 	public ArrayList<CollectiveGoalCard> getSharedCollectiveGoalCards(int idGame) {
 		return collectiveGoalCardDAO.getSharedCollectiveGoalCards(idGame);
@@ -138,4 +142,7 @@ public class PersistenceFacade {
 	public ArrayList<PatternCard> getplayerPatternCard(int idPlayer) {
 		return patternCardDAO.getplayerPatternCard(idPlayer);
 	}
+
+	//GameDAO
+
 }
