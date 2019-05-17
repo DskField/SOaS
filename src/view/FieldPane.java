@@ -47,9 +47,9 @@ public class FieldPane extends FlowPane {
 			for (int x = 0; x < 5; x++) {
 				SpacePattern space = patternCard.getSpace(x, y);
 				if (space.getValue() > 0 && space.getColor() == GameColor.EMPTY) {
-					patternSpaces[x][y] = new SpacePane(space.getValue(), GameColor.GREY);
+					patternSpaces[x][y] = new SpacePane(x, y, space.getValue(), GameColor.GREY);
 				} else {
-					patternSpaces[x][y] = new SpacePane(space.getValue(), space.getColor());
+					patternSpaces[x][y] = new SpacePane(x, y, space.getValue(), space.getColor());
 				}
 			}
 		}
@@ -60,7 +60,7 @@ public class FieldPane extends FlowPane {
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
 				SpaceGlass space = spaceGlasses[x][y];
-				glassSpaces[x][y] = new SpacePane(space.getDieValue(), space.getDieColor());
+				glassSpaces[x][y] = new SpacePane(x, y, new DiePane(space.getDieId(), space.getDieValue(), space.getDieColor()));
 			}
 		}
 

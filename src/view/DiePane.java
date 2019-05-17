@@ -13,7 +13,6 @@ import javafx.scene.shape.Circle;
 
 public class DiePane extends Pane {
 	private Circle[] circles;
-	//	private GameColor color;
 
 	private double circleSize;
 	private double circleRadius;
@@ -21,10 +20,12 @@ public class DiePane extends Pane {
 
 	private double size;
 
+	private int number;
 	private int eyes;
 	private GameColor color;
 
-	public DiePane(int eyes, GameColor color) {
+	public DiePane(int number, int eyes, GameColor color) {
+		this.number = number;
 		this.eyes = eyes;
 		this.color = color;
 		size = 79;
@@ -88,6 +89,14 @@ public class DiePane extends Pane {
 		default:
 			break;
 		}
+	}
+
+	public int getNumber() {
+		return number;
+	}
+
+	public int getEyes() {
+		return eyes;
 	}
 
 	public GameColor getColor() {
