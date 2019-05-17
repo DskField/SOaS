@@ -3,6 +3,9 @@ package database;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import client.Challenge;
+import client.Lobby;
+import client.User;
 import game.CollectiveGoalCard;
 import game.CurrencyStone;
 import game.Die;
@@ -26,6 +29,50 @@ public class PersistenceFacade {
 	private CollectiveGoalCardDAO collectiveGoalCardDAO = new CollectiveGoalCardDAO(baseDAO.getConnection());
 	private CurrencyStoneDAO currencyStoneDAO = new CurrencyStoneDAO(baseDAO.getConnection());
 	private SpaceGlassDAO spaceGlassDAO = new SpaceGlassDAO(baseDAO.getConnection());
+	
+	// Client
+	private ChallengeDAO challengeDAO = new ChallengeDAO(baseDAO.getConnection());
+	private LobbyDAO lobbyDAO = new LobbyDAO(baseDAO.getConnection());
+	private UserDAO userDAO = new UserDAO(baseDAO.getConnection());
+	
+	// Login
+	private LoginDAO loginDAO = new LoginDAO(baseDAO.getConnection());
+	
+	// Login
+	public boolean loginCorrect(String username, String password) {
+		return loginDAO.loginCorrect(username, password);
+	}
+	
+	public boolean insertCorrect(String username, String password) {
+		return loginDAO.insertCorrect(username, password);
+	}
+	
+	// ChallengeDAO
+	public ArrayList<Challenge>	getChallenges(String username) {
+		return challengeDAO.getChallenges(username);
+	}
+	
+	public boolean updateChallenge(String username, ArrayList<Challenge> oldList) {
+		return challengeDAO.checkUpdate(username, oldList);
+	}
+	
+	// LobbyDAO
+	public ArrayList<Lobby> getLobbies(String username) {
+		return lobbyDAO.getLobbies(username);
+	}
+	
+	public boolean updateLobby(String username, ArrayList<Lobby> oldList) {
+		return lobbyDAO.checkUpdate(username, oldList);
+	}
+	
+	// UserDAO
+	public User getUser(String username) {
+		return userDAO.getUser(username);
+	}
+	
+	public boolean updateUser(String username, User oldUser) {
+		return userDAO.checkUpdate(username, oldUser);
+	}
 
 	public void createGame(/* ArrayList<User> users */) {
 		gameDAO.createGame();
