@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 
 public class GameScene extends Scene {
 	// constants
-	private final int personalInfoSpacing = 10;
+		private final int personalInfoSpacing = 10;
 
 	private final int buttonWidth = 200;
 	private final int buttonheigt = 50;
@@ -124,6 +124,7 @@ public class GameScene extends Scene {
 		personalInfo = new VBox();
 		currencyStonesPane = new CurrencyStonesPane(gameController);
 		personalGoalCardPane = new PersonalGoalCardPane();
+		personalGoalCardPane.loadPersonalGoalCardImage(gameController.getClientPlayer().getPersonalGoalCard());
 
 		// initialize everything for the cardBox
 		cardBox = new HBox();

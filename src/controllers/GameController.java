@@ -22,7 +22,7 @@ public class GameController {
 	public GameController(MainApplication mainApplication) {
 		this.mainApplication = mainApplication;
 		//TODO temporary call, when the game will be created the ClientController needs to give the information to the GameController
-		joinGame(1, new User("speler1", 0, 0, GameColor.RED, 0));
+		joinGame(1, new User("speler3", 0, 0, GameColor.RED, 0));
 	}
 
 	public void joinGame(int idGame, User clientUser) {
