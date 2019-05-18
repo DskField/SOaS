@@ -47,7 +47,6 @@ class PatternCardDAO {
 		try {
 			PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncardoption VALUES (?,?), (?,?), (?,?), (?,?)");
 			// Option 1
-			System.out.println(list.get(0).getPatternCardId());
 			stmt.setInt(1, list.get(0).getPatternCardId());
 			stmt.setInt(2, idPlayer);
 

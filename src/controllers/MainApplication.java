@@ -17,7 +17,7 @@ public class MainApplication extends Application {
 		this.stage = stage;
 		new GameController(this);
 		stage.setTitle("Sagrada");
-//		stage.setFullScreen(true);
+		stage.setFullScreen(true);
 		// Remove the exit hint
 		stage.setFullScreenExitHint("");
 		// This line is to disable the Esc key to make sure you can't exit full screen
