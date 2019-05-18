@@ -33,7 +33,7 @@ class PatternCardDAO {
 
 	//Is used to obtain the options given to a player at the start of a game
 	ArrayList<PatternCard> getPlayerOptions(int idPlayer) {
-		return selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard IS IN (SELECT patterncard_idpatterncard FROM patterncardoption WHERE player_idplayer = " + idPlayer + ")");
+		return selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard IN (SELECT patterncard_idpatterncard FROM patterncardoption WHERE player_idplayer = " + idPlayer + ")");
 	}
 
 	void addPatternCard(PatternCard patternCard) {
@@ -45,7 +45,7 @@ class PatternCardDAO {
 		Collections.shuffle(list);
 
 		try {
-			PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncardoption VALUES (?,?), (?,?), (?,?)");
+			PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncardoption VALUES (?,?), (?,?), (?,?), (?,?)");
 			// Option 1
 			stmt.setInt(1, list.get(0).getPatternCardId());
 			stmt.setInt(2, idPlayer);

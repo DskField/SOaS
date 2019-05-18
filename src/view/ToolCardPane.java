@@ -5,14 +5,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class ToolCardPane extends AnchorPane {
-
+	ImageView imageView;
 	public ToolCardPane(int seqNr) {
-		ImageView imageView = new ImageView();
-		lookForImage(seqNr, imageView);
+		imageView = new ImageView();
+		lookForImage(seqNr);
 		getChildren().add(imageView);
 	}
 	
-	private void lookForImage(int seqNr, ImageView imageView) {
+	private void lookForImage(int seqNr) {
 		switch(seqNr) {
 		
 		case 1:

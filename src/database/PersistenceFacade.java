@@ -132,6 +132,10 @@ public class PersistenceFacade {
 	public void updatePlayerTurn(Player oldPlayer, Player newPlayer) {
 		playerDAO.updatePlayerTurn(oldPlayer, newPlayer);
 	}
+	
+	public void setPlayerPaternCard(int idPatternCard, int idPlayer) {
+		playerDAO.setPlayerPaternCard(idPatternCard, idPlayer);
+	}
 
 	// ToolCardDAO
 	public ArrayList<ToolCard> getGameToolCards(int idGame) {
@@ -188,6 +192,10 @@ public class PersistenceFacade {
 
 	public ArrayList<PatternCard> getplayerPatternCard(int idPlayer) {
 		return patternCardDAO.getplayerPatternCard(idPlayer);
+	}
+	
+	public ArrayList<PatternCard> getPlayerOptions(int idPlayer) {
+		return patternCardDAO.getPlayerOptions(idPlayer);
 	}
 
 	//GameDAO
