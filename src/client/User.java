@@ -12,12 +12,14 @@ public class User {
 	private GameColor mostPlacedColor;
 	private int mostPlacedValue;
 	private int totalOpponents;
+	private String username;
 
-	public User(int gamesPlayed, int maxScore, GameColor mostPlacedColor, int mostPlacedValue) {
+	public User(int gamesPlayed, int maxScore, GameColor mostPlacedColor, int mostPlacedValue, String username) {
 		this.gamesPlayed = gamesPlayed;
 		this.maxScore = maxScore;
 		this.mostPlacedColor = mostPlacedColor;
 		this.mostPlacedValue = mostPlacedValue;
+		this.username = username;
 	}
 
 	// SETTERS
@@ -60,5 +62,9 @@ public class User {
 
 	public int getTotalOpponents() {
 		return totalOpponents;
+	}
+	
+	public String getUsername() {
+		return username;
 	}
 }
