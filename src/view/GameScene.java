@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import controllers.GameController;
 import game.Message;
+import game.PatternCard;
 import game.Player;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -81,6 +82,7 @@ public class GameScene extends Scene {
 		// sets the rootPane and handles makeup
 		setRoot(rootPane);
 		rootPane.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
+		
 
 		// creates and sets everything in the right place
 		createCenter();
@@ -91,7 +93,7 @@ public class GameScene extends Scene {
 		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			public void handle(KeyEvent key) {
 				if (key.getCode() == KeyCode.ESCAPE) {
-					stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
+					
 					Popup gameMenuPopup = new Popup();
 					GameMenuPane gameMenu = new GameMenuPane();
 					gameMenuPopup.getContent().add(gameMenu);

@@ -14,7 +14,7 @@ public class User {
 	private int totalOpponents;
 	private String username;
 
-	public User(int gamesPlayed, int maxScore, GameColor mostPlacedColor, int mostPlacedValue, String username) {
+	public User(String username, int gamesPlayed, int maxScore, GameColor mostPlacedColor, int mostPlacedValue) {
 		this.gamesPlayed = gamesPlayed;
 		this.maxScore = maxScore;
 		this.mostPlacedColor = mostPlacedColor;

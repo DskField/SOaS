@@ -16,6 +16,25 @@ class PlayerDAO {
 	public PlayerDAO(Connection connection) {
 		con = connection;
 	}
+// kevin stuff
+	private void insertPlayerPaterncard(int idPatternCard, int idPlayer) {
+		try {
+			PreparedStatement stmt = con.prepareStatement(
+					"UPDATE player SET patterncard_idpatterncard = " + idPatternCard + " WHERE idPlayer = " + idPlayer);
+			stmt.executeUpdate();
+
+			con.commit();
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("PlayerDAO " + e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				System.err.println("The rollback failed: Please check the Database!");
+			}
+		}
+
+	}
 
 	private ArrayList<Player> selectPlayer(String query) {
 		ArrayList<Player> results = new ArrayList<Player>();
@@ -62,10 +81,12 @@ class PlayerDAO {
 
 	private void updatePlayer(Player oldPlayer, Player newPlayer) {
 		try {
-			PreparedStatement stmtOldPlayer = con.prepareStatement("UPDATE player SET seqnr = ?, isCurrentPlayer = FALSE WHERE idPlayer = ?;");
+			PreparedStatement stmtOldPlayer = con
+					.prepareStatement("UPDATE player SET seqnr = ?, isCurrentPlayer = FALSE WHERE idPlayer = ?;");
 			stmtOldPlayer.setInt(1, oldPlayer.getSeqnr());
 			stmtOldPlayer.setInt(2, oldPlayer.getPlayerID());
-			PreparedStatement stmtNewPlayer = con.prepareStatement("UPDATE player SET isCurrentPlayer = TRUE WHERE idPlayer = ?;");
+			PreparedStatement stmtNewPlayer = con
+					.prepareStatement("UPDATE player SET isCurrentPlayer = TRUE WHERE idPlayer = ?;");
 			stmtNewPlayer.setInt(1, newPlayer.getPlayerID());
 			stmtOldPlayer.executeUpdate();
 			stmtNewPlayer.executeUpdate();
@@ -79,6 +100,11 @@ class PlayerDAO {
 
 	void updatePlayerTurn(Player oldPlayer, Player newPlayer) {
 		updatePlayer(oldPlayer, newPlayer);
+	}
+	//kevin stuff
+	void setPlayerPaternCard(int idPatternCard, int idPlayer) {
+		System.out.println("5");
+		insertPlayerPaterncard(idPatternCard, idPlayer);
 	}
 
 	ArrayList<Player> getAllPlayers() {
@@ -101,7 +127,8 @@ class PlayerDAO {
 				for (int i = 0; i < username.size(); i++) {
 					String status = i == 0 ? "uitdager" : "uitgedaagde";
 
-					PreparedStatement stmt = con.prepareStatement("INSERT INTO player VALUES (null,?,?,?,null,false,?,null,null)");
+					PreparedStatement stmt = con
+							.prepareStatement("INSERT INTO player VALUES (null,?,?,?,null,false,?,null,null)");
 					stmt.setString(1, username.get(i));
 					stmt.setInt(2, idGame);
 					stmt.setString(3, status);

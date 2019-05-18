@@ -9,10 +9,12 @@ import game.Game;
 import game.GameColor;
 import game.GlassWindow;
 import game.Message;
+import game.PatternCard;
 import game.Player;
 import game.SpaceGlass;
 import game.SpacePattern;
 import javafx.animation.AnimationTimer;
+import view.ChoiceScene;
 import view.GameScene;
 
 public class GameController {
@@ -20,21 +22,31 @@ public class GameController {
 	private Game game;
 	private MainApplication mainApplication;
 	private GameScene gameScene;
+	private ChoiceScene choiceScene;
 	private AnimationTimerExt timer;
 
 	public GameController(MainApplication mainApplication) {
 		this.mainApplication = mainApplication;
 		// TODO temporary call, when the game will be created the ClientController needs
 		// to give the information to the GameController
-		joinGame(1, new User("speler1", 0, 0, GameColor.RED, 0));
+		joinGame(1, new User("speler2", 0, 0, GameColor.RED, 0));
 	}
 
 	public void joinGame(int idGame, User clientUser) {
 		game = new Game(idGame, clientUser);
 		game.loadGame();
-		gameScene = new GameScene(this);
-		mainApplication.setScene(gameScene);
+		getClientPlayer().getGlassWindow().setPaterNull(null);
+		if(getClientPlayer().getGlassWindow().getPatternCard() == null) {
+			game.dealPatternCards();
+			choiceScene = new ChoiceScene(this, getPatternChoices());
+			mainApplication.setScene(choiceScene);
+		}
+		else {
+			gameScene = new GameScene(this);
+			mainApplication.setScene(gameScene);
 
+		}
+		
 		createTimer();
 	}
 
@@ -56,6 +68,17 @@ public class GameController {
 
 	public ArrayList<Player> getPlayers() {
 		return game.getPlayers();
+	}
+	//kevin stuff
+	public ArrayList<PatternCard> getPatternChoices() {
+		return game.patternChoices(game.getClientPlayer().getPlayerID());
+	}
+	//kevin stuff
+	public void setClientPlayerPaternCard(int idPatternCard) {
+		game.setClientPlayerPaternCard(idPatternCard);
+		game.loadGame();
+		gameScene = new GameScene(this);
+		mainApplication.setScene(gameScene);
 	}
 
 	public abstract class AnimationTimerExt extends AnimationTimer {
@@ -87,7 +110,7 @@ public class GameController {
 			}
 		};
 
-		timer.start();
+//		timer.start();
 	}
 
 	/**
@@ -95,6 +118,10 @@ public class GameController {
 	 */
 	private void update() {
 		gameScene.updateChat(game.updateChat());
+	}
+	//kevin stuff
+	public void updateCurrencyStones(int ammount) {
+		game.updateCurrencyStone(game.getGameID(), game.getClientPlayer().getPlayerID(), ammount);
 	}
 
 	public int getCollectiveGoalCard(int arrayNumber) {
