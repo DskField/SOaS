@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import game.Die;
+import game.GameColor;
 import game.Round;
 
 class DieDAO {
@@ -94,7 +95,7 @@ class DieDAO {
 				stmt.close();
 			}
 		} catch (SQLException e) {
-			System.err.println("MessageDAO " + e.getMessage());
+			System.err.println("DieDAO: " + e.getMessage());
 			try {
 				con.rollback();
 			} catch (SQLException e1) {
@@ -125,17 +126,35 @@ class DieDAO {
 				stmt.close();
 			}
 		} catch (SQLException e) {
-			System.err.println("The rollback failed: Please check the Database!");
+			System.err.println("DieDAO: " + e.getMessage());
 		}
 	}
 
-	private void insertDice() {
+	public void insertDice(int idGame) {
+		GameColor[] possibleColors = { GameColor.RED, GameColor.GREEN, GameColor.YELLOW, GameColor.PURPLE, GameColor.BLUE };
 
+		try {
+			for (GameColor color : possibleColors) {
+				for (int i = 0; i < 18; i++) {
+					PreparedStatement stmt = con.prepareStatement("INSERT INTO gamedie VALUES (?, ?, ?, NULL, NULL, NULL);");
+					stmt.setInt(1, idGame);
+					stmt.setInt(2, i);
+					stmt.setString(3, color.getDatabaseName());
+				}
+			}
+		} catch (SQLException e) {
+			System.err.println("DieDAO: " + e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				System.err.println("The rollback failed: Please check the Database!");
+			}
+		}
 	}
 
 	ArrayList<Die> getGameDice(int gameID) {
-		//TODO Tweak to let this return no round dice and no placed dice
-		return selectDie("Select * from gameDie WHERE idgame = " + gameID);
+		return selectDie("SELECT * FROM gameDie g LEFT JOIN playerframefield p ON g.idgame = p.idgame AND g.dienumber = p.dienumber AND g.diecolor = p.diecolor WHERE g.idgame = " + gameID
+				+ " AND g.roundtrack IS NULL AND p.idgame IS NULL;");
 	}
 
 	Round[] getRoundTrack(int gameID) {

@@ -194,7 +194,7 @@ public class GameScene extends Scene {
 		// Initialize everything for the leftBox
 		leftBox = new VBox();
 		Player clientPlayer = gameController.getClientPlayer();
-		mainGlassWindow = new GlassWindowPane(0, clientPlayer.getGlassWindow().getColor(), clientPlayer.getGlassWindow(), this);
+		mainGlassWindow = new GlassWindowPane(0, clientPlayer, this);
 		chatPane = new ChatPane(gameController);
 
 		// adds everything to the leftBox and handles makeup
@@ -218,22 +218,22 @@ public class GameScene extends Scene {
 		for (Player player : players) {
 			if (player.getPlayerID() != clientPlayer.getPlayerID()) {
 				if (smallGlassWindow1 == null) {
-					smallGlassWindow1 = new GlassWindowPane(1, player.getGlassWindow().getColor(), player.getGlassWindow(), this);
+					smallGlassWindow1 = new GlassWindowPane(1, player, this);
+					smallGlassWindow1.toggleIsSmall();
+					rightBox.getChildren().add(smallGlassWindow1);
 				} else if (smallGlassWindow2 == null) {
-					smallGlassWindow2 = new GlassWindowPane(2, player.getGlassWindow().getColor(), player.getGlassWindow(), this);
+					smallGlassWindow2 = new GlassWindowPane(2, player, this);
+					smallGlassWindow2.toggleIsSmall();
+					rightBox.getChildren().add(smallGlassWindow2);
 				} else if (smallGlassWindow3 == null) {
-					smallGlassWindow3 = new GlassWindowPane(3, player.getGlassWindow().getColor(), player.getGlassWindow(), this);
+					smallGlassWindow3 = new GlassWindowPane(3, player, this);
+					smallGlassWindow3.toggleIsSmall();
+					rightBox.getChildren().add(smallGlassWindow3);
 				}
 			}
 		}
 
-		// changes the glassWindow size to it's small size
-		smallGlassWindow1.toggleIsSmall();
-		smallGlassWindow2.toggleIsSmall();
-		smallGlassWindow3.toggleIsSmall();
-
 		// adds everything to the rightBox and handles makeup
-		rightBox.getChildren().addAll(smallGlassWindow1, smallGlassWindow2, smallGlassWindow3);
 		rightBox.setSpacing(rightBoxSpacing);
 		rightBox.setAlignment(Pos.BOTTOM_CENTER);
 		rightBox.setPadding(new Insets(rightBoxPaddingTop, rightBoxPaddingRight, rightBoxPaddingBottom, rightBoxPaddingLeft));

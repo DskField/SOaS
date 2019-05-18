@@ -4,10 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import game.Game;
 
 class GameDAO {
 	private Connection con;
@@ -16,21 +12,24 @@ class GameDAO {
 		con = connection;
 	}
 
-	private List<Game> selectGame(String query) {
-		List<Game> results = new ArrayList<Game>();
+	public int createGame() {
 		try {
-			PreparedStatement stmt = con.prepareStatement(query);
-			ResultSet dbResultSet = stmt.executeQuery();
+			PreparedStatement stmt = con.prepareStatement("INSERT INTO game (idgame, turn_idplayer, creationdate) VALUES(null, null, now());");
+			stmt.executeUpdate();
 			con.commit();
+
+			PreparedStatement stmt2 = con.prepareStatement("SELECT LAST_INSERT_ID() last;");
+			ResultSet dbResultSet = stmt2.executeQuery();
+
 			while (dbResultSet.next()) {
-				int gameID = dbResultSet.getInt("idgame");
-				//				Game game = new Game(gameID, new User("test"));
-				//				results.add(game);
+				return dbResultSet.getInt("last");
 			}
+
 			stmt.close();
+			stmt2.close();
 		} catch (SQLException e) {
-			System.err.println("CollectiveGoalCardDAO " + e.getMessage());
+			System.err.println("GameDAO: " + e.getMessage());
 		}
-		return results;
+		return 0;
 	}
 }

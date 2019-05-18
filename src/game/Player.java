@@ -27,6 +27,10 @@ public class Player {
 	}
 
 	// GETTERS AND SETTERS
+	public GameColor getColor() {
+		return glassWindow.getColor();
+	}
+
 	public ArrayList<CurrencyStone> getCurrencyStones() {
 		return currencyStones;
 	}
