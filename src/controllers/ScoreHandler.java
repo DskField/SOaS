@@ -3,6 +3,7 @@ package controllers;
 import java.util.ArrayList;
 
 import game.CollectiveGoalCard;
+import game.Die;
 import game.Player;
 
 public class ScoreHandler {
@@ -12,6 +13,7 @@ public class ScoreHandler {
 
 	public ScoreHandler(ArrayList<CollectiveGoalCard> collectiveGoalCards) {
 		this.collectiveGoalCards = collectiveGoalCards;
+		goalCardHandler = new GoalCardHandler();
 	}
 
 	public void updateAllPrivateScore(ArrayList<Player> players) {
@@ -39,8 +41,9 @@ public class ScoreHandler {
 		int count = 0;
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
-				if (player.getGlassWindow().getSpace(x, y).getDie().getDieColor() == player.getPersonalGoalCard())
-					count += player.getGlassWindow().getSpace(x, y).getDie().getDieValue();
+				Die die = player.getGlassWindow().getSpace(x, y).getDie();
+				if (die != null && die.getDieColor() == player.getPersonalGoalCard())
+					count += die.getDieValue();
 			}
 		}
 		return count;

@@ -29,52 +29,53 @@ public class PersistenceFacade {
 	private CollectiveGoalCardDAO collectiveGoalCardDAO = new CollectiveGoalCardDAO(baseDAO.getConnection());
 	private CurrencyStoneDAO currencyStoneDAO = new CurrencyStoneDAO(baseDAO.getConnection());
 	private SpaceGlassDAO spaceGlassDAO = new SpaceGlassDAO(baseDAO.getConnection());
-	
+
 	// Client
 	private ChallengeDAO challengeDAO = new ChallengeDAO(baseDAO.getConnection());
 	private LobbyDAO lobbyDAO = new LobbyDAO(baseDAO.getConnection());
 	private UserDAO userDAO = new UserDAO(baseDAO.getConnection());
-	
+
 	// Login
 	private LoginDAO loginDAO = new LoginDAO(baseDAO.getConnection());
-	
+
 	// Login
 	public boolean loginCorrect(String username, String password) {
 		return loginDAO.loginCorrect(username, password);
 	}
-	
+
 	public boolean insertCorrect(String username, String password) {
 		return loginDAO.insertCorrect(username, password);
 	}
-	
+
 	// ChallengeDAO
-	public ArrayList<Challenge>	getChallenges(String username) {
+	public ArrayList<Challenge> getChallenges(String username) {
 		return challengeDAO.getChallenges(username);
 	}
-	
+
 	public boolean updateChallenge(String username, ArrayList<Challenge> oldList) {
 		return challengeDAO.checkUpdate(username, oldList);
 	}
-	
+
 	// LobbyDAO
 	public ArrayList<Lobby> getLobbies(String username) {
 		return lobbyDAO.getLobbies(username);
 	}
-	
+
 	public boolean updateLobby(String username, ArrayList<Lobby> oldList) {
 		return lobbyDAO.checkUpdate(username, oldList);
 	}
-	
+
 	// UserDAO
 	public User getUser(String username) {
 		return userDAO.getUser(username);
 	}
-	
+
 	public boolean updateUser(String username, User oldUser) {
 		return userDAO.checkUpdate(username, oldUser);
 	}
 
-	public void createGame(/* ArrayList<User> users */) {
+	//GAME
+	public void createGame(ArrayList<User> users) {
 		gameDAO.createGame();
 	}
 
@@ -132,7 +133,7 @@ public class PersistenceFacade {
 	public void updatePlayerTurn(Player oldPlayer, Player newPlayer) {
 		playerDAO.updatePlayerTurn(oldPlayer, newPlayer);
 	}
-	
+
 	public void setPlayerPaternCard(int idPatternCard, int idPlayer) {
 		playerDAO.setPlayerPaternCard(idPatternCard, idPlayer);
 	}
@@ -193,7 +194,7 @@ public class PersistenceFacade {
 	public ArrayList<PatternCard> getplayerPatternCard(int idPlayer) {
 		return patternCardDAO.getplayerPatternCard(idPlayer);
 	}
-	
+
 	public ArrayList<PatternCard> getPlayerOptions(int idPlayer) {
 		return patternCardDAO.getPlayerOptions(idPlayer);
 	}

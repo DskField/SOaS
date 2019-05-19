@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import client.User;
+import game.CollectiveGoalCard;
 import game.Die;
 import game.Game;
 import game.GameColor;
@@ -117,6 +118,7 @@ public class GameController {
 	 */
 	private void update() {
 		gameScene.updateChat(game.updateChat());
+		gameScene.updateScore(game.updateScore());
 	}
 
 	//kevin stuff
@@ -126,6 +128,10 @@ public class GameController {
 
 	public int getCollectiveGoalCard(int arrayNumber) {
 		return game.getCollectiveGoalCards().get(arrayNumber).getCardID();
+	}
+
+	public ArrayList<CollectiveGoalCard> getCollectiveGoalCards() {
+		return game.getCollectiveGoalCards();
 	}
 
 	public int getToolCard(int arrayNumber) {

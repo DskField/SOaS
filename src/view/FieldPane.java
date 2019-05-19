@@ -64,7 +64,11 @@ public class FieldPane extends FlowPane {
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
 				SpaceGlass space = spaceGlasses[x][y];
-				glassSpaces[x][y].loadGlass(new DiePane(space.getDieId(), space.getDieValue(), space.getDieColor()));
+				if (space.getDieId() != 0) {
+					glassSpaces[x][y].loadGlass(new DiePane(space.getDieId(), space.getDieValue(), space.getDieColor()));
+				} else {
+					glassSpaces[x][y].loadGlass(new DiePane(0, 0, GameColor.EMPTY));
+				}
 				glassSpaces[x][y].resize(true);
 			}
 		}

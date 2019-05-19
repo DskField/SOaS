@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import client.User;
+import controllers.ScoreHandler;
 import database.PersistenceFacade;
 
 public class Game {
@@ -26,9 +27,11 @@ public class Game {
 	private ArrayList<Die> dice;
 	private Round[] roundTrack;
 
+	private ScoreHandler scoreHandler;
+
 	/**
-	 * table is the list with die that are rolled but not placed or in the round
-	 * track. That means they are the dice to choose out of this round
+	 * table is the list with die that are rolled but not placed or in the round track. That means they
+	 * are the dice to choose out of this round
 	 */
 	private ArrayList<Die> table;
 
@@ -50,8 +53,7 @@ public class Game {
 	/**
 	 * Initialize the game
 	 * 
-	 * @param gameID
-	 *            - The id of the game
+	 * @param gameID - The id of the game
 	 */
 
 	public Game(int gameID, User clientUser) {
@@ -85,6 +87,8 @@ public class Game {
 		loadCards();
 		loadGlassWindow();
 		loadCurrencyStones();
+
+		scoreHandler = new ScoreHandler(collectiveGoalCards);
 	}
 
 	/**
@@ -125,8 +129,7 @@ public class Game {
 		int num = 1;
 		for (Player player : players) {
 			player.loadGlassWindow(persistenceFacade.getGlassWindow(player.getPlayerID()));
-			player.getGlassWindow()
-					.loadPatternCard(persistenceFacade.getplayerPatternCard(player.getPlayerID()).get(0));
+			player.getGlassWindow().loadPatternCard(persistenceFacade.getplayerPatternCard(player.getPlayerID()).get(0));
 
 			if (player.getPlayerID() == clientPlayer.getPlayerID()) {
 				player.getGlassWindow().setColor(colors[0]);
@@ -158,15 +161,28 @@ public class Game {
 	public void updateCurrencyStone(int idGame, int idPlayer, int ammount) {
 		persistenceFacade.updateGivePlayerCurrencyStones(idGame, idPlayer, ammount);
 	}
-	
+
+	public ArrayList<Player> updateScore() {
+		for (Player player : players) {
+			if (player.equals(clientPlayer)) {
+				player.setScore(scoreHandler.getScore(player, true));
+			} else {
+				player.setScore(scoreHandler.getScore(player, false));
+			}
+		}
+
+		return players;
+	}
+
 	public void dealPatternCards() {
 		for (Player player : players) {
 			persistenceFacade.insertPatternCardOptions(player.getPlayerID());
 		}
 	}
+
 	//kevin stuff
 	public void setClientPlayerPaternCard(int idPatternCard) {
-		
+
 		persistenceFacade.setPlayerPaternCard(idPatternCard, clientPlayer.getPlayerID());
 	}
 
@@ -176,8 +192,7 @@ public class Game {
 	// end kevin stuff
 
 	/**
-	 * Removes the die from the list with dice and places them on the list table. It
-	 * also rolls the dice
+	 * Removes the die from the list with dice and places them on the list table. It also rolls the dice
 	 */
 	public void shakeSack() {
 		int numDice = players.size() * 2 + 1;
@@ -297,8 +312,7 @@ public class Game {
 	/**
 	 * gets new Messages from the database and adds it to the chat.
 	 * 
-	 * @return ArrayList<Messages> list of Messages that need to be added to the
-	 *         ChatPane
+	 * @return ArrayList<Messages> list of Messages that need to be added to the ChatPane
 	 */
 	public ArrayList<Message> updateChat() {
 		ArrayList<Message> messages = persistenceFacade.updateChat(players, chat.getLastTimestamp());
@@ -307,21 +321,17 @@ public class Game {
 	}
 
 	/**
-	 * Checks if the new Message has the same primary key as the message before it.
-	 * If this is the case the method wil return an ArrayList<Message> containing an
-	 * error message. Otherwise the message will be send to the database for
-	 * insertion. After insertion this method will call upon the updateChat function
-	 * to update the chat from the database.
+	 * Checks if the new Message has the same primary key as the message before it. If this is the case
+	 * the method wil return an ArrayList<Message> containing an error message. Otherwise the message
+	 * will be send to the database for insertion. After insertion this method will call upon the
+	 * updateChat function to update the chat from the database.
 	 * 
-	 * @param message
-	 *            - the Message that needs to be send to the database
-	 * @return ArrayList<Message> list of messages that need to be added to the
-	 *         ChatPane
+	 * @param message - the Message that needs to be send to the database
+	 * @return ArrayList<Message> list of messages that need to be added to the ChatPane
 	 */
 	public ArrayList<Message> sendMessage(Message message) {
 		if (message.getChatTime().equals(chat.getLastChatTime())) {
-			Message error = new Message("please don't spam you can only send 1 message a second", getClientPlayer(),
-					new Timestamp(System.currentTimeMillis()));
+			Message error = new Message("please don't spam you can only send 1 message a second", getClientPlayer(), new Timestamp(System.currentTimeMillis()));
 			ArrayList<Message> messages = new ArrayList<Message>();
 			messages.add(error);
 			return messages;

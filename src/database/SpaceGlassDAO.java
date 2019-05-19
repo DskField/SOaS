@@ -45,7 +45,12 @@ class SpaceGlassDAO {
 				int eyes = dbResultSet.getInt("eyes");
 				int round = dbResultSet.getInt("round");
 				String color = dbResultSet.getString("diecolor");
-				Die die = new Die(dienumber, (color != null) ? color : "", round, eyes);
+				Die die;
+				if (dienumber != 0 && color != null && round != 0 && eyes != 0) {
+					die = new Die(dienumber, color, round, eyes);
+				} else {
+					die = null;
+				}
 				spaceGlass.setDie(die);
 
 				result[x - 1][y - 1] = spaceGlass;

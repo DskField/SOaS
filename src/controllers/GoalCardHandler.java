@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import game.CollectiveGoalCard;
+import game.Die;
 import game.GameColor;
 import game.GlassWindow;
 
@@ -17,36 +18,36 @@ public class GoalCardHandler {
 		int points = 0;
 
 		for (CollectiveGoalCard c : collectiveGoalCards) {
-			switch (c.getName().toLowerCase()) {
-			case "kleurenvariëteit per kolom":
-				points += handleKleurvarieteitPerKolom() * c.getPoints();
-				break;
-			case "tintveriëteit per kolom":
-				points += handleTintvarieteitPerKolom() * c.getPoints();
-				break;
-			case "halfdonkere tinten":
-				points += handleDonkereTinten(3, 4) * c.getPoints();
-				break;
-			case "tintveriëteit":
+			switch (c.getCardID()) {
+			case 1:
 				points += handleTintvarieteit() * c.getPoints();
 				break;
-			case "kleurvariëteit per rij":
-				points += handleKleurvareiteitPerRij() * c.getPoints();
+			case 2:
+				points += handleDonkereTinten(3, 4) * c.getPoints();
 				break;
-			case "kleurvariëteit":
-				points += handleKleurvarieteit() * c.getPoints();
+			case 3:
+				points += handleTintvarieteitPerKolom() * c.getPoints();
 				break;
-			case "donkere tinten":
+			case 4:
+				points += handleKleurvarieteitPerKolom() * c.getPoints();
+				break;
+			case 5:
 				points += handleDonkereTinten(5, 6) * c.getPoints();
 				break;
-			case "tintvariëteit per rij":
-				points += handleTintvarieteitPerRij() * c.getPoints();
+			case 6:
+				points += handleKleurvarieteit() * c.getPoints();
 				break;
-			case "lichte tinten":
+			case 7:
+				points += handleKleurvareiteitPerRij() * c.getPoints();
+				break;
+			case 8:
+				points += handleKleurdiagonalen();
+				break;
+			case 9:
 				points += handleDonkereTinten(1, 2) * c.getPoints();
 				break;
-			case "kleurdiagonalen":
-				points += handleKleurdiagonalen();
+			case 10:
+				points += handleTintvarieteitPerRij() * c.getPoints();
 				break;
 			default:
 				System.err.println("GoalCardHandler: none existing CollectiveGoalCard");
@@ -96,10 +97,15 @@ public class GoalCardHandler {
 		for (int x = 0; x < 5; x++) {
 			values.clear();
 			for (int y = 0; y < 4; y++) {
-				if (values.contains(glasswindow.getSpace(x, y).getDie().getDieValue()))
+				Die die = glasswindow.getSpace(x, y).getDie();
+				if (die == null) {
+					continue;
+				}
+
+				if (values.contains(die.getDieValue()))
 					break;
 				else
-					values.add(glasswindow.getSpace(x, y).getDie().getDieValue());
+					values.add(die.getDieValue());
 			}
 			if (values.size() == 4)
 				column++;
@@ -114,10 +120,15 @@ public class GoalCardHandler {
 		for (int x = 0; x < 5; x++) {
 			colors.clear();
 			for (int y = 0; y < 4; y++) {
-				if (colors.contains(glasswindow.getSpace(x, y).getDie().getDieColor()))
+				Die die = glasswindow.getSpace(x, y).getDie();
+				if (die == null) {
+					continue;
+				}
+
+				if (colors.contains(die.getDieColor()))
 					break;
 				else
-					colors.add(glasswindow.getSpace(x, y).getDie().getDieColor());
+					colors.add(die.getDieColor());
 			}
 			if (colors.size() == 4)
 				column++;
@@ -132,12 +143,19 @@ public class GoalCardHandler {
 
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
-				if (glasswindow.getSpace(x, y).getDie().getDieValue() == dieA)
+				Die die = glasswindow.getSpace(x, y).getDie();
+				if (die == null) {
+					continue;
+				}
+
+				if (die.getDieValue() == dieA)
 					countA++;
-				else if (glasswindow.getSpace(x, y).getDie().getDieValue() == dieB)
+				else if (die.getDieValue() == dieB)
 					countB++;
 			}
 		}
+
+		System.out.println(countA + " - " + countB);
 		// if dieThree is smaller return dieThree else dieFour
 		return countA < countB ? countA : countB;
 	}
@@ -147,7 +165,12 @@ public class GoalCardHandler {
 
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
-				switch (glasswindow.getSpace(x, y).getDie().getDieColor()) {
+				Die die = glasswindow.getSpace(x, y).getDie();
+				if (die == null) {
+					continue;
+				}
+
+				switch (die.getDieColor()) {
 				case RED:
 					colors.set(0, colors.get(0) + 1);
 					break;
@@ -168,42 +191,45 @@ public class GoalCardHandler {
 				}
 			}
 		}
+
 		Collections.sort(colors);
 		return colors.get(0);
 	}
 
 	private int handleKleurvareiteitPerRij() {
 		ArrayList<GameColor> colors = new ArrayList<>();
-		int column = 0;
+		int row = 0;
 
-		for (int y = 0; y < 5; y++) {
+		for (int y = 0; y < 4; y++) {
 			colors.clear();
-			for (int x = 0; x < 4; x++) {
-				if (colors.contains(glasswindow.getSpace(x, y).getDie().getDieColor()))
+			for (int x = 0; x < 5; x++) {
+				Die die = glasswindow.getSpace(x, y).getDie();
+				if (die == null) {
+					continue;
+				}
+
+				if (colors.contains(die.getDieColor()))
 					break;
 				else
-					colors.add(glasswindow.getSpace(x, y).getDie().getDieColor());
+					colors.add(die.getDieColor());
 			}
 			if (colors.size() == 4)
-				column++;
+				row++;
 		}
-		return column;
+		return row;
 	}
 
+	//FIXME: DEZE FUNCTIE GAAT NIET WERKEN
 	private int handleKleurdiagonalen() {
 		int count = 0;
 
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
 				try {
-					if (glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow.getSpace((x - 1), (y - 1))
-							.getDie().getDieColor()
-							|| glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow
-									.getSpace((x + 1), (y - 1)).getDie().getDieColor()
-							|| glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow
-									.getSpace((x + 1), (y + 1)).getDie().getDieColor()
-							|| glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow
-									.getSpace((x + 1), (y + 1)).getDie().getDieColor())
+					if (glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow.getSpace((x - 1), (y - 1)).getDie().getDieColor()
+							|| glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow.getSpace((x + 1), (y - 1)).getDie().getDieColor()
+							|| glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow.getSpace((x - 1), (y + 1)).getDie().getDieColor()
+							|| glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow.getSpace((x + 1), (y + 1)).getDie().getDieColor())
 						count++;
 				} catch (Exception e) {
 
@@ -215,19 +241,25 @@ public class GoalCardHandler {
 
 	private int handleTintvarieteitPerRij() {
 		ArrayList<Integer> values = new ArrayList<>();
-		int column = 0;
+		int row = 0;
 
 		for (int x = 0; x < 5; x++) {
 			values.clear();
 			for (int y = 0; y < 4; y++) {
-				if (values.contains(glasswindow.getSpace(x, y).getDie().getDieValue()))
+				Die die = glasswindow.getSpace(x, y).getDie();
+				if (die == null) {
+					continue;
+				}
+
+				if (values.contains(die.getDieValue()))
 					break;
 				else
-					values.add(glasswindow.getSpace(x, y).getDie().getDieValue());
+					values.add(die.getDieValue());
 			}
+
 			if (values.size() == 4)
-				column++;
+				row++;
 		}
-		return column;
+		return row;
 	}
 }

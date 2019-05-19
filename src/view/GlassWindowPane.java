@@ -93,7 +93,7 @@ public class GlassWindowPane extends BorderPane {
 		fieldPane.resize(isSmall);
 	}
 
-	public void loadScore(int score) {
+	public void updateScore(int score) {
 		labelScore.setText(String.valueOf(score));
 	}
 
@@ -123,5 +123,9 @@ public class GlassWindowPane extends BorderPane {
 
 	public void setSwitchingNumber(int num) {
 		switchingNumber = num;
+	}
+
+	public GameColor getColor() {
+		return color;
 	}
 }

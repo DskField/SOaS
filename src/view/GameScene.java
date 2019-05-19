@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 
 import controllers.GameController;
+import game.CollectiveGoalCard;
 import game.Message;
 import game.Player;
 import javafx.event.EventHandler;
@@ -57,10 +58,12 @@ public class GameScene extends Scene {
 	private VBox PublicCardsBox;
 	private CurrencyStonesPane currencyStonesPane;
 	private ChatPane chatPane;
+
 	private GlassWindowPane mainGlassWindow;
 	private GlassWindowPane smallGlassWindow1;
 	private GlassWindowPane smallGlassWindow2;
 	private GlassWindowPane smallGlassWindow3;
+
 	private GoalCardPane[] goalCardPanes;
 	private ToolCardPane[] toolCardPanes;
 	private PersonalGoalCardPane personalGoalCardPane;
@@ -113,6 +116,20 @@ public class GameScene extends Scene {
 		chatPane.updateChat(messages);
 	}
 
+	public void updateScore(ArrayList<Player> players) {
+		for (Player player : players) {
+			if (mainGlassWindow != null && mainGlassWindow.getColor() == player.getColor()) {
+				mainGlassWindow.updateScore(player.getScore());
+			} else if (smallGlassWindow1 != null && smallGlassWindow1.getColor() == player.getColor()) {
+				smallGlassWindow1.updateScore(player.getScore());
+			} else if (smallGlassWindow2 != null && smallGlassWindow2.getColor() == player.getColor()) {
+				smallGlassWindow2.updateScore(player.getScore());
+			} else if (smallGlassWindow3 != null && smallGlassWindow3.getColor() == player.getColor()) {
+				smallGlassWindow3.updateScore(player.getScore());
+			}
+		}
+	}
+
 	/**
 	 * Creates the center of the screen containing the following aspects: PersonalGoalCard,
 	 * Currencystones, Roundtrack, PublicGoalCards, ToolCards, Dice offer and the necessary buttons.
@@ -150,8 +167,9 @@ public class GameScene extends Scene {
 
 		// handles everything regarding the cardBox
 		//adds goaldCards to the goalCardPanes array
+		ArrayList<CollectiveGoalCard> goalCards = gameController.getCollectiveGoalCards();
 		for (int i = 0; i < 3; i++) {
-			goalCardPanes[i] = new GoalCardPane(i + 1);
+			goalCardPanes[i] = new GoalCardPane(goalCards.get(i).getCardID());
 		}
 		//adds the goalCardPanes to the goalCardBox
 		for (GoalCardPane goalCardPane : goalCardPanes) {
@@ -277,6 +295,5 @@ public class GameScene extends Scene {
 			break;
 		}
 		leftBox.getChildren().add(0, mainGlassWindow);
-
 	}
 }
