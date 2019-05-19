@@ -91,6 +91,7 @@ public class Game {
 	 */
 	private void loadDice() {
 		dice = persistenceFacade.getGameDice(gameID);
+		System.out.println(dice.size());
 		roundTrack = persistenceFacade.getRoundTrack(gameID);
 	}
 
@@ -261,6 +262,7 @@ public class Game {
 
 	public void nextRound() {
 		if (!table.isEmpty()) {
+			System.out.println("nextRound");
 			roundTrack[currentRound].addDice(table);
 			persistenceFacade.updateDiceRound(gameID, currentRound, table);
 			table.clear();

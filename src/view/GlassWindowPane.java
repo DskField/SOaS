@@ -1,7 +1,10 @@
 package view;
 
+import java.util.ArrayList;
+
 import game.GameColor;
 import game.Player;
+import game.SpaceGlass;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -122,5 +125,9 @@ public class GlassWindowPane extends BorderPane {
 
 	public void setSwitchingNumber(int num) {
 		switchingNumber = num;
+	}
+	public void highlightSpaces(ArrayList<SpaceGlass>toHighlight) {
+		fieldPane.highlightSpaces(toHighlight);
+		
 	}
 }

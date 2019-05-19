@@ -2,24 +2,30 @@ package view;
 
 import controllers.GameController;
 import game.CurrencyStone;
+import game.Player;
 import javafx.scene.layout.FlowPane;
 
 public class CurrencyStonesPane extends FlowPane {
+	
+	
+	private final int SIZE = 100;
+	
 	private GameController gc;
-	private int size = 100;
 
-	public CurrencyStonesPane(GameController gc) {
-		this.gc = gc;
-		setPrefSize(size, size);
-
+	private Player player;
+	
+	//TODO isnt MVC compliant, Give Player instead
+	public CurrencyStonesPane(Player player) {
+		setPrefSize(SIZE, SIZE);
+		this.player = player;
 		showStones();
 	}
 
-	// Draws a stone for each currencystone from player
+	// Draws a stone for each currenc	ystone from player
 
 	private void showStones() {
-		for (CurrencyStone cs : gc.getClientPlayer().getCurrencyStones()) {
-			getChildren().add(new CurrencyStonePane(gc.getClientPlayer().getGlassWindow().getColor()));
+		for (CurrencyStone cs : player.getCurrencyStones()) {
+			getChildren().add(new CurrencyStonePane(player.getGlassWindow().getColor()));
 		}
 	}
 }

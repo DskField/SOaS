@@ -21,6 +21,7 @@ public class GameController {
 	private MainApplication mainApplication;
 	private GameScene gameScene;
 	private AnimationTimerExt timer;
+	private ArrayList<Die>diesInCurrentRound;
 
 	public GameController(MainApplication mainApplication) {
 		this.mainApplication = mainApplication;
@@ -57,7 +58,21 @@ public class GameController {
 	public ArrayList<Player> getPlayers() {
 		return game.getPlayers();
 	}
-
+	
+	public Game getGame() {
+		return game;
+	}
+	/**
+	 * Get new dies for the round if its your turn
+	 * @return ArrayList<Die> - new dice
+	 */
+	public ArrayList<Die> getDiceOffering(){
+		game.shakeSack();
+		return game.getTable();
+	}
+	public int getInitialDieAmount() {
+		return getPlayers().size()*2+1;
+	}
 	public abstract class AnimationTimerExt extends AnimationTimer {
 		private long sleepNs = 0;
 		long prevTime = 0;
@@ -108,14 +123,14 @@ public class GameController {
 	/**
 	 * Checks if there are already dice on the window.
 	 */
-	public boolean checkFirstDie() {
+	boolean checkFirstDie() {
 		// checks if its the firstDie
 		for (SpaceGlass[] spaceRow : getClientPlayer().getGlassWindow().getSpaces()) {
 			for (SpaceGlass space : spaceRow) {
 				if (space.getDie() != null) {
 					return false;
 				}
-			}
+			}	
 		}
 		return true;
 	}
@@ -126,7 +141,7 @@ public class GameController {
 	 * @param space - The space you want to get all the diagonal dice from
 	 * @return ArrayList<Die> - all diagonal dice from a certain space
 	 */
-	public ArrayList<Die> getDiagonalDice(SpaceGlass space) {
+	ArrayList<Die> getDiagonalDice(SpaceGlass space) {
 		SpaceGlass[][] spaces = getClientPlayer().getGlassWindow().getSpaces();
 		ArrayList<Die> diagonal = new ArrayList<>();
 		for (SpaceGlass[] spaceGlassRow : spaces) {
@@ -151,7 +166,7 @@ public class GameController {
 	 * @param space- Orthogonal from what space
 	 * @return ArrayList<Die> - all Orthogonal dice from a certain space
 	 */
-	public ArrayList<Die> getOrthogonalDice(SpaceGlass space) {
+	ArrayList<Die> getOrthogonalDice(SpaceGlass space) {
 		SpaceGlass[][] spaces = getClientPlayer().getGlassWindow().getSpaces();
 		ArrayList<Die> surrounding = new ArrayList<>();
 		for (SpaceGlass[] spaceGlassRow : spaces) {
@@ -176,7 +191,7 @@ public class GameController {
 	 * @param  die - the die you want to place
 	 * @return boolean - true if compatible, false if not
 	 */
-	public boolean checkCompatibility(SpacePattern sPattern, Die die) {
+	boolean checkCompatibility(SpacePattern sPattern, Die die) {
 		if (sPattern.getColor().equals(die.getDieColor()) || sPattern.getValue() == die.getDieValue()
 				|| sPattern.getColor().equals(GameColor.EMPTY)) {
 			return true;
@@ -191,7 +206,7 @@ public class GameController {
 	 * @param space - the space where its going to be placed
 	 * @return boolean - true if possible to place, false if not
 	 */
-	public boolean checkSurrounding(Die newDie, SpaceGlass space) {
+	boolean checkSurrounding(Die newDie, SpaceGlass space) {
 		boolean succes = true;
 		if (getDiagonalDice(space).isEmpty()) {//if getDiagonalDice(space) returns an empty ArrayList there is no diagonal die
 			succes = false;
@@ -210,11 +225,22 @@ public class GameController {
 	 * @param die - the to be placed die
 	 * @return ArrayList<SpaceGlass> - All available spaces
 	 */
-	public ArrayList<SpaceGlass> getAvailableSpaces(Die die) {
+	public ArrayList<SpaceGlass> getAvailableSpaces(int dieNumber) {
 		ArrayList<SpaceGlass> available = new ArrayList<>();
 		GlassWindow window  = getClientPlayer().getGlassWindow();
+		Die die = new Die(0, null);
+		for(Die newDie: game.getTable()) {
+			if(newDie.getDieId() == dieNumber) {
+				die = newDie;
+				break;
+			}
+			else {
+				return null;
+			}
+		}
 	
 		if (checkFirstDie()) {
+			System.out.println("FIrst die");
 			for (SpacePattern[] spacePatternRow : window.getPatternCard().getSpaces()) {
 				for (SpacePattern space : spacePatternRow) {
 					if ((checkCompatibility(space, die)&& (space.getXCor() == 1 || space.getXCor() == 5 || space.getYCor() == 1
