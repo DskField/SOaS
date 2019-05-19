@@ -75,8 +75,17 @@ public class PersistenceFacade {
 	}
 
 	//GAME
+	/**
+	 * Creates a game in the database
+	 * 
+	 * @param users - List of users in the game, The first user NEEDS to be the creator
+	 */
 	public void createGame(ArrayList<User> users) {
-		gameDAO.createGame();
+		int gameID = gameDAO.createGame();
+		dieDAO.insertDice(gameID);
+		currencyStoneDAO.insertCurrencyStones(gameID);
+		playerDAO.insertPlayers(gameID, users);
+		spaceGlassDAO.insertGlassWindows(playerDAO.getAllPlayersInGame(gameID));
 	}
 
 	// CollectiveGoalCardDAO
@@ -124,10 +133,6 @@ public class PersistenceFacade {
 
 	public Player getCurrentPlayer(int idGame) {
 		return playerDAO.getCurrentPlayer(idGame);
-	}
-
-	public void insertPlayer(int idGame, ArrayList<String> username) {
-		playerDAO.insertPlayer(idGame, username);
 	}
 
 	public void updatePlayerTurn(Player oldPlayer, Player newPlayer) {

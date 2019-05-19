@@ -122,26 +122,29 @@ class DieDAO {
 				stmt.setInt(5, die.getDieId());
 				stmt.setString(6, die.getDieColor().getDatabaseName());
 				stmt.executeUpdate();
-				con.commit();
 				stmt.close();
 			}
+			con.commit();
 		} catch (SQLException e) {
 			System.err.println("DieDAO: " + e.getMessage());
 		}
 	}
 
-	public void insertDice(int idGame) {
+	void insertDice(int idGame) {
 		GameColor[] possibleColors = { GameColor.RED, GameColor.GREEN, GameColor.YELLOW, GameColor.PURPLE, GameColor.BLUE };
 
 		try {
 			for (GameColor color : possibleColors) {
-				for (int i = 0; i < 18; i++) {
+				for (int i = 1; i <= 18; i++) {
 					PreparedStatement stmt = con.prepareStatement("INSERT INTO gamedie VALUES (?, ?, ?, NULL, NULL, NULL);");
 					stmt.setInt(1, idGame);
 					stmt.setInt(2, i);
 					stmt.setString(3, color.getDatabaseName());
+					stmt.executeUpdate();
+					stmt.close();
 				}
 			}
+			con.commit();
 		} catch (SQLException e) {
 			System.err.println("DieDAO: " + e.getMessage());
 			try {

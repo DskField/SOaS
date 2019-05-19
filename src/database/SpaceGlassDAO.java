@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import game.Die;
 import game.GlassWindow;
+import game.Player;
 import game.SpaceGlass;
 
 class SpaceGlassDAO {
@@ -18,10 +20,6 @@ class SpaceGlassDAO {
 
 	GlassWindow getGlassWindow(int idPlayer) {
 		return selectSpaceGlass("SELECT * FROM playerframefield p LEFT JOIN gamedie d ON d.idgame = p.idgame AND d.dienumber = p.dienumber AND d.diecolor = p.diecolor WHERE player_idplayer = " + idPlayer);
-	}
-
-	void addGlassWindow(int idPlayer, GlassWindow glassWindow) {
-		insertSpaceGlass(idPlayer, glassWindow);
 	}
 
 	void updatePlayerFields(int idPlayer, int gameId, GlassWindow glassWindow) {
@@ -62,19 +60,21 @@ class SpaceGlassDAO {
 		return playerFrame;
 	}
 
-	//Is used to add an incomplete playerFrameField
-	private void insertSpaceGlass(int idPlayer, GlassWindow glassWindow) {
+	void insertGlassWindows(ArrayList<Player> players) {
 		try {
-			for (int x = 0; x < 5; x++) {
-				for (int y = 0; y < 4; y++) {
-					PreparedStatement stmt = con.prepareStatement("INSERT INTO playerframefield VALUES (" + idPlayer + ",?,?,NULL,NULL,NULL)");
-					stmt.setInt(2, glassWindow.getSpace(x, y).getXCor());
-					stmt.setInt(3, glassWindow.getSpace(x, x).getYCor());
-					stmt.executeUpdate();
-					stmt.close();
+			for (Player player : players) {
+				for (int x = 1; x <= 5; x++) {
+					for (int y = 1; y <= 4; y++) {
+						PreparedStatement stmt = con.prepareStatement("INSERT INTO playerframefield VALUES (?, ?, ?, NULL, NULL, NULL);");
+						stmt.setInt(1, player.getPlayerID());
+						stmt.setInt(2, x);
+						stmt.setInt(3, y);
+						stmt.executeUpdate();
+						stmt.close();
+					}
 				}
+				con.commit();
 			}
-			con.commit();
 		} catch (SQLException e1) {
 			System.err.println("SpaceGlassDAO Insert:" + e1.getMessage());
 			try {
