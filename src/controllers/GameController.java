@@ -223,7 +223,7 @@ public class GameController {
 	 * @return boolean - true if compatible, false if not
 	 */
 	boolean checkCompatibility(SpacePattern sPattern, DiePane diePane) {
-		if (sPattern.getColor().equals(diePane.getColor()) || sPattern.getValue() == diePane.getNumber() || (sPattern.getColor().equals(GameColor.EMPTY) && sPattern.getValue() == 0)) {
+		if (sPattern.getColor().equals(diePane.getColor()) || sPattern.getValue() == diePane.getEyes() || (sPattern.getColor().equals(GameColor.EMPTY) && sPattern.getValue() == 0)) {
 			return true;
 		}
 		return false;
@@ -236,15 +236,14 @@ public class GameController {
 	 * @param space - the space where its going to be placed
 	 * @return boolean - true if possible to place, false if not
 	 */
-	boolean checkSurrounding(Die newDie, SpaceGlass space) {
+	boolean checkSurrounding(DiePane diePane, SpaceGlass space) {
 		boolean succes = true;
-		boolean orthogonal = true;
 		ArrayList<Die> orthogonalDice = getOrthogonalDice(space);
 		ArrayList<Die> diagonalDice = getDiagonalDice(space);
 
 		for (Die die : orthogonalDice) {
-			boolean sameColor = die.getDieColor().equals(newDie.getDieColor());//I seperated them and moved them out of the if for readability
-			boolean sameValue = die.getDieValue() == newDie.getDieValue();
+			boolean sameColor = die.getDieColor().equals(diePane.getColor());//I seperated them and moved them out of the if for readability
+			boolean sameValue = die.getDieValue() == diePane.getEyes();
 			if (sameColor || sameValue) {
 				succes = false;
 				break;
@@ -267,13 +266,6 @@ public class GameController {
 	public ArrayList<SpaceGlass> getAvailableSpaces(DiePane diePane) {
 		ArrayList<SpaceGlass> available = new ArrayList<>();
 		GlassWindow window = getClientPlayer().getGlassWindow();
-		//		Die die = new Die(0, null);
-		//		for (Die newDie : game.getTable()) {
-		//			if (newDie.getDieId() == dieNumber) {
-		//				die = newDie;
-		//				break;
-		//			}
-		//		}
 
 		if (checkFirstDie()) {
 			for (SpacePattern[] spacePatternRow : window.getPatternCard().getSpaces()) {
@@ -288,9 +280,9 @@ public class GameController {
 				for (SpacePattern space : spacePatternRow) {
 					if (window.getSpace(space.getXCor(), space.getYCor()).getDie() == null) {
 						if (checkCompatibility(space, diePane)) {
-							//							if (checkSurrounding(die, window.getSpace(space.getXCor(), space.getYCor()))) {
-							available.add(window.getSpace(space.getXCor(), space.getYCor()));
-							//							}
+							if (checkSurrounding(diePane, window.getSpace(space.getXCor(), space.getYCor()))) {
+								available.add(window.getSpace(space.getXCor(), space.getYCor()));
+							}
 						}
 					}
 				}
