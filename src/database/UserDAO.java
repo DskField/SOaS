@@ -62,7 +62,7 @@ class UserDAO {
 			int mostPlacedValue = dbResultSetMostPlacedValue.getInt("eyes");
 			stmtMostPlacedValue.close();
 
-			result = new User(gamesPlayed, maxScore, mostPlacedColor, mostPlacedValue, username);
+			result = new User(username, gamesPlayed, maxScore, mostPlacedColor, mostPlacedValue);
 		} catch (SQLException e) {
 			System.err.println("UserDAO " + e.getMessage());
 		}

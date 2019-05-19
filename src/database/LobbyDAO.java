@@ -86,7 +86,7 @@ class LobbyDAO {
 				stmtCurrentRound.setInt(1, gameID);
 				ResultSet dbResultSetCurrentRound = stmtCurrentRound.executeQuery();
 				dbResultSetCurrentRound.next();
-				int currentRound = dbResultSetCurrentRound.getInt("currentround") + 1;
+				int currentRound = dbResultSetCurrentRound.getInt("currentround");
 				Lobby lobby = new Lobby(gameID, gameState, isCurrentPlayer, lobbyResponse, lobbySize, finalScore, won, currentRound);
 				results.add(lobby);
 			}

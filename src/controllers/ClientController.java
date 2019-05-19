@@ -1,7 +1,12 @@
 package controllers;
 
+import java.util.ArrayList;
+
+import client.Challenge;
 import client.Client;
+import client.Lobby;
 import database.PersistenceFacade;
+import game.Player;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import view.LoginPane;
@@ -21,14 +26,17 @@ public class ClientController {
 		this.persistencefacade = new PersistenceFacade();
 		this.mainapplication = mainapplication;
 		this.gamecontroller = new GameController(mainapplication);
-		
+		handleLogin("speler1", "speler1");
 		mainapplication.setScene(new Scene(new LoginPane(this)));
 	}
 
+	// Only after a succesfull login everything will be created
 	public boolean handleLogin(String username, String password) {
 		if (persistencefacade.loginCorrect(username, password)) {
 			client = new Client(username, persistencefacade);
-			gamecontroller.joinGame(1, client.getUser());
+//			gamecontroller.joinGame(1, client.getUser());
+			
+			// TODO fix timer/update
 //			createTimer();
 		}
 		
@@ -39,6 +47,33 @@ public class ClientController {
 		return persistencefacade.insertCorrect(username, password);
 	}
 	
+	// Getters
+	public ArrayList<Challenge> getChallenges() {
+		return client.getChallenges();
+	}
+	
+	public ArrayList<Lobby> getLobbies() {
+		return client.getLobbies();
+	}
+	
+	public Lobby getSpecificLobby(int gameID) {
+		return client.getLobby(gameID);
+	}
+	
+	// TODO FIND SOLUTION - TEMPORARY FIX
+	public ArrayList<Player> getPlayers(int gameID) {
+		return persistencefacade.getAllPlayersInGame(gameID);
+	}
+	
+	// TODO FIND SOLUTION - TEMPORARY FIX
+	public int getScore(int gameID, Player player) {
+		ScoreHandler scorehandler = new ScoreHandler(persistencefacade.getSharedCollectiveGoalCards(gameID));
+		// TODO FIX SCOREHANDLER - getwindow
+		//		return scorehandler.getScore(player, false);
+		return 100;
+	}
+	
+	// Updat with Timer
 	private void updateClient() {		
 		// 3 to 6 seconds
 		while (checkUpdateClient) {
