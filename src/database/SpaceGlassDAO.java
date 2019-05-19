@@ -37,7 +37,7 @@ class SpaceGlassDAO {
 			while (dbResultSet.next()) {
 				int x = dbResultSet.getInt("position_x");
 				int y = dbResultSet.getInt("position_y");
-				SpaceGlass spaceGlass = new SpaceGlass(x, y);
+				SpaceGlass spaceGlass = new SpaceGlass(x - 1, y - 1);
 
 				int dienumber = dbResultSet.getInt("dienumber");
 				int eyes = dbResultSet.getInt("eyes");

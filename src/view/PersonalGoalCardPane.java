@@ -14,9 +14,7 @@ public class PersonalGoalCardPane extends StackPane {
 	}
 
 	public void loadPersonalGoalCardImage(GameColor gameColor) {
-		System.out.println(gameColor);
 		switch (gameColor) {
-
 		case RED:
 			imageView.setImage(new Image("file:Resources\\images\\Priavate GoalCards\\red.png"));
 			break;
@@ -37,7 +35,7 @@ public class PersonalGoalCardPane extends StackPane {
 			break;
 		}
 	}
-	
+
 	public void loadCardBack() {
 		imageView.setImage(new Image("file:Resources\\images\\Priavate GoalCards\\back.png"));
 	}

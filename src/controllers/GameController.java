@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import client.User;
-import database.PersistenceFacade;
 import game.CollectiveGoalCard;
 import game.Die;
 import game.Game;
@@ -26,18 +25,13 @@ public class GameController {
 	private GameScene gameScene;
 	private ChoiceScene choiceScene;
 	private AnimationTimerExt timer;
-	private ArrayList<Die>diesInCurrentRound;
+	private ArrayList<Die> diesInCurrentRound;
 
 	public GameController(MainApplication mainApplication) {
 		this.mainApplication = mainApplication;
 		// TODO temporary call, when the game will be created the ClientController needs
 		// to give the information to the GameController
-		//		joinGame(1, new User("speler2", 0, 0, GameColor.RED, 0));
-		PersistenceFacade pf = new PersistenceFacade();
-		ArrayList<User> users = new ArrayList<User>();
-		users.add(new User("speler1", 0, 0, GameColor.RED, 0));
-		users.add(new User("speler2", 0, 0, GameColor.RED, 0));
-		pf.createGame(users);
+		joinGame(1, new User("speler2", 0, 0, GameColor.RED, 0));
 	}
 
 	public void joinGame(int idGame, User clientUser) {
@@ -73,20 +67,23 @@ public class GameController {
 	public ArrayList<Player> getPlayers() {
 		return game.getPlayers();
 	}
-	
+
 	public Game getGame() {
 		return game;
 	}
+
 	/**
 	 * Get new dies for the round if its your turn
+	 * 
 	 * @return ArrayList<Die> - new dice
 	 */
-	public ArrayList<Die> getDiceOffering(){
+	public ArrayList<Die> getDiceOffering() {
 		game.shakeSack();
 		return game.getTable();
 	}
+
 	public int getInitialDieAmount() {
-		return getPlayers().size()*2+1;
+		return getPlayers().size() * 2 + 1;
 	}
 
 	//kevin stuff
@@ -170,7 +167,7 @@ public class GameController {
 				if (space.getDie() != null) {
 					return false;
 				}
-			}	
+			}
 		}
 		return true;
 	}
@@ -186,13 +183,9 @@ public class GameController {
 		ArrayList<Die> diagonal = new ArrayList<>();
 		for (SpaceGlass[] spaceGlassRow : spaces) {
 			for (SpaceGlass spaceGlass : spaceGlassRow) {
-				if (((spaceGlass.getYCor() == space.getYCor() - 1
-						&& (spaceGlass.getXCor() == space.getXCor() - 1 
-						|| spaceGlass.getXCor() == space.getXCor() + 1))//first the the top left and top right
-					|| (spaceGlass.getYCor() == space.getYCor() + 1 
-						&& (spaceGlass.getXCor() == space.getXCor() - 1
-						|| spaceGlass.getXCor() == space.getXCor() + 1)))//then the the bottom left and bottom right
-					&& spaceGlass.getDie() != null) {//see if the is a die there
+				if (((spaceGlass.getYCor() == space.getYCor() - 1 && (spaceGlass.getXCor() == space.getXCor() - 1 || spaceGlass.getXCor() == space.getXCor() + 1))//first the the top left and top right
+						|| (spaceGlass.getYCor() == space.getYCor() + 1 && (spaceGlass.getXCor() == space.getXCor() - 1 || spaceGlass.getXCor() == space.getXCor() + 1)))//then the the bottom left and bottom right
+						&& spaceGlass.getDie() != null) {//see if the is a die there
 					diagonal.add(spaceGlass.getDie());
 				}
 			}
@@ -211,11 +204,8 @@ public class GameController {
 		ArrayList<Die> surrounding = new ArrayList<>();
 		for (SpaceGlass[] spaceGlassRow : spaces) {
 			for (SpaceGlass spaceGlass : spaceGlassRow) {
-				if (((spaceGlass.getYCor() == space.getYCor()
-						&& (spaceGlass.getXCor() == space.getXCor() - 1 || spaceGlass.getXCor() == space.getXCor() + 1)) //get dice horizontally neighboring that space
-							|| (spaceGlass.getXCor() == space.getXCor()
-						&& (spaceGlass.getYCor() == space.getYCor() - 1
-							|| spaceGlass.getYCor() == space.getYCor() + 1))) //get dice vertically neighboring the space
+				if (((spaceGlass.getYCor() == space.getYCor() && (spaceGlass.getXCor() == space.getXCor() - 1 || spaceGlass.getXCor() == space.getXCor() + 1)) //get dice horizontally neighboring that space
+						|| (spaceGlass.getXCor() == space.getXCor() && (spaceGlass.getYCor() == space.getYCor() - 1 || spaceGlass.getYCor() == space.getYCor() + 1))) //get dice vertically neighboring the space
 						&& spaceGlass.getDie() != null) { //see if the is a die there
 					surrounding.add(spaceGlass.getDie());
 				}
@@ -232,8 +222,7 @@ public class GameController {
 	 * @return boolean - true if compatible, false if not
 	 */
 	boolean checkCompatibility(SpacePattern sPattern, Die die) {
-		if (sPattern.getColor().equals(die.getDieColor()) || sPattern.getValue() == die.getDieValue()
-				|| sPattern.getColor().equals(GameColor.EMPTY)) {
+		if (sPattern.getColor().equals(die.getDieColor()) || sPattern.getValue() == die.getDieValue() || (sPattern.getColor().equals(GameColor.EMPTY) && sPattern.getValue() == 0)) {
 			return true;
 		}
 		return false;
@@ -249,15 +238,19 @@ public class GameController {
 	boolean checkSurrounding(Die newDie, SpaceGlass space) {
 		boolean succes = true;
 		boolean orthogonal = true;
-		for (Die die : getOrthogonalDice(space)) {
+		ArrayList<Die> orthogonalDice = getOrthogonalDice(space);
+		ArrayList<Die> diagonalDice = getDiagonalDice(space);
+
+		for (Die die : orthogonalDice) {
 			boolean sameColor = die.getDieColor().equals(newDie.getDieColor());//I seperated them and moved them out of the if for readability
 			boolean sameValue = die.getDieValue() == newDie.getDieValue();
-			if (sameColor || sameValue ) {
-				orthogonal = false;
+			if (sameColor || sameValue) {
+				succes = false;
 				break;
 			}
 		}
-		if (getDiagonalDice(space).isEmpty() && orthogonal) {//If there is no die diagonal and orthogonal is same color or value succes is false
+
+		if (diagonalDice.isEmpty() && orthogonalDice.isEmpty()) {//If there is no die diagonal and orthogonal is same color or value succes is false
 			succes = false;
 		}
 
@@ -272,23 +265,21 @@ public class GameController {
 	 */
 	public ArrayList<SpaceGlass> getAvailableSpaces(int dieNumber) {
 		ArrayList<SpaceGlass> available = new ArrayList<>();
-		GlassWindow window  = getClientPlayer().getGlassWindow();
+		GlassWindow window = getClientPlayer().getGlassWindow();
 		Die die = new Die(0, null);
-		for(Die newDie: game.getTable()) {
-			if(newDie.getDieId() == dieNumber) {
+		for (Die newDie : game.getTable()) {
+			if (newDie.getDieId() == dieNumber) {
 				die = newDie;
 				break;
-			}
-			else {
+			} else {
 				return null;
 			}
 		}
-	
+
 		if (checkFirstDie()) {
-			System.out.println("FIrst die");
 			for (SpacePattern[] spacePatternRow : window.getPatternCard().getSpaces()) {
 				for (SpacePattern space : spacePatternRow) {
-					if ((checkCompatibility(space, die) && (space.getXCor() == 1 || space.getXCor() == 5 || space.getYCor() == 1 || space.getYCor() == 4))) {
+					if ((checkCompatibility(space, die) && (space.getXCor() == 0 || space.getXCor() == 4 || space.getYCor() == 0 || space.getYCor() == 3))) {
 						available.add(window.getSpace(space.getXCor(), space.getYCor()));
 					}
 				}
@@ -296,15 +287,15 @@ public class GameController {
 		} else {
 			for (SpacePattern[] spacePatternRow : window.getPatternCard().getSpaces()) {
 				for (SpacePattern space : spacePatternRow) {
-					if (checkCompatibility(space, die) && checkSurrounding(die, window.getSpace(space.getXCor(), space.getYCor())) || window.getSpace(space.getXCor(), space.getYCor()).getDie() == null) {
-	
-						available.add(window.getSpace(space.getXCor(), space.getYCor()));
+					if (window.getSpace(space.getXCor(), space.getYCor()).getDie() == null) {
+						if (checkCompatibility(space, die)) {
+//							if (checkSurrounding(die, window.getSpace(space.getXCor(), space.getYCor()))) {
+								available.add(window.getSpace(space.getXCor(), space.getYCor()));
+//							}
+						}
 					}
 				}
 			}
-		}
-		for(SpaceGlass s: available) {
-			System.out.println("X" + s.getXCor() + "y" +  s.getYCor());
 		}
 		return available;
 	}
