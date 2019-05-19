@@ -26,7 +26,6 @@ public class GameController {
 	private GameScene gameScene;
 	private ChoiceScene choiceScene;
 	private AnimationTimerExt timer;
-	private ArrayList<Die> diesInCurrentRound;
 
 	public GameController(MainApplication mainApplication) {
 		this.mainApplication = mainApplication;

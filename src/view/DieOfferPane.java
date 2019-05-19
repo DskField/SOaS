@@ -33,7 +33,6 @@ public class DieOfferPane extends HBox {
 	private void addDice() {
 		int counter = 0;
 		for (Die die : roundDies) {
-			System.out.println(die.getDieId());
 			counter += 1;
 			int offset = (counter - squareSize) * trackSize;
 			DiePane diePane = new DiePane(die.getDieId(), die.getDieValue(), die.getDieColor());
