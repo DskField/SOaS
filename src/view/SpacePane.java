@@ -2,7 +2,10 @@ package view;
 
 import game.GameColor;
 import javafx.scene.effect.Glow;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 public class SpacePane extends Pane {
 	private final int squareSize = 64;
@@ -50,10 +53,12 @@ public class SpacePane extends Pane {
 	public int getY() {
 		return y;
 	}
+
 	public void highlight() {
-		
+
 		Glow glow = new Glow(3);
+		space.setBackground(new Background(new BackgroundFill(Color.TURQUOISE, null, null)));
 		setEffect(glow);
-		
+
 	}
 }

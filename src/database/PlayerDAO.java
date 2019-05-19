@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import client.User;
 import game.GameColor;
 import game.Player;
 
@@ -16,11 +17,11 @@ class PlayerDAO {
 	public PlayerDAO(Connection connection) {
 		con = connection;
 	}
-// kevin stuff
+
+	// kevin stuff
 	private void insertPlayerPaterncard(int idPatternCard, int idPlayer) {
 		try {
-			PreparedStatement stmt = con.prepareStatement(
-					"UPDATE player SET patterncard_idpatterncard = " + idPatternCard + " WHERE idPlayer = " + idPlayer);
+			PreparedStatement stmt = con.prepareStatement("UPDATE player SET patterncard_idpatterncard = " + idPatternCard + " WHERE idPlayer = " + idPlayer);
 			stmt.executeUpdate();
 
 			con.commit();
@@ -59,10 +60,6 @@ class PlayerDAO {
 		return results;
 	}
 
-	private boolean isUsed(int idGame) {
-		return selectPlayer("SELECT * FROM player WHERE game_idgame = " + idGame).size() != 0;
-	}
-
 	private ArrayList<String> getColors() {
 		ArrayList<String> results = new ArrayList<String>();
 		try {
@@ -81,12 +78,10 @@ class PlayerDAO {
 
 	private void updatePlayer(Player oldPlayer, Player newPlayer) {
 		try {
-			PreparedStatement stmtOldPlayer = con
-					.prepareStatement("UPDATE player SET seqnr = ?, isCurrentPlayer = FALSE WHERE idPlayer = ?;");
+			PreparedStatement stmtOldPlayer = con.prepareStatement("UPDATE player SET seqnr = ?, isCurrentPlayer = FALSE WHERE idPlayer = ?;");
 			stmtOldPlayer.setInt(1, oldPlayer.getSeqnr());
 			stmtOldPlayer.setInt(2, oldPlayer.getPlayerID());
-			PreparedStatement stmtNewPlayer = con
-					.prepareStatement("UPDATE player SET isCurrentPlayer = TRUE WHERE idPlayer = ?;");
+			PreparedStatement stmtNewPlayer = con.prepareStatement("UPDATE player SET isCurrentPlayer = TRUE WHERE idPlayer = ?;");
 			stmtNewPlayer.setInt(1, newPlayer.getPlayerID());
 			stmtOldPlayer.executeUpdate();
 			stmtNewPlayer.executeUpdate();
@@ -101,6 +96,7 @@ class PlayerDAO {
 	void updatePlayerTurn(Player oldPlayer, Player newPlayer) {
 		updatePlayer(oldPlayer, newPlayer);
 	}
+
 	//kevin stuff
 	void setPlayerPaternCard(int idPatternCard, int idPlayer) {
 		System.out.println("5");
@@ -119,36 +115,31 @@ class PlayerDAO {
 		return selectPlayer("SELECT * FROM player WHERE game_idgame = " + idGame + " ORDER BY idplayer ASC");
 	}
 
-	void insertPlayer(int idGame, ArrayList<String> username) {
-		if (!isUsed(idGame)) {
-			ArrayList<String> colors = getColors();
-			Collections.shuffle(colors);
-			try {
-				for (int i = 0; i < username.size(); i++) {
-					String status = i == 0 ? "uitdager" : "uitgedaagde";
+	void insertPlayers(int idGame, ArrayList<User> users) {
+		ArrayList<String> colors = getColors();
+		Collections.shuffle(colors);
+		try {
+			for (int i = 0; i < users.size(); i++) {
+				String status = i == 0 ? "uitdager" : "uitgedaagde";
 
-					PreparedStatement stmt = con
-							.prepareStatement("INSERT INTO player VALUES (null,?,?,?,null,false,?,null,null)");
-					stmt.setString(1, username.get(i));
-					stmt.setInt(2, idGame);
-					stmt.setString(3, status);
-					stmt.setString(4, colors.get(i));
-					stmt.executeUpdate();
+				PreparedStatement stmt = con.prepareStatement("INSERT INTO player VALUES (null, ?, ?, ?, ?, false, ?, null, null);");
+				stmt.setString(1, users.get(i).getUsername());
+				stmt.setInt(2, idGame);
+				stmt.setString(3, status);
+				stmt.setInt(4, i);
+				stmt.setString(5, colors.get(i));
 
-					stmt.close();
-				}
-				con.commit();
-			} catch (SQLException e) {
-				System.err.println("PlayerDAO " + e.getMessage());
-
-				try {
-					con.rollback();
-				} catch (SQLException e1) {
-					System.err.println("The rollback failed: Please check the Database!");
-				}
+				stmt.executeUpdate();
+				stmt.close();
 			}
-		} else {
-
+			con.commit();
+		} catch (SQLException e) {
+			System.err.println("PlayerDAO (Insert): " + e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				System.err.println("The rollback failed: Please check the Database!");
+			}
 		}
 	}
 }

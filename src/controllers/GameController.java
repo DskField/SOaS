@@ -245,16 +245,19 @@ public class GameController {
 	boolean checkSurrounding(Die newDie, SpaceGlass space) {
 		boolean succes = true;
 		boolean orthogonal = true;
-		for (Die die : getOrthogonalDice(space)) {
-			boolean sameColor = die.getDieColor().equals(newDie.getDieColor());// I seperated them and moved them out of if for readability																// the if for readability
+		ArrayList<Die> orthogonalDice = getOrthogonalDice(space);
+		ArrayList<Die> diagonalDice = getDiagonalDice(space);
+
+		for (Die die : orthogonalDice) {
+			boolean sameColor = die.getDieColor().equals(newDie.getDieColor());//I seperated them and moved them out of the if for readability
 			boolean sameValue = die.getDieValue() == newDie.getDieValue();
 			if (sameColor || sameValue) {
-				orthogonal = false;
+				succes = false;
 				break;
 			}
 		}
-		if (getDiagonalDice(space).isEmpty() && orthogonal) {// If there is no die diagonal and orthogonal is same color
-																// or value succes is false
+
+		if (diagonalDice.isEmpty() && orthogonalDice.isEmpty()) {//If there is no die diagonal and orthogonal is same color or value succes is false
 			succes = false;
 		}
 
@@ -281,7 +284,6 @@ public class GameController {
 		}
 
 		if (checkFirstDie()) {
-			System.out.println("FIrst die");
 			for (SpacePattern[] spacePatternRow : window.getPatternCard().getSpaces()) {
 				for (SpacePattern space : spacePatternRow) {
 					boolean compatible = checkCompatibility(space, die);

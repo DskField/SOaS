@@ -15,6 +15,26 @@ class CurrencyStoneDAO {
 		con = connection;
 	}
 
+	public void insertCurrencyStones(int idGame) {
+		try {
+			for (int i = 0; i < 24; i++) {
+				PreparedStatement stmt = con.prepareStatement("INSERT INTO gamefavortoken VALUES (?, ?, null, null, null);");
+				stmt.setInt(1, i);
+				stmt.setInt(2, idGame);
+				stmt.executeUpdate();
+				stmt.close();
+			}
+			con.commit();
+		} catch (SQLException e) {
+			System.err.println("CurrencyStoneDAO: " + e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				System.err.println("The rollback failed: Please check the Database!");
+			}
+		}
+	}
+
 	private ArrayList<CurrencyStone> selectCurrencyStone(String query) {
 		ArrayList<CurrencyStone> results = new ArrayList<CurrencyStone>();
 
@@ -23,7 +43,6 @@ class CurrencyStoneDAO {
 			ResultSet dbResultSet = stmt.executeQuery();
 
 			while (dbResultSet.next()) {
-				// Separated the variables on purpose for clarity
 				int stoneID = dbResultSet.getInt("idfavortoken");
 				int playerID = dbResultSet.getInt("idplayer");
 				int toolcardID = dbResultSet.getInt("gametoolcard");

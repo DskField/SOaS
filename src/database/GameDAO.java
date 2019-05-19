@@ -16,6 +16,7 @@ class GameDAO {
 		try {
 			PreparedStatement stmt = con.prepareStatement("INSERT INTO game (idgame, turn_idplayer, creationdate) VALUES(null, null, now());");
 			stmt.executeUpdate();
+			stmt.close();
 			con.commit();
 
 			PreparedStatement stmt2 = con.prepareStatement("SELECT LAST_INSERT_ID() last;");
@@ -24,8 +25,6 @@ class GameDAO {
 			while (dbResultSet.next()) {
 				return dbResultSet.getInt("last");
 			}
-
-			stmt.close();
 			stmt2.close();
 		} catch (SQLException e) {
 			System.err.println("GameDAO: " + e.getMessage());
