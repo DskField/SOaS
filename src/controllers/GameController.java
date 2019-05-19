@@ -242,14 +242,19 @@ public class GameController {
 	 */
 	boolean checkSurrounding(Die newDie, SpaceGlass space) {
 		boolean succes = true;
-		if (getDiagonalDice(space).isEmpty()) {//if getDiagonalDice(space) returns an empty ArrayList there is no diagonal die
-			succes = false;
-		}
+		boolean orthogonal = true;
 		for (Die die : getOrthogonalDice(space)) {
-			if (die.getDieColor().equals(newDie.getDieColor()) || die.getDieValue() == newDie.getDieValue()) {
-				succes = false;
+			boolean sameColor = die.getDieColor().equals(newDie.getDieColor());//I seperated them and moved them out of the if for readability
+			boolean sameValue = die.getDieValue() == newDie.getDieValue();
+			if (sameColor || sameValue ) {
+				orthogonal = false;
+				break;
 			}
 		}
+		if (getDiagonalDice(space).isEmpty() && orthogonal) {//If there is no die diagonal and orthogonal is same color or value succes is false
+			succes = false;
+		}
+
 		return succes;
 	}
 
@@ -286,11 +291,14 @@ public class GameController {
 			for (SpacePattern[] spacePatternRow : window.getPatternCard().getSpaces()) {
 				for (SpacePattern space : spacePatternRow) {
 					if (checkCompatibility(space, die) && checkSurrounding(die, window.getSpace(space.getXCor(), space.getYCor())) || window.getSpace(space.getXCor(), space.getYCor()).getDie() == null) {
-
+	
 						available.add(window.getSpace(space.getXCor(), space.getYCor()));
 					}
 				}
 			}
+		}
+		for(SpaceGlass s: available) {
+			System.out.println("X" + s.getXCor() + "y" +  s.getYCor());
 		}
 		return available;
 	}

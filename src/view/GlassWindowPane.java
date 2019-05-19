@@ -129,7 +129,7 @@ public class GlassWindowPane extends BorderPane {
 	}
 	public void highlightSpaces(ArrayList<SpaceGlass>toHighlight) {
 		fieldPane.highlightSpaces(toHighlight);
-		
+	}
 
 	public GameColor getColor() {
 		return color;
