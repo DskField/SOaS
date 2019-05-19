@@ -9,7 +9,7 @@ public class SpaceGlass extends Space {
 		die = null;
 	}
 
-//TODO maybe useless?
+	//TODO maybe useless?
 	public int getDieValue() {
 		return die.getDieValue();
 	}
@@ -19,7 +19,11 @@ public class SpaceGlass extends Space {
 	}
 
 	public int getDieId() {
-		return die.getDieId();
+		if (die != null) {
+			return die.getDieId();
+		} else {
+			return 0;
+		}
 	}
 
 	// GETTERS AND SETTERS

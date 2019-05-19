@@ -100,4 +100,11 @@ class LobbyDAO {
 	public ArrayList<Lobby> getLobbies(String username) {
 		return selectLobbies("SELECT * FROM player WHERE username = ?", username);
 	}
+	
+	public boolean checkUpdate(String username, ArrayList<Lobby> oldList) {
+		if (oldList.equals(getLobbies(username)))
+			return true;
+		else
+			return false;
+	}
 }

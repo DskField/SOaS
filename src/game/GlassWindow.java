@@ -40,4 +40,8 @@ public class GlassWindow {
 	public GameColor getColor() {
 		return color;
 	}
+	
+	public void setPaterNull(PatternCard patternCard) {
+		this.patterncard = patternCard;
+	}
 }

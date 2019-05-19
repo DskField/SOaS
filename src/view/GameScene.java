@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 
 import controllers.GameController;
+import game.CollectiveGoalCard;
 import game.Message;
 import game.Player;
 import javafx.event.EventHandler;
@@ -59,10 +60,12 @@ public class GameScene extends Scene {
 	private VBox PublicCardsBox;
 	private CurrencyStonesPane currencyStonesPane;
 	private ChatPane chatPane;
+
 	private GlassWindowPane mainGlassWindow;
 	private GlassWindowPane smallGlassWindow1;
 	private GlassWindowPane smallGlassWindow2;
 	private GlassWindowPane smallGlassWindow3;
+
 	private GoalCardPane[] goalCardPanes;
 	private ToolCardPane[] toolCardPanes;
 	private PersonalGoalCardPane personalGoalCardPane;
@@ -70,7 +73,6 @@ public class GameScene extends Scene {
 	private DieOfferPane dieOfferPane;
 	private Button button;
 	private GameController gameController;
-	private Stage stage;
 
 	/**
 	 * Creates the GameScene
@@ -93,7 +95,7 @@ public class GameScene extends Scene {
 		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			public void handle(KeyEvent key) {
 				if (key.getCode() == KeyCode.ESCAPE) {
-					stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
+					Stage stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
 					Popup gameMenuPopup = new Popup();
 					GameMenuPane gameMenu = new GameMenuPane();
 					gameMenuPopup.getContent().add(gameMenu);
@@ -140,6 +142,20 @@ public class GameScene extends Scene {
 		chatPane.updateChat(messages);
 	}
 
+	public void updateScore(ArrayList<Player> players) {
+		for (Player player : players) {
+			if (mainGlassWindow != null && mainGlassWindow.getColor() == player.getColor()) {
+				mainGlassWindow.updateScore(player.getScore());
+			} else if (smallGlassWindow1 != null && smallGlassWindow1.getColor() == player.getColor()) {
+				smallGlassWindow1.updateScore(player.getScore());
+			} else if (smallGlassWindow2 != null && smallGlassWindow2.getColor() == player.getColor()) {
+				smallGlassWindow2.updateScore(player.getScore());
+			} else if (smallGlassWindow3 != null && smallGlassWindow3.getColor() == player.getColor()) {
+				smallGlassWindow3.updateScore(player.getScore());
+			}
+		}
+	}
+
 	/**
 	 * Creates the center of the screen containing the following aspects:
 	 * PersonalGoalCard, Currencystones, Roundtrack, PublicGoalCards, ToolCards,
@@ -151,6 +167,7 @@ public class GameScene extends Scene {
 		personalInfo = new VBox();
 		currencyStonesPane = new CurrencyStonesPane(gameController.getClientPlayer());
 		personalGoalCardPane = new PersonalGoalCardPane();
+		personalGoalCardPane.loadPersonalGoalCardImage(gameController.getClientPlayer().getPersonalGoalCard());
 
 		// initialize everything for the cardBox
 		cardBox = new HBox();
@@ -176,9 +193,10 @@ public class GameScene extends Scene {
 		personalInfo.setSpacing(10);
 
 		// handles everything regarding the cardBox
-		// adds goaldCards to the goalCardPanes array
+		//adds goaldCards to the goalCardPanes array
+		ArrayList<CollectiveGoalCard> goalCards = gameController.getCollectiveGoalCards();
 		for (int i = 0; i < 3; i++) {
-			goalCardPanes[i] = new GoalCardPane(i + 1);
+			goalCardPanes[i] = new GoalCardPane(goalCards.get(i).getCardID());
 		}
 		// adds the goalCardPanes to the goalCardBox
 		for (GoalCardPane goalCardPane : goalCardPanes) {
@@ -310,6 +328,5 @@ public class GameScene extends Scene {
 			break;
 		}
 		leftBox.getChildren().add(0, mainGlassWindow);
-
 	}
 }

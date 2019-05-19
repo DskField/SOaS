@@ -4,8 +4,6 @@ import game.GameColor;
 
 public class User {
 
-	private String username;
-
 	// User stats
 	private int gamesPlayed;
 	private int gamesWon;
@@ -14,13 +12,14 @@ public class User {
 	private GameColor mostPlacedColor;
 	private int mostPlacedValue;
 	private int totalOpponents;
+	private String username;
 
 	public User(String username, int gamesPlayed, int maxScore, GameColor mostPlacedColor, int mostPlacedValue) {
-		this.username = username;
 		this.gamesPlayed = gamesPlayed;
 		this.maxScore = maxScore;
 		this.mostPlacedColor = mostPlacedColor;
 		this.mostPlacedValue = mostPlacedValue;
+		this.username = username;
 	}
 
 	// SETTERS
@@ -37,10 +36,6 @@ public class User {
 	}
 
 	// GETTERS
-	public String getUsername() {
-		return username;
-	}
-
 	public int getGamesPlayed() {
 		return gamesPlayed;
 	}
@@ -67,5 +62,9 @@ public class User {
 
 	public int getTotalOpponents() {
 		return totalOpponents;
+	}
+	
+	public String getUsername() {
+		return username;
 	}
 }

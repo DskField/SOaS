@@ -14,7 +14,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 
 public class FieldPane extends FlowPane {
-
 	private final int patternWidth = 360;
 	private final int patternHeight = 280;
 	private final static int squareGap = 4;
@@ -23,17 +22,20 @@ public class FieldPane extends FlowPane {
 	private SpacePane[][] patternSpaces;
 	private SpacePane[][] glassSpaces;
 
-	public FieldPane(GlassWindow glassWindow) {
+	public FieldPane(PatternCard patternCard) {
 		super(squareGap, squareGap);
 
 		spaces = new ArrayList<SpacePane>();
 		patternSpaces = new SpacePane[5][4];
 		glassSpaces = new SpacePane[5][4];
+		for (int y = 0; y < 4; y++) {
+			for (int x = 0; x < 5; x++) {
+				patternSpaces[x][y] = new SpacePane(x, y);
+				glassSpaces[x][y] = new SpacePane(x, y);
+			}
+		}
 
-		loadPatternCard(glassWindow.getPatternCard());
-		loadGlassWindow(glassWindow);
-
-		getChildren().addAll(spaces);
+		loadPatternCard(patternCard);
 
 		setAlignment(Pos.CENTER);
 		setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
@@ -47,12 +49,14 @@ public class FieldPane extends FlowPane {
 			for (int x = 0; x < 5; x++) {
 				SpacePattern space = patternCard.getSpace(x, y);
 				if (space.getValue() > 0 && space.getColor() == GameColor.EMPTY) {
-					patternSpaces[x][y] = new SpacePane(x, y, space.getValue(), GameColor.GREY);
+					patternSpaces[x][y].loadPattern(space.getValue(), GameColor.GREY);
 				} else {
-					patternSpaces[x][y] = new SpacePane(x, y, space.getValue(), space.getColor());
+					patternSpaces[x][y].loadPattern(space.getValue(), space.getColor());
 				}
 			}
 		}
+
+		updateSpaces();
 	}
 
 	public void loadGlassWindow(GlassWindow glassWindow) {
@@ -60,7 +64,12 @@ public class FieldPane extends FlowPane {
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
 				SpaceGlass space = spaceGlasses[x][y];
-				glassSpaces[x][y] = new SpacePane(x, y, new DiePane(space.getDieId(), space.getDieValue(), space.getDieColor()));
+				if (space.getDieId() != 0) {
+					glassSpaces[x][y].loadGlass(new DiePane(space.getDieId(), space.getDieValue(), space.getDieColor()));
+				} else {
+					glassSpaces[x][y].loadGlass(new DiePane(0, 0, GameColor.EMPTY));
+				}
+				glassSpaces[x][y].resize(true);
 			}
 		}
 
@@ -69,6 +78,8 @@ public class FieldPane extends FlowPane {
 
 	private void updateSpaces() {
 		spaces.clear();
+		getChildren().clear();
+
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
 				if (glassSpaces[x][y].getColor() != GameColor.EMPTY) {
@@ -78,6 +89,8 @@ public class FieldPane extends FlowPane {
 				}
 			}
 		}
+
+		getChildren().addAll(spaces);
 	}
 
 	public void resize(boolean isSmall) {
@@ -89,8 +102,11 @@ public class FieldPane extends FlowPane {
 			setMaxSize(patternWidth, patternHeight);
 		}
 
-		for (SpacePane space : spaces) {
-			space.resize(isSmall);
+		for (int y = 0; y < 4; y++) {
+			for (int x = 0; x < 5; x++) {
+				glassSpaces[x][y].resize(isSmall);
+				patternSpaces[x][y].resize(isSmall);
+			}
 		}
 	}
 	public void highlightSpaces(ArrayList<SpaceGlass>toHiglight) {

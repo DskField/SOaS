@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import client.User;
+import controllers.ScoreHandler;
 import database.PersistenceFacade;
 
 public class Game {
@@ -25,6 +26,8 @@ public class Game {
 	 */
 	private ArrayList<Die> dice;
 	private Round[] roundTrack;
+
+	private ScoreHandler scoreHandler;
 
 	/**
 	 * table is the list with die that are rolled but not placed or in the round track. That means they
@@ -84,6 +87,8 @@ public class Game {
 		loadCards();
 		loadGlassWindow();
 		loadCurrencyStones();
+
+		scoreHandler = new ScoreHandler(collectiveGoalCards);
 	}
 
 	/**
@@ -153,11 +158,39 @@ public class Game {
 		}
 	}
 
+	// kevin stuff
+	public void updateCurrencyStone(int idGame, int idPlayer, int ammount) {
+		persistenceFacade.updateGivePlayerCurrencyStones(idGame, idPlayer, ammount);
+	}
+
+	public ArrayList<Player> updateScore() {
+		for (Player player : players) {
+			if (player.equals(clientPlayer)) {
+				player.setScore(scoreHandler.getScore(player, true));
+			} else {
+				player.setScore(scoreHandler.getScore(player, false));
+			}
+		}
+
+		return players;
+	}
+
 	public void dealPatternCards() {
 		for (Player player : players) {
-			//			persistenceFacade.insertPatternCardOptions(player.getPlayerID());
+			persistenceFacade.insertPatternCardOptions(player.getPlayerID());
 		}
 	}
+
+	//kevin stuff
+	public void setClientPlayerPaternCard(int idPatternCard) {
+
+		persistenceFacade.setPlayerPaternCard(idPatternCard, clientPlayer.getPlayerID());
+	}
+
+	public ArrayList<PatternCard> patternChoices(int idPlayer) {
+		return persistenceFacade.getPlayerOptions(idPlayer);
+	}
+	// end kevin stuff
 
 	/**
 	 * Removes the die from the list with dice and places them on the list table. It also rolls the dice
