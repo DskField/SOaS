@@ -11,8 +11,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -104,13 +106,37 @@ public class GameScene extends Scene {
 				}
 			}
 		});
+		
+		setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if(event.getTarget().getClass().equals(DiePane.class)) {
+					DiePane diePane = (DiePane) event.getTarget();
+					System.out.println(diePane.getNumber());
+					try {
+						System.out.println("Check");
+						mainGlassWindow.highlightSpaces(gameController.getAvailableSpaces(diePane.getNumber()));
+					} catch (Exception e) {
+						System.out.println("niks mogelijk");
+						BoxBlur blur = new BoxBlur();
+						blur.setHeight(diePane.getScaleY());
+						blur.setWidth(diePane.getScaleX());
+						
+						diePane.setEffect(blur);
+					}
+					
+				}
+
+			}
+		});
 
 	}
 
 	/**
 	 * gives a list of messages to the ChatPane
 	 * 
-	 * @param messages ArrayList<Message> list of messages that will be added to the chat.
+	 * @param messages ArrayList<Message> list of messages that will be added to the
+	 *                 chat.
 	 */
 	public void updateChat(ArrayList<Message> messages) {
 		chatPane.updateChat(messages);
@@ -131,14 +157,15 @@ public class GameScene extends Scene {
 	}
 
 	/**
-	 * Creates the center of the screen containing the following aspects: PersonalGoalCard,
-	 * Currencystones, Roundtrack, PublicGoalCards, ToolCards, Dice offer and the necessary buttons.
+	 * Creates the center of the screen containing the following aspects:
+	 * PersonalGoalCard, Currencystones, Roundtrack, PublicGoalCards, ToolCards,
+	 * Dice offer and the necessary buttons.
 	 */
 
 	private void createCenter() {
 		// initialize everything for personalInfo
 		personalInfo = new VBox();
-		currencyStonesPane = new CurrencyStonesPane(gameController);
+		currencyStonesPane = new CurrencyStonesPane(gameController.getClientPlayer());
 		personalGoalCardPane = new PersonalGoalCardPane();
 		personalGoalCardPane.loadPersonalGoalCardImage(gameController.getClientPlayer().getPersonalGoalCard());
 
@@ -153,7 +180,7 @@ public class GameScene extends Scene {
 		centerBox = new VBox();
 		centerBox.setMaxWidth(800);
 		roundPane = new RoundPane(0, 0);
-		dieOfferPane = new DieOfferPane();
+		dieOfferPane = new DieOfferPane(gameController.getInitialDieAmount(), gameController.getDiceOffering());
 		dieOfferPane.setMinWidth(800);
 		button = new Button("Button");
 
@@ -171,19 +198,20 @@ public class GameScene extends Scene {
 		for (int i = 0; i < 3; i++) {
 			goalCardPanes[i] = new GoalCardPane(goalCards.get(i).getCardID());
 		}
-		//adds the goalCardPanes to the goalCardBox
+		// adds the goalCardPanes to the goalCardBox
 		for (GoalCardPane goalCardPane : goalCardPanes) {
 			goalCardsBox.getChildren().add(goalCardPane);
 		}
-		//adds toolCards to the toolCards Array
+		// adds toolCards to the toolCards Array
 		for (int i = 0; i < 3; i++) {
 			toolCardPanes[i] = new ToolCardPane(i + 1);
 		}
-		//adds the toolCardPanes to the toolCardBox
+		// adds the toolCardPanes to the toolCardBox
 		for (ToolCardPane toolCardPane : toolCardPanes) {
 			toolCardBox.getChildren().add(toolCardPane);
 		}
-		//handles the makeup of the various boxes
+
+		// handles the makeup of the various boxes
 		goalCardsBox.setSpacing(10);
 		goalCardsBox.setAlignment(Pos.CENTER);
 		toolCardBox.setSpacing(10);
@@ -198,14 +226,16 @@ public class GameScene extends Scene {
 		centerBox.getChildren().addAll(roundPane, cardBox, dieOfferPane, button);
 		centerBox.setAlignment(Pos.CENTER);
 		centerBox.setSpacing(personalInfoSpacing);
-		centerBox.setPadding(new Insets(centerBoxPaddingTop, centerBoxPaddingRight, centerBoxPaddingBottom, centerBoxPaddingLeft));
+		centerBox.setPadding(
+				new Insets(centerBoxPaddingTop, centerBoxPaddingRight, centerBoxPaddingBottom, centerBoxPaddingLeft));
 
 		// adds the centerBox to the rootPane
 		rootPane.setCenter(centerBox);
 	}
 
 	/**
-	 * Creates the left column of the screen containing the following aspects: Glaswindow(large), Chat
+	 * Creates the left column of the screen containing the following aspects:
+	 * Glaswindow(large), Chat
 	 */
 	private void createLeft() {
 		// Initialize everything for the leftBox
@@ -218,14 +248,16 @@ public class GameScene extends Scene {
 		leftBox.getChildren().addAll(mainGlassWindow, chatPane);
 		leftBox.setAlignment(Pos.BOTTOM_CENTER);
 		leftBox.setSpacing(leftBoxSpacing);
-		leftBox.setPadding(new Insets(leftBoxPaddingTop, leftBoxPaddingRight, leftBoxPaddingBottom, leftBoxPaddingLeft));
+		leftBox.setPadding(
+				new Insets(leftBoxPaddingTop, leftBoxPaddingRight, leftBoxPaddingBottom, leftBoxPaddingLeft));
 
 		// adds the leftBox to the rootPane
 		rootPane.setLeft(leftBox);
 	}
 
 	/**
-	 * Creates the right column on the screen containing the following aspects: 3 Glaswindows(small)
+	 * Creates the right column on the screen containing the following aspects: 3
+	 * Glaswindows(small)
 	 */
 	private void createRight() {
 		// Initialize everything for the rightBox
@@ -253,7 +285,8 @@ public class GameScene extends Scene {
 		// adds everything to the rightBox and handles makeup
 		rightBox.setSpacing(rightBoxSpacing);
 		rightBox.setAlignment(Pos.BOTTOM_CENTER);
-		rightBox.setPadding(new Insets(rightBoxPaddingTop, rightBoxPaddingRight, rightBoxPaddingBottom, rightBoxPaddingLeft));
+		rightBox.setPadding(
+				new Insets(rightBoxPaddingTop, rightBoxPaddingRight, rightBoxPaddingBottom, rightBoxPaddingLeft));
 
 		// adds the rightBox to the rootPane
 		rootPane.setRight(rightBox);

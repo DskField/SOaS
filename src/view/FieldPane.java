@@ -109,4 +109,13 @@ public class FieldPane extends FlowPane {
 			}
 		}
 	}
+	public void highlightSpaces(ArrayList<SpaceGlass>toHiglight) {
+		for(SpacePane spacePane:spaces) {
+			for(SpaceGlass spaceGlass: toHiglight) {
+				if(spacePane.getX() == spaceGlass.getXCor() &&spacePane.getY() == spaceGlass.getYCor()) {
+					spacePane.highlight();
+				}
+			}
+		}
+	}
 }

@@ -1,6 +1,7 @@
 package view;
 
 import game.GameColor;
+import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
 
 public class SpacePane extends Pane {
@@ -48,5 +49,11 @@ public class SpacePane extends Pane {
 
 	public int getY() {
 		return y;
+	}
+	public void highlight() {
+		
+		Glow glow = new Glow(3);
+		setEffect(glow);
+		
 	}
 }
