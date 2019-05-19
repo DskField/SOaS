@@ -11,7 +11,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -112,21 +111,18 @@ public class GameScene extends Scene {
 			public void handle(MouseEvent event) {
 				if (event.getTarget().getClass().equals(DiePane.class)) {
 					DiePane diePane = (DiePane) event.getTarget();
-					System.out.println(diePane.getNumber());
-					try {
-						System.out.println("Check");
-						mainGlassWindow.highlightSpaces(gameController.getAvailableSpaces(diePane.getNumber()));
-					} catch (Exception e) {
-						System.out.println("niks mogelijk");
-						BoxBlur blur = new BoxBlur();
-						blur.setHeight(diePane.getScaleY());
-						blur.setWidth(diePane.getScaleX());
-
-						diePane.setEffect(blur);
-					}
-
+					//					try {
+					System.out.println("DieNumber:" + diePane.getNumber());
+					mainGlassWindow.highlightSpaces(gameController.getAvailableSpaces(diePane));
+					//					} catch (Exception e) {
+					//						System.out.println("niks mogelijk");
+					//						BoxBlur blur = new BoxBlur();
+					//						blur.setHeight(diePane.getScaleY());
+					//						blur.setWidth(diePane.getScaleX());
+					//
+					//						diePane.setEffect(blur);
+					//					}
 				}
-
 			}
 		});
 

@@ -55,7 +55,6 @@ public class SpacePane extends Pane {
 	}
 
 	public void highlight() {
-
 		Glow glow = new Glow(3);
 		space.setBackground(new Background(new BackgroundFill(Color.TURQUOISE, null, null)));
 		setEffect(glow);

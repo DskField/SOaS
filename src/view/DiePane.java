@@ -1,6 +1,5 @@
 package view;
 
-
 import game.GameColor;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -41,12 +40,7 @@ public class DiePane extends Pane {
 		setBorder(new Border(new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.SOLID, null, new BorderWidths(1))));
 		setMinSize(size, size);
 		setMaxSize(size, size);
-		
-
-		
 	}
-
-
 
 	public void resize(double size) {
 		this.size = size - 1;

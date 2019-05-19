@@ -96,7 +96,6 @@ public class Game {
 	 */
 	private void loadDice() {
 		dice = persistenceFacade.getGameDice(gameID);
-		System.out.println(dice.size());
 		roundTrack = persistenceFacade.getRoundTrack(gameID);
 	}
 

@@ -16,6 +16,7 @@ import game.SpaceGlass;
 import game.SpacePattern;
 import javafx.animation.AnimationTimer;
 import view.ChoiceScene;
+import view.DiePane;
 import view.GameScene;
 
 public class GameController {
@@ -221,8 +222,8 @@ public class GameController {
 	 * @param die - the die you want to place
 	 * @return boolean - true if compatible, false if not
 	 */
-	boolean checkCompatibility(SpacePattern sPattern, Die die) {
-		if (sPattern.getColor().equals(die.getDieColor()) || sPattern.getValue() == die.getDieValue() || (sPattern.getColor().equals(GameColor.EMPTY) && sPattern.getValue() == 0)) {
+	boolean checkCompatibility(SpacePattern sPattern, DiePane diePane) {
+		if (sPattern.getColor().equals(diePane.getColor()) || sPattern.getValue() == diePane.getNumber() || (sPattern.getColor().equals(GameColor.EMPTY) && sPattern.getValue() == 0)) {
 			return true;
 		}
 		return false;
@@ -263,23 +264,21 @@ public class GameController {
 	 * @param die - the to be placed die
 	 * @return ArrayList<SpaceGlass> - All available spaces
 	 */
-	public ArrayList<SpaceGlass> getAvailableSpaces(int dieNumber) {
+	public ArrayList<SpaceGlass> getAvailableSpaces(DiePane diePane) {
 		ArrayList<SpaceGlass> available = new ArrayList<>();
 		GlassWindow window = getClientPlayer().getGlassWindow();
-		Die die = new Die(0, null);
-		for (Die newDie : game.getTable()) {
-			if (newDie.getDieId() == dieNumber) {
-				die = newDie;
-				break;
-			} else {
-				return null;
-			}
-		}
+		//		Die die = new Die(0, null);
+		//		for (Die newDie : game.getTable()) {
+		//			if (newDie.getDieId() == dieNumber) {
+		//				die = newDie;
+		//				break;
+		//			}
+		//		}
 
 		if (checkFirstDie()) {
 			for (SpacePattern[] spacePatternRow : window.getPatternCard().getSpaces()) {
 				for (SpacePattern space : spacePatternRow) {
-					if ((checkCompatibility(space, die) && (space.getXCor() == 0 || space.getXCor() == 4 || space.getYCor() == 0 || space.getYCor() == 3))) {
+					if ((checkCompatibility(space, diePane) && (space.getXCor() == 0 || space.getXCor() == 4 || space.getYCor() == 0 || space.getYCor() == 3))) {
 						available.add(window.getSpace(space.getXCor(), space.getYCor()));
 					}
 				}
@@ -288,10 +287,10 @@ public class GameController {
 			for (SpacePattern[] spacePatternRow : window.getPatternCard().getSpaces()) {
 				for (SpacePattern space : spacePatternRow) {
 					if (window.getSpace(space.getXCor(), space.getYCor()).getDie() == null) {
-						if (checkCompatibility(space, die)) {
-//							if (checkSurrounding(die, window.getSpace(space.getXCor(), space.getYCor()))) {
-								available.add(window.getSpace(space.getXCor(), space.getYCor()));
-//							}
+						if (checkCompatibility(space, diePane)) {
+							//							if (checkSurrounding(die, window.getSpace(space.getXCor(), space.getYCor()))) {
+							available.add(window.getSpace(space.getXCor(), space.getYCor()));
+							//							}
 						}
 					}
 				}
@@ -308,11 +307,11 @@ public class GameController {
 	 * @return boolean - true if succeeded
 	 */
 	public boolean placeDie(Die die, SpaceGlass newSpace) {
-		for (SpaceGlass space : getAvailableSpaces(die)) {
-			if (space.equals(newSpace)) {
-				return true;
-			}
-		}
+		//		for (SpaceGlass space : getAvailableSpaces(die)) {
+		//			if (space.equals(newSpace)) {
+		//				return true;
+		//			}
+		//		}
 		return false;
 	}
 }
