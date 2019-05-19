@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import controllers.GameController;
 import game.Message;
-import game.PatternCard;
 import game.Player;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -24,7 +23,7 @@ import javafx.stage.Stage;
 
 public class GameScene extends Scene {
 	// constants
-		private final int personalInfoSpacing = 10;
+	private final int personalInfoSpacing = 10;
 
 	private final int buttonWidth = 200;
 	private final int buttonheigt = 50;
@@ -69,7 +68,6 @@ public class GameScene extends Scene {
 	private DieOfferPane dieOfferPane;
 	private Button button;
 	private GameController gameController;
-	private Stage stage;
 
 	/**
 	 * Creates the GameScene
@@ -82,7 +80,6 @@ public class GameScene extends Scene {
 		// sets the rootPane and handles makeup
 		setRoot(rootPane);
 		rootPane.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
-		
 
 		// creates and sets everything in the right place
 		createCenter();
@@ -93,7 +90,7 @@ public class GameScene extends Scene {
 		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			public void handle(KeyEvent key) {
 				if (key.getCode() == KeyCode.ESCAPE) {
-					
+					Stage stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
 					Popup gameMenuPopup = new Popup();
 					GameMenuPane gameMenu = new GameMenuPane();
 					gameMenuPopup.getContent().add(gameMenu);
