@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
+import view.LoginPane;
 
 public class MainApplication extends Application {
 	private Stage stage;
@@ -15,7 +16,8 @@ public class MainApplication extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		this.stage = stage;
-		new GameController(this);
+//		new GameController(this);
+		stage.setScene(new Scene(new LoginPane(new ClientController(this))));
 		stage.setTitle("Sagrada");
 		stage.setFullScreen(true);
 		// Remove the exit hint

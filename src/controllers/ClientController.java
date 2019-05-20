@@ -9,6 +9,7 @@ import database.PersistenceFacade;
 import game.Player;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
+import view.ClientScene;
 import view.LoginPane;
 
 public class ClientController {
@@ -34,6 +35,7 @@ public class ClientController {
 	public boolean handleLogin(String username, String password) {
 		if (persistencefacade.loginCorrect(username, password)) {
 			client = new Client(username, persistencefacade);
+			mainapplication.setScene(new ClientScene(this));
 //			gamecontroller.joinGame(1, client.getUser());
 			
 			// TODO fix timer/update
@@ -69,8 +71,8 @@ public class ClientController {
 	public int getScore(int gameID, Player player) {
 		ScoreHandler scorehandler = new ScoreHandler(persistencefacade.getSharedCollectiveGoalCards(gameID));
 		// TODO FIX SCOREHANDLER - getwindow
-		//		return scorehandler.getScore(player, false);
-		return 100;
+		return scorehandler.getScore(player, false);
+//		return 100;
 	}
 	
 	// Updat with Timer
