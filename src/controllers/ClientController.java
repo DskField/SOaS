@@ -36,6 +36,7 @@ public class ClientController {
 		if (persistencefacade.loginCorrect(username, password)) {
 			client = new Client(username, persistencefacade);
 			mainapplication.setScene(new ClientScene(this));
+			// TODO has to be deleted later on
 //			gamecontroller.joinGame(1, client.getUser());
 			
 			// TODO fix timer/update
@@ -62,6 +63,10 @@ public class ClientController {
 		return client.getLobby(gameID);
 	}
 	
+	public void joinGame(int idGame) {
+		gamecontroller.joinGame(idGame, client.getUser());
+	}
+	
 	// TODO FIND SOLUTION - TEMPORARY FIX
 	public ArrayList<Player> getPlayers(int gameID) {
 		return persistencefacade.getAllPlayersInGame(gameID);
@@ -71,8 +76,8 @@ public class ClientController {
 	public int getScore(int gameID, Player player) {
 		ScoreHandler scorehandler = new ScoreHandler(persistencefacade.getSharedCollectiveGoalCards(gameID));
 		// TODO FIX SCOREHANDLER - getwindow
-		return scorehandler.getScore(player, false);
-//		return 100;
+//		return scorehandler.getScore(player, false);
+		return 100;
 	}
 	
 	// Updat with Timer

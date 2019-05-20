@@ -58,8 +58,11 @@ public class ClientScene extends Scene {
 		rootPane.setCenter(challengeListPane);
 	}
 	
-	// TODO FIND SOLUTION - TEMPORARY FIX
+	public void joinGame(int idGame) {
+		clientcontroller.joinGame(idGame);
+	}
 	
+	// TODO FIND SOLUTION - TEMPORARY FIX
 	public ArrayList<Player> getPlayers(int gameID) {
 		return clientcontroller.getPlayers(gameID);
 	}

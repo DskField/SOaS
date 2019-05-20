@@ -82,9 +82,13 @@ public class GameScene extends Scene {
 		rootPane.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
 
 		// creates and sets everything in the right place
+		System.out.println("before");
 		createCenter();
+		System.out.println("na center");
 		createLeft();
+		System.out.println("na left");
 		createRight();
+		System.out.println("na right");
 
 		// Listener for escape key to open in game menu
 		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -193,8 +197,12 @@ public class GameScene extends Scene {
 		// Initialize everything for the leftBox
 		leftBox = new VBox();
 		Player clientPlayer = gameController.getClientPlayer();
+		System.out.println("na clientplayer");
+		System.out.println(clientPlayer.getPlayerID());
 		mainGlassWindow = new GlassWindowPane(0, clientPlayer, this);
+		System.out.println("na new glasswindowpane");
 		chatPane = new ChatPane(gameController);
+		System.out.println("na new chatpane");
 
 		// adds everything to the leftBox and handles makeup
 		leftBox.getChildren().addAll(mainGlassWindow, chatPane);

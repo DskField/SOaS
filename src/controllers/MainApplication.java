@@ -17,7 +17,7 @@ public class MainApplication extends Application {
 	public void start(Stage stage) throws Exception {
 		this.stage = stage;
 //		new GameController(this);
-		stage.setScene(new Scene(new LoginPane(new ClientController(this))));
+		new ClientController(this);
 		stage.setTitle("Sagrada");
 		stage.setFullScreen(true);
 		// Remove the exit hint
@@ -29,6 +29,7 @@ public class MainApplication extends Application {
 
 	public void setScene(Scene scene) {
 		stage.setScene(scene);
+		stage.setFullScreen(true);
 	}
 
 }

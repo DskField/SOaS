@@ -43,12 +43,12 @@ public class GlassWindowPane extends BorderPane {
 
 		fieldPane = new FieldPane(player.getGlassWindow().getPatternCard());
 		fieldPane.loadGlassWindow(player.getGlassWindow());
-
+		System.out.println("na fieldPane");
 		windowCurve = new CornerRadii(5, 3, 3, 5, 0, 0, 0, 0, true, true, true, true, false, false, false, false);
 
 		setBackground(new Background(new BackgroundFill(Color.rgb(68, 47, 25), windowCurve, null)));
 		setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, windowCurve, new BorderWidths(5))));
-
+		
 		setScore();
 		setName(player.getUsername());
 		setBottom(fieldPane);

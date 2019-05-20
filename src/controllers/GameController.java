@@ -36,12 +36,14 @@ public class GameController {
 		//		users.add(new User("speler3", 0, 0, GameColor.RED, 0));
 		//		users.add(new User("speler4", 0, 0, GameColor.RED, 0));
 		//		pf.createGame(users);
-		joinGame(1, new User("speler2", 0, 0, GameColor.RED, 0));
+//		joinGame(1, new User("speler2", 0, 0, GameColor.RED, 0));
 	}
 
 	public void joinGame(int idGame, User clientUser) {
 		game = new Game(idGame, clientUser);
+		System.out.println("new game 1");
 		game.loadGame();
+		System.out.println("new game load");
 		//		getClientPlayer().getGlassWindow().setPaterNull(null);
 		if (getClientPlayer().getGlassWindow().getPatternCard() == null) {
 			game.dealPatternCards();
@@ -49,7 +51,9 @@ public class GameController {
 			mainApplication.setScene(choiceScene);
 		} else {
 			gameScene = new GameScene(this);
+			System.out.println("new game scene");
 			mainApplication.setScene(gameScene);
+			System.out.println("set scene game");
 			createTimer();
 		}
 	}

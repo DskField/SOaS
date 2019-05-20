@@ -6,6 +6,7 @@ import client.Lobby;
 import game.Player;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToggleButton;
@@ -35,6 +36,9 @@ public class LobbyListPane extends BorderPane {
 	final private static int statsBoxHeight = 400;
 	final private static int bottomLineSpacing = 50;
 	final private static int statsPaneSpacing = 20;
+	final private static int lobbyJoinPannelSpacing = 50;
+	final private static int joinGameButtonWidth = 400;
+	final private static int joinGameButtonHeight = 150;
 
 	public LobbyListPane(ArrayList<Lobby> lobbies, ClientScene clientscene) {
 		this.clientscene = clientscene;
@@ -113,9 +117,24 @@ public class LobbyListPane extends BorderPane {
 		statsBox.setBackground(new Background(new BackgroundFill(statsBackgroundColor, null, null)));
 		statsBox.setMinSize(statsBoxWidth, statsBoxHeight);
 		statsBox.setMaxSize(statsBoxWidth, statsBoxHeight);
-		this.setCenter(statsBox);
+		
+		Button joinGameButton = new Button("Game Betreden");
+		joinGameButton.setOnAction(e -> joinGameButton(idGame));
+		joinGameButton.setMinSize(joinGameButtonWidth, joinGameButtonHeight);
+		joinGameButton.setMaxSize(joinGameButtonWidth, joinGameButtonHeight);
+		
+		VBox lobbyJoinPannel = new VBox();
+		lobbyJoinPannel.setSpacing(lobbyJoinPannelSpacing);
+		lobbyJoinPannel.getChildren().addAll(statsBox, joinGameButton);
+		
+		
+		this.setCenter(lobbyJoinPannel);
 	}
 
+	public void joinGameButton(int idGame) {
+		clientscene.joinGame(idGame);
+	}
+	
 	private class HandleButton implements EventHandler<MouseEvent> {
 		@Override
 		public void handle(MouseEvent e) {
