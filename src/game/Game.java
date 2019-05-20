@@ -49,7 +49,7 @@ public class Game {
 
 	/**
 	 * Initialize the game
-	 * 
+	 *
 	 * @param gameID
 	 *            - The id of the game
 	 */
@@ -125,8 +125,12 @@ public class Game {
 		int num = 1;
 		for (Player player : players) {
 			player.loadGlassWindow(persistenceFacade.getGlassWindow(player.getPlayerID()));
-			player.getGlassWindow()
-					.loadPatternCard(persistenceFacade.getplayerPatternCard(player.getPlayerID()).get(0));
+			PatternCard card = persistenceFacade.getplayerPatternCard(player.getPlayerID());
+			if (card != null) {
+				player.getGlassWindow().loadPatternCard(card);
+			} else {
+				player.getGlassWindow().loadPatternCard(null);
+			}
 
 			if (player.getPlayerID() == clientPlayer.getPlayerID()) {
 				player.getGlassWindow().setColor(colors[0]);
@@ -158,7 +162,7 @@ public class Game {
 	public void updateCurrencyStone(int idGame, int idPlayer, int ammount) {
 		persistenceFacade.updateGivePlayerCurrencyStones(idGame, idPlayer, ammount);
 	}
-	
+
 	public void dealPatternCards() {
 		for (Player player : players) {
 			persistenceFacade.insertPatternCardOptions(player.getPlayerID());
@@ -166,7 +170,7 @@ public class Game {
 	}
 	//kevin stuff
 	public void setClientPlayerPaternCard(int idPatternCard) {
-		
+
 		persistenceFacade.setPlayerPaternCard(idPatternCard, clientPlayer.getPlayerID());
 	}
 
@@ -296,7 +300,7 @@ public class Game {
 
 	/**
 	 * gets new Messages from the database and adds it to the chat.
-	 * 
+	 *
 	 * @return ArrayList<Messages> list of Messages that need to be added to the
 	 *         ChatPane
 	 */
@@ -312,7 +316,7 @@ public class Game {
 	 * error message. Otherwise the message will be send to the database for
 	 * insertion. After insertion this method will call upon the updateChat function
 	 * to update the chat from the database.
-	 * 
+	 *
 	 * @param message
 	 *            - the Message that needs to be send to the database
 	 * @return ArrayList<Message> list of messages that need to be added to the

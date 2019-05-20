@@ -33,7 +33,6 @@ class PlayerDAO {
 				System.err.println("The rollback failed: Please check the Database!");
 			}
 		}
-
 	}
 
 	private ArrayList<Player> selectPlayer(String query) {
@@ -119,10 +118,27 @@ class PlayerDAO {
 		return selectPlayer("SELECT * FROM player WHERE game_idgame = " + idGame + " ORDER BY idplayer ASC");
 	}
 
-	void insertPlayer(int idGame, ArrayList<String> username) {
-		if (!isUsed(idGame)) {
-			ArrayList<String> colors = getColors();
-			Collections.shuffle(colors);
+	void insertPlayers(int idGame, ArrayList<User> users) {
+		ArrayList<String> colors = getColors();
+		Collections.shuffle(colors);
+		try {
+			for (int i = 0; i < users.size(); i++) {
+				String status = i == 0 ? "uitdager" : "uitgedaagde";
+
+				PreparedStatement stmt = con.prepareStatement("INSERT INTO player VALUES (null, ?, ?, ?, ?, ?, ?, null, null);");
+				stmt.setString(1, users.get(i).getUsername());
+				stmt.setInt(2, idGame);
+				stmt.setString(3, status);
+				stmt.setInt(4, i);
+				stmt.setBoolean(5, (i == 0) ? true : false);
+				stmt.setString(6, colors.get(i));
+
+				stmt.executeUpdate();
+				stmt.close();
+			}
+			con.commit();
+		} catch (SQLException e) {
+			System.err.println("PlayerDAO (Insert): " + e.getMessage());
 			try {
 				for (int i = 0; i < username.size(); i++) {
 					String status = i == 0 ? "uitdager" : "uitgedaagde";

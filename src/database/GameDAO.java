@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import game.Player;
+
 class GameDAO {
 	private Connection con;
 
@@ -12,7 +14,7 @@ class GameDAO {
 		con = connection;
 	}
 
-	public int createGame() {
+	int createGame() {
 		try {
 			PreparedStatement stmt = con.prepareStatement("INSERT INTO game (idgame, turn_idplayer, creationdate) VALUES(null, null, now());");
 			stmt.executeUpdate();
@@ -31,5 +33,18 @@ class GameDAO {
 			System.err.println("GameDAO: " + e.getMessage());
 		}
 		return 0;
+	}
+
+	void updateCurrentPlayer(int idgame, Player player) {
+		try {
+			PreparedStatement stmt = con.prepareStatement("UPDATE game SET turn_idplayer = ? WHERE idgame = ?");
+			stmt.setInt(1, player.getPlayerID());
+			stmt.setInt(2, idgame);
+			stmt.executeUpdate();
+			stmt.close();
+			con.commit();
+		} catch (SQLException e) {
+			System.err.println("GameDAO: " + e.getMessage());
+		}
 	}
 }

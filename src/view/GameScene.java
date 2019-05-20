@@ -106,7 +106,7 @@ public class GameScene extends Scene {
 
 	/**
 	 * gives a list of messages to the ChatPane
-	 * 
+	 *
 	 * @param messages ArrayList<Message> list of messages that will be added to the chat.
 	 */
 	public void updateChat(ArrayList<Message> messages) {
