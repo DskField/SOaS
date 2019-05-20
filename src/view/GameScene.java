@@ -187,9 +187,8 @@ public class GameScene extends Scene {
 
 		// handles everything regarding the cardBox
 		//adds goaldCards to the goalCardPanes array
-		ArrayList<CollectiveGoalCard> goalCards = gameController.getCollectiveGoalCards();
 		for (int i = 0; i < 3; i++) {
-			goalCardPanes[i] = new GoalCardPane(goalCards.get(i).getCardID());
+			goalCardPanes[i] = new GoalCardPane(gameController.getCollectiveGoalCard(i));
 		}
 		// adds the goalCardPanes to the goalCardBox
 		for (GoalCardPane goalCardPane : goalCardPanes) {
@@ -197,7 +196,7 @@ public class GameScene extends Scene {
 		}
 		// adds toolCards to the toolCards Array
 		for (int i = 0; i < 3; i++) {
-			toolCardPanes[i] = new ToolCardPane(i + 1);
+			toolCardPanes[i] = new ToolCardPane(gameController.getToolCard(i));
 		}
 		// adds the toolCardPanes to the toolCardBox
 		for (ToolCardPane toolCardPane : toolCardPanes) {

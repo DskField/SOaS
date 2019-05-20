@@ -41,15 +41,13 @@ public class ChoiceScene extends Scene {
 			VBox vBox = new VBox();
 			Label name = new Label(patternCard.getName());
 			Label difficulity = new Label("" + patternCard.getDifficulty());
-			FieldPane s = new FieldPane(patternCard);
-			vBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			FieldPane pc = new FieldPane(patternCard);
+			pc.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 				@Override
 				public void handle(MouseEvent event) {
-					VBox v = (VBox) event.getSource();
-					Label l = (Label) v.getChildren().get(0);
 					for(PatternCard patternCard : gameController.getPatternChoices()) {
-						if(patternCard.getName().equals(l.getText())) {
+						if(patternCard.getPatternCardId() == pc.getPatternCardID()) {
 							gameController.updateCurrencyStones(patternCard.getDifficulty());
 							gameController.setClientPlayerPaternCard(patternCard.getPatternCardId());
 						}
@@ -57,7 +55,7 @@ public class ChoiceScene extends Scene {
 					
 				}
 			});
-			vBox.getChildren().addAll(name, s, difficulity);
+			vBox.getChildren().addAll(name, pc, difficulity);
 			vBox.setAlignment(Pos.CENTER);
 			cards.getChildren().add(vBox);
 			

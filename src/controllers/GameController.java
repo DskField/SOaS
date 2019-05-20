@@ -37,9 +37,8 @@ public class GameController {
 	public void joinGame(int idGame, User clientUser) {
 		game = new Game(idGame, clientUser);
 		game.loadGame();
-		// getClientPlayer().getGlassWindow().setPaterNull(null);
+		 getClientPlayer().getGlassWindow().setPaterNull(null);
 		if (getClientPlayer().getGlassWindow().getPatternCard() == null) {
-			game.dealPatternCards();
 			choiceScene = new ChoiceScene(this, getPatternChoices());
 			mainApplication.setScene(choiceScene);
 		} else {
