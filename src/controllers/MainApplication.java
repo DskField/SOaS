@@ -27,6 +27,7 @@ public class MainApplication extends Application {
 
 	public void setScene(Scene scene) {
 		stage.setScene(scene);
+		stage.setFullScreen(true);
 	}
 
 }
