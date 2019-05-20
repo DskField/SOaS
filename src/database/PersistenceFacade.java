@@ -85,6 +85,7 @@ public class PersistenceFacade {
 		dieDAO.insertDice(gameID);
 		currencyStoneDAO.insertCurrencyStones(gameID);
 		playerDAO.insertPlayers(gameID, users);
+		gameDAO.updateCurrentPlayer(gameID, playerDAO.getCurrentPlayer(gameID));
 		spaceGlassDAO.insertGlassWindows(playerDAO.getAllPlayersInGame(gameID));
 	}
 
@@ -196,7 +197,7 @@ public class PersistenceFacade {
 		patternCardDAO.insertPatternCardOptions(idPlayer);
 	}
 
-	public ArrayList<PatternCard> getplayerPatternCard(int idPlayer) {
+	public PatternCard getplayerPatternCard(int idPlayer) {
 		return patternCardDAO.getplayerPatternCard(idPlayer);
 	}
 

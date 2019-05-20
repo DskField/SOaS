@@ -129,7 +129,12 @@ public class Game {
 		int num = 1;
 		for (Player player : players) {
 			player.loadGlassWindow(persistenceFacade.getGlassWindow(player.getPlayerID()));
-			player.getGlassWindow().loadPatternCard(persistenceFacade.getplayerPatternCard(player.getPlayerID()).get(0));
+			PatternCard card = persistenceFacade.getplayerPatternCard(player.getPlayerID());
+			if (card != null) {
+				player.getGlassWindow().loadPatternCard(card);
+			} else {
+				player.getGlassWindow().loadPatternCard(null);
+			}
 
 			if (player.getPlayerID() == clientPlayer.getPlayerID()) {
 				player.getGlassWindow().setColor(colors[0]);
