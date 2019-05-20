@@ -35,7 +35,6 @@ public class Game {
 	 */
 	private ArrayList<Die> table;
 
-	private CardHandler cardHandler;
 	private Chat chat;
 	private Player currentPlayer;
 
@@ -69,7 +68,6 @@ public class Game {
 
 		table = new ArrayList<Die>();
 
-		cardHandler = new CardHandler();
 		chat = new Chat();
 
 		random = new Random();
@@ -307,12 +305,7 @@ public class Game {
 		}
 	}
 
-	public void useToolCard() {
-		// TODO wait on CardHandler
-	}
-
 	public void placeDie() {
-		// TODO wait on GlassWindow
 	}
 
 	/**
@@ -349,8 +342,6 @@ public class Game {
 	}
 
 	// GETTERS AND SETTERS
-	// TODO the current getters and setters are temporary, they will be changed in
-	// the future
 	public Player getClientPlayer() {
 		return clientPlayer;
 	}

@@ -9,7 +9,6 @@ public class SpaceGlass extends Space {
 		die = null;
 	}
 
-	//TODO maybe useless?
 	public int getDieValue() {
 		return die.getDieValue();
 	}

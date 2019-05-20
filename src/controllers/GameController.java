@@ -29,7 +29,7 @@ public class GameController {
 
 	public GameController(MainApplication mainApplication) {
 		this.mainApplication = mainApplication;
-		// TODO temporary call, when the game will be created the ClientController needs
+		// Temporary call, when the game will be created the ClientController needs
 		// to give the information to the GameController
 		//		PersistenceFacade pf = new PersistenceFacade();
 		//		ArrayList<User> users = new ArrayList<User>();

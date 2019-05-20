@@ -204,7 +204,4 @@ public class PersistenceFacade {
 	public ArrayList<PatternCard> getPlayerOptions(int idPlayer) {
 		return patternCardDAO.getPlayerOptions(idPlayer);
 	}
-
-	//GameDAO
-
 }

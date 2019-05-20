@@ -157,8 +157,6 @@ public class ToolCardHandler {
 		// Backwards engineering the string provided to set a GameColor within the
 		// "getEnum" method
 
-		// TODO: Check wether die is 1 or 6 so view doesn't get bothered with die values
-
 		// Choose wether your picked die's value should increment, or decrement
 		if (answer) {
 			dieVal++;
@@ -256,12 +254,10 @@ public class ToolCardHandler {
 	// Can only be used on the player's second turn
 	public void handleGlazingHammer(Game game) {
 
-		// TODO: Notify Adri about lacking getter for 'table' inside of game.Game
 		ArrayList<Die> table = new ArrayList<Die>(); // This will be a stub for the time being
 
 		// Player needs a counter or boolean to check wether or not it's the
 		// player's second turn
-		// TODO: Notify group about these prefered changes
 
 		for (Die die : table) {
 			die.roll(die.getRound());
@@ -270,14 +266,12 @@ public class ToolCardHandler {
 
 	public void handleRunningPliers(SpaceGlass space, Die die) {
 
-		// TODO: Wait on Player for chooseDie()
 		try {
 
 			checkDieColorPerm(space.getXCor(), space.getYCor(), die);
 			checkDieValuePerm(space.getXCor(), space.getYCor(), die);
 
 			if (canPlace) {
-				// TODO: Wait on Player.layDie()
 			}
 
 		} catch (Exception e) {
@@ -285,7 +279,6 @@ public class ToolCardHandler {
 			System.err.println(e);
 		}
 
-		// TODO: Alert group about player turn statuses
 	}
 
 	// Allows the player to lay the chosen die on a spot that has no adjacent die
@@ -333,7 +326,6 @@ public class ToolCardHandler {
 		}
 
 		if (canPlace) {
-			// TODO: Wait on Player.layDie()
 		}
 
 	}
