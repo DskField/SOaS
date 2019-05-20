@@ -4,8 +4,11 @@ import java.util.ArrayList;
 
 import controllers.GameController;
 import game.CollectiveGoalCard;
+import game.Die;
+import game.GameColor;
 import game.Message;
 import game.Player;
+import game.SpaceGlass;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -105,26 +107,23 @@ public class GameScene extends Scene {
 				}
 			}
 		});
+	}
 
-		setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				if (event.getTarget().getClass().equals(DiePane.class)) {
-					DiePane diePane = (DiePane) event.getTarget();
-					//					try {
-					mainGlassWindow.highlightSpaces(gameController.getAvailableSpaces(diePane));
-					//					} catch (Exception e) {
-					//						System.out.println("niks mogelijk");
-					//						BoxBlur blur = new BoxBlur();
-					//						blur.setHeight(diePane.getScaleY());
-					//						blur.setWidth(diePane.getScaleX());
-					//
-					//						diePane.setEffect(blur);
-					//					}
-				}
-			}
-		});
+	public void selectDie(ArrayList<SpaceGlass> available) {
+		removeHighlight();
+		mainGlassWindow.highlightSpaces(available);
+	}
 
+	public void removeHighlight() {
+		mainGlassWindow.removeHighlightSpaces();
+	}
+
+	public DiePane getSelectedDie() {
+		try {
+			return (DiePane) focusOwnerProperty().get();
+		} catch (ClassCastException e) {
+			return null;
+		}
 	}
 
 	/**
@@ -173,8 +172,21 @@ public class GameScene extends Scene {
 		centerBox = new VBox();
 		centerBox.setMaxWidth(800);
 		roundPane = new RoundPane(0, 0);
-		dieOfferPane = new DieOfferPane(gameController.getInitialDieAmount(), gameController.getDiceOffering());
-		dieOfferPane.setMinWidth(800);
+		dieOfferPane = new DieOfferPane(gameController);
+
+		//Temporaray code
+		ArrayList<Die> dice = new ArrayList<Die>();
+		dice.add(new Die(5, GameColor.RED.getDatabaseName(), 4, 5));
+		dice.add(new Die(5, GameColor.BLUE.getDatabaseName(), 4, 2));
+		dice.add(new Die(5, GameColor.BLUE.getDatabaseName(), 4, 3));
+		dice.add(new Die(5, GameColor.GREEN.getDatabaseName(), 4, 4));
+		dice.add(new Die(5, GameColor.YELLOW.getDatabaseName(), 4, 2));
+		dice.add(new Die(5, GameColor.RED.getDatabaseName(), 4, 3));
+		dice.add(new Die(5, GameColor.PURPLE.getDatabaseName(), 4, 6));
+		dice.add(new Die(5, GameColor.YELLOW.getDatabaseName(), 4, 1));
+		dice.add(new Die(5, GameColor.BLUE.getDatabaseName(), 4, 3));
+		dieOfferPane.addDice(dice);
+
 		button = new Button("Button");
 
 		// handles everything regarding the button
@@ -233,7 +245,7 @@ public class GameScene extends Scene {
 		// Initialize everything for the leftBox
 		leftBox = new VBox();
 		Player clientPlayer = gameController.getClientPlayer();
-		mainGlassWindow = new GlassWindowPane(0, clientPlayer, true, this);
+		mainGlassWindow = new GlassWindowPane(0, clientPlayer, this, gameController);
 		chatPane = new ChatPane(gameController);
 
 		// adds everything to the leftBox and handles makeup
@@ -257,15 +269,15 @@ public class GameScene extends Scene {
 		for (Player player : players) {
 			if (player.getPlayerID() != clientPlayer.getPlayerID()) {
 				if (smallGlassWindow1 == null) {
-					smallGlassWindow1 = new GlassWindowPane(1, player, false, this);
+					smallGlassWindow1 = new GlassWindowPane(1, player, this, gameController);
 					smallGlassWindow1.toggleIsSmall();
 					rightBox.getChildren().add(smallGlassWindow1);
 				} else if (smallGlassWindow2 == null) {
-					smallGlassWindow2 = new GlassWindowPane(2, player, false, this);
+					smallGlassWindow2 = new GlassWindowPane(2, player, this, gameController);
 					smallGlassWindow2.toggleIsSmall();
 					rightBox.getChildren().add(smallGlassWindow2);
 				} else if (smallGlassWindow3 == null) {
-					smallGlassWindow3 = new GlassWindowPane(3, player, false, this);
+					smallGlassWindow3 = new GlassWindowPane(3, player, this, gameController);
 					smallGlassWindow3.toggleIsSmall();
 					rightBox.getChildren().add(smallGlassWindow3);
 				}

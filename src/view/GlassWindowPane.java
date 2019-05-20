@@ -2,6 +2,7 @@ package view;
 
 import java.util.ArrayList;
 
+import controllers.GameController;
 import game.GameColor;
 import game.Player;
 import game.SpaceGlass;
@@ -41,12 +42,12 @@ public class GlassWindowPane extends BorderPane {
 
 	private boolean isSmall = false;
 
-	public GlassWindowPane(int number, Player player, boolean clientPlayer, GameScene gameScene) {
+	public GlassWindowPane(int number, Player player, GameScene gameScene, GameController gameController) {
 		switchingNumber = number;
-		this.clientPlayer = clientPlayer;
+		clientPlayer = (player.getPlayerID() == gameController.getClientPlayer().getPlayerID()) ? true : false;
 		this.color = player.getColor();
 
-		fieldPane = new FieldPane(player.getGlassWindow().getPatternCard());
+		fieldPane = new FieldPane(player.getGlassWindow().getPatternCard(), gameController);
 		fieldPane.loadGlassWindow(player.getGlassWindow());
 
 		windowCurve = new CornerRadii(5, 3, 3, 5, 0, 0, 0, 0, true, true, true, true, false, false, false, false);
@@ -132,6 +133,10 @@ public class GlassWindowPane extends BorderPane {
 
 	public void highlightSpaces(ArrayList<SpaceGlass> toHighlight) {
 		fieldPane.highlightSpaces(toHighlight);
+	}
+
+	public void removeHighlightSpaces() {
+		fieldPane.removeHilightSpaces();
 	}
 
 	public GameColor getColor() {

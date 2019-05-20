@@ -305,7 +305,12 @@ public class Game {
 		}
 	}
 
-	public void placeDie() {
+	public void placeDie(int id, GameColor color) {
+		for (Die die : table) {
+			if (die.getDieId() == id && die.getDieColor() == color) {
+				//TODO: finish
+			}
+		}
 	}
 
 	/**
