@@ -16,7 +16,6 @@ public class ToolCard extends Card {
 		return currencyStones;
 	}
 
-	// TODO: comment
 	public void addCurrencyStone(CurrencyStone usedCurrencyStone) {
 		currencyStones.add(usedCurrencyStone);
 	}

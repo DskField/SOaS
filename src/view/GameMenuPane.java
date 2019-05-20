@@ -30,10 +30,6 @@ class GameMenuPane extends VBox {
 		setAlignment(Pos.CENTER);
 		setSpacing(SPACING);
 		setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.7), null, null)));
-
-		// TODO FIX CSS
-		//		setStyle(".button {"
-		//				+ " -fx-background-color: green; -fx-text-fill: white; -fx-font: normal bold 25px 'serif';}");
 		// set size
 		setMinSize(stage.getWidth(), stage.getHeight());
 		// Give buttons text and style

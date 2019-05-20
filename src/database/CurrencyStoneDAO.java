@@ -77,7 +77,6 @@ class CurrencyStoneDAO {
 		return selectCurrencyStone("SELECT * FROM gamefavortoken JOIN gametoolcard ON gamefavortoken.gametoolcard = gametoolcard.gametoolcard WHERE idtoolcard = " + idToolCard + " AND idgame = " + idGame);
 	}
 
-	// TODO: check possible logic when actually using this to buy stones
 	void updateGameFavorTokenUsed(int stoneID, int idGame, int gametoolcard) {
 		if (!isUsed(stoneID, idGame)) {
 

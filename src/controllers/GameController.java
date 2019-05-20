@@ -29,8 +29,15 @@ public class GameController {
 
 	public GameController(MainApplication mainApplication) {
 		this.mainApplication = mainApplication;
-		// TODO temporary call, when the game will be created the ClientController needs
+		// Temporary call, when the game will be created the ClientController needs
 		// to give the information to the GameController
+		//		PersistenceFacade pf = new PersistenceFacade();
+		//		ArrayList<User> users = new ArrayList<User>();
+		//		users.add(new User("speler1", 0, 0, GameColor.RED, 0));
+		//		users.add(new User("speler2", 0, 0, GameColor.RED, 0));
+		//		users.add(new User("speler3", 0, 0, GameColor.RED, 0));
+		//		users.add(new User("speler4", 0, 0, GameColor.RED, 0));
+		//		pf.createGame(users);
 		joinGame(1, new User("speler2", 0, 0, GameColor.RED, 0));
 	}
 

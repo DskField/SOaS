@@ -190,6 +190,7 @@ public class GameScene extends Scene {
 		for (int i = 0; i < 3; i++) {
 			goalCardPanes[i] = new GoalCardPane(gameController.getCollectiveGoalCard(i));
 		}
+
 		// adds the goalCardPanes to the goalCardBox
 		for (GoalCardPane goalCardPane : goalCardPanes) {
 			goalCardsBox.getChildren().add(goalCardPane);

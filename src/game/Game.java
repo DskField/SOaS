@@ -35,7 +35,6 @@ public class Game {
 	 */
 	private ArrayList<Die> table;
 
-	private CardHandler cardHandler;
 	private Chat chat;
 	private Player currentPlayer;
 
@@ -69,7 +68,6 @@ public class Game {
 
 		table = new ArrayList<Die>();
 
-		cardHandler = new CardHandler();
 		chat = new Chat();
 
 		random = new Random();
@@ -129,7 +127,12 @@ public class Game {
 		int num = 1;
 		for (Player player : players) {
 			player.loadGlassWindow(persistenceFacade.getGlassWindow(player.getPlayerID()));
-			player.getGlassWindow().loadPatternCard(persistenceFacade.getplayerPatternCard(player.getPlayerID()).get(0));
+			PatternCard card = persistenceFacade.getplayerPatternCard(player.getPlayerID());
+			if (card != null) {
+				player.getGlassWindow().loadPatternCard(card);
+			} else {
+				player.getGlassWindow().loadPatternCard(null);
+			}
 
 			if (player.getPlayerID() == clientPlayer.getPlayerID()) {
 				player.getGlassWindow().setColor(colors[0]);
@@ -302,12 +305,7 @@ public class Game {
 		}
 	}
 
-	public void useToolCard() {
-		// TODO wait on CardHandler
-	}
-
 	public void placeDie() {
-		// TODO wait on GlassWindow
 	}
 
 	/**
@@ -344,8 +342,6 @@ public class Game {
 	}
 
 	// GETTERS AND SETTERS
-	// TODO the current getters and setters are temporary, they will be changed in
-	// the future
 	public Player getClientPlayer() {
 		return clientPlayer;
 	}

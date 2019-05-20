@@ -27,8 +27,13 @@ class PatternCardDAO {
 	}
 
 	//Is used to obtain a player's chosen patterncard
-	ArrayList<PatternCard> getplayerPatternCard(int idPlayer) {
-		return selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard = (SELECT patterncard_idpatterncard FROM player WHERE idplayer = " + idPlayer + ")");
+	PatternCard getplayerPatternCard(int idPlayer) {
+		ArrayList<PatternCard> cards = selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard = (SELECT patterncard_idpatterncard FROM player WHERE idplayer = " + idPlayer + ")");
+		if (cards.isEmpty()) {
+			return null;
+		} else {
+			return cards.get(0);
+		}
 	}
 
 	//Is used to obtain the options given to a player at the start of a game

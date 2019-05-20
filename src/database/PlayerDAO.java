@@ -34,7 +34,6 @@ class PlayerDAO {
 				System.err.println("The rollback failed: Please check the Database!");
 			}
 		}
-
 	}
 
 	private ArrayList<Player> selectPlayer(String query) {
@@ -122,12 +121,13 @@ class PlayerDAO {
 			for (int i = 0; i < users.size(); i++) {
 				String status = i == 0 ? "uitdager" : "uitgedaagde";
 
-				PreparedStatement stmt = con.prepareStatement("INSERT INTO player VALUES (null, ?, ?, ?, ?, false, ?, null, null);");
+				PreparedStatement stmt = con.prepareStatement("INSERT INTO player VALUES (null, ?, ?, ?, ?, ?, ?, null, null);");
 				stmt.setString(1, users.get(i).getUsername());
 				stmt.setInt(2, idGame);
 				stmt.setString(3, status);
 				stmt.setInt(4, i);
-				stmt.setString(5, colors.get(i));
+				stmt.setBoolean(5, (i == 0) ? true : false);
+				stmt.setString(6, colors.get(i));
 
 				stmt.executeUpdate();
 				stmt.close();
