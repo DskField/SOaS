@@ -76,9 +76,9 @@ class GameMenuPane extends VBox {
 
 	// exit to main menu by switching the scene to ClientScene and it hides gamemenu
 	private void toMenu() {
-		ClientScene clientScene = new ClientScene();
-		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
-		stage.setScene(clientScene);
+		//		ClientScene clientScene = new ClientScene();
+		//		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
+		//		stage.setScene(clientScene);
 
 	}
 

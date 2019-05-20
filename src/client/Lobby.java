@@ -11,8 +11,7 @@ public class Lobby {
 	private int finalScore;
 	private boolean won;
 
-	public Lobby(int gameID, String gameState, boolean isCurrentPlayer, int lobbyResponse, int lobbySize,
-			int finalScore, boolean won, int currentRound) {
+	public Lobby(int gameID, String gameState, boolean isCurrentPlayer, int lobbyResponse, int lobbySize, int finalScore, boolean won, int currentRound) {
 		this.gameID = gameID;
 		this.gameState = gameState;
 		this.isCurrentPlayer = isCurrentPlayer;

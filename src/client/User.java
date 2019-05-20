@@ -63,7 +63,7 @@ public class User {
 	public int getTotalOpponents() {
 		return totalOpponents;
 	}
-	
+
 	public String getUsername() {
 		return username;
 	}

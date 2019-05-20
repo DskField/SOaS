@@ -38,7 +38,7 @@ public class GameController {
 		//		users.add(new User("speler3", 0, 0, GameColor.RED, 0));
 		//		users.add(new User("speler4", 0, 0, GameColor.RED, 0));
 		//		pf.createGame(users);
-		joinGame(1, new User("speler2", 0, 0, GameColor.RED, 0));
+		//		joinGame(1, new User("speler2", 0, 0, GameColor.RED, 0));
 	}
 
 	public void joinGame(int idGame, User clientUser) {
