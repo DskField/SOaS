@@ -37,11 +37,13 @@ public class GlassWindowPane extends BorderPane {
 	private Label labelName;
 
 	private int switchingNumber;
+	private boolean clientPlayer;
 
 	private boolean isSmall = false;
 
-	public GlassWindowPane(int number, Player player, GameScene gameScene) {
+	public GlassWindowPane(int number, Player player, boolean clientPlayer, GameScene gameScene) {
 		switchingNumber = number;
+		this.clientPlayer = clientPlayer;
 		this.color = player.getColor();
 
 		fieldPane = new FieldPane(player.getGlassWindow().getPatternCard());
@@ -127,11 +129,16 @@ public class GlassWindowPane extends BorderPane {
 	public void setSwitchingNumber(int num) {
 		switchingNumber = num;
 	}
-	public void highlightSpaces(ArrayList<SpaceGlass>toHighlight) {
+
+	public void highlightSpaces(ArrayList<SpaceGlass> toHighlight) {
 		fieldPane.highlightSpaces(toHighlight);
 	}
 
 	public GameColor getColor() {
 		return color;
+	}
+
+	public boolean isClientPlayer() {
+		return clientPlayer;
 	}
 }

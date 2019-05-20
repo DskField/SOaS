@@ -112,7 +112,6 @@ public class GameScene extends Scene {
 				if (event.getTarget().getClass().equals(DiePane.class)) {
 					DiePane diePane = (DiePane) event.getTarget();
 					//					try {
-					System.out.println("DieNumber:" + diePane.getNumber());
 					mainGlassWindow.highlightSpaces(gameController.getAvailableSpaces(diePane));
 					//					} catch (Exception e) {
 					//						System.out.println("niks mogelijk");
@@ -233,7 +232,7 @@ public class GameScene extends Scene {
 		// Initialize everything for the leftBox
 		leftBox = new VBox();
 		Player clientPlayer = gameController.getClientPlayer();
-		mainGlassWindow = new GlassWindowPane(0, clientPlayer, this);
+		mainGlassWindow = new GlassWindowPane(0, clientPlayer, true, this);
 		chatPane = new ChatPane(gameController);
 
 		// adds everything to the leftBox and handles makeup
@@ -257,15 +256,15 @@ public class GameScene extends Scene {
 		for (Player player : players) {
 			if (player.getPlayerID() != clientPlayer.getPlayerID()) {
 				if (smallGlassWindow1 == null) {
-					smallGlassWindow1 = new GlassWindowPane(1, player, this);
+					smallGlassWindow1 = new GlassWindowPane(1, player, false, this);
 					smallGlassWindow1.toggleIsSmall();
 					rightBox.getChildren().add(smallGlassWindow1);
 				} else if (smallGlassWindow2 == null) {
-					smallGlassWindow2 = new GlassWindowPane(2, player, this);
+					smallGlassWindow2 = new GlassWindowPane(2, player, false, this);
 					smallGlassWindow2.toggleIsSmall();
 					rightBox.getChildren().add(smallGlassWindow2);
 				} else if (smallGlassWindow3 == null) {
-					smallGlassWindow3 = new GlassWindowPane(3, player, this);
+					smallGlassWindow3 = new GlassWindowPane(3, player, false, this);
 					smallGlassWindow3.toggleIsSmall();
 					rightBox.getChildren().add(smallGlassWindow3);
 				}
@@ -317,5 +316,18 @@ public class GameScene extends Scene {
 			break;
 		}
 		leftBox.getChildren().add(0, mainGlassWindow);
+
+		if (mainGlassWindow.isClientPlayer()) {
+			personalGoalCardPane.loadPersonalGoalCardImage(gameController.getClientPlayer().getPersonalGoalCard());
+		} else {
+			personalGoalCardPane.loadCardBack();
+		}
+
+		for (Player player : gameController.getPlayers()) {
+			if (player.getColor() == mainGlassWindow.getColor()) {
+				currencyStonesPane.showStones(player);
+				break;
+			}
+		}
 	}
 }
