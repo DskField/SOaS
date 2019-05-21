@@ -141,36 +141,23 @@ public class GameController {
 	 */
 	private void update() {
 		if (gameScene == null) {
-			System.out.println(game.getPlayersWithoutPatternCards().isEmpty() + " + " + game.getPlayerWithPatternCardButWithoutCurrencyStones().isEmpty() + " = "
-					+ (game.getPlayersWithoutPatternCards().isEmpty() && game.getPlayerWithPatternCardButWithoutCurrencyStones().isEmpty()));
-
 			for (Player i : game.getPlayersWithoutPatternCards()) {
 				System.out.println(i.getUsername());
 			}
-
 			if (game.getPlayersWithoutPatternCards().isEmpty() && game.getPlayerWithPatternCardButWithoutCurrencyStones().isEmpty()) {
-
-				System.out.println("3");
 				game.loadGame();
 				gameScene = new GameScene(this);
 				mainApplication.setScene(gameScene);
-
-			}
-
-			else {
+			} else {
 				for (Player player : game.getPlayerWithPatternCardButWithoutCurrencyStones()) {
-					System.out.println("2");
 					PatternCard patternCard = game.getPlayerPatternCard(player.getPlayerID());
 					game.updateCurrencyStone(player.getPlayerID(), patternCard.getDifficulty());
 				}
-
 			}
-
 		} else {
 			gameScene.updateChat(game.updateChat());
 			gameScene.updateScore(game.updateScore());
 		}
-
 	}
 
 	// kevin stuff
@@ -213,12 +200,8 @@ public class GameController {
 		ArrayList<Die> diagonal = new ArrayList<>();
 		for (SpaceGlass[] spaceGlassRow : spaces) {
 			for (SpaceGlass spaceGlass : spaceGlassRow) {
-				boolean above = spaceGlass.getYCor() == space.getYCor() - 1 && (spaceGlass.getXCor() == space.getXCor() - 1 || spaceGlass.getXCor() == space.getXCor() + 1); // two
-																																												// diagonally
-																																												// above
-				boolean below = spaceGlass.getYCor() == space.getYCor() + 1 && (spaceGlass.getXCor() == space.getXCor() - 1 || spaceGlass.getXCor() == space.getXCor() + 1);// two
-																																											// diagonally
-																																											// below
+				boolean above = spaceGlass.getYCor() == space.getYCor() - 1 && (spaceGlass.getXCor() == space.getXCor() - 1 || spaceGlass.getXCor() == space.getXCor() + 1); // two diagonally above
+				boolean below = spaceGlass.getYCor() == space.getYCor() + 1 && (spaceGlass.getXCor() == space.getXCor() - 1 || spaceGlass.getXCor() == space.getXCor() + 1);// two diagonally below
 				if ((above || below) && spaceGlass.getDie() != null) {// also see if the is a die there
 					diagonal.add(spaceGlass.getDie());
 				}
@@ -275,8 +258,7 @@ public class GameController {
 		ArrayList<Die> diagonalDice = getDiagonalDice(space);
 
 		for (Die die : orthogonalDice) {
-			boolean sameColor = die.getDieColor().equals(diePane.getColor());// I seperated them and moved them out of
-																				// the if for readability
+			boolean sameColor = die.getDieColor().equals(diePane.getColor());// I seperated them and moved them out of the if for readability
 			boolean sameValue = die.getDieValue() == diePane.getEyes();
 			if (sameColor || sameValue) {
 				succes = false;

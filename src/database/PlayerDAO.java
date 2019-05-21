@@ -70,6 +70,7 @@ class PlayerDAO {
 			while (dbResultSet.next()) {
 				results.add(dbResultSet.getString("color"));
 			}
+			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("PlayerDAO (Colors) " + e.getMessage());

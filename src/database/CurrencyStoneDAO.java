@@ -50,6 +50,7 @@ class CurrencyStoneDAO {
 				CurrencyStone currencystone = new CurrencyStone(stoneID, playerID, toolcardID);
 				results.add(currencystone);
 			}
+			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("CurrencyStoneDAO " + e.getMessage());

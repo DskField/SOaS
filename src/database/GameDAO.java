@@ -15,23 +15,25 @@ class GameDAO {
 	}
 
 	int createGame() {
+		int last = 0;
+
 		try {
 			PreparedStatement stmt = con.prepareStatement("INSERT INTO game (idgame, turn_idplayer, creationdate) VALUES(null, null, now());");
 			stmt.executeUpdate();
 			stmt.close();
-			con.commit();
 
 			PreparedStatement stmt2 = con.prepareStatement("SELECT LAST_INSERT_ID() last;");
 			ResultSet dbResultSet = stmt2.executeQuery();
 
 			while (dbResultSet.next()) {
-				return dbResultSet.getInt("last");
+				last = dbResultSet.getInt("last");
 			}
+			con.commit();
 			stmt2.close();
 		} catch (SQLException e) {
 			System.err.println("GameDAO: " + e.getMessage());
 		}
-		return 0;
+		return last;
 	}
 
 	void updateCurrentPlayer(int idgame, Player player) {
@@ -40,8 +42,8 @@ class GameDAO {
 			stmt.setInt(1, player.getPlayerID());
 			stmt.setInt(2, idgame);
 			stmt.executeUpdate();
-			stmt.close();
 			con.commit();
+			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("GameDAO: " + e.getMessage());
 		}

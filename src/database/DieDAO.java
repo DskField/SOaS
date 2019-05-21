@@ -36,6 +36,7 @@ class DieDAO {
 				Die die = new Die(number, color);
 				results.add(die);
 			}
+			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("DieDAO " + e.getMessage());
@@ -68,6 +69,7 @@ class DieDAO {
 				int roundTrack = dbResultSet.getInt("roundtrack");
 				result[roundTrack - 1].addDie(new Die(number, color, round, eyes));
 			}
+			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("DieDAO " + e.getMessage());

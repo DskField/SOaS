@@ -38,6 +38,8 @@ class SpacePatternDAO {
 				int value = dbResultSet.getInt("value");
 				result[x - 1][y - 1] = new SpacePattern(x, y, color, value);
 			}
+			con.commit();
+			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("SpacePatternDAO Select: " + e.getMessage());
 		}

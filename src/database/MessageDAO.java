@@ -17,18 +17,20 @@ class MessageDAO {
 	public MessageDAO(Connection connection) {
 		con = connection;
 	}
+
 	/**
 	 * runs a query on the database to get messages from the database for the specified Players.
+	 * 
 	 * @param query - An SQL query as string that will be run on the database
 	 * @param players - list of players in the current game
-	 * @return ArrayList<Message> list of messages 
+	 * @return ArrayList<Message> list of messages
 	 */
 	private ArrayList<Message> selectMessage(String query, ArrayList<Player> players) {
 		ArrayList<Message> results = new ArrayList<Message>();
 		try {
 			PreparedStatement stmt = con.prepareStatement(query);
 			ResultSet dbResultSet = stmt.executeQuery();
-			con.commit();
+
 			while (dbResultSet.next()) {
 				String text = dbResultSet.getString("message");
 				int playerId = dbResultSet.getInt("player_idplayer");
@@ -40,8 +42,9 @@ class MessageDAO {
 					}
 				}
 			}
-			stmt.close();
 
+			con.commit();
+			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("MessageDAO " + e.getMessage());
 
@@ -94,6 +97,7 @@ class MessageDAO {
 		String s = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss").format(time);
 		return selectMessage("SELECT * FROM chatline WHERE time > '" + s + "' ORDER BY time ASC", players);
 	}
+
 	/**
 	 * 
 	 * @param message - The message that wil be inserted into the database.

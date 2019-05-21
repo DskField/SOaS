@@ -57,6 +57,9 @@ class UserDAO {
 			stmtMostPlacedValue.close();
 
 			result = new User(username, gamesPlayed, maxScore, mostPlacedColor, mostPlacedValue);
+
+			con.commit();
+			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("UserDAO " + e.getMessage());
 		}
