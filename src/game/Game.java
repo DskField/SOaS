@@ -9,10 +9,6 @@ import controllers.ScoreHandler;
 import database.PersistenceFacade;
 
 public class Game {
-
-	// All arrays are temporary, they can be changed in the future to ArrayLists or
-	// HashMaps
-	private PatternCard[] patternCards;
 	private GlassWindow[] glassWindows;
 
 	private ArrayList<Player> players;

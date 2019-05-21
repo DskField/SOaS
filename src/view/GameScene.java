@@ -94,6 +94,7 @@ public class GameScene extends Scene {
 
 		// Listener for escape key to open in game menu
 		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
 			public void handle(KeyEvent key) {
 				if (key.getCode() == KeyCode.ESCAPE) {
 					Stage stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);

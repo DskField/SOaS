@@ -300,18 +300,17 @@ public class GameController {
 	 * @param paceGlass newSpace- the space where its going to be placed
 	 * @return boolean - true if succeeded
 	 */
-	public boolean placeDie(SpacePane spacePane) {
+	public void placeDie(SpacePane spacePane) {
 		DiePane diePane = gameScene.getSelectedDie();
 		if (diePane != null) {
 			ArrayList<SpaceGlass> available = getAvailableSpaces(diePane);
 			for (SpaceGlass spaceGlass : available) {
 				if (spaceGlass.getXCor() == spacePane.getX() && spaceGlass.getYCor() == spacePane.getY()) {
 					game.placeDie(diePane.getNumber(), diePane.getColor());
+					gameScene.removeHighlight();
 					break;
 				}
 			}
 		}
-
-		return false;
 	}
 }

@@ -57,6 +57,7 @@ public class GoalCardHandler {
 		return points;
 	}
 
+	//FIXME: check if die == null
 	private int handleTintvarieteit() {
 		ArrayList<Integer> values = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 0));
 
