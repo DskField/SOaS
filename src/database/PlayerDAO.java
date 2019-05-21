@@ -43,6 +43,7 @@ class PlayerDAO {
 			ResultSet dbResultSet = stmt.executeQuery();
 
 			while (dbResultSet.next()) {
+				System.out.println("hpooiiiii");
 				// Separated the variables on purpose for clarity
 				int playerID = dbResultSet.getInt("idplayer");
 				int seqnr = dbResultSet.getInt("seqnr");
@@ -98,8 +99,15 @@ class PlayerDAO {
 
 	//kevin stuff
 	void setPlayerPaternCard(int idPatternCard, int idPlayer) {
-		System.out.println("5");
 		insertPlayerPaterncard(idPatternCard, idPlayer);
+	}
+	
+	ArrayList<Player> getPlayerWithPatternCardButWithoutCurrencyStones(int idGame) {
+		return selectPlayer("SELECT * FROM player p WHERE game_idgame = "+ idGame + " AND patterncard_idpatterncard IS NOT NULL AND (select idfavortoken from gamefavortoken g WHERE g.idplayer = p.idplayer LIMIT 1) IS NULL");
+	}
+	
+	ArrayList<Player> getPlayersWithoutPatternCard(int idGame) {
+		return selectPlayer("SELECT * FROM player WHERE game_idgame = " + idGame + " AND patterncard_idpatterncard IS NULL");
 	}
 
 	ArrayList<Player> getAllPlayers() {

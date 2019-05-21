@@ -74,6 +74,7 @@ class ToolCardDAO {
 				stmt.setInt(5, list.get(2).getCardID());
 				stmt.setInt(6, idGame);
 
+				stmt.executeUpdate();
 				con.commit();
 				stmt.close();
 			} catch (SQLException e) {
