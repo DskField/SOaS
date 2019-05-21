@@ -9,10 +9,6 @@ import controllers.ScoreHandler;
 import database.PersistenceFacade;
 
 public class Game {
-
-	// All arrays are temporary, they can be changed in the future to ArrayLists or
-	// HashMaps
-	private PatternCard[] patternCards;
 	private GlassWindow[] glassWindows;
 
 	private ArrayList<Player> players;
@@ -307,7 +303,12 @@ public class Game {
 		}
 	}
 
-	public void placeDie() {
+	public void placeDie(int id, GameColor color) {
+		for (Die die : table) {
+			if (die.getDieId() == id && die.getDieColor() == color) {
+				//TODO: finish
+			}
+		}
 	}
 
 	/**

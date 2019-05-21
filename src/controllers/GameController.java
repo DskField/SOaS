@@ -18,6 +18,7 @@ import javafx.animation.AnimationTimer;
 import view.ChoiceScene;
 import view.DiePane;
 import view.GameScene;
+import view.SpacePane;
 
 public class GameController {
 	// variables
@@ -38,7 +39,7 @@ public class GameController {
 		//		users.add(new User("speler3", 0, 0, GameColor.RED, 0));
 		//		users.add(new User("speler4", 0, 0, GameColor.RED, 0));
 		//		pf.createGame(users);
-		joinGame(1, new User("speler2", 0, 0, GameColor.RED, 0));
+		//		joinGame(1, new User("speler2", 0, 0, GameColor.RED, 0));
 	}
 
 	public void joinGame(int idGame, User clientUser) {
@@ -157,7 +158,7 @@ public class GameController {
 	/**
 	 * Checks if there are already dice on the window.
 	 */
-	boolean checkFirstDie() {
+	private boolean checkFirstDie() {
 		// checks if its the firstDie
 		for (SpaceGlass[] spaceRow : getClientPlayer().getGlassWindow().getSpaces()) {
 			for (SpaceGlass space : spaceRow) {
@@ -175,7 +176,7 @@ public class GameController {
 	 * @param space - The space you want to get all the diagonal dice from
 	 * @return ArrayList<Die> - all diagonal dice from a certain space
 	 */
-	ArrayList<Die> getDiagonalDice(SpaceGlass space) {
+	private ArrayList<Die> getDiagonalDice(SpaceGlass space) {
 		SpaceGlass[][] spaces = getClientPlayer().getGlassWindow().getSpaces();
 		ArrayList<Die> diagonal = new ArrayList<>();
 		for (SpaceGlass[] spaceGlassRow : spaces) {
@@ -196,7 +197,7 @@ public class GameController {
 	 * @param space- Orthogonal from what space
 	 * @return ArrayList<Die> - all Orthogonal dice from a certain space
 	 */
-	ArrayList<Die> getOrthogonalDice(SpaceGlass space) {
+	private ArrayList<Die> getOrthogonalDice(SpaceGlass space) {
 		SpaceGlass[][] spaces = getClientPlayer().getGlassWindow().getSpaces();
 		ArrayList<Die> surrounding = new ArrayList<>();
 		for (SpaceGlass[] spaceGlassRow : spaces) {
@@ -218,7 +219,7 @@ public class GameController {
 	 * @param die - the die you want to place
 	 * @return boolean - true if compatible, false if not
 	 */
-	boolean checkCompatibility(SpacePattern sPattern, DiePane diePane) {
+	private boolean checkCompatibility(SpacePattern sPattern, DiePane diePane) {
 		if (sPattern.getColor().equals(diePane.getColor()) || sPattern.getValue() == diePane.getEyes() || (sPattern.getColor().equals(GameColor.EMPTY) && sPattern.getValue() == 0)) {
 			return true;
 		}
@@ -232,7 +233,7 @@ public class GameController {
 	 * @param space - the space where its going to be placed
 	 * @return boolean - true if possible to place, false if not
 	 */
-	boolean checkSurrounding(DiePane diePane, SpaceGlass space) {
+	private boolean checkSurrounding(DiePane diePane, SpaceGlass space) {
 		boolean succes = true;
 		ArrayList<Die> orthogonalDice = getOrthogonalDice(space);
 		ArrayList<Die> diagonalDice = getDiagonalDice(space);
@@ -259,7 +260,7 @@ public class GameController {
 	 * @param die - the to be placed die
 	 * @return ArrayList<SpaceGlass> - All available spaces
 	 */
-	public ArrayList<SpaceGlass> getAvailableSpaces(DiePane diePane) {
+	private ArrayList<SpaceGlass> getAvailableSpaces(DiePane diePane) {
 		ArrayList<SpaceGlass> available = new ArrayList<>();
 		GlassWindow window = getClientPlayer().getGlassWindow();
 
@@ -278,6 +279,10 @@ public class GameController {
 		return available;
 	}
 
+	public void selectDie(DiePane diePane) {
+		gameScene.selectDie(getAvailableSpaces(diePane));
+	}
+
 	/**
 	 * Finally place the die
 	 * 
@@ -285,12 +290,17 @@ public class GameController {
 	 * @param paceGlass newSpace- the space where its going to be placed
 	 * @return boolean - true if succeeded
 	 */
-	public boolean placeDie(Die die, SpaceGlass newSpace) {
-		//		for (SpaceGlass space : getAvailableSpaces(die)) {
-		//			if (space.equals(newSpace)) {
-		//				return true;
-		//			}
-		//		}
-		return false;
+	public void placeDie(SpacePane spacePane) {
+		DiePane diePane = gameScene.getSelectedDie();
+		if (diePane != null) {
+			ArrayList<SpaceGlass> available = getAvailableSpaces(diePane);
+			for (SpaceGlass spaceGlass : available) {
+				if (spaceGlass.getXCor() == spacePane.getX() && spaceGlass.getYCor() == spacePane.getY()) {
+					game.placeDie(diePane.getNumber(), diePane.getColor());
+					gameScene.removeHighlight();
+					break;
+				}
+			}
+		}
 	}
 }

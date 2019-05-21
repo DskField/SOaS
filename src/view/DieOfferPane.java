@@ -2,44 +2,83 @@ package view;
 
 import java.util.ArrayList;
 
+import controllers.GameController;
+import game.Die;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public class DieOfferPane extends HBox {
-	private final int squareSize = 70;
-	private final int backgroundWidth = 630;
-	private final int backgroundHeight = 70;
-	
-	private int trackSize;
-	private ArrayList<DiePane> roundDies;
+	private final int squareSize = 55;
 
-	public DieOfferPane() {
-		trackSize = 9;
-		roundDies = new ArrayList<>();
+	private GameController gameController;
+	private ArrayList<DiePane> dice;
 
-		addTrack();
+	public DieOfferPane(GameController gameController) {
+		this.gameController = gameController;
+		dice = new ArrayList<DiePane>();
 
+		setMaxSize(625, 65);
+		setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
 	}
 
-	private void addTrack() {
-		Rectangle rectangle = new Rectangle(backgroundWidth, backgroundHeight);
-		rectangle.setFill(Color.BEIGE);
-		getChildren().add(rectangle);
+	public void addDice(ArrayList<Die> roundDies) {
+		dice.clear();
 
-	}
+		for (Die die : roundDies) {
+			DiePane diePane = new DiePane(die.getDieId(), die.getDieValue(), die.getDieColor());
+			setPadding(new Insets(5));
+			setSpacing(15);
+			diePane.resize(squareSize);
+			dice.add(diePane);
 
-	private void addDice() {
-		int counter = 0;
-		for (DiePane diePane : roundDies) {
-			counter += 1;
-			int offset = (counter - squareSize) * trackSize;
-			diePane.setTranslateX(offset);
-			diePane.setTranslateY(7.5);
-			diePane.resize(55);
-			getChildren().add(diePane);
+			diePane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					diePane.requestFocus();
+				}
+			});
 
+			diePane.focusedProperty().addListener(new ChangeListener<Boolean>() {
+				@Override
+				public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+					if (newValue) {
+						diePane.setBorder(new Border(new BorderStroke(Color.TURQUOISE, BorderStrokeStyle.SOLID, null, new BorderWidths(5))));
+						gameController.selectDie(diePane);
+					} else {
+						diePane.setBorder(null);
+					}
+				}
+			});
 		}
+
+		updateDice();
+	}
+
+	private void updateDice() {
+		getChildren().clear();
+
+		getChildren().addAll(dice);
+	}
+
+	public void removeDie(DiePane diePane) {
+		for (DiePane die : dice) {
+			if (diePane.getNumber() == die.getNumber() && diePane.getColor() == die.getColor()) {
+				dice.remove(dice.indexOf(die));
+			}
+		}
+
+		updateDice();
 	}
 	public void update(DiePane diePane) {
 		roundDies.clear();
