@@ -40,13 +40,13 @@ public class ChoiceScene extends Scene {
 			VBox vBox = new VBox();
 			Label name = new Label(patternCard.getName());
 			Label difficulity = new Label("" + patternCard.getDifficulty());
-			FieldPane pc = new FieldPane(patternCard);
+			FieldPane pc = new FieldPane(patternCard, gameController);
 			pc.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 				@Override
 				public void handle(MouseEvent event) {
-					for(PatternCard patternCard : gameController.getPatternChoices()) {
-						if(patternCard.getPatternCardId() == pc.getPatternCardID()) {
+					for (PatternCard patternCard : gameController.getPatternChoices()) {
+						if (patternCard.getPatternCardId() == pc.getPatternCardID()) {
 							gameController.updateCurrencyStones(patternCard.getDifficulty());
 							gameController.setClientPlayerPaternCard(patternCard.getPatternCardId());
 						}
