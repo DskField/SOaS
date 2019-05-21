@@ -23,7 +23,7 @@ public class DiePane extends Pane {
 	private int number;
 	private int eyes;
 	private GameColor color;
-
+	//TODO misschien extra constructor misschien om een onderscheid te maken tussen spaces en dies, waarbij dice ronde hoeken hebben
 	public DiePane(int number, int eyes, GameColor color) {
 		this.number = number;
 		this.eyes = eyes;
@@ -40,6 +40,7 @@ public class DiePane extends Pane {
 		setBorder(new Border(new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.SOLID, null, new BorderWidths(1))));
 		setMinSize(size, size);
 		setMaxSize(size, size);
+		
 	}
 
 	public void resize(double size) {

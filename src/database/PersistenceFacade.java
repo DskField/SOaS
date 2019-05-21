@@ -173,6 +173,9 @@ public class PersistenceFacade {
 	public Round[] getRoundTrack(int gameID) {
 		return dieDAO.getRoundTrack(gameID);
 	}
+	public ArrayList<Die> getTableDice(int gameID, int round) {
+		return dieDAO.getTableDice(gameID, round);
+	}
 
 	//MessageDAO
 	public ArrayList<Message> getALLMessages(ArrayList<Player> players) {

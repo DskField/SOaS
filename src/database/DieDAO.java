@@ -42,7 +42,28 @@ class DieDAO {
 		}
 		return results;
 	}
+	private ArrayList<Die> selectDieWithEyes(String query) {
+		ArrayList<Die> results = new ArrayList<Die>();
 
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			ResultSet dbResultSet = stmt.executeQuery();
+			con.commit();
+			while (dbResultSet.next()) {
+				int number = dbResultSet.getInt("g.dienumber");
+				String color = dbResultSet.getString("g.diecolor");
+				int round = dbResultSet.getInt("g.round");
+				int value = dbResultSet.getInt("g.eyes");
+				System.out.println(color);
+				Die die = new Die(number, color, round, value);
+				results.add(die);
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("DieDAO " + e.getMessage());
+		}
+		return results;
+	}
 	/**
 	 * Load the round track form the db
 	 * 
@@ -162,6 +183,13 @@ class DieDAO {
 
 	Round[] getRoundTrack(int gameID) {
 		return selectTrackDice("SELECT * FROM gameDie WHERE idgame = " + gameID + " AND roundtrack IS NOT NULL;");
+	}
+	ArrayList<Die> getTableDice(int gameID, int round) {
+		return selectDieWithEyes("SELECT * \r\n" + 
+				"FROM playerframefield AS f \r\n" + 
+				"RIGHT JOIN gamedie AS g\r\n" + 
+				" ON f.idgame = g.idgame AND f.dienumber AND g.dienumber AND f.diecolor = g.diecolor\r\n" + 
+				" WHERE f.idgame IS NULL AND f.dienumber IS NULL AND f.diecolor IS NULL AND g.roundtrack IS NULL AND g.idgame = "+ gameID + " AND g.round ="+ round);
 	}
 
 	void updateDiceRoll(int gameID, ArrayList<Die> dice) {

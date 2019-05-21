@@ -2,45 +2,48 @@ package view;
 
 import java.util.ArrayList;
 
-import game.Die;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class DieOfferPane extends HBox {
 	private final int squareSize = 70;
+	private final int backgroundWidth = 630;
+	private final int backgroundHeight = 70;
+	
 	private int trackSize;
-	private ArrayList<Die> roundDies;
+	private ArrayList<DiePane> roundDies;
 
-	public DieOfferPane(int intitialDieAmount, ArrayList<Die> roundDies) {
-		trackSize = intitialDieAmount;
-		setPrefSize(800, 50);
-		this.roundDies = roundDies;
+	public DieOfferPane() {
+		trackSize = 9;
+		roundDies = new ArrayList<>();
 
 		addTrack();
-		addDice();
 
 	}
 
 	private void addTrack() {
-		for (int i = 0; i < trackSize; i++) {
-			Rectangle rectangle = new Rectangle(squareSize, squareSize, squareSize, squareSize);
-			rectangle.setFill(Color.BEIGE);
-			getChildren().add(rectangle);
-		}
+		Rectangle rectangle = new Rectangle(backgroundWidth, backgroundHeight);
+		rectangle.setFill(Color.BEIGE);
+		getChildren().add(rectangle);
+
 	}
 
 	private void addDice() {
 		int counter = 0;
-		for (Die die : roundDies) {
+		for (DiePane diePane : roundDies) {
 			counter += 1;
 			int offset = (counter - squareSize) * trackSize;
-			DiePane diePane = new DiePane(die.getDieId(), die.getDieValue(), die.getDieColor());
 			diePane.setTranslateX(offset);
 			diePane.setTranslateY(7.5);
 			diePane.resize(55);
 			getChildren().add(diePane);
 
 		}
+	}
+	public void update(DiePane diePane) {
+		roundDies.clear();
+		roundDies.add(diePane);
+		addDice();
 	}
 }

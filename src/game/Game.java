@@ -85,7 +85,8 @@ public class Game {
 		loadCards();
 		loadGlassWindow();
 		loadCurrencyStones();
-
+		loadTable();
+		
 		scoreHandler = new ScoreHandler(collectiveGoalCards);
 	}
 
@@ -159,6 +160,9 @@ public class Game {
 			}
 		}
 	}
+	private void loadTable() {
+		table = persistenceFacade.getTableDice(gameID, currentRound);
+	}
 
 	// kevin stuff
 	public void updateCurrencyStone(int idGame, int idPlayer, int ammount) {
@@ -205,8 +209,6 @@ public class Game {
 			table.add(dice.get(index));
 			dice.remove(index);
 		}
-
-		persistenceFacade.updateDiceRoll(gameID, table);
 	}
 
 	/**

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import controllers.GameController;
 import game.CollectiveGoalCard;
+import game.Die;
 import game.Message;
 import game.Player;
+import game.Round;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -149,6 +151,24 @@ public class GameScene extends Scene {
 			}
 		}
 	}
+	public void updateRoundTrack(Round[] rounds) {
+		roundPane.getChildren().clear();
+		for (int i = 0; i < rounds.length; i++) {
+			Round round = rounds[i];
+			roundPane.clear(i+1);
+			for(Die die: round.getDice()) {
+				DiePane diePane = new DiePane(die.getDieId(), die.getDieValue(), die.getDieColor());
+				roundPane.addDie(i + 1, diePane);
+			}
+		}
+		roundPane.update();
+	}
+	public void updateDieOfferPane(ArrayList<Die>offer) {
+		for(Die die: offer) {
+			DiePane diePane = new DiePane(die.getDieId(), die.getDieValue(), die.getDieColor());
+			dieOfferPane.update(diePane);
+		}
+	}
 
 	/**
 	 * Creates the center of the screen containing the following aspects: PersonalGoalCard,
@@ -173,7 +193,7 @@ public class GameScene extends Scene {
 		centerBox = new VBox();
 		centerBox.setMaxWidth(800);
 		roundPane = new RoundPane(0, 0);
-		dieOfferPane = new DieOfferPane(gameController.getInitialDieAmount(), gameController.getDiceOffering());
+		dieOfferPane = new DieOfferPane();
 		dieOfferPane.setMinWidth(800);
 		button = new Button("Button");
 
@@ -204,7 +224,7 @@ public class GameScene extends Scene {
 		for (ToolCardPane toolCardPane : toolCardPanes) {
 			toolCardBox.getChildren().add(toolCardPane);
 		}
-
+		
 		// handles the makeup of the various boxes
 		goalCardsBox.setSpacing(10);
 		goalCardsBox.setAlignment(Pos.CENTER);
