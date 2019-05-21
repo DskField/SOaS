@@ -63,7 +63,7 @@ class CollectiveGoalCardDAO {
 			Collections.shuffle(list);
 
 			try {
-				PreparedStatement stmt = con.prepareStatement("INSERT INTO shared public_objectivecard VALUES (?,?) (?,?) (?,?)");
+				PreparedStatement stmt = con.prepareStatement("INSERT INTO sharedpublic_objectivecard VALUES (?,?), (?,?), (?,?)");
 				// card 1
 				stmt.setInt(1, idGame);
 				stmt.setInt(2, list.get(0).getCardID());

@@ -45,9 +45,8 @@ public class ChoiceScene extends Scene {
 
 				@Override
 				public void handle(MouseEvent event) {
-					for (PatternCard patternCard : gameController.getPatternChoices()) {
-						if (patternCard.getPatternCardId() == pc.getPatternCardID()) {
-							gameController.updateCurrencyStones(patternCard.getDifficulty());
+					for(PatternCard patternCard : gameController.getPatternChoices()) {
+						if(patternCard.getPatternCardId() == pc.getPatternCardID()) {
 							gameController.setClientPlayerPaternCard(patternCard.getPatternCardId());
 						}
 					}
