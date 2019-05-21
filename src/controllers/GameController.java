@@ -50,7 +50,6 @@ public class GameController {
 			choiceScene = new ChoiceScene(this, getPatternChoices());
 			mainApplication.setScene(choiceScene);
 		}
-		System.out.println("-2");
 		createTimer();
 	}
 
@@ -141,9 +140,6 @@ public class GameController {
 	 */
 	private void update() {
 		if (gameScene == null) {
-			for (Player i : game.getPlayersWithoutPatternCards()) {
-				System.out.println(i.getUsername());
-			}
 			if (game.getPlayersWithoutPatternCards().isEmpty() && game.getPlayerWithPatternCardButWithoutCurrencyStones().isEmpty()) {
 				game.loadGame();
 				gameScene = new GameScene(this);
