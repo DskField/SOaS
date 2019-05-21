@@ -136,7 +136,7 @@ class DieDAO {
 		try {
 			for (GameColor color : possibleColors) {
 				for (int i = 1; i <= 18; i++) {
-					PreparedStatement stmt = con.prepareStatement("INSERT INTO gamedie VALUES (?, ?, ?, NULL, NULL, NULL);");
+					PreparedStatement stmt = con.prepareStatement("INSERT INTO gamedie VALUES (?, ?, ?, NULL, NULL, NULL, null);");
 					stmt.setInt(1, idGame);
 					stmt.setInt(2, i);
 					stmt.setString(3, color.getDatabaseName());
