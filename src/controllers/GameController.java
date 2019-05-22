@@ -148,6 +148,9 @@ public class GameController {
 		} else {
 			gameScene.updateChat(game.updateChat());
 			gameScene.updateScore(game.updateScore());
+			gameScene.updateDieOfferPane(game.getTable());
+			gameScene.updateTurn(checkMyTurn());
+			System.out.println("gamecontroller.update"+ game.getTable());
 		}
 	}
 
