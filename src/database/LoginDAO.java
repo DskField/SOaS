@@ -27,6 +27,7 @@ public class LoginDAO {
 				result[1] = "";
 			}
 
+			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("LoginDAO selectUsername " + e.getMessage());
@@ -40,6 +41,7 @@ public class LoginDAO {
 			PreparedStatement stmt = con.prepareStatement("INSERT INTO account VALUES(?, ?)");
 			stmt.setString(1, username);
 			stmt.setString(2, password);
+			con.commit();
 			stmt.close();
 			return true;
 		} catch (SQLException e) {

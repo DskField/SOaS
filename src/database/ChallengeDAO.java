@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 import client.Challenge;
@@ -51,6 +50,7 @@ class ChallengeDAO {
 				Challenge challenge = new Challenge(i, players);
 				results.add(challenge);
 
+				con.commit();
 				stmt.close();
 			} catch (SQLException e1) {
 				System.err.println("ChallengeDAO " + e1.getMessage());
@@ -60,9 +60,7 @@ class ChallengeDAO {
 	}
 
 	public ArrayList<Challenge> getChallenges(String username) {
-		return selectChallenges("SELECT DISTINCT(game_idgame)\r\n" + "FROM player\r\n"
-				+ "WHERE playstatus_playstatus IN (\"uitdager\", \"uitgedaagde\", \"geaccepteerd\", \"geweigerd\") AND username = ?",
-				username);
+		return selectChallenges("SELECT DISTINCT(game_idgame)\r\n" + "FROM player\r\n" + "WHERE playstatus_playstatus IN (\"uitdager\", \"uitgedaagde\", \"geaccepteerd\", \"geweigerd\") AND username = ?", username);
 	}
 
 	public boolean checkUpdate(String username, ArrayList<Challenge> oldList) {

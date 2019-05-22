@@ -90,6 +90,8 @@ class LobbyDAO {
 				Lobby lobby = new Lobby(gameID, gameState, isCurrentPlayer, lobbyResponse, lobbySize, finalScore, won, currentRound);
 				results.add(lobby);
 			}
+
+			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("LobbyDAO " + e.getMessage());
@@ -100,7 +102,7 @@ class LobbyDAO {
 	public ArrayList<Lobby> getLobbies(String username) {
 		return selectLobbies("SELECT * FROM player WHERE username = ?", username);
 	}
-	
+
 	public boolean checkUpdate(String username, ArrayList<Lobby> oldList) {
 		if (oldList.equals(getLobbies(username)))
 			return true;

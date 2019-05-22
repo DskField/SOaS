@@ -15,8 +15,8 @@ public class MainApplication extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		this.stage = stage;
-		//		new GameController(this);
-		new ClientController(this);
+		new GameController(this);
+		//		new ClientController(this);
 		stage.setTitle("Sagrada");
 		stage.setFullScreen(true);
 		// Remove the exit hint

@@ -33,6 +33,7 @@ class ToolCardDAO {
 				ToolCard card = new ToolCard(cardID, name, seqnr, description);
 				results.add(card);
 			}
+			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
 			System.out.println("ToolCardDAO " + e.getMessage());
@@ -74,6 +75,7 @@ class ToolCardDAO {
 				stmt.setInt(5, list.get(2).getCardID());
 				stmt.setInt(6, idGame);
 
+				stmt.executeUpdate();
 				con.commit();
 				stmt.close();
 			} catch (SQLException e) {

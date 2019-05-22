@@ -53,6 +53,8 @@ class SpaceGlassDAO {
 
 				result[x - 1][y - 1] = spaceGlass;
 			}
+			con.commit();
+			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("SpaceGlassDAO Select: " + e.getMessage());
 		}

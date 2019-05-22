@@ -88,6 +88,14 @@ public class PersistenceFacade {
 		gameDAO.updateCurrentPlayer(gameID, playerDAO.getCurrentPlayer(gameID));
 		spaceGlassDAO.insertGlassWindows(playerDAO.getAllPlayersInGame(gameID));
 	}
+	
+	public void setCardsGame(int idGame) {
+		for(Player player : playerDAO.getAllPlayersInGame(idGame)) {
+			patternCardDAO.insertPatternCardOptions(player.getPlayerID());
+		}
+		collectiveGoalCardDAO.insertRandomSharedCollectiveGoalCards(idGame);
+		toolCardDAO.insertRandomGameToolCards(idGame);	
+	}
 
 	// CollectiveGoalCardDAO
 	public ArrayList<CollectiveGoalCard> getSharedCollectiveGoalCards(int idGame) {
@@ -142,6 +150,14 @@ public class PersistenceFacade {
 
 	public void setPlayerPaternCard(int idPatternCard, int idPlayer) {
 		playerDAO.setPlayerPaternCard(idPatternCard, idPlayer);
+	}
+	
+	public ArrayList<Player> getPlayersWithoutPatternCard(int idGame) {
+		return playerDAO.getPlayersWithoutPatternCard(idGame);
+	}
+	
+	public ArrayList<Player> getPlayerWithPatternCardButWithoutCurrencyStones(int idGame){
+		return playerDAO.getPlayerWithPatternCardButWithoutCurrencyStones(idGame);
 	}
 
 	// ToolCardDAO

@@ -22,9 +22,11 @@ public class FieldPane extends FlowPane {
 	private ArrayList<SpacePane> spaces;
 	private SpacePane[][] patternSpaces;
 	private SpacePane[][] glassSpaces;
+	private int patternCardID;
 
 	public FieldPane(PatternCard patternCard, GameController gameController) {
 		super(squareGap, squareGap);
+		this.patternCardID = patternCard.getPatternCardId();
 
 		spaces = new ArrayList<SpacePane>();
 		patternSpaces = new SpacePane[5][4];
@@ -125,5 +127,9 @@ public class FieldPane extends FlowPane {
 		for (SpacePane spacePane : spaces) {
 			spacePane.removeHighlight();
 		}
+	}
+	
+	public int getPatternCardID() {
+		return patternCardID;
 	}
 }

@@ -52,6 +52,8 @@ class PlayerDAO {
 				Player player = new Player(playerID, seqnr, personalGoalCard, username);
 				results.add(player);
 			}
+
+			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("PlayerDAO " + e.getMessage());
@@ -68,6 +70,7 @@ class PlayerDAO {
 			while (dbResultSet.next()) {
 				results.add(dbResultSet.getString("color"));
 			}
+			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("PlayerDAO (Colors) " + e.getMessage());
@@ -98,8 +101,16 @@ class PlayerDAO {
 
 	//kevin stuff
 	void setPlayerPaternCard(int idPatternCard, int idPlayer) {
-		System.out.println("5");
 		insertPlayerPaterncard(idPatternCard, idPlayer);
+	}
+
+	ArrayList<Player> getPlayerWithPatternCardButWithoutCurrencyStones(int idGame) {
+		return selectPlayer(
+				"SELECT * FROM player p WHERE game_idgame = " + idGame + " AND patterncard_idpatterncard IS NOT NULL AND (select idfavortoken from gamefavortoken g WHERE g.idplayer = p.idplayer LIMIT 1) IS NULL");
+	}
+
+	ArrayList<Player> getPlayersWithoutPatternCard(int idGame) {
+		return selectPlayer("SELECT * FROM player WHERE game_idgame = " + idGame + " AND patterncard_idpatterncard IS NULL");
 	}
 
 	ArrayList<Player> getAllPlayers() {
