@@ -3,9 +3,7 @@ package view;
 import java.util.ArrayList;
 
 import controllers.GameController;
-import game.CollectiveGoalCard;
 import game.Die;
-import game.GameColor;
 import game.Message;
 import game.Player;
 import game.SpaceGlass;
@@ -136,6 +134,28 @@ public class GameScene extends Scene {
 		chatPane.updateChat(messages);
 	}
 
+	public void updateGlassWindow(ArrayList<Player> players) {
+		for (Player player : players) {
+			if (player.getColor() == mainGlassWindow.getColor()) {
+				mainGlassWindow.updateScore(player.getScore());
+				mainGlassWindow.updateGlassWindow(player.getGlassWindow());
+			} else if (player.getColor() == smallGlassWindow1.getColor()) {
+				smallGlassWindow1.updateScore(player.getScore());
+				smallGlassWindow1.updateGlassWindow(player.getGlassWindow());
+			} else if (player.getColor() == smallGlassWindow2.getColor()) {
+				smallGlassWindow2.updateScore(player.getScore());
+				smallGlassWindow2.updateGlassWindow(player.getGlassWindow());
+			} else if (player.getColor() == smallGlassWindow3.getColor()) {
+				smallGlassWindow3.updateScore(player.getScore());
+				smallGlassWindow3.updateGlassWindow(player.getGlassWindow());
+			}
+		}
+	}
+
+	public void updateTable(ArrayList<Die> dice) {
+		dieOfferPane.addDice(dice);
+	}
+
 	public void updateScore(ArrayList<Player> players) {
 		for (Player player : players) {
 			if (mainGlassWindow != null && mainGlassWindow.getColor() == player.getColor()) {
@@ -174,19 +194,6 @@ public class GameScene extends Scene {
 		centerBox.setMaxWidth(800);
 		roundPane = new RoundPane(0, 0);
 		dieOfferPane = new DieOfferPane(gameController);
-
-		//Temporaray code
-		ArrayList<Die> dice = new ArrayList<Die>();
-		dice.add(new Die(5, GameColor.RED.getDatabaseName(), 4, 5));
-		dice.add(new Die(5, GameColor.BLUE.getDatabaseName(), 4, 2));
-		dice.add(new Die(5, GameColor.BLUE.getDatabaseName(), 4, 3));
-		dice.add(new Die(5, GameColor.GREEN.getDatabaseName(), 4, 4));
-		dice.add(new Die(5, GameColor.YELLOW.getDatabaseName(), 4, 2));
-		dice.add(new Die(5, GameColor.RED.getDatabaseName(), 4, 3));
-		dice.add(new Die(5, GameColor.PURPLE.getDatabaseName(), 4, 6));
-		dice.add(new Die(5, GameColor.YELLOW.getDatabaseName(), 4, 1));
-		dice.add(new Die(5, GameColor.BLUE.getDatabaseName(), 4, 3));
-		dieOfferPane.addDice(dice);
 
 		button = new Button("Button");
 

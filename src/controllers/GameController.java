@@ -39,12 +39,12 @@ public class GameController {
 		//		users.add(new User("speler3", 0, 0, GameColor.RED, 0));
 		//		users.add(new User("speler4", 0, 0, GameColor.RED, 0));
 		//		pf.createGame(users);
-		joinGame(4, new User("speler1", 0, 0, GameColor.RED, 0));
+		joinGame(1, new User("speler1", 0, 0, GameColor.RED, 0));
 	}
 
 	public void joinGame(int idGame, User clientUser) {
 		game = new Game(idGame, clientUser);
-		game.persistenceFacade.setCardsGame(idGame);
+		//		game.persistenceFacade.setCardsGame(idGame);
 		game.loadGame();
 		if (getClientPlayer().getGlassWindow().getPatternCard() == null) {
 			choiceScene = new ChoiceScene(this, getPatternChoices());
@@ -138,12 +138,13 @@ public class GameController {
 	/**
 	 * updates the catPane by using information out of the game model.
 	 */
-	private void update() {
+	public void update() {
 		if (gameScene == null) {
 			if (game.getPlayersWithoutPatternCards().isEmpty() && game.getPlayerWithPatternCardButWithoutCurrencyStones().isEmpty()) {
 				game.loadGame();
 				gameScene = new GameScene(this);
 				mainApplication.setScene(gameScene);
+				update();
 			} else {
 				for (Player player : game.getPlayerWithPatternCardButWithoutCurrencyStones()) {
 					PatternCard patternCard = game.getPlayerPatternCard(player.getPlayerID());
@@ -152,7 +153,8 @@ public class GameController {
 			}
 		} else {
 			gameScene.updateChat(game.updateChat());
-			gameScene.updateScore(game.updateScore());
+			gameScene.updateGlassWindow(game.updateGlassWindow());
+			gameScene.updateTable(game.getTable());
 		}
 	}
 
@@ -311,7 +313,7 @@ public class GameController {
 			ArrayList<SpaceGlass> available = getAvailableSpaces(diePane);
 			for (SpaceGlass spaceGlass : available) {
 				if (spaceGlass.getXCor() == spacePane.getX() && spaceGlass.getYCor() == spacePane.getY()) {
-					game.placeDie(diePane.getNumber(), diePane.getColor());
+					game.placeDie(diePane.getNumber(), diePane.getColor(), spacePane.getX(), spacePane.getY());
 					gameScene.removeHighlight();
 					break;
 				}

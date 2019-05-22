@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import controllers.GameController;
 import game.GameColor;
+import game.GlassWindow;
 import game.Player;
 import game.SpaceGlass;
 import javafx.event.EventHandler;
@@ -101,6 +102,10 @@ public class GlassWindowPane extends BorderPane {
 
 	public void updateScore(int score) {
 		labelScore.setText(String.valueOf(score));
+	}
+
+	public void updateGlassWindow(GlassWindow glassWindow) {
+		fieldPane.loadGlassWindow(glassWindow);
 	}
 
 	private void setName(String name) {
