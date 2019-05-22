@@ -1,6 +1,7 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import client.Lobby;
 import controllers.ClientController;
@@ -62,12 +63,13 @@ public class ClientScene extends Scene {
 		clientcontroller.joinGame(idGame);
 	}
 
-	// TODO FIND SOLUTION - TEMPORARY FIX
+	// TODO TOM FIND SOLUTION - TEMPORARY FIX
 	public ArrayList<Player> getPlayers(int gameID) {
 		return clientcontroller.getPlayers(gameID);
 	}
+	
 
-	public int getScore(int gameID, Player player) {
+	public HashMap<String, Integer> getScore(int gameID, ArrayList<Player> player) {
 		return clientcontroller.getScore(gameID, player);
 	}
 

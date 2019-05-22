@@ -16,38 +16,38 @@ public class GoalCardHandler {
 	public int getGoalCardHandler(GlassWindow glasswindow, ArrayList<CollectiveGoalCard> collectiveGoalCards) {
 		this.glasswindow = glasswindow;
 		int points = 0;
-
+		// database numbers + name
 		for (CollectiveGoalCard c : collectiveGoalCards) {
 			switch (c.getCardID()) {
 			case 1:
-				points += handleTintvarieteit() * c.getPoints();
+				points += handleShadesVariety() * c.getPoints();
 				break;
 			case 2:
-				points += handleDonkereTinten(3, 4) * c.getPoints();
+				points += handleShades(3, 4) * c.getPoints();
 				break;
 			case 3:
-				points += handleTintvarieteitPerKolom() * c.getPoints();
+				points += handleColumnShadeVariety() * c.getPoints();
 				break;
 			case 4:
-				points += handleKleurvarieteitPerKolom() * c.getPoints();
+				points += handleColumnColorVariety() * c.getPoints();
 				break;
 			case 5:
-				points += handleDonkereTinten(5, 6) * c.getPoints();
+				points += handleShades(5, 6) * c.getPoints();
 				break;
 			case 6:
-				points += handleKleurvarieteit() * c.getPoints();
+				points += handleColorVariety() * c.getPoints();
 				break;
 			case 7:
-				points += handleKleurvareiteitPerRij() * c.getPoints();
+				points += handleRowColorVariety() * c.getPoints();
 				break;
 			case 8:
-				points += handleKleurdiagonalen();
+				points += handleColorDiagonals();
 				break;
 			case 9:
-				points += handleDonkereTinten(1, 2) * c.getPoints();
+				points += handleShades(1, 2) * c.getPoints();
 				break;
 			case 10:
-				points += handleTintvarieteitPerRij() * c.getPoints();
+				points += handleRowShadeVariety() * c.getPoints();
 				break;
 			default:
 				System.err.println("GoalCardHandler: none existing CollectiveGoalCard");
@@ -57,7 +57,7 @@ public class GoalCardHandler {
 		return points;
 	}
 
-	private int handleTintvarieteit() {
+	private int handleShadesVariety() {
 		ArrayList<Integer> values = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 0));
 
 		for (int y = 0; y < 4; y++) {
@@ -90,7 +90,7 @@ public class GoalCardHandler {
 		return values.get(0);
 	}
 
-	private int handleTintvarieteitPerKolom() {
+	private int handleColumnShadeVariety() {
 		ArrayList<Integer> values = new ArrayList<>();
 		int column = 0;
 
@@ -113,7 +113,7 @@ public class GoalCardHandler {
 		return column;
 	}
 
-	private int handleKleurvarieteitPerKolom() {
+	private int handleColumnColorVariety() {
 		ArrayList<GameColor> colors = new ArrayList<>();
 		int column = 0;
 
@@ -137,7 +137,7 @@ public class GoalCardHandler {
 	}
 
 	// handles Halfdonkere, Donkere en Lichte Tinten
-	private int handleDonkereTinten(int dieA, int dieB) {
+	private int handleShades(int dieA, int dieB) {
 		int countA = 0;
 		int countB = 0;
 
@@ -160,7 +160,7 @@ public class GoalCardHandler {
 		return countA < countB ? countA : countB;
 	}
 
-	private int handleKleurvarieteit() {
+	private int handleColorVariety() {
 		ArrayList<Integer> colors = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0));
 
 		for (int y = 0; y < 4; y++) {
@@ -196,7 +196,7 @@ public class GoalCardHandler {
 		return colors.get(0);
 	}
 
-	private int handleKleurvareiteitPerRij() {
+	private int handleRowColorVariety() {
 		ArrayList<GameColor> colors = new ArrayList<>();
 		int row = 0;
 
@@ -219,27 +219,34 @@ public class GoalCardHandler {
 		return row;
 	}
 
-	//FIXME: DEZE FUNCTIE GAAT NIET WERKEN
-	private int handleKleurdiagonalen() {
+	private int handleColorDiagonals() {
 		int count = 0;
 
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
-				try {
-					if (glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow.getSpace((x - 1), (y - 1)).getDie().getDieColor()
-							|| glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow.getSpace((x + 1), (y - 1)).getDie().getDieColor()
-							|| glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow.getSpace((x - 1), (y + 1)).getDie().getDieColor()
-							|| glasswindow.getSpace(x, y).getDie().getDieColor() == glasswindow.getSpace((x + 1), (y + 1)).getDie().getDieColor())
-						count++;
-				} catch (Exception e) {
+				// first get all diagonal surrounding colors IF the coordinates exist
+				GameColor topleft = x > 0 && y > 0 ? glasswindow.getSpace((x - 1), (y - 1)).getDieColor()
+						: GameColor.EMPTY;
+				GameColor topright = x <= 5 && y > 0 ? glasswindow.getSpace((x + 1), (y - 1)).getDieColor()
+						: GameColor.EMPTY;
+				GameColor bottomleft = x > 0 && y <= 0 ? glasswindow.getSpace((x - 1), (y + 1)).getDieColor()
+						: GameColor.EMPTY;
+				GameColor bottomright = x <= 5 && y <= 0 ? glasswindow.getSpace((x + 1), (y + 1)).getDieColor()
+						: GameColor.EMPTY;
+				GameColor center = glasswindow.getSpace(x, y).getDieColor();
 
+				// check if center space is not empty
+				if (center != GameColor.EMPTY) {
+					// check if the center het a diagonal die with the color
+					if (center == topleft || center == topright || center == bottomleft || center == bottomright)
+						count++;
 				}
 			}
 		}
 		return count;
 	}
 
-	private int handleTintvarieteitPerRij() {
+	private int handleRowShadeVariety() {
 		ArrayList<Integer> values = new ArrayList<>();
 		int row = 0;
 
