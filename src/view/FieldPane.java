@@ -78,7 +78,6 @@ public class FieldPane extends FlowPane {
 			}
 		}
 
-		resize(isSmall);
 		updateSpaces();
 	}
 
@@ -89,6 +88,7 @@ public class FieldPane extends FlowPane {
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
 				if (glassSpaces[x][y].getColor() != GameColor.EMPTY) {
+					glassSpaces[x][y].resize(isSmall);
 					spaces.add(glassSpaces[x][y]);
 				} else {
 					spaces.add(patternSpaces[x][y]);
