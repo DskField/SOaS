@@ -36,6 +36,7 @@ class DieDAO {
 				Die die = new Die(number, color);
 				results.add(die);
 			}
+			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("DieDAO " + e.getMessage());
@@ -68,6 +69,7 @@ class DieDAO {
 				int roundTrack = dbResultSet.getInt("roundtrack");
 				result[roundTrack - 1].addDie(new Die(number, color, round, eyes));
 			}
+			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("DieDAO " + e.getMessage());
@@ -136,7 +138,7 @@ class DieDAO {
 		try {
 			for (GameColor color : possibleColors) {
 				for (int i = 1; i <= 18; i++) {
-					PreparedStatement stmt = con.prepareStatement("INSERT INTO gamedie VALUES (?, ?, ?, NULL, NULL, NULL);");
+					PreparedStatement stmt = con.prepareStatement("INSERT INTO gamedie VALUES (?, ?, ?, NULL, NULL, NULL, null);");
 					stmt.setInt(1, idGame);
 					stmt.setInt(2, i);
 					stmt.setString(3, color.getDatabaseName());

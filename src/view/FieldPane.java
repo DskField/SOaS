@@ -2,6 +2,7 @@ package view;
 
 import java.util.ArrayList;
 
+import controllers.GameController;
 import game.GameColor;
 import game.GlassWindow;
 import game.PatternCard;
@@ -21,17 +22,19 @@ public class FieldPane extends FlowPane {
 	private ArrayList<SpacePane> spaces;
 	private SpacePane[][] patternSpaces;
 	private SpacePane[][] glassSpaces;
+	private int patternCardID;
 
-	public FieldPane(PatternCard patternCard) {
+	public FieldPane(PatternCard patternCard, GameController gameController) {
 		super(squareGap, squareGap);
+		this.patternCardID = patternCard.getPatternCardId();
 
 		spaces = new ArrayList<SpacePane>();
 		patternSpaces = new SpacePane[5][4];
 		glassSpaces = new SpacePane[5][4];
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
-				patternSpaces[x][y] = new SpacePane(x, y);
-				glassSpaces[x][y] = new SpacePane(x, y);
+				patternSpaces[x][y] = new SpacePane(x, y, gameController);
+				glassSpaces[x][y] = new SpacePane(x, y, gameController);
 			}
 		}
 
@@ -118,5 +121,15 @@ public class FieldPane extends FlowPane {
 				}
 			}
 		}
+	}
+
+	public void removeHilightSpaces() {
+		for (SpacePane spacePane : spaces) {
+			spacePane.removeHighlight();
+		}
+	}
+	
+	public int getPatternCardID() {
+		return patternCardID;
 	}
 }

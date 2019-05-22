@@ -33,6 +33,7 @@ class CollectiveGoalCardDAO {
 				CollectiveGoalCard card = new CollectiveGoalCard(cardID, name, description, points);
 				results.add(card);
 			}
+			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("CollectiveGoalCardDAO " + e.getMessage());
@@ -47,7 +48,8 @@ class CollectiveGoalCardDAO {
 
 	// Get all the cards that are used in the game
 	ArrayList<CollectiveGoalCard> getSharedCollectiveGoalCards(int idGame) {
-		return selectCollectiveGoalCards("SELECT * FROM sharedpublic_objectivecard" + " JOIN public_objectivecard ON sharedpublic_objectivecard.idpublic_objectivecard = public_objectivecard.idpublic_objectivecard" + " WHERE idGame = " + idGame);
+		return selectCollectiveGoalCards(
+				"SELECT * FROM sharedpublic_objectivecard" + " JOIN public_objectivecard ON sharedpublic_objectivecard.idpublic_objectivecard = public_objectivecard.idpublic_objectivecard" + " WHERE idGame = " + idGame);
 	}
 
 	// Get one specific card
@@ -63,7 +65,7 @@ class CollectiveGoalCardDAO {
 			Collections.shuffle(list);
 
 			try {
-				PreparedStatement stmt = con.prepareStatement("INSERT INTO shared public_objectivecard VALUES (?,?) (?,?) (?,?)");
+				PreparedStatement stmt = con.prepareStatement("INSERT INTO sharedpublic_objectivecard VALUES (?,?), (?,?), (?,?)");
 				// card 1
 				stmt.setInt(1, idGame);
 				stmt.setInt(2, list.get(0).getCardID());

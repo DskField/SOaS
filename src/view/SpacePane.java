@@ -1,7 +1,9 @@
 package view;
 
+import controllers.GameController;
 import game.GameColor;
-import javafx.scene.effect.Glow;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
@@ -15,11 +17,18 @@ public class SpacePane extends Pane {
 	private int x;
 	private int y;
 
-	public SpacePane(int x, int y) {
+	public SpacePane(int x, int y, GameController controller) {
 		this.x = x;
 		this.y = y;
 
 		space = new DiePane(0, 0, GameColor.EMPTY);
+
+		setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				controller.placeDie((SpacePane) event.getSource());
+			}
+		});
 	}
 
 	public void loadPattern(int eyes, GameColor color) {
@@ -55,9 +64,10 @@ public class SpacePane extends Pane {
 	}
 
 	public void highlight() {
-		Glow glow = new Glow(3);
 		space.setBackground(new Background(new BackgroundFill(Color.TURQUOISE, null, null)));
-		setEffect(glow);
+	}
 
+	public void removeHighlight() {
+		space.setBackground(new Background(new BackgroundFill(space.getColor().getColor(), null, null)));
 	}
 }

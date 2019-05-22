@@ -18,7 +18,7 @@ class CurrencyStoneDAO {
 	public void insertCurrencyStones(int idGame) {
 		try {
 			for (int i = 0; i < 24; i++) {
-				PreparedStatement stmt = con.prepareStatement("INSERT INTO gamefavortoken VALUES (?, ?, null, null, null);");
+				PreparedStatement stmt = con.prepareStatement("INSERT INTO gamefavortoken VALUES (?, ?, null, null, null, null);");
 				stmt.setInt(1, i);
 				stmt.setInt(2, idGame);
 				stmt.executeUpdate();
@@ -50,6 +50,7 @@ class CurrencyStoneDAO {
 				CurrencyStone currencystone = new CurrencyStone(stoneID, playerID, toolcardID);
 				results.add(currencystone);
 			}
+			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("CurrencyStoneDAO " + e.getMessage());
