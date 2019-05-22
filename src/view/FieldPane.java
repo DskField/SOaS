@@ -102,7 +102,7 @@ public class FieldPane extends FlowPane {
 	public void resize(boolean isSmall) {
 		this.isSmall = isSmall;
 
-		if (isSmall) {
+		if (this.isSmall) {
 			setPrefSize(patternWidth / 2, patternHeight / 2);
 			setMaxSize(patternWidth / 2, patternHeight / 2);
 		} else {
@@ -112,8 +112,8 @@ public class FieldPane extends FlowPane {
 
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
-				glassSpaces[x][y].resize(isSmall);
-				patternSpaces[x][y].resize(isSmall);
+				glassSpaces[x][y].resize(this.isSmall);
+				patternSpaces[x][y].resize(this.isSmall);
 			}
 		}
 	}
