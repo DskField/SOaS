@@ -2,6 +2,8 @@ package game;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import client.User;
@@ -60,7 +62,7 @@ public class Game {
 		currencyStones = new ArrayList<CurrencyStone>();
 		dice = new ArrayList<Die>();
 		roundTrack = new Round[10];
-		currentRound = 1;
+		currentRound = 5;
 
 		table = new ArrayList<Die>();
 
@@ -73,6 +75,8 @@ public class Game {
 		for (int i = 0; i < roundTrack.length; i++) {
 			roundTrack[i] = new Round();
 		}
+		setCurrentRound();
+
 	}
 
 	public void loadGame() {
@@ -157,7 +161,9 @@ public class Game {
 		}
 	}
 	private void loadTable() {
+		
 		table = persistenceFacade.getTableDice(gameID, currentRound);
+		System.out.println("Table"+ table.size());
 	}
 
 	// kevin stuff
@@ -296,11 +302,17 @@ public class Game {
 	public void nextRound() {
 		if (!table.isEmpty()) {
 			System.out.println("nextRound");
-			roundTrack[currentRound].addDice(table);
+			roundTrack[(currentRound)].addDice(table);
 			persistenceFacade.updateDiceRound(gameID, currentRound, table);
 			table.clear();
 			currentRound++;
 		}
+	}
+	public void setCurrentRound() {
+		System.out.println("sda" + roundTrack[0].getDice());
+		List<Round> tempRoundTrack = Arrays.asList(roundTrack);
+		System.out.println("dasff"+ tempRoundTrack.size());
+		
 	}
 
 	public void placeDie(int id, GameColor color) {

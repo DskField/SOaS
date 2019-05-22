@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import controllers.GameController;
 import game.CollectiveGoalCard;
 import game.Die;
-import game.GameColor;
 import game.Message;
 import game.Player;
+import game.Round;
 import game.SpaceGlass;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -72,7 +72,7 @@ public class GameScene extends Scene {
 	private PersonalGoalCardPane personalGoalCardPane;
 	private RoundPane roundPane;
 	private DieOfferPane dieOfferPane;
-	private Button button;
+	private Button nextButton;
 	private GameController gameController;
 
 	/**
@@ -167,6 +167,16 @@ public class GameScene extends Scene {
 			dieOfferPane.update(diePane);
 		}
 	}
+	public void updateTurn(boolean myTurn) {
+		if(myTurn) {
+			dieOfferPane.setDisable(false);
+			nextButton.setDisable(false);
+
+		}else {
+			dieOfferPane.setDisable(true);
+			nextButton.setDisable(true);
+		}
+	}
 
 	/**
 	 * Creates the center of the screen containing the following aspects: PersonalGoalCard,
@@ -194,23 +204,24 @@ public class GameScene extends Scene {
 		dieOfferPane = new DieOfferPane(gameController);
 
 		//Temporaray code
-		ArrayList<Die> dice = new ArrayList<Die>();
-		dice.add(new Die(5, GameColor.RED.getDatabaseName(), 4, 5));
-		dice.add(new Die(5, GameColor.BLUE.getDatabaseName(), 4, 2));
-		dice.add(new Die(5, GameColor.BLUE.getDatabaseName(), 4, 3));
-		dice.add(new Die(5, GameColor.GREEN.getDatabaseName(), 4, 4));
-		dice.add(new Die(5, GameColor.YELLOW.getDatabaseName(), 4, 2));
-		dice.add(new Die(5, GameColor.RED.getDatabaseName(), 4, 3));
-		dice.add(new Die(5, GameColor.PURPLE.getDatabaseName(), 4, 6));
-		dice.add(new Die(5, GameColor.YELLOW.getDatabaseName(), 4, 1));
-		dice.add(new Die(5, GameColor.BLUE.getDatabaseName(), 4, 3));
-		dieOfferPane.addDice(dice);
+//		ArrayList<Die> dice = new ArrayList<Die>();
+//		dice.add(new Die(5, GameColor.RED.getDatabaseName(), 4, 5));
+//		dice.add(new Die(5, GameColor.BLUE.getDatabaseName(), 4, 2));
+//		dice.add(new Die(5, GameColor.BLUE.getDatabaseName(), 4, 3));
+//		dice.add(new Die(5, GameColor.GREEN.getDatabaseName(), 4, 4));
+//		dice.add(new Die(5, GameColor.YELLOW.getDatabaseName(), 4, 2));
+//		dice.add(new Die(5, GameColor.RED.getDatabaseName(), 4, 3));
+//		dice.add(new Die(5, GameColor.PURPLE.getDatabaseName(), 4, 6));
+//		dice.add(new Die(5, GameColor.YELLOW.getDatabaseName(), 4, 1));
+//		dice.add(new Die(5, GameColor.BLUE.getDatabaseName(), 4, 3));
+//		dieOfferPane.addDice(dice);
 
-		button = new Button("Button");
+		
+		nextButton = new Button("Beurt klaar");
 
 		// handles everything regarding the button
-		button.setPrefSize(buttonWidth, buttonheigt);
-
+		nextButton.setPrefSize(buttonWidth, buttonheigt);
+		nextButton.setOnAction(e -> handleNextButton());
 		// adds everything to personal info and handles makeup
 		personalInfo.getChildren().addAll(personalGoalCardPane, currencyStonesPane);
 		personalInfo.setAlignment(Pos.CENTER);
@@ -248,7 +259,7 @@ public class GameScene extends Scene {
 		cardBox.setPrefHeight(480);
 
 		// adds everything to the centerBox and handles makeup
-		centerBox.getChildren().addAll(roundPane, cardBox, dieOfferPane, button);
+		centerBox.getChildren().addAll(roundPane, cardBox, dieOfferPane, nextButton);
 		centerBox.setAlignment(Pos.CENTER);
 		centerBox.setSpacing(personalInfoSpacing);
 		centerBox.setPadding(new Insets(centerBoxPaddingTop, centerBoxPaddingRight, centerBoxPaddingBottom, centerBoxPaddingLeft));
@@ -256,7 +267,12 @@ public class GameScene extends Scene {
 		// adds the centerBox to the rootPane
 		rootPane.setCenter(centerBox);
 	}
-
+	//Handels 
+	private void handleNextButton() {
+		gameController.nextTurn();
+		dieOfferPane.setDisable(true);
+	}
+	
 	/**
 	 * Creates the left column of the screen containing the following aspects: Glaswindow(large), Chat
 	 */

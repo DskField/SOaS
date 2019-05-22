@@ -45,6 +45,8 @@ public class GameController {
 	public void joinGame(int idGame, User clientUser) {
 		game = new Game(idGame, clientUser);
 		game.loadGame();
+		System.out.println(game.getCurrentRound());
+
 		// getClientPlayer().getGlassWindow().setPaterNull(null);
 		if (getClientPlayer().getGlassWindow().getPatternCard() == null) {
 			game.dealPatternCards();
@@ -136,6 +138,8 @@ public class GameController {
 		gameScene.updateScore(game.updateScore());
 		gameScene.updateRoundTrack(game.getRoundTrack());
 		gameScene.updateDieOfferPane(game.getTable());
+		gameScene.updateTurn(checkMyTurn());
+		System.out.println("gamecontroller.update"+ game.getTable());
 	}
 
 	// kevin stuff
@@ -154,8 +158,17 @@ public class GameController {
 	public int getToolCard(int arrayNumber) {
 		return game.getToolCards().get(arrayNumber).getCardID();
 	}
-
-	/**
+	/*
+	 * Returns true if its your turn
+	 */
+	private boolean checkMyTurn() {
+		if(game.getCurrentPlayer().equals(game.getClientPlayer())) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	/*
 	 * Checks if there are already dice on the window.
 	 */
 	private boolean checkFirstDie() {
@@ -169,6 +182,8 @@ public class GameController {
 		}
 		return true;
 	}
+		
+
 
 	/**
 	 * Gets all diagonal dice for a certain SpaceGlass
@@ -302,5 +317,9 @@ public class GameController {
 				}
 			}
 		}
+	}
+
+	public void nextTurn() {
+		game.nextTurn();
 	}
 }
