@@ -147,16 +147,21 @@ public class GameController {
 				}
 			}
 		} else {
-			gameScene.updateRoundTrack(game.getRoundTrack());
-			gameScene.updateChat(game.updateChat());
-			gameScene.updateGlassWindow(game.updateGlassWindow());
+			if (game.getCurrentRound() <= 10) {
+				gameScene.updateRoundTrack(game.getRoundTrack());
+				gameScene.updateChat(game.updateChat());
+				gameScene.updateGlassWindow(game.updateGlassWindow());
 
-			if (game.getCurrentPlayer().getPlayerID() != getClientPlayer().getPlayerID()) {
-				gameScene.disableDieOfferPane(true);
-				gameScene.updateTable(game.getTable());
+				if (game.getCurrentPlayer().getPlayerID() != getClientPlayer().getPlayerID()) {
+					gameScene.disableDieOfferPane(true);
+					gameScene.updateTable(game.getTable());
+				}
+
+				gameScene.updateTurn(checkMyTurn());
+			} else {
+				gameFinish();
+				timer.stop();
 			}
-
-			gameScene.updateTurn(checkMyTurn());
 		}
 	}
 

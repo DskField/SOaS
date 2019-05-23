@@ -115,14 +115,12 @@ public class GameScene extends Scene {
 	}
 
 	public void selectDie(ArrayList<SpaceGlass> available) {
-		for (Player player : gameController.getPlayers()) {
-			if (player.getColor() == smallGlassWindow1.getColor()) {
-				switchGlassWindows(1);
-			} else if (player.getColor() == smallGlassWindow2.getColor()) {
-				switchGlassWindows(2);
-			} else if (player.getColor() == smallGlassWindow3.getColor()) {
-				switchGlassWindows(3);
-			}
+		if (gameController.getClientPlayer().getColor() == smallGlassWindow1.getColor()) {
+			switchGlassWindows(1);
+		} else if (gameController.getClientPlayer().getColor() == smallGlassWindow2.getColor()) {
+			switchGlassWindows(2);
+		} else if (gameController.getClientPlayer().getColor() == smallGlassWindow3.getColor()) {
+			switchGlassWindows(3);
 		}
 		removeHighlight();
 		mainGlassWindow.highlightSpaces(available);
