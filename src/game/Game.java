@@ -312,7 +312,6 @@ public class Game {
 		}
 
 		persistenceFacade.updatePlayerTurn(oldPlayer, currentPlayer, gameID);
-		
 
 		if (nextSeqnr == 1) {
 			nextRound();
@@ -325,10 +324,9 @@ public class Game {
 			persistenceFacade.updateDiceRound(gameID, currentRound, table);
 			table.clear();
 			currentRound++;
-		}
-		else {
+		} else {
 			shakeSack();
-			
+
 		}
 	}
 
