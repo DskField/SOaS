@@ -3,7 +3,6 @@ package view;
 import java.util.ArrayList;
 
 import client.Lobby;
-import game.Player;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -36,7 +35,7 @@ public class LobbyListPane extends BorderPane {
 	final private static int statsBoxWidth = 400;
 	final private static int statsBoxHeight = 400;
 	final private static int bottomLineSpacing = 50;
-	final private static int statsPaneSpacing = 20;
+	final private static int statsPaneSpacing = 10;
 	final private static int lobbyJoinPannelSpacing = 50;
 	final private static int joinGameButtonWidth = 400;
 	final private static int joinGameButtonHeight = 150;
@@ -82,15 +81,16 @@ public class LobbyListPane extends BorderPane {
 		VBox playerList = new VBox();
 		playerList.setAlignment(Pos.CENTER);
 		playerList.getChildren().add(scoreboardLabel);
-		
-		
-		for (ArrayList<String> p : clientscene.getScore(idGame, clientscene.getPlayers(idGame))) {
-			Label playername = new Label(p.get(0) + ": " + p.get(1));
+
+		ArrayList<ArrayList<String>> scoreboardList = clientscene.getScore(idGame, clientscene.getPlayers(idGame));
+		for (int i = 0; i < scoreboardList.size(); i++) {
+			Label playername = new Label(
+					(i + 1) + ". " + scoreboardList.get(i).get(0) + ": " + scoreboardList.get(i).get(1));
 			playername.setFont(Font.font(textSize));
 			playerList.getChildren().add(playername);
 		}
 
-		Label rondeLabel = new Label("Ronde: " + clientscene.getLobby(idGame).getCurrentRound());
+		Label rondeLabel = new Label("Ronde: " + (clientscene.getLobby(idGame).getCurrentRound() - 1));
 		rondeLabel.setFont(Font.font(LabelSize));
 
 		String won;
@@ -130,10 +130,11 @@ public class LobbyListPane extends BorderPane {
 		errorMessage.setFont(Font.font(textSize));
 		errorMessage.setAlignment(Pos.CENTER);
 		errorMessage.setVisible(false);
-		
+
 		VBox lobbyJoinPannel = new VBox();
 		lobbyJoinPannel.setSpacing(lobbyJoinPannelSpacing);
 		lobbyJoinPannel.getChildren().addAll(statsBox, joinGameButton, errorMessage);
+		lobbyJoinPannel.setAlignment(Pos.CENTER);
 
 		this.setCenter(lobbyJoinPannel);
 	}

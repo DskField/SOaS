@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -84,25 +85,31 @@ public class ClientController {
 	// TODO TOM FIND SOLUTION - TEMPORARY FIX
 	public ArrayList<ArrayList<String>> getScore(int gameID, ArrayList<Player> players) {
 		ScoreHandler scorehandler = new ScoreHandler(persistencefacade.getSharedCollectiveGoalCards(gameID));
-		HashMap<String, Integer> playerToInt = new HashMap<>();
+		ArrayList<String> playerToInt = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> comparator = new ArrayList<>();
-		for (int i = 0; 0 < players.size() ; i++) {
+		ArrayList<ArrayList<String>> result = new ArrayList<>();
+		for (int i = 0; i < players.size(); i++) {
 			players.get(i).loadGlassWindow(persistencefacade.getGlassWindow(players.get(i).getPlayerID()));
 			ArrayList<Integer> combo = new ArrayList<>();
-			
-			playerToInt.put(players.get(i).getUsername(), i);
-			
+			playerToInt.add(players.get(i).getUsername());
+
 			combo.add(i);
-			combo.add(Integer.toString(scorehandler.getScore(players.get(i), false)));
-			result.add(combo);
+			combo.add(scorehandler.getScore(players.get(i), false));
+			comparator.add(combo);
 		}
-		Collections.sort(result, new Comparator<ArrayList<String>>() {
+
+		Collections.sort(comparator, new Comparator<ArrayList<Integer>>() {
 			@Override
-			public int compare(ArrayList<String> o1, ArrayList<String> o2) {
+			public int compare(ArrayList<Integer> o1, ArrayList<Integer> o2) {
 				return o1.get(1).compareTo(o2.get(1));
 			}
 		});
-		System.out.println(result);
+		Collections.reverse(comparator);
+
+		for (int c = 0; c < players.size(); c++) {
+			result.add(new ArrayList<String>(Arrays.asList(players.get(comparator.get(c).get(0)).getUsername(),
+					String.valueOf(comparator.get(c).get(1)))));
+		}
 		return result;
 	}
 
