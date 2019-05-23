@@ -221,20 +221,24 @@ public class GoalCardHandler {
 
 	private int handleColorDiagonals() {
 		int count = 0;
-
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
 				// first get all diagonal surrounding colors IF the coordinates exist
-				GameColor topleft = x > 0 && y > 0 ? glasswindow.getSpace((x - 1), (y - 1)).getDieColor()
+				GameColor topleft = (x - 1 > 0 && y - 1 > 0) && glasswindow.getSpace(x - 1, y - 1).getDie() != null
+						? glasswindow.getSpace((x - 1), (y - 1)).getDieColor()
 						: GameColor.EMPTY;
-				GameColor topright = x <= 5 && y > 0 ? glasswindow.getSpace((x + 1), (y - 1)).getDieColor()
+				GameColor topright = (x + 1 < 5 && y - 1 > 0) && glasswindow.getSpace(x + 1, y - 1).getDie() != null
+						? glasswindow.getSpace((x + 1), (y - 1)).getDieColor()
 						: GameColor.EMPTY;
-				GameColor bottomleft = x > 0 && y <= 0 ? glasswindow.getSpace((x - 1), (y + 1)).getDieColor()
+				GameColor bottomleft = (x - 1 > 0 && y + 1 <= 0) && glasswindow.getSpace(x - 1, y + 1).getDie() != null
+						? glasswindow.getSpace((x - 1), (y + 1)).getDieColor()
 						: GameColor.EMPTY;
-				GameColor bottomright = x <= 5 && y <= 0 ? glasswindow.getSpace((x + 1), (y + 1)).getDieColor()
+				GameColor bottomright = (x + 1 < 5 && y + 1 <= 0) && glasswindow.getSpace(x + 1, y + 1).getDie() != null
+						? glasswindow.getSpace((x + 1), (y + 1)).getDieColor()
 						: GameColor.EMPTY;
-				GameColor center = glasswindow.getSpace(x, y).getDieColor();
-
+				GameColor center = glasswindow.getSpace(x, y).getDie() != null
+						? glasswindow.getSpace(x, y).getDieColor()
+						: GameColor.EMPTY;
 				// check if center space is not empty
 				if (center != GameColor.EMPTY) {
 					// check if the center het a diagonal die with the color
