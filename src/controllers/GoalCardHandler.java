@@ -62,27 +62,29 @@ public class GoalCardHandler {
 
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
-				switch (glasswindow.getSpace(x, y).getDie().getDieValue()) {
-				case (1):
-					values.set(0, values.get(0) + 1);
-					break;
-				case (2):
-					values.set(1, values.get(1) + 1);
-					break;
-				case (3):
-					values.set(2, values.get(2) + 1);
-					break;
-				case (4):
-					values.set(3, values.get(3) + 1);
-					break;
-				case (5):
-					values.set(4, values.get(4) + 1);
-					break;
-				case (6):
-					values.set(5, values.get(5) + 1);
-					break;
-				default:
-					break;
+				if (glasswindow.getSpace(x, y).getDie() != null) {
+					switch (glasswindow.getSpace(x, y).getDieValue()) {
+					case (1):
+						values.set(0, values.get(0) + 1);
+						break;
+					case (2):
+						values.set(1, values.get(1) + 1);
+						break;
+					case (3):
+						values.set(2, values.get(2) + 1);
+						break;
+					case (4):
+						values.set(3, values.get(3) + 1);
+						break;
+					case (5):
+						values.set(4, values.get(4) + 1);
+						break;
+					case (6):
+						values.set(5, values.get(5) + 1);
+						break;
+					default:
+						break;
+					}
 				}
 			}
 		}

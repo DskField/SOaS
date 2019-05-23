@@ -1,8 +1,15 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.Comparator;
+import java.util.stream.Collectors.*;
+import java.util.Map.Entry.*;
 
 import client.Challenge;
 import client.Client;
@@ -28,8 +35,8 @@ public class ClientController {
 	public ClientController(MainApplication mainapplication) {
 		this.persistencefacade = new PersistenceFacade();
 		this.mainapplication = mainapplication;
-		this.gamecontroller = new GameController(mainapplication);
-		handleLogin("speler1", "speler1");
+		// this.gamecontroller = new GameController(mainapplication);
+		// handleLogin("speler1", "speler1");
 		mainapplication.setScene(new Scene(new LoginPane(this)));
 	}
 
@@ -39,10 +46,10 @@ public class ClientController {
 			client = new Client(username, persistencefacade);
 			mainapplication.setScene(new ClientScene(this));
 			// TODO TOM has to be deleted later on
-			//			gamecontroller.joinGame(1, client.getUser());
+			// gamecontroller.joinGame(1, client.getUser());
 
 			// TODO TOM fix timer/update
-			//			createTimer();
+			// createTimer();
 		}
 
 		return persistencefacade.loginCorrect(username, password);
@@ -75,15 +82,27 @@ public class ClientController {
 	}
 
 	// TODO TOM FIND SOLUTION - TEMPORARY FIX
-	public HashMap<String, Integer> getScore(int gameID, ArrayList<Player> players) {
+	public ArrayList<ArrayList<String>> getScore(int gameID, ArrayList<Player> players) {
 		ScoreHandler scorehandler = new ScoreHandler(persistencefacade.getSharedCollectiveGoalCards(gameID));
-		HashMap<String, Integer> result = new HashMap<String, Integer>();
-		for (Player p : players) {
-			p.loadGlassWindow(persistencefacade.getGlassWindow(p.getPlayerID()));
-			result.put(p.getUsername(), scorehandler.getScore(p, false));
+		HashMap<String, Integer> playerToInt = new HashMap<>();
+		ArrayList<ArrayList<Integer>> comparator = new ArrayList<>();
+		for (int i = 0; 0 < players.size() ; i++) {
+			players.get(i).loadGlassWindow(persistencefacade.getGlassWindow(players.get(i).getPlayerID()));
+			ArrayList<Integer> combo = new ArrayList<>();
+			
+			playerToInt.put(players.get(i).getUsername(), i);
+			
+			combo.add(i);
+			combo.add(Integer.toString(scorehandler.getScore(players.get(i), false)));
+			result.add(combo);
 		}
-		// SORT HASHMAP
-		// TODO TOM FIX SCOREHANDLER - getwindow (without facade)
+		Collections.sort(result, new Comparator<ArrayList<String>>() {
+			@Override
+			public int compare(ArrayList<String> o1, ArrayList<String> o2) {
+				return o1.get(1).compareTo(o2.get(1));
+			}
+		});
+		System.out.println(result);
 		return result;
 	}
 

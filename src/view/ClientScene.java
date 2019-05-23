@@ -69,7 +69,7 @@ public class ClientScene extends Scene {
 	}
 	
 
-	public HashMap<String, Integer> getScore(int gameID, ArrayList<Player> player) {
+	public ArrayList<ArrayList<String>> getScore(int gameID, ArrayList<Player> player) {
 		return clientcontroller.getScore(gameID, player);
 	}
 
