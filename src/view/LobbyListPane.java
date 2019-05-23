@@ -26,6 +26,7 @@ public class LobbyListPane extends BorderPane {
 	private ToggleGroup togglegroup;
 	private HandleButton handlebutton;
 	private ClientScene clientscene;
+	private Label errorMessage;
 
 	// Magic Numbers
 	final private static int LabelSize = 30;
@@ -81,11 +82,13 @@ public class LobbyListPane extends BorderPane {
 		VBox playerList = new VBox();
 		playerList.setAlignment(Pos.CENTER);
 		playerList.getChildren().add(scoreboardLabel);
-		for (Player p : clientscene.getPlayers(idGame)) {
-			Label playername = new Label(p.getUsername() + ": " + Integer.toString(clientscene.getScore(idGame, p)));
-			playername.setFont(Font.font(textSize));
-			playerList.getChildren().add(playername);
-		}
+		
+		
+//		for (Player p : clientscene.getPlayers(idGame)) {
+//			Label playername = new Label(p.getUsername() + ": " + Integer.toString(clientscene.getScore(idGame, p)));
+//			playername.setFont(Font.font(textSize));
+//			playerList.getChildren().add(playername);
+//		}
 
 		Label rondeLabel = new Label("Ronde: " + clientscene.getLobby(idGame).getCurrentRound());
 		rondeLabel.setFont(Font.font(LabelSize));
@@ -123,15 +126,26 @@ public class LobbyListPane extends BorderPane {
 		joinGameButton.setMinSize(joinGameButtonWidth, joinGameButtonHeight);
 		joinGameButton.setMaxSize(joinGameButtonWidth, joinGameButtonHeight);
 
+		errorMessage = new Label("Deze game is afgebroken");
+		errorMessage.setFont(Font.font(textSize));
+		errorMessage.setAlignment(Pos.CENTER);
+		errorMessage.setVisible(false);
+		
 		VBox lobbyJoinPannel = new VBox();
 		lobbyJoinPannel.setSpacing(lobbyJoinPannelSpacing);
-		lobbyJoinPannel.getChildren().addAll(statsBox, joinGameButton);
+		lobbyJoinPannel.getChildren().addAll(statsBox, joinGameButton, errorMessage);
 
 		this.setCenter(lobbyJoinPannel);
 	}
 
 	public void joinGameButton(int idGame) {
-		clientscene.joinGame(idGame);
+		if (clientscene.getLobby(idGame).getCurrentRound() > 0
+				&& !clientscene.getLobby(idGame).getGameState().equals("afgebroken")) {
+			errorMessage.setVisible(false);
+			clientscene.joinGame(idGame);
+		} else {
+			errorMessage.setVisible(true);
+		}
 	}
 
 	private class HandleButton implements EventHandler<MouseEvent> {
@@ -140,6 +154,7 @@ public class LobbyListPane extends BorderPane {
 			String[] lobby = ((ToggleButton) e.getSource()).getText().split(" ");
 			int idGame = Integer.parseInt(lobby[1]);
 			System.out.println(idGame);
+			// TODO TOM only update the variables and set errormessage visible to false
 			createStats(idGame);
 		}
 	}

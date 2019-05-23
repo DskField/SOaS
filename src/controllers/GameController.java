@@ -52,7 +52,6 @@ public class GameController {
 			choiceScene = new ChoiceScene(this, getPatternChoices());
 			mainApplication.setScene(choiceScene);
 		}
-//		System.out.println("-2");
 		createTimer();
 	}
 
@@ -131,25 +130,30 @@ public class GameController {
 	/**
 	 * updates the view by using information out of the game model.
 	 */
-	private void update() {
+	public void update() {
 		if (gameScene == null) {
-
-			if (game.getPlayersWithoutPatternCards().isEmpty()
-					&& game.getPlayerWithPatternCardButWithoutCurrencyStones().isEmpty()) {
+			if (game.getPlayersWithoutPatternCards().isEmpty() && game.getPlayerWithPatternCardButWithoutCurrencyStones().isEmpty()) {
 				game.loadGame();
 				gameScene = new GameScene(this);
 				mainApplication.setScene(gameScene);
+				gameScene.updateTable(game.getTable());
+				update();
 			} else {
-				for (Player player : game.getPlayerWithPatternCardButWithoutCurrencyStones()) {
-					PatternCard patternCard = game.getPlayerPatternCard(player.getPlayerID());
-					game.updateCurrencyStone(player.getPlayerID(), patternCard.getDifficulty());
+				if (getClientPlayer().getPlayerID() == getPlayers().get(0).getPlayerID()) {
+					for (Player player : game.getPlayerWithPatternCardButWithoutCurrencyStones()) {
+						PatternCard patternCard = game.getPlayerPatternCard(player.getPlayerID());
+						game.updateCurrencyStone(player.getPlayerID(), patternCard.getDifficulty());
+					}
 				}
 			}
 		} else {
 
 			gameScene.updateChat(game.updateChat());
-			gameScene.updateScore(game.updateScore());
-			gameScene.updateDieOfferPane(game.getTable());
+			gameScene.updateGlassWindow(game.updateGlassWindow());
+
+			if (game.getCurrentPlayer().getPlayerID() != getClientPlayer().getPlayerID()) {
+				gameScene.updateTable(game.getTable());
+			}
 			gameScene.updateTurn(checkMyTurn());
 		}
 	}
@@ -333,12 +337,28 @@ public class GameController {
 			ArrayList<SpaceGlass> available = getAvailableSpaces(diePane);
 			for (SpaceGlass spaceGlass : available) {
 				if (spaceGlass.getXCor() == spacePane.getX() && spaceGlass.getYCor() == spacePane.getY()) {
-					game.placeDie(diePane.getNumber(), diePane.getColor());
+					game.placeDie(diePane.getNumber(), diePane.getColor(), spacePane.getX(), spacePane.getY());
+					gameScene.removeDieTable();
 					gameScene.removeHighlight();
+					update();
 					break;
 				}
 			}
 		}
+	}
+
+	private void gameFinish() {
+		int maxScore = -99;
+		Player winner = game.getPlayers().get(0);
+		game.setFinalScore();
+		for (Player player : game.getPlayers()) {
+			if (maxScore < player.getScore()) {
+				maxScore = player.getScore();
+				winner = player;
+			}
+		}
+		String winText = winner.getUsername() + " heeft het spel gewonnen met een score van:  " + maxScore;
+		gameScene.gameFinish(winText);
 	}
 
 	public void nextTurn() {

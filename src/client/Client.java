@@ -89,7 +89,6 @@ public class Client {
 		return opponent;
 	}
 
-	// TODO check if needed
 	public Lobby getLobby(int gameID) {
 		for (Lobby lob : lobbies) {
 			if (lob.getGameID() == gameID)

@@ -1,6 +1,8 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 import client.Challenge;
 import client.Client;
@@ -36,10 +38,10 @@ public class ClientController {
 		if (persistencefacade.loginCorrect(username, password)) {
 			client = new Client(username, persistencefacade);
 			mainapplication.setScene(new ClientScene(this));
-			// TODO has to be deleted later on
+			// TODO TOM has to be deleted later on
 			//			gamecontroller.joinGame(1, client.getUser());
 
-			// TODO fix timer/update
+			// TODO TOM fix timer/update
 			//			createTimer();
 		}
 
@@ -67,17 +69,22 @@ public class ClientController {
 		gamecontroller.joinGame(idGame, client.getUser());
 	}
 
-	// TODO FIND SOLUTION - TEMPORARY FIX
+	// TODO TOM FIND SOLUTION - TEMPORARY FIX
 	public ArrayList<Player> getPlayers(int gameID) {
 		return persistencefacade.getAllPlayersInGame(gameID);
 	}
 
-	// TODO FIND SOLUTION - TEMPORARY FIX
-	public int getScore(int gameID, Player player) {
+	// TODO TOM FIND SOLUTION - TEMPORARY FIX
+	public HashMap<String, Integer> getScore(int gameID, ArrayList<Player> players) {
 		ScoreHandler scorehandler = new ScoreHandler(persistencefacade.getSharedCollectiveGoalCards(gameID));
-		// TODO FIX SCOREHANDLER - getwindow
-		//		return scorehandler.getScore(player, false);
-		return 100;
+		HashMap<String, Integer> result = new HashMap<String, Integer>();
+		for (Player p : players) {
+			p.loadGlassWindow(persistencefacade.getGlassWindow(p.getPlayerID()));
+			result.put(p.getUsername(), scorehandler.getScore(p, false));
+		}
+		// SORT HASHMAP
+		// TODO TOM FIX SCOREHANDLER - getwindow (without facade)
+		return result;
 	}
 
 	// Updat with Timer

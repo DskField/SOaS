@@ -72,7 +72,6 @@ public class FieldPane extends FlowPane {
 				} else {
 					glassSpaces[x][y].loadGlass(new DiePane(0, 0, GameColor.EMPTY));
 				}
-				glassSpaces[x][y].resize(true);
 			}
 		}
 
@@ -97,6 +96,7 @@ public class FieldPane extends FlowPane {
 	}
 
 	public void resize(boolean isSmall) {
+
 		if (isSmall) {
 			setPrefSize(patternWidth / 2, patternHeight / 2);
 			setMaxSize(patternWidth / 2, patternHeight / 2);
@@ -128,7 +128,7 @@ public class FieldPane extends FlowPane {
 			spacePane.removeHighlight();
 		}
 	}
-	
+
 	public int getPatternCardID() {
 		return patternCardID;
 	}
