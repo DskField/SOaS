@@ -28,6 +28,9 @@ public class GameController {
 	private ChoiceScene choiceScene;
 	private AnimationTimerExt timer;
 
+	//TODO: write query for this
+	private boolean dieNotPlaced = true;
+
 	public GameController(MainApplication mainApplication) {
 		this.mainApplication = mainApplication;
 		// Temporary call, when the game will be created the ClientController needs
@@ -156,6 +159,13 @@ public class GameController {
 				if (game.getCurrentPlayer().getPlayerID() != getClientPlayer().getPlayerID()) {
 					gameScene.disableDieOfferPane(true);
 					gameScene.updateTable(game.getTable());
+					dieNotPlaced = true;
+				}
+
+				if (dieNotPlaced) {
+					gameScene.disableDieOfferPane(false);
+				} else {
+					gameScene.disableDieOfferPane(true);
 				}
 
 				gameScene.updateTurn(checkMyTurn());
@@ -338,6 +348,7 @@ public class GameController {
 					gameScene.removeDieTable();
 					gameScene.removeHighlight();
 					gameScene.disableDieOfferPane(true);
+					dieNotPlaced = false;
 					update();
 					break;
 				}
