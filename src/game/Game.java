@@ -173,6 +173,12 @@ public class Game {
 	}
 
 	// kevin stuff
+	public void setFinalScore() {
+		for(Player player : players) {
+			player.setScore(scoreHandler.getScore(player, true));
+		}
+	}
+
 	public void updateCurrencyStone(int idPlayer, int ammount) {
 		persistenceFacade.updateGivePlayerCurrencyStones(gameID, idPlayer, ammount);
 	}

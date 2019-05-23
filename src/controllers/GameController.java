@@ -320,4 +320,20 @@ public class GameController {
 			}
 		}
 	}
+	
+	private void gameFinish() {
+		int maxScore = -99;
+		Player winner = game.getPlayers().get(0);
+		game.setFinalScore();
+		for(Player player : game.getPlayers()) {
+			System.out.println(player.getScore());
+			if(maxScore < player.getScore()) {
+				maxScore = player.getScore();
+				winner = player;
+			}
+		}
+		String winText = winner.getUsername() + " heeft het spel gewonnen met een score van:  " + maxScore;
+		gameScene.gameFinish(winText);
+	}
+
 }
