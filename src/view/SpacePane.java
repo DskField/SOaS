@@ -17,6 +17,8 @@ public class SpacePane extends Pane {
 	private int x;
 	private int y;
 
+	private boolean isSmall;
+
 	public SpacePane(int x, int y, GameController controller) {
 		this.x = x;
 		this.y = y;
@@ -39,11 +41,14 @@ public class SpacePane extends Pane {
 
 	public void loadGlass(DiePane diePane) {
 		space = diePane;
-		space.resize(squareSize);
+		resize(isSmall);
+		getChildren().clear();
 		getChildren().add(space);
 	}
 
 	public void resize(boolean isSmall) {
+		this.isSmall = isSmall;
+
 		if (isSmall) {
 			space.resize(squareSize / resizeScale);
 		} else {

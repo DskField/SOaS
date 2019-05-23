@@ -26,8 +26,8 @@ public class Game {
 	private ScoreHandler scoreHandler;
 
 	/**
-	 * table is the list with die that are rolled but not placed or in the round
-	 * track. That means they are the dice to choose out of this round
+	 * table is the list with die that are rolled but not placed or in the round track. That means they
+	 * are the dice to choose out of this round
 	 */
 	private ArrayList<Die> table;
 
@@ -48,8 +48,7 @@ public class Game {
 	/**
 	 * Initialize the game
 	 * 
-	 * @param gameID
-	 *            - The id of the game
+	 * @param gameID - The id of the game
 	 */
 
 	public Game(int gameID, User clientUser) {
@@ -74,39 +73,41 @@ public class Game {
 		for (int i = 0; i < roundTrack.length; i++) {
 			roundTrack[i] = new Round();
 		}
+
+		//Temporaray
+		table.add(new Die(1, GameColor.RED.getDatabaseName(), 4, 5));
+		table.add(new Die(16, GameColor.BLUE.getDatabaseName(), 4, 2));
+		table.add(new Die(17, GameColor.BLUE.getDatabaseName(), 4, 3));
+		table.add(new Die(7, GameColor.GREEN.getDatabaseName(), 4, 4));
+		table.add(new Die(10, GameColor.YELLOW.getDatabaseName(), 4, 2));
+		table.add(new Die(2, GameColor.RED.getDatabaseName(), 4, 3));
+		table.add(new Die(9, GameColor.PURPLE.getDatabaseName(), 4, 6));
+		table.add(new Die(11, GameColor.YELLOW.getDatabaseName(), 4, 1));
+		table.add(new Die(18, GameColor.BLUE.getDatabaseName(), 4, 3));
 	}
 
 	public void loadGame() {
-		System.out.println("game.Loading game");
 		loadPlayers();
 		loadDice();
 		loadCards();
 		loadGlassWindow();
 		loadCurrencyStones();
-		System.out.println("Loading game...");
+		loadCurrentPlayer();
+
 		scoreHandler = new ScoreHandler(collectiveGoalCards);
-		System.out.println(currentPlayer.getPlayerID());
 	}
 
 	/**
 	 * This method loads all Dice from the DB to the Game.
 	 */
 	private void loadDice() {
-		System.out.println("game.Loading dice");
 		dice = persistenceFacade.getGameDice(gameID);
 		roundTrack = persistenceFacade.getRoundTrack(gameID);
 		table = persistenceFacade.getTableDice(gameID, currentRound);
-		if(table.isEmpty() && roundTrack[currentRound-1].getDice().isEmpty() && currentPlayer.getPlayerID() == clientPlayer.getPlayerID()) {
+		if (table.isEmpty() && roundTrack[currentRound - 1].getDice().isEmpty() && currentPlayer.getPlayerID() == clientPlayer.getPlayerID()) {
 			//if its my turn when I join the game it shakes the sack
-			
-			System.out.println("loadDice roundtrack currentround dice"+ roundTrack[currentRound-1].getDice().size());
-			
 			shakeSack();
 
-		}
-		else {
-			System.out.println("game.table" + table.size());
-			System.out.println(currentPlayer.getPlayerID() + "== "+ clientPlayer.getPlayerID());
 		}
 	}
 
@@ -114,10 +115,7 @@ public class Game {
 	 * Load the players from this game
 	 */
 	private void loadPlayers() {
-		System.out.println("game.Loading player");
-
 		players = persistenceFacade.getAllPlayersInGame(gameID);
-		currentPlayer = persistenceFacade.getCurrentPlayer(gameID);
 		for (Player player : players) {
 			if (player.getUsername().equals(clientUser.getUsername())) {
 				clientPlayer = player;
@@ -130,8 +128,6 @@ public class Game {
 	 * Get the Tool and Goal cards form the DB
 	 */
 	private void loadCards() {
-		System.out.println("game.Loading cards");
-
 		toolCards = persistenceFacade.getGameToolCards(gameID);
 		collectiveGoalCards = persistenceFacade.getSharedCollectiveGoalCards(gameID);
 	}
@@ -140,8 +136,6 @@ public class Game {
 	 * Load the GlassWindow with the right PatternCard
 	 */
 	private void loadGlassWindow() {
-		System.out.println("game.Loading GlassWindow");
-
 		final GameColor colors[] = { GameColor.RED, GameColor.GREEN, GameColor.BLUE, GameColor.PURPLE };
 		int num = 1;
 		for (Player player : players) {
@@ -163,8 +157,6 @@ public class Game {
 	}
 
 	private void loadCurrencyStones() {
-		System.out.println("game.Loading CurrencyStones");
-
 		currencyStones = persistenceFacade.getAllStonesInGame(gameID);
 
 		for (CurrencyStone cs : currencyStones) {
@@ -173,6 +165,7 @@ public class Game {
 					player.addCurrencyStone(cs);
 				}
 			}
+
 			for (ToolCard toolCard : toolCards) {
 				if (cs.getCardID() == toolCard.getCardID()) {
 					toolCard.addCurrencyStone(cs);
@@ -181,38 +174,41 @@ public class Game {
 		}
 	}
 
+	public void loadCurrentPlayer() {
+		int id = persistenceFacade.getCurrentPlayer(gameID).getPlayerID();
+		for (Player player : players) {
+			if (player.getPlayerID() == id) {
+				currentPlayer = player;
+			}
+		}
+	}
+
 	// kevin stuff
+	public void setFinalScore() {
+		for (Player player : players) {
+			player.setScore(scoreHandler.getScore(player, true));
+		}
+	}
+
 	public void updateCurrencyStone(int idPlayer, int ammount) {
 		persistenceFacade.updateGivePlayerCurrencyStones(gameID, idPlayer, ammount);
 	}
-	
+
 	public ArrayList<Player> getPlayersWithoutPatternCards() {
 		return persistenceFacade.getPlayersWithoutPatternCard(gameID);
 	}
-	
+
 	public ArrayList<Player> getPlayerWithPatternCardButWithoutCurrencyStones() {
 		return persistenceFacade.getPlayerWithPatternCardButWithoutCurrencyStones(gameID);
 	}
 
-	public ArrayList<Player> updateScore() {
-		for (Player player : players) {
-			if (player.equals(clientPlayer)) {
-				player.setScore(scoreHandler.getScore(player, true));
-			} else {
-				player.setScore(scoreHandler.getScore(player, false));
-			}
-		}
-
-		return players;
-	}
-
 	// kevin stuff
 	public void setClientPlayerPaternCard(int idPatternCard) {
-		
+
 		persistenceFacade.setPlayerPaternCard(idPatternCard, clientPlayer.getPlayerID());
 		clientPlayer.getGlassWindow().loadPatternCard(persistenceFacade.getplayerPatternCard(clientPlayer.getPlayerID()));
 	}
-	
+
 	public PatternCard getPlayerPatternCard(int idPlayer) {
 		return persistenceFacade.getplayerPatternCard(idPlayer);
 	}
@@ -223,8 +219,7 @@ public class Game {
 	// end kevin stuff
 
 	/**
-	 * Removes the die from the list with dice and places them on the list table. It
-	 * also rolls the dice
+	 * Removes the die from the list with dice and places them on the list table. It also rolls the dice
 	 */
 	public void shakeSack() {
 		int numDice = players.size() * 2 + 1;
@@ -317,7 +312,6 @@ public class Game {
 		}
 
 		persistenceFacade.updatePlayerTurn(oldPlayer, currentPlayer);
-		
 
 		if (nextSeqnr == 1) {
 			nextRound();
@@ -326,14 +320,13 @@ public class Game {
 
 	public void nextRound() {
 		if (!table.isEmpty()) {
-			System.out.println("nextRound");
-			roundTrack[(currentRound)].addDice(table);
+			roundTrack[currentRound].addDice(table);
 			persistenceFacade.updateDiceRound(gameID, currentRound, table);
 			table.clear();
 			currentRound++;
 		}
 	}
-	
+
 	public void placeDie(int id, GameColor color) {
 		for (Die die : table) {
 			if (die.getDieId() == id && die.getDieColor() == color) {
@@ -344,8 +337,7 @@ public class Game {
 	/**
 	 * gets new Messages from the database and adds it to the chat.
 	 * 
-	 * @return ArrayList<Messages> list of Messages that need to be added to the
-	 *         ChatPane
+	 * @return ArrayList<Messages> list of Messages that need to be added to the ChatPane
 	 */
 	public ArrayList<Message> updateChat() {
 		ArrayList<Message> messages = persistenceFacade.updateChat(players, chat.getLastTimestamp());
@@ -353,22 +345,40 @@ public class Game {
 		return messages;
 	}
 
+	public ArrayList<Player> updateGlassWindow() {
+		for (Player player : players) {
+			if (player.equals(clientPlayer)) {
+				player.setScore(scoreHandler.getScore(player, true));
+			} else {
+				player.setScore(scoreHandler.getScore(player, false));
+			}
+		}
+
+		return players;
+	}
+
+	public void placeDie(int id, GameColor color, int x, int y) {
+		for (Die die : table) {
+			if (die.getDieId() == id && die.getDieColor() == color) {
+				currentPlayer.getGlassWindow().placeDie(x, y, die);
+				table.remove(table.indexOf(die));
+				break;
+			}
+		}
+	}
+
 	/**
-	 * Checks if the new Message has the same primary key as the message before it.
-	 * If this is the case the method wil return an ArrayList<Message> containing an
-	 * error message. Otherwise the message will be send to the database for
-	 * insertion. After insertion this method will call upon the updateChat function
-	 * to update the chat from the database.
+	 * Checks if the new Message has the same primary key as the message before it. If this is the case
+	 * the method wil return an ArrayList<Message> containing an error message. Otherwise the message
+	 * will be send to the database for insertion. After insertion this method will call upon the
+	 * updateChat function to update the chat from the database.
 	 * 
-	 * @param message
-	 *            - the Message that needs to be send to the database
-	 * @return ArrayList<Message> list of messages that need to be added to the
-	 *         ChatPane
+	 * @param message - the Message that needs to be send to the database
+	 * @return ArrayList<Message> list of messages that need to be added to the ChatPane
 	 */
 	public ArrayList<Message> sendMessage(Message message) {
 		if (message.getChatTime().equals(chat.getLastChatTime())) {
-			Message error = new Message("please don't spam you can only send 1 message a second", getClientPlayer(),
-					new Timestamp(System.currentTimeMillis()));
+			Message error = new Message("please don't spam you can only send 1 message a second", getClientPlayer(), new Timestamp(System.currentTimeMillis()));
 			ArrayList<Message> messages = new ArrayList<Message>();
 			messages.add(error);
 			return messages;
@@ -376,7 +386,6 @@ public class Game {
 			persistenceFacade.insertMessage(message);
 			return updateChat();
 		}
-
 	}
 
 	// GETTERS AND SETTERS

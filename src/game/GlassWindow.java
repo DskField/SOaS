@@ -16,6 +16,10 @@ public class GlassWindow {
 		this.patterncard = patterncard;
 	}
 
+	public void placeDie(int x, int y, Die die) {
+		getSpace(x, y).setDie(die);
+	}
+
 	//Is used to add SpaceGlass Objects to the GlassWindow
 	public void loadSpaces(SpaceGlass[][] spaces) {
 		this.spaces = spaces;
@@ -40,7 +44,7 @@ public class GlassWindow {
 	public GameColor getColor() {
 		return color;
 	}
-	
+
 	public void setPaterNull(PatternCard patternCard) {
 		this.patterncard = patternCard;
 	}
