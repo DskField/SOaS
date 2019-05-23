@@ -322,13 +322,6 @@ public class Game {
 		}
 	}
 
-	public void placeDie(int id, GameColor color) {
-		for (Die die : table) {
-			if (die.getDieId() == id && die.getDieColor() == color) {
-			}
-		}
-	}
-
 	/**
 	 * gets new Messages from the database and adds it to the chat.
 	 * 
@@ -355,7 +348,14 @@ public class Game {
 	public void placeDie(int id, GameColor color, int x, int y) {
 		for (Die die : table) {
 			if (die.getDieId() == id && die.getDieColor() == color) {
-				currentPlayer.getGlassWindow().placeDie(x, y, die);
+				for (Player player : players) {
+					if (player.getPlayerID() == currentPlayer.getPlayerID()) {
+						player.getGlassWindow().placeDie(x, y, die);
+						persistenceFacade.updateSpaceGlass(player.getPlayerID(), player.getGlassWindow(), gameID);
+						break;
+					}
+				}
+
 				table.remove(table.indexOf(die));
 				break;
 			}

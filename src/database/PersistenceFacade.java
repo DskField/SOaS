@@ -217,6 +217,10 @@ public class PersistenceFacade {
 		return spaceGlassDAO.getGlassWindow(idPlayer);
 	}
 
+	public void updateSpaceGlass(int idPlayer, GlassWindow glassWindow, int gameId) {
+		spaceGlassDAO.updateSpaceGlass(idPlayer, glassWindow, gameId);
+	}
+
 	//PatternCardDAO
 	public void insertPatternCardOptions(int idPlayer) {
 		patternCardDAO.insertPatternCardOptions(idPlayer);
