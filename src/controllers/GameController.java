@@ -146,7 +146,7 @@ public class GameController {
 				}
 			}
 		} else {
-
+			gameScene.updateRoundTrack(game.getRoundTrack());
 			gameScene.updateChat(game.updateChat());
 			gameScene.updateGlassWindow(game.updateGlassWindow());
 
