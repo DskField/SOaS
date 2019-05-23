@@ -51,6 +51,10 @@ public class GlassWindowPane extends BorderPane {
 		fieldPane = new FieldPane(player.getGlassWindow().getPatternCard(), gameController);
 		//		fieldPane.loadGlassWindow(player.getGlassWindow());
 
+		if (!clientPlayer) {
+			fieldPane.setDisable(true);
+		}
+
 		windowCurve = new CornerRadii(5, 3, 3, 5, 0, 0, 0, 0, true, true, true, true, false, false, false, false);
 
 		setBackground(new Background(new BackgroundFill(Color.rgb(68, 47, 25), windowCurve, null)));
