@@ -167,7 +167,6 @@ public class GameScene extends Scene {
 //		System.out.println(offer.get(0).getDieColor());
 	}
 	public void updateTurn(boolean myTurn) {
-		System.out.println("GAMESCENE "+myTurn);
 		if(myTurn) {
 			dieOfferPane.setDisable(false);
 			nextButton.setDisable(false);
@@ -270,8 +269,9 @@ public class GameScene extends Scene {
 	}
 	//Handles 
 	private void handleNextButton() {
-		gameController.nextTurn();
 		dieOfferPane.setDisable(true);
+		gameController.nextTurn();
+		
 	}
 	
 	/**

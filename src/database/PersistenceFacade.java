@@ -144,8 +144,9 @@ public class PersistenceFacade {
 		return playerDAO.getCurrentPlayer(idGame);
 	}
 
-	public void updatePlayerTurn(Player oldPlayer, Player newPlayer) {
+	public void updatePlayerTurn(Player oldPlayer, Player newPlayer, int idgame) {
 		playerDAO.updatePlayerTurn(oldPlayer, newPlayer);
+		gameDAO.updateCurrentPlayer(idgame, newPlayer);
 	}
 
 	public void setPlayerPaternCard(int idPatternCard, int idPlayer) {

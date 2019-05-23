@@ -56,7 +56,6 @@ class DieDAO {
 				String color = dbResultSet.getString("g.diecolor");
 				int round = dbResultSet.getInt("g.round");
 				int value = dbResultSet.getInt("g.eyes");
-				System.out.println(color);
 				Die die = new Die(number, color, round, value);
 				results.add(die);
 			}
