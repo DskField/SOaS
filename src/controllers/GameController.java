@@ -147,9 +147,11 @@ public class GameController {
 				gameScene.updateTable(game.getTable());
 				update();
 			} else {
-				for (Player player : game.getPlayerWithPatternCardButWithoutCurrencyStones()) {
-					PatternCard patternCard = game.getPlayerPatternCard(player.getPlayerID());
-					game.updateCurrencyStone(player.getPlayerID(), patternCard.getDifficulty());
+				if (getClientPlayer().getPlayerID() == getPlayers().get(0).getPlayerID()) {
+					for (Player player : game.getPlayerWithPatternCardButWithoutCurrencyStones()) {
+						PatternCard patternCard = game.getPlayerPatternCard(player.getPlayerID());
+						game.updateCurrencyStone(player.getPlayerID(), patternCard.getDifficulty());
+					}
 				}
 			}
 		} else {
