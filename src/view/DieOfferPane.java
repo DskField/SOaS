@@ -72,12 +72,7 @@ public class DieOfferPane extends HBox {
 	}
 
 	public void removeDie(DiePane diePane) {
-		for (DiePane die : dice) {
-			if (diePane.getNumber() == die.getNumber() && diePane.getColor() == die.getColor()) {
-				dice.remove(dice.indexOf(die));
-			}
-		}
-
-		updateDice();
+		getChildren().remove(diePane);
+		dice.remove(dice.indexOf(diePane));
 	}
 }

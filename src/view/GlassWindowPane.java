@@ -49,7 +49,7 @@ public class GlassWindowPane extends BorderPane {
 		this.color = player.getColor();
 
 		fieldPane = new FieldPane(player.getGlassWindow().getPatternCard(), gameController);
-		fieldPane.loadGlassWindow(player.getGlassWindow());
+		//		fieldPane.loadGlassWindow(player.getGlassWindow());
 
 		windowCurve = new CornerRadii(5, 3, 3, 5, 0, 0, 0, 0, true, true, true, true, false, false, false, false);
 

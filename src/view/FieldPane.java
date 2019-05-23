@@ -24,12 +24,9 @@ public class FieldPane extends FlowPane {
 	private SpacePane[][] glassSpaces;
 	private int patternCardID;
 
-	private boolean isSmall;
-
 	public FieldPane(PatternCard patternCard, GameController gameController) {
 		super(squareGap, squareGap);
 		this.patternCardID = patternCard.getPatternCardId();
-		this.isSmall = false;
 
 		spaces = new ArrayList<SpacePane>();
 		patternSpaces = new SpacePane[5][4];
@@ -88,7 +85,6 @@ public class FieldPane extends FlowPane {
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
 				if (glassSpaces[x][y].getColor() != GameColor.EMPTY) {
-					glassSpaces[x][y].resize(isSmall);
 					spaces.add(glassSpaces[x][y]);
 				} else {
 					spaces.add(patternSpaces[x][y]);
@@ -100,9 +96,8 @@ public class FieldPane extends FlowPane {
 	}
 
 	public void resize(boolean isSmall) {
-		this.isSmall = isSmall;
 
-		if (this.isSmall) {
+		if (isSmall) {
 			setPrefSize(patternWidth / 2, patternHeight / 2);
 			setMaxSize(patternWidth / 2, patternHeight / 2);
 		} else {
@@ -112,8 +107,8 @@ public class FieldPane extends FlowPane {
 
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
-				glassSpaces[x][y].resize(this.isSmall);
-				patternSpaces[x][y].resize(this.isSmall);
+				glassSpaces[x][y].resize(isSmall);
+				patternSpaces[x][y].resize(isSmall);
 			}
 		}
 	}

@@ -39,7 +39,7 @@ public class GameController {
 		//		users.add(new User("speler3", 0, 0, GameColor.RED, 0));
 		//		users.add(new User("speler4", 0, 0, GameColor.RED, 0));
 		//		pf.createGame(users);
-		joinGame(1, new User("speler1", 0, 0, GameColor.RED, 0));
+		joinGame(1, new User("speler4", 0, 0, GameColor.RED, 0));
 	}
 
 	public void joinGame(int idGame, User clientUser) {
@@ -144,6 +144,7 @@ public class GameController {
 				game.loadGame();
 				gameScene = new GameScene(this);
 				mainApplication.setScene(gameScene);
+				gameScene.updateTable(game.getTable());
 				update();
 			} else {
 				for (Player player : game.getPlayerWithPatternCardButWithoutCurrencyStones()) {
@@ -154,7 +155,10 @@ public class GameController {
 		} else {
 			gameScene.updateChat(game.updateChat());
 			gameScene.updateGlassWindow(game.updateGlassWindow());
-			gameScene.updateTable(game.getTable());
+
+			if (game.getCurrentPlayer().getPlayerID() != getClientPlayer().getPlayerID()) {
+				gameScene.updateTable(game.getTable());
+			}
 		}
 	}
 
@@ -314,20 +318,22 @@ public class GameController {
 			for (SpaceGlass spaceGlass : available) {
 				if (spaceGlass.getXCor() == spacePane.getX() && spaceGlass.getYCor() == spacePane.getY()) {
 					game.placeDie(diePane.getNumber(), diePane.getColor(), spacePane.getX(), spacePane.getY());
+					gameScene.removeDieTable();
 					gameScene.removeHighlight();
+					update();
 					break;
 				}
 			}
 		}
 	}
-	
+
 	private void gameFinish() {
 		int maxScore = -99;
 		Player winner = game.getPlayers().get(0);
 		game.setFinalScore();
-		for(Player player : game.getPlayers()) {
+		for (Player player : game.getPlayers()) {
 			System.out.println(player.getScore());
-			if(maxScore < player.getScore()) {
+			if (maxScore < player.getScore()) {
 				maxScore = player.getScore();
 				winner = player;
 			}

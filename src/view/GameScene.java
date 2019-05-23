@@ -157,6 +157,10 @@ public class GameScene extends Scene {
 		dieOfferPane.addDice(dice);
 	}
 
+	public void removeDieTable() {
+		dieOfferPane.removeDie(getSelectedDie());
+	}
+
 	public void updateScore(ArrayList<Player> players) {
 		for (Player player : players) {
 			if (mainGlassWindow != null && mainGlassWindow.getColor() == player.getColor()) {
@@ -351,7 +355,7 @@ public class GameScene extends Scene {
 			}
 		}
 	}
-	
+
 	public void gameFinish(String winText) {
 		Label winner = new Label(winText);
 		rootPane.setCenter(winner);

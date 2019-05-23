@@ -92,6 +92,7 @@ public class Game {
 		loadCards();
 		loadGlassWindow();
 		loadCurrencyStones();
+		loadCurrentPlayer();
 
 		scoreHandler = new ScoreHandler(collectiveGoalCards);
 	}
@@ -109,7 +110,6 @@ public class Game {
 	 */
 	private void loadPlayers() {
 		players = persistenceFacade.getAllPlayersInGame(gameID);
-		currentPlayer = persistenceFacade.getCurrentPlayer(gameID);
 		for (Player player : players) {
 			if (player.getUsername().equals(clientUser.getUsername())) {
 				clientPlayer = player;
@@ -141,10 +141,6 @@ public class Game {
 				player.getGlassWindow().loadPatternCard(null);
 			}
 
-			if (player.getPlayerID() == currentPlayer.getPlayerID()) {
-				currentPlayer = player;
-			}
-
 			if (player.getPlayerID() == clientPlayer.getPlayerID()) {
 				player.getGlassWindow().setColor(colors[0]);
 			} else {
@@ -172,9 +168,18 @@ public class Game {
 		}
 	}
 
+	public void loadCurrentPlayer() {
+		int id = persistenceFacade.getCurrentPlayer(gameID).getPlayerID();
+		for (Player player : players) {
+			if (player.getPlayerID() == id) {
+				currentPlayer = player;
+			}
+		}
+	}
+
 	// kevin stuff
 	public void setFinalScore() {
-		for(Player player : players) {
+		for (Player player : players) {
 			player.setScore(scoreHandler.getScore(player, true));
 		}
 	}
@@ -341,7 +346,6 @@ public class Game {
 	}
 
 	public void placeDie(int id, GameColor color, int x, int y) {
-		System.out.println(id + " - " + color);
 		for (Die die : table) {
 			if (die.getDieId() == id && die.getDieColor() == color) {
 				currentPlayer.getGlassWindow().placeDie(x, y, die);
