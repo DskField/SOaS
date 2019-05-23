@@ -60,7 +60,7 @@ public class Game {
 		currencyStones = new ArrayList<CurrencyStone>();
 		dice = new ArrayList<Die>();
 		roundTrack = new Round[10];
-		currentRound = 5;
+		currentRound = 0;
 
 		table = new ArrayList<Die>();
 
@@ -87,14 +87,19 @@ public class Game {
 	}
 
 	public void loadGame() {
+		loadCurrentRound();
 		loadPlayers();
 		loadDice();
 		loadCards();
 		loadGlassWindow();
 		loadCurrencyStones();
 		loadCurrentPlayer();
-
+		System.out.println(currentRound);
 		scoreHandler = new ScoreHandler(collectiveGoalCards);
+	}
+	
+	private void loadCurrentRound() {
+		currentRound = persistenceFacade.getCurrentRound(gameID);
 	}
 
 	/**

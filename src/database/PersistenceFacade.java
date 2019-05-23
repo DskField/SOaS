@@ -96,6 +96,9 @@ public class PersistenceFacade {
 		collectiveGoalCardDAO.insertRandomSharedCollectiveGoalCards(idGame);
 		toolCardDAO.insertRandomGameToolCards(idGame);	
 	}
+	public int getCurrentRound(int idgame) {
+		return gameDAO.getCurrentRound(idgame);
+	}
 
 	// CollectiveGoalCardDAO
 	public ArrayList<CollectiveGoalCard> getSharedCollectiveGoalCards(int idGame) {
