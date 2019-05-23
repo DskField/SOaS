@@ -88,14 +88,15 @@ public class PersistenceFacade {
 		gameDAO.updateCurrentPlayer(gameID, playerDAO.getCurrentPlayer(gameID));
 		spaceGlassDAO.insertGlassWindows(playerDAO.getAllPlayersInGame(gameID));
 	}
-	
+
 	public void setCardsGame(int idGame) {
-		for(Player player : playerDAO.getAllPlayersInGame(idGame)) {
+		for (Player player : playerDAO.getAllPlayersInGame(idGame)) {
 			patternCardDAO.insertPatternCardOptions(player.getPlayerID());
 		}
 		collectiveGoalCardDAO.insertRandomSharedCollectiveGoalCards(idGame);
-		toolCardDAO.insertRandomGameToolCards(idGame);	
+		toolCardDAO.insertRandomGameToolCards(idGame);
 	}
+
 	public int getCurrentRound(int idgame) {
 		return gameDAO.getCurrentRound(idgame);
 	}
@@ -155,12 +156,12 @@ public class PersistenceFacade {
 	public void setPlayerPaternCard(int idPatternCard, int idPlayer) {
 		playerDAO.setPlayerPaternCard(idPatternCard, idPlayer);
 	}
-	
+
 	public ArrayList<Player> getPlayersWithoutPatternCard(int idGame) {
 		return playerDAO.getPlayersWithoutPatternCard(idGame);
 	}
-	
-	public ArrayList<Player> getPlayerWithPatternCardButWithoutCurrencyStones(int idGame){
+
+	public ArrayList<Player> getPlayerWithPatternCardButWithoutCurrencyStones(int idGame) {
 		return playerDAO.getPlayerWithPatternCardButWithoutCurrencyStones(idGame);
 	}
 
@@ -193,6 +194,7 @@ public class PersistenceFacade {
 	public Round[] getRoundTrack(int gameID) {
 		return dieDAO.getRoundTrack(gameID);
 	}
+
 	public ArrayList<Die> getTableDice(int gameID, int round) {
 		return dieDAO.getTableDice(gameID, round);
 	}

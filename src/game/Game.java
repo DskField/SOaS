@@ -73,17 +73,6 @@ public class Game {
 		for (int i = 0; i < roundTrack.length; i++) {
 			roundTrack[i] = new Round();
 		}
-
-		//Temporaray
-		table.add(new Die(1, GameColor.RED.getDatabaseName(), 4, 5));
-		table.add(new Die(16, GameColor.BLUE.getDatabaseName(), 4, 2));
-		table.add(new Die(17, GameColor.BLUE.getDatabaseName(), 4, 3));
-		table.add(new Die(7, GameColor.GREEN.getDatabaseName(), 4, 4));
-		table.add(new Die(10, GameColor.YELLOW.getDatabaseName(), 4, 2));
-		table.add(new Die(2, GameColor.RED.getDatabaseName(), 4, 3));
-		table.add(new Die(9, GameColor.PURPLE.getDatabaseName(), 4, 6));
-		table.add(new Die(11, GameColor.YELLOW.getDatabaseName(), 4, 1));
-		table.add(new Die(18, GameColor.BLUE.getDatabaseName(), 4, 3));
 	}
 
 	public void loadGame() {
@@ -94,10 +83,9 @@ public class Game {
 		loadGlassWindow();
 		loadCurrencyStones();
 		loadCurrentPlayer();
-		System.out.println(currentRound);
 		scoreHandler = new ScoreHandler(collectiveGoalCards);
 	}
-	
+
 	private void loadCurrentRound() {
 		currentRound = persistenceFacade.getCurrentRound(gameID);
 	}
