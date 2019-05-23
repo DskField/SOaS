@@ -80,16 +80,21 @@ class PlayerDAO {
 
 	private void updatePlayer(Player oldPlayer, Player newPlayer) {
 		try {
+			System.out.println(oldPlayer.getSeqnr() + " " + newPlayer.getSeqnr());
 			PreparedStatement stmtOldPlayer = con.prepareStatement("UPDATE player SET seqnr = ?, isCurrentPlayer = FALSE WHERE idPlayer = ?;");
 			stmtOldPlayer.setInt(1, oldPlayer.getSeqnr());
 			stmtOldPlayer.setInt(2, oldPlayer.getPlayerID());
 			PreparedStatement stmtNewPlayer = con.prepareStatement("UPDATE player SET isCurrentPlayer = TRUE WHERE idPlayer = ?;");
+			PreparedStatement stmtOldPlayer2 = con.prepareStatement("UPDATE player SET isCurrentPlayer = FALSE WHERE idPlayer = ?;");
 			stmtNewPlayer.setInt(1, newPlayer.getPlayerID());
+			stmtOldPlayer2.setInt(1, oldPlayer.getPlayerID());
 			stmtOldPlayer.executeUpdate();
 			stmtNewPlayer.executeUpdate();
+			stmtOldPlayer2.executeUpdate();
 			con.commit();
 			stmtOldPlayer.close();
 			stmtNewPlayer.close();
+			stmtOldPlayer2.close();
 		} catch (SQLException e) {
 			System.err.println("PlayerDAO " + e.getMessage());
 		}
@@ -136,7 +141,7 @@ class PlayerDAO {
 				stmt.setString(1, users.get(i).getUsername());
 				stmt.setInt(2, idGame);
 				stmt.setString(3, status);
-				stmt.setInt(4, i);
+				stmt.setInt(4, i + 1);
 				stmt.setBoolean(5, (i == 0) ? true : false);
 				stmt.setString(6, colors.get(i));
 

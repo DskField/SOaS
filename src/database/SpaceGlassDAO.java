@@ -89,12 +89,10 @@ class SpaceGlassDAO {
 
 	//Is used to update all the playerFrameFields of a single player in the database
 	void updateSpaceGlass(int idPlayer, GlassWindow glassWindow, int gameId) {
-		System.out.println(idPlayer + " " + gameId);
 		try {
 			for (int x = 0; x < 5; x++) {
 				for (int y = 0; y < 4; y++) {
 					if (glassWindow.getSpace(x, y).getDie() != null) {
-						System.out.println(x + " " + y);
 						PreparedStatement stmt = con.prepareStatement("UPDATE playerframefield SET idgame = ?, dienumber = ?, diecolor = ? WHERE player_idplayer = ? AND position_x = ? AND position_y = ? ");
 						stmt.setInt(1, gameId);
 						stmt.setInt(2, glassWindow.getSpace(x, y).getDie().getDieId());
