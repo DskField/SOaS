@@ -340,6 +340,8 @@ public class Game {
 			} else {
 				player.setScore(scoreHandler.getScore(player, false));
 			}
+
+			player.loadGlassWindow(persistenceFacade.getGlassWindow(player.getPlayerID()));
 		}
 
 		return players;
