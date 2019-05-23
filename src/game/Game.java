@@ -76,13 +76,13 @@ public class Game {
 	}
 
 	public void loadGame() {
-		loadCurrentRound();
 		loadPlayers();
-		loadDice();
 		loadCards();
 		loadGlassWindow();
 		loadCurrencyStones();
 		loadCurrentPlayer();
+		loadCurrentRound();
+		loadDice();
 		scoreHandler = new ScoreHandler(collectiveGoalCards);
 	}
 
@@ -100,7 +100,6 @@ public class Game {
 		if (table.isEmpty() && roundTrack[currentRound - 1].getDice().isEmpty() && currentPlayer.getPlayerID() == clientPlayer.getPlayerID()) {
 			//if its my turn when I join the game it shakes the sack
 			shakeSack();
-
 		}
 	}
 
