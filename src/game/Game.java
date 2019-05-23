@@ -86,7 +86,7 @@ public class Game {
 		scoreHandler = new ScoreHandler(collectiveGoalCards);
 	}
 
-	private void loadCurrentRound() {
+	public void loadCurrentRound() {
 		currentRound = persistenceFacade.getCurrentRound(gameID);
 	}
 
@@ -403,6 +403,7 @@ public class Game {
 	}
 
 	public ArrayList<Die> getTable() {
+		table = persistenceFacade.getTableDice(gameID, currentRound);
 		return table;
 	}
 

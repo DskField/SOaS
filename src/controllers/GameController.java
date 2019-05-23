@@ -148,10 +148,10 @@ public class GameController {
 			}
 		} else {
 			if (game.getCurrentRound() <= 10) {
-				gameScene.updateRoundTrack(game.getRoundTrack());
-				gameScene.updateChat(game.updateChat());
-				gameScene.updateGlassWindow(game.updateGlassWindow());
+				game.loadCurrentRound();
 				game.loadCurrentPlayer();
+				gameScene.updateRoundTrack(game.getRoundTrack());
+				gameScene.updateGlassWindow(game.updateGlassWindow());
 
 				if (game.getCurrentPlayer().getPlayerID() != getClientPlayer().getPlayerID()) {
 					gameScene.disableDieOfferPane(true);
@@ -159,6 +159,8 @@ public class GameController {
 				}
 
 				gameScene.updateTurn(checkMyTurn());
+
+				gameScene.updateChat(game.updateChat());
 			} else {
 				gameFinish();
 				timer.stop();
