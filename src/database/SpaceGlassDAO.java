@@ -88,19 +88,21 @@ class SpaceGlassDAO {
 	}
 
 	//Is used to update all the playerFrameFields of a single player in the database
-	private void updateSpaceGlass(int idPlayer, GlassWindow glassWindow, int gameId) {
+	void updateSpaceGlass(int idPlayer, GlassWindow glassWindow, int gameId) {
 		try {
-			PreparedStatement stmt = con.prepareStatement("UPDATE playerframefield SET idgame = ?, dienumber = ?, diecolor = ? WHERE player_playerid = ? AND position_x = ? AND position_y = ? ");
 			for (int x = 0; x < 5; x++) {
 				for (int y = 0; y < 4; y++) {
-					stmt.setInt(1, gameId);
-					stmt.setInt(2, glassWindow.getSpace(x, y).getDie().getDieId());
-					stmt.setString(3, glassWindow.getSpace(x, y).getDie().getDieColor().getDatabaseName());
-					stmt.setInt(4, idPlayer);
-					stmt.setInt(5, glassWindow.getSpace(x, y).getXCor());
-					stmt.setInt(6, glassWindow.getSpace(x, y).getYCor());
-					stmt.executeUpdate();
-					stmt.close();
+					if (glassWindow.getSpace(x, y).getDie() != null) {
+						PreparedStatement stmt = con.prepareStatement("UPDATE playerframefield SET idgame = ?, dienumber = ?, diecolor = ? WHERE player_idplayer = ? AND position_x = ? AND position_y = ? ");
+						stmt.setInt(1, gameId);
+						stmt.setInt(2, glassWindow.getSpace(x, y).getDie().getDieId());
+						stmt.setString(3, glassWindow.getSpace(x, y).getDie().getDieColor().getDatabaseName());
+						stmt.setInt(4, idPlayer);
+						stmt.setInt(5, glassWindow.getSpace(x, y).getXCor() + 1);
+						stmt.setInt(6, glassWindow.getSpace(x, y).getYCor() + 1);
+						stmt.executeUpdate();
+						stmt.close();
+					}
 				}
 			}
 			con.commit();

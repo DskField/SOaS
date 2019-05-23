@@ -88,13 +88,17 @@ public class PersistenceFacade {
 		gameDAO.updateCurrentPlayer(gameID, playerDAO.getCurrentPlayer(gameID));
 		spaceGlassDAO.insertGlassWindows(playerDAO.getAllPlayersInGame(gameID));
 	}
-	
+
 	public void setCardsGame(int idGame) {
-		for(Player player : playerDAO.getAllPlayersInGame(idGame)) {
+		for (Player player : playerDAO.getAllPlayersInGame(idGame)) {
 			patternCardDAO.insertPatternCardOptions(player.getPlayerID());
 		}
 		collectiveGoalCardDAO.insertRandomSharedCollectiveGoalCards(idGame);
-		toolCardDAO.insertRandomGameToolCards(idGame);	
+		toolCardDAO.insertRandomGameToolCards(idGame);
+	}
+
+	public int getCurrentRound(int idgame) {
+		return gameDAO.getCurrentRound(idgame);
 	}
 
 	// CollectiveGoalCardDAO
@@ -144,19 +148,20 @@ public class PersistenceFacade {
 		return playerDAO.getCurrentPlayer(idGame);
 	}
 
-	public void updatePlayerTurn(Player oldPlayer, Player newPlayer) {
+	public void updatePlayerTurn(Player oldPlayer, Player newPlayer, int idgame) {
 		playerDAO.updatePlayerTurn(oldPlayer, newPlayer);
+		gameDAO.updateCurrentPlayer(idgame, newPlayer);
 	}
 
 	public void setPlayerPaternCard(int idPatternCard, int idPlayer) {
 		playerDAO.setPlayerPaternCard(idPatternCard, idPlayer);
 	}
-	
+
 	public ArrayList<Player> getPlayersWithoutPatternCard(int idGame) {
 		return playerDAO.getPlayersWithoutPatternCard(idGame);
 	}
-	
-	public ArrayList<Player> getPlayerWithPatternCardButWithoutCurrencyStones(int idGame){
+
+	public ArrayList<Player> getPlayerWithPatternCardButWithoutCurrencyStones(int idGame) {
 		return playerDAO.getPlayerWithPatternCardButWithoutCurrencyStones(idGame);
 	}
 
@@ -189,6 +194,7 @@ public class PersistenceFacade {
 	public Round[] getRoundTrack(int gameID) {
 		return dieDAO.getRoundTrack(gameID);
 	}
+
 	public ArrayList<Die> getTableDice(int gameID, int round) {
 		return dieDAO.getTableDice(gameID, round);
 	}
@@ -209,6 +215,10 @@ public class PersistenceFacade {
 	//SpaceGlassDAO
 	public GlassWindow getGlassWindow(int idPlayer) {
 		return spaceGlassDAO.getGlassWindow(idPlayer);
+	}
+
+	public void updateSpaceGlass(int idPlayer, GlassWindow glassWindow, int gameId) {
+		spaceGlassDAO.updateSpaceGlass(idPlayer, glassWindow, gameId);
 	}
 
 	//PatternCardDAO

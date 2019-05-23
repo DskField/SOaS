@@ -60,7 +60,7 @@ public class Game {
 		currencyStones = new ArrayList<CurrencyStone>();
 		dice = new ArrayList<Die>();
 		roundTrack = new Round[10];
-		currentRound = 5;
+		currentRound = 0;
 
 		table = new ArrayList<Die>();
 
@@ -73,28 +73,21 @@ public class Game {
 		for (int i = 0; i < roundTrack.length; i++) {
 			roundTrack[i] = new Round();
 		}
-
-		//Temporaray
-		table.add(new Die(1, GameColor.RED.getDatabaseName(), 4, 5));
-		table.add(new Die(16, GameColor.BLUE.getDatabaseName(), 4, 2));
-		table.add(new Die(17, GameColor.BLUE.getDatabaseName(), 4, 3));
-		table.add(new Die(7, GameColor.GREEN.getDatabaseName(), 4, 4));
-		table.add(new Die(10, GameColor.YELLOW.getDatabaseName(), 4, 2));
-		table.add(new Die(2, GameColor.RED.getDatabaseName(), 4, 3));
-		table.add(new Die(9, GameColor.PURPLE.getDatabaseName(), 4, 6));
-		table.add(new Die(11, GameColor.YELLOW.getDatabaseName(), 4, 1));
-		table.add(new Die(18, GameColor.BLUE.getDatabaseName(), 4, 3));
 	}
 
 	public void loadGame() {
 		loadPlayers();
-		loadDice();
 		loadCards();
 		loadGlassWindow();
 		loadCurrencyStones();
 		loadCurrentPlayer();
-
+		loadCurrentRound();
+		loadDice();
 		scoreHandler = new ScoreHandler(collectiveGoalCards);
+	}
+
+	public void loadCurrentRound() {
+		currentRound = persistenceFacade.getCurrentRound(gameID);
 	}
 
 	/**
@@ -107,7 +100,6 @@ public class Game {
 		if (table.isEmpty() && roundTrack[currentRound - 1].getDice().isEmpty() && currentPlayer.getPlayerID() == clientPlayer.getPlayerID()) {
 			//if its my turn when I join the game it shakes the sack
 			shakeSack();
-
 		}
 	}
 
@@ -246,75 +238,79 @@ public class Game {
 		int maxSeqnr = totalPlayers * 2;
 		int nextSeqnr = 0;
 
-		switch (currentPlayer.getSeqnr()) {
-		case 1:
-			currentPlayer.setSeqnr(maxSeqnr);
-			nextSeqnr = 2;
-			break;
-		case 2:
-			currentPlayer.setSeqnr(maxSeqnr - 1);
-			nextSeqnr = 3;
-			break;
-		case 3:
-			if (totalPlayers == 2) {
-				currentPlayer.setSeqnr(1);
-			} else {
-				currentPlayer.setSeqnr(maxSeqnr - 2);
-			}
-			nextSeqnr = 4;
-			break;
-		case 4:
-			if (totalPlayers == 2) {
-				currentPlayer.setSeqnr(2);
-				nextSeqnr = 1;
-				break;
-			} else if (totalPlayers == 3) {
-				currentPlayer.setSeqnr(2);
-			} else if (totalPlayers == 4) {
-				currentPlayer.setSeqnr(maxSeqnr - 3);
-			}
-			nextSeqnr = 5;
-			break;
-		case 5:
-			if (totalPlayers == 3) {
-				currentPlayer.setSeqnr(1);
-			} else if (totalPlayers == 4) {
-				currentPlayer.setSeqnr(3);
-			}
-			nextSeqnr = 6;
-			break;
-		case 6:
-			if (totalPlayers == 3) {
-				currentPlayer.setSeqnr(3);
-				nextSeqnr = 1;
-				break;
-			} else if (totalPlayers == 4) {
-				currentPlayer.setSeqnr(2);
-				nextSeqnr = 7;
-				break;
-			}
-		case 7:
-			currentPlayer.setSeqnr(1);
-			nextSeqnr = 8;
-			break;
-		case 8:
-			currentPlayer.setSeqnr(4);
-			nextSeqnr = 1;
-			break;
-		}
-
-		Player oldPlayer = currentPlayer;
-
 		for (Player player : players) {
-			if (player.getSeqnr() == nextSeqnr) {
-				currentPlayer = player;
+			if (player.getPlayerID() == currentPlayer.getPlayerID()) {
+				switch (player.getSeqnr()) {
+				case 1:
+					player.setSeqnr(maxSeqnr);
+					nextSeqnr = 2;
+					break;
+				case 2:
+					player.setSeqnr(maxSeqnr - 1);
+					nextSeqnr = 3;
+					break;
+				case 3:
+					if (totalPlayers == 2) {
+						player.setSeqnr(1);
+					} else {
+						player.setSeqnr(maxSeqnr - 2);
+					}
+					nextSeqnr = 4;
+					break;
+				case 4:
+					if (totalPlayers == 2) {
+						player.setSeqnr(2);
+						nextSeqnr = 1;
+						break;
+					} else if (totalPlayers == 3) {
+						player.setSeqnr(2);
+					} else if (totalPlayers == 4) {
+						player.setSeqnr(maxSeqnr - 3);
+					}
+					nextSeqnr = 5;
+					break;
+				case 5:
+					if (totalPlayers == 3) {
+						player.setSeqnr(1);
+					} else if (totalPlayers == 4) {
+						player.setSeqnr(3);
+					}
+					nextSeqnr = 6;
+					break;
+				case 6:
+					if (totalPlayers == 3) {
+						player.setSeqnr(3);
+						nextSeqnr = 1;
+						break;
+					} else if (totalPlayers == 4) {
+						player.setSeqnr(2);
+						nextSeqnr = 7;
+						break;
+					}
+				case 7:
+					player.setSeqnr(1);
+					nextSeqnr = 8;
+					break;
+				case 8:
+					player.setSeqnr(4);
+					nextSeqnr = 1;
+					break;
+				}
+
+				for (Player player2 : players) {
+					if (player2.getSeqnr() == nextSeqnr) {
+						currentPlayer = player2;
+					}
+				}
+
+				persistenceFacade.updatePlayerTurn(player, currentPlayer, gameID);
+
+				if (nextSeqnr == 1) {
+					nextRound();
+				}
+
+				return;
 			}
-		}
-
-		persistenceFacade.updatePlayerTurn(oldPlayer, currentPlayer);
-
-		if (nextSeqnr == 1) {
-			nextRound();
 		}
 	}
 
@@ -324,13 +320,9 @@ public class Game {
 			persistenceFacade.updateDiceRound(gameID, currentRound, table);
 			table.clear();
 			currentRound++;
-		}
-	}
+		} else {
+			shakeSack();
 
-	public void placeDie(int id, GameColor color) {
-		for (Die die : table) {
-			if (die.getDieId() == id && die.getDieColor() == color) {
-			}
 		}
 	}
 
@@ -352,6 +344,8 @@ public class Game {
 			} else {
 				player.setScore(scoreHandler.getScore(player, false));
 			}
+
+			player.getGlassWindow().loadSpaces(persistenceFacade.getGlassWindow(player.getPlayerID()).getSpaces());
 		}
 
 		return players;
@@ -360,7 +354,14 @@ public class Game {
 	public void placeDie(int id, GameColor color, int x, int y) {
 		for (Die die : table) {
 			if (die.getDieId() == id && die.getDieColor() == color) {
-				currentPlayer.getGlassWindow().placeDie(x, y, die);
+				for (Player player : players) {
+					if (player.getPlayerID() == currentPlayer.getPlayerID()) {
+						player.getGlassWindow().placeDie(x, y, die);
+						persistenceFacade.updateSpaceGlass(player.getPlayerID(), player.getGlassWindow(), gameID);
+						break;
+					}
+				}
+
 				table.remove(table.indexOf(die));
 				break;
 			}
@@ -402,6 +403,7 @@ public class Game {
 	}
 
 	public ArrayList<Die> getTable() {
+		table = persistenceFacade.getTableDice(gameID, currentRound);
 		return table;
 	}
 

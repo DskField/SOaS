@@ -28,6 +28,9 @@ public class GameController {
 	private ChoiceScene choiceScene;
 	private AnimationTimerExt timer;
 
+	//TODO: write query for this
+	private boolean dieNotPlaced = true;
+
 	public GameController(MainApplication mainApplication) {
 		this.mainApplication = mainApplication;
 		// Temporary call, when the game will be created the ClientController needs
@@ -39,7 +42,8 @@ public class GameController {
 		//		users.add(new User("speler3", 0, 0, GameColor.RED, 0));
 		//		users.add(new User("speler4", 0, 0, GameColor.RED, 0));
 		//		pf.createGame(users);
-		joinGame(1, new User("speler4", 0, 0, GameColor.RED, 0));
+		//		pf.setCardsGame(5);
+		joinGame(5, new User("speler1", 0, 0, GameColor.RED, 0));
 	}
 
 	public void joinGame(int idGame, User clientUser) {
@@ -86,7 +90,7 @@ public class GameController {
 	}
 
 	// kevin stuff
-	//FIXME spelling Pattern
+	// FIXME spelling Pattern
 	public void setClientPlayerPaternCard(int idPatternCard) {
 		game.setClientPlayerPaternCard(idPatternCard);
 
@@ -146,14 +150,31 @@ public class GameController {
 				}
 			}
 		} else {
+			if (game.getCurrentRound() <= 10) {
+				game.loadCurrentRound();
+				game.loadCurrentPlayer();
+				gameScene.updateRoundTrack(game.getRoundTrack());
+				gameScene.updateGlassWindow(game.updateGlassWindow());
 
-			gameScene.updateChat(game.updateChat());
-			gameScene.updateGlassWindow(game.updateGlassWindow());
+				if (game.getCurrentPlayer().getPlayerID() != getClientPlayer().getPlayerID()) {
+					gameScene.disableDieOfferPane(true);
+					gameScene.updateTable(game.getTable());
+					dieNotPlaced = true;
+				}
 
-			if (game.getCurrentPlayer().getPlayerID() != getClientPlayer().getPlayerID()) {
-				gameScene.updateTable(game.getTable());
+				if (dieNotPlaced) {
+					gameScene.disableDieOfferPane(false);
+				} else {
+					gameScene.disableDieOfferPane(true);
+				}
+
+				gameScene.updateTurn(checkMyTurn());
+
+				gameScene.updateChat(game.updateChat());
+			} else {
+				gameFinish();
+				timer.stop();
 			}
-			gameScene.updateTurn(checkMyTurn());
 		}
 	}
 
@@ -175,7 +196,7 @@ public class GameController {
 	 * @return boolean - true if its your turn
 	 */
 	private boolean checkMyTurn() {
-		if (game.getCurrentPlayer().getPlayerID() == game.getClientPlayer().getPlayerID()) {
+		if (game.getCurrentPlayer().getPlayerID() == getClientPlayer().getPlayerID()) {
 			return true;
 		} else {
 			return false;
@@ -326,6 +347,8 @@ public class GameController {
 					game.placeDie(diePane.getNumber(), diePane.getColor(), spacePane.getX(), spacePane.getY());
 					gameScene.removeDieTable();
 					gameScene.removeHighlight();
+					gameScene.disableDieOfferPane(true);
+					dieNotPlaced = false;
 					update();
 					break;
 				}

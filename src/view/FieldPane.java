@@ -62,6 +62,12 @@ public class FieldPane extends FlowPane {
 		updateSpaces();
 	}
 
+	public void disablesSpaces() {
+		for (SpacePane space : spaces) {
+			space.setDisable(true);
+		}
+	}
+
 	public void loadGlassWindow(GlassWindow glassWindow) {
 		SpaceGlass[][] spaceGlasses = glassWindow.getSpaces();
 		for (int y = 0; y < 4; y++) {

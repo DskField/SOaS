@@ -62,29 +62,32 @@ public class GoalCardHandler {
 
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
-				if (glasswindow.getSpace(x, y).getDie() != null) {
-					switch (glasswindow.getSpace(x, y).getDieValue()) {
-					case (1):
-						values.set(0, values.get(0) + 1);
-						break;
-					case (2):
-						values.set(1, values.get(1) + 1);
-						break;
-					case (3):
-						values.set(2, values.get(2) + 1);
-						break;
-					case (4):
-						values.set(3, values.get(3) + 1);
-						break;
-					case (5):
-						values.set(4, values.get(4) + 1);
-						break;
-					case (6):
-						values.set(5, values.get(5) + 1);
-						break;
-					default:
-						break;
-					}
+				Die die = glasswindow.getSpace(x, y).getDie();
+				if (die == null) {
+					continue;
+				}
+
+				switch (die.getDieValue()) {
+				case (1):
+					values.set(0, values.get(0) + 1);
+					break;
+				case (2):
+					values.set(1, values.get(1) + 1);
+					break;
+				case (3):
+					values.set(2, values.get(2) + 1);
+					break;
+				case (4):
+					values.set(3, values.get(3) + 1);
+					break;
+				case (5):
+					values.set(4, values.get(4) + 1);
+					break;
+				case (6):
+					values.set(5, values.get(5) + 1);
+					break;
+				default:
+					break;
 				}
 			}
 		}
@@ -157,7 +160,6 @@ public class GoalCardHandler {
 			}
 		}
 
-		System.out.println(countA + " - " + countB);
 		// if dieThree is smaller return dieThree else dieFour
 		return countA < countB ? countA : countB;
 	}
@@ -226,21 +228,11 @@ public class GoalCardHandler {
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
 				// first get all diagonal surrounding colors IF the coordinates exist
-				GameColor topleft = (x - 1 >= 0 && y - 1 >= 0) && glasswindow.getSpace(x - 1, y - 1).getDie() != null
-						? glasswindow.getSpace((x - 1), (y - 1)).getDieColor()
-						: GameColor.EMPTY;
-				GameColor topright = (x + 1 < 5 && y - 1 >= 0) && glasswindow.getSpace(x + 1, y - 1).getDie() != null
-						? glasswindow.getSpace((x + 1), (y - 1)).getDieColor()
-						: GameColor.EMPTY;
-				GameColor bottomleft = (x - 1 >= 0 && y + 1 < 4) && glasswindow.getSpace(x - 1, y + 1).getDie() != null
-						? glasswindow.getSpace((x - 1), (y + 1)).getDieColor()
-						: GameColor.EMPTY;
-				GameColor bottomright = (x + 1 < 5 && y + 1 < 4) && glasswindow.getSpace(x + 1, y + 1).getDie() != null
-						? glasswindow.getSpace((x + 1), (y + 1)).getDieColor()
-						: GameColor.EMPTY;
-				GameColor center = glasswindow.getSpace(x, y).getDie() != null
-						? glasswindow.getSpace(x, y).getDieColor()
-						: GameColor.EMPTY;
+				GameColor topleft = (x - 1 >= 0 && y - 1 >= 0) && glasswindow.getSpace(x - 1, y - 1).getDie() != null ? glasswindow.getSpace((x - 1), (y - 1)).getDieColor() : GameColor.EMPTY;
+				GameColor topright = (x + 1 < 5 && y - 1 >= 0) && glasswindow.getSpace(x + 1, y - 1).getDie() != null ? glasswindow.getSpace((x + 1), (y - 1)).getDieColor() : GameColor.EMPTY;
+				GameColor bottomleft = (x - 1 >= 0 && y + 1 < 4) && glasswindow.getSpace(x - 1, y + 1).getDie() != null ? glasswindow.getSpace((x - 1), (y + 1)).getDieColor() : GameColor.EMPTY;
+				GameColor bottomright = (x + 1 < 5 && y + 1 < 4) && glasswindow.getSpace(x + 1, y + 1).getDie() != null ? glasswindow.getSpace((x + 1), (y + 1)).getDieColor() : GameColor.EMPTY;
+				GameColor center = glasswindow.getSpace(x, y).getDie() != null ? glasswindow.getSpace(x, y).getDieColor() : GameColor.EMPTY;
 				// check if center space is not empty
 				if (center != GameColor.EMPTY) {
 					// check if the center het a diagonal die with the color

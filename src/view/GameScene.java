@@ -110,7 +110,18 @@ public class GameScene extends Scene {
 		});
 	}
 
+	public void disableDieOfferPane(boolean b) {
+		dieOfferPane.setDisable(b);
+	}
+
 	public void selectDie(ArrayList<SpaceGlass> available) {
+		if (gameController.getClientPlayer().getColor() == smallGlassWindow1.getColor()) {
+			switchGlassWindows(1);
+		} else if (gameController.getClientPlayer().getColor() == smallGlassWindow2.getColor()) {
+			switchGlassWindows(2);
+		} else if (gameController.getClientPlayer().getColor() == smallGlassWindow3.getColor()) {
+			switchGlassWindows(3);
+		}
 		removeHighlight();
 		mainGlassWindow.highlightSpaces(available);
 	}
@@ -175,32 +186,32 @@ public class GameScene extends Scene {
 			}
 		}
 	}
+
 	public void updateRoundTrack(Round[] rounds) {
 		roundPane.getChildren().clear();
 		for (int i = 0; i < rounds.length; i++) {
 			Round round = rounds[i];
-			roundPane.clear(i+1);
-			for(Die die: round.getDice()) {
+			roundPane.clear(i + 1);
+			for (Die die : round.getDice()) {
 				DiePane diePane = new DiePane(die.getDieId(), die.getDieValue(), die.getDieColor());
 				roundPane.addDie(i + 1, diePane);
 			}
 		}
 		roundPane.update();
 	}
-	//FIXME 
-	public void updateDieOfferPane(ArrayList<Die>offer) {
-		dieOfferPane.addDice(offer);
-		
-//		System.out.println(offer.get(0).getDieColor());
-	}
-	public void updateTurn(boolean myTurn) {
-		System.out.println("GAMESCENE "+myTurn);
-		if(myTurn) {
-			dieOfferPane.setDisable(false);
-			nextButton.setDisable(false);
 
-		}else {
-			dieOfferPane.setDisable(true);
+	public void updateDieOfferPane(ArrayList<Die> offer) {
+		dieOfferPane.addDice(offer);
+	}
+
+	public void disableOffer(boolean b) {
+		dieOfferPane.setDisable(b);
+	}
+
+	public void updateTurn(boolean myTurn) {
+		if (myTurn) {
+			nextButton.setDisable(false);
+		} else {
 			nextButton.setDisable(true);
 		}
 	}
@@ -229,7 +240,7 @@ public class GameScene extends Scene {
 		centerBox.setMaxWidth(800);
 		roundPane = new RoundPane(0, 0);
 		dieOfferPane = new DieOfferPane(gameController);
-		
+
 		nextButton = new Button("Beurt klaar");
 
 		// handles everything regarding the button
@@ -260,7 +271,7 @@ public class GameScene extends Scene {
 		for (ToolCardPane toolCardPane : toolCardPanes) {
 			toolCardBox.getChildren().add(toolCardPane);
 		}
-		
+
 		// handles the makeup of the various boxes
 		goalCardsBox.setSpacing(10);
 		goalCardsBox.setAlignment(Pos.CENTER);
@@ -281,12 +292,13 @@ public class GameScene extends Scene {
 		// adds the centerBox to the rootPane
 		rootPane.setCenter(centerBox);
 	}
+
 	//Handles 
 	private void handleNextButton() {
+		nextButton.setDisable(true);
 		gameController.nextTurn();
-		dieOfferPane.setDisable(true);
 	}
-	
+
 	/**
 	 * Creates the left column of the screen containing the following aspects: Glaswindow(large), Chat
 	 */
@@ -343,6 +355,7 @@ public class GameScene extends Scene {
 	}
 
 	public void switchGlassWindows(int source) {
+		mainGlassWindow.removeHighlightSpaces();
 		leftBox.getChildren().remove(mainGlassWindow);
 		GlassWindowPane temp = mainGlassWindow;
 		switch (source) {
