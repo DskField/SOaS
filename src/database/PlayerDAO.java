@@ -83,13 +83,13 @@ class PlayerDAO {
 			PreparedStatement stmtOldPlayer = con.prepareStatement("UPDATE player SET seqnr = ?, isCurrentPlayer = FALSE WHERE idPlayer = ?;");
 			stmtOldPlayer.setInt(1, oldPlayer.getSeqnr());
 			stmtOldPlayer.setInt(2, oldPlayer.getPlayerID());
-			PreparedStatement stmtNewPlayer = con.prepareStatement("UPDATE player SET isCurrentPlayer = TRUE WHERE idPlayer = ?;");
 			PreparedStatement stmtOldPlayer2 = con.prepareStatement("UPDATE player SET isCurrentPlayer = FALSE WHERE idPlayer = ?;");
-			stmtNewPlayer.setInt(1, newPlayer.getPlayerID());
+			PreparedStatement stmtNewPlayer = con.prepareStatement("UPDATE player SET isCurrentPlayer = TRUE WHERE idPlayer = ?;");
 			stmtOldPlayer2.setInt(1, oldPlayer.getPlayerID());
+			stmtNewPlayer.setInt(1, newPlayer.getPlayerID());
 			stmtOldPlayer.executeUpdate();
-			stmtNewPlayer.executeUpdate();
 			stmtOldPlayer2.executeUpdate();
+			stmtNewPlayer.executeUpdate();
 			con.commit();
 			stmtOldPlayer.close();
 			stmtNewPlayer.close();
