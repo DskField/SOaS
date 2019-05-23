@@ -39,14 +39,13 @@ public class GameController {
 		//		users.add(new User("speler3", 0, 0, GameColor.RED, 0));
 		//		users.add(new User("speler4", 0, 0, GameColor.RED, 0));
 		//		pf.createGame(users);
-		joinGame(1, new User("speler1", 0, 0, GameColor.RED, 0));
+		joinGame(1, new User("speler4", 0, 0, GameColor.RED, 0));
 	}
 
 	public void joinGame(int idGame, User clientUser) {
 		game = new Game(idGame, clientUser);
 		//		game.persistenceFacade.setCardsGame(idGame);
 		game.loadGame();
-		System.out.println("Join Game: currentround" + game.getCurrentRound());
 
 		// getClientPlayer().getGlassWindow().setPaterNull(null);
 		if (getClientPlayer().getGlassWindow().getPatternCard() == null) {
@@ -134,7 +133,6 @@ public class GameController {
 		if (gameScene == null) {
 			if (game.getPlayersWithoutPatternCards().isEmpty() && game.getPlayerWithPatternCardButWithoutCurrencyStones().isEmpty()) {
 				game.loadGame();
-				System.out.println("y u do this");
 				gameScene = new GameScene(this);
 				mainApplication.setScene(gameScene);
 				gameScene.updateTable(game.getTable());
@@ -148,7 +146,7 @@ public class GameController {
 				}
 			}
 		} else {
-			
+
 			gameScene.updateChat(game.updateChat());
 			gameScene.updateGlassWindow(game.updateGlassWindow());
 
@@ -172,16 +170,18 @@ public class GameController {
 	public int getToolCard(int arrayNumber) {
 		return game.getToolCards().get(arrayNumber).getCardID();
 	}
+
 	/**
-	 * @return boolean -  true if its your turn
+	 * @return boolean - true if its your turn
 	 */
 	private boolean checkMyTurn() {
-		if(game.getCurrentPlayer().getPlayerID() == game.getClientPlayer().getPlayerID()) {
+		if (game.getCurrentPlayer().getPlayerID() == game.getClientPlayer().getPlayerID()) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
+
 	/*
 	 * Checks if there are already dice on the window.
 	 */
@@ -196,8 +196,6 @@ public class GameController {
 		}
 		return true;
 	}
-		
-
 
 	/**
 	 * Gets all diagonal dice for a certain SpaceGlass
@@ -340,7 +338,6 @@ public class GameController {
 		Player winner = game.getPlayers().get(0);
 		game.setFinalScore();
 		for (Player player : game.getPlayers()) {
-			System.out.println(player.getScore());
 			if (maxScore < player.getScore()) {
 				maxScore = player.getScore();
 				winner = player;
