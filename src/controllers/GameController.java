@@ -151,6 +151,7 @@ public class GameController {
 			gameScene.updateGlassWindow(game.updateGlassWindow());
 
 			if (game.getCurrentPlayer().getPlayerID() != getClientPlayer().getPlayerID()) {
+				gameScene.disableDieOfferPane(true);
 				gameScene.updateTable(game.getTable());
 			}
 
@@ -176,7 +177,7 @@ public class GameController {
 	 * @return boolean - true if its your turn
 	 */
 	private boolean checkMyTurn() {
-		if (game.getCurrentPlayer().getPlayerID() == game.getClientPlayer().getPlayerID()) {
+		if (game.getCurrentPlayer().getPlayerID() == getClientPlayer().getPlayerID()) {
 			return true;
 		} else {
 			return false;
@@ -328,6 +329,7 @@ public class GameController {
 					game.placeDie(diePane.getNumber(), diePane.getColor(), spacePane.getX(), spacePane.getY());
 					gameScene.removeDieTable();
 					gameScene.removeHighlight();
+					gameScene.disableDieOfferPane(true);
 					update();
 					break;
 				}
@@ -350,6 +352,9 @@ public class GameController {
 	}
 
 	public void nextTurn() {
+		if (checkMyTurn()) {
+			gameScene.disableDieOfferPane(false);
+		}
 		game.nextTurn();
 	}
 }

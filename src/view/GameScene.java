@@ -206,13 +206,14 @@ public class GameScene extends Scene {
 		dieOfferPane.addDice(offer);
 	}
 
+	public void disableOffer(boolean b) {
+		dieOfferPane.setDisable(b);
+	}
+
 	public void updateTurn(boolean myTurn) {
 		if (myTurn) {
-			dieOfferPane.setDisable(false);
 			nextButton.setDisable(false);
-
 		} else {
-			dieOfferPane.setDisable(true);
 			nextButton.setDisable(true);
 		}
 	}

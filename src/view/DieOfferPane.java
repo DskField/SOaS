@@ -29,6 +29,7 @@ public class DieOfferPane extends HBox {
 		dice = new ArrayList<DiePane>();
 
 		setMaxSize(625, 65);
+		setMinSize(625, 65);
 		setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
 	}
 
