@@ -3,7 +3,6 @@ package view;
 import java.util.ArrayList;
 
 import controllers.GameController;
-import game.CollectiveGoalCard;
 import game.Die;
 import game.Message;
 import game.Player;
@@ -161,13 +160,14 @@ public class GameScene extends Scene {
 		}
 		roundPane.update();
 	}
+	//FIXME 
 	public void updateDieOfferPane(ArrayList<Die>offer) {
-		for(Die die: offer) {
-			DiePane diePane = new DiePane(die.getDieId(), die.getDieValue(), die.getDieColor());
-			dieOfferPane.update(diePane);
-		}
+		dieOfferPane.addDice(offer);
+		
+//		System.out.println(offer.get(0).getDieColor());
 	}
 	public void updateTurn(boolean myTurn) {
+		System.out.println("GAMESCENE "+myTurn);
 		if(myTurn) {
 			dieOfferPane.setDisable(false);
 			nextButton.setDisable(false);
@@ -221,6 +221,8 @@ public class GameScene extends Scene {
 
 		// handles everything regarding the button
 		nextButton.setPrefSize(buttonWidth, buttonheigt);
+		dieOfferPane.setDisable(false);
+		nextButton.setDisable(false);
 		nextButton.setOnAction(e -> handleNextButton());
 		// adds everything to personal info and handles makeup
 		personalInfo.getChildren().addAll(personalGoalCardPane, currencyStonesPane);
@@ -266,7 +268,7 @@ public class GameScene extends Scene {
 		// adds the centerBox to the rootPane
 		rootPane.setCenter(centerBox);
 	}
-	//Handels 
+	//Handles 
 	private void handleNextButton() {
 		gameController.nextTurn();
 		dieOfferPane.setDisable(true);

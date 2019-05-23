@@ -2,8 +2,6 @@ package game;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 import client.User;
@@ -76,33 +74,48 @@ public class Game {
 		for (int i = 0; i < roundTrack.length; i++) {
 			roundTrack[i] = new Round();
 		}
-		setCurrentRound();
-
 	}
 
 	public void loadGame() {
-		loadDice();
+		System.out.println("game.Loading game");
 		loadPlayers();
+		loadDice();
 		loadCards();
 		loadGlassWindow();
 		loadCurrencyStones();
-		loadTable();
-		
+		System.out.println("Loading game...");
 		scoreHandler = new ScoreHandler(collectiveGoalCards);
+		System.out.println(currentPlayer.getPlayerID());
 	}
 
 	/**
 	 * This method loads all Dice from the DB to the Game.
 	 */
 	private void loadDice() {
+		System.out.println("game.Loading dice");
 		dice = persistenceFacade.getGameDice(gameID);
 		roundTrack = persistenceFacade.getRoundTrack(gameID);
+		table = persistenceFacade.getTableDice(gameID, currentRound);
+		if(table.isEmpty() && roundTrack[currentRound-1].getDice().isEmpty() && currentPlayer.getPlayerID() == clientPlayer.getPlayerID()) {
+			//if its my turn when I join the game it shakes the sack
+			
+			System.out.println("loadDice roundtrack currentround dice"+ roundTrack[currentRound-1].getDice().size());
+			
+			shakeSack();
+
+		}
+		else {
+			System.out.println("game.table" + table.size());
+			System.out.println(currentPlayer.getPlayerID() + "== "+ clientPlayer.getPlayerID());
+		}
 	}
 
 	/**
 	 * Load the players from this game
 	 */
 	private void loadPlayers() {
+		System.out.println("game.Loading player");
+
 		players = persistenceFacade.getAllPlayersInGame(gameID);
 		currentPlayer = persistenceFacade.getCurrentPlayer(gameID);
 		for (Player player : players) {
@@ -117,6 +130,8 @@ public class Game {
 	 * Get the Tool and Goal cards form the DB
 	 */
 	private void loadCards() {
+		System.out.println("game.Loading cards");
+
 		toolCards = persistenceFacade.getGameToolCards(gameID);
 		collectiveGoalCards = persistenceFacade.getSharedCollectiveGoalCards(gameID);
 	}
@@ -125,6 +140,8 @@ public class Game {
 	 * Load the GlassWindow with the right PatternCard
 	 */
 	private void loadGlassWindow() {
+		System.out.println("game.Loading GlassWindow");
+
 		final GameColor colors[] = { GameColor.RED, GameColor.GREEN, GameColor.BLUE, GameColor.PURPLE };
 		int num = 1;
 		for (Player player : players) {
@@ -146,6 +163,8 @@ public class Game {
 	}
 
 	private void loadCurrencyStones() {
+		System.out.println("game.Loading CurrencyStones");
+
 		currencyStones = persistenceFacade.getAllStonesInGame(gameID);
 
 		for (CurrencyStone cs : currencyStones) {
@@ -160,11 +179,6 @@ public class Game {
 				}
 			}
 		}
-	}
-	private void loadTable() {
-		
-		table = persistenceFacade.getTableDice(gameID, currentRound);
-		System.out.println("Table"+ table.size());
 	}
 
 	// kevin stuff
@@ -219,6 +233,7 @@ public class Game {
 			dice.get(index).roll(currentRound);
 			table.add(dice.get(index));
 			dice.remove(index);
+			persistenceFacade.updateDiceRoll(gameID, table);
 		}
 	}
 
@@ -302,6 +317,7 @@ public class Game {
 		}
 
 		persistenceFacade.updatePlayerTurn(oldPlayer, currentPlayer);
+		
 
 		if (nextSeqnr == 1) {
 			nextRound();
@@ -317,17 +333,10 @@ public class Game {
 			currentRound++;
 		}
 	}
-	public void setCurrentRound() {
-		System.out.println("sda" + roundTrack[0].getDice());
-		List<Round> tempRoundTrack = Arrays.asList(roundTrack);
-		System.out.println("dasff"+ tempRoundTrack.size());
-		
-	}
-
+	
 	public void placeDie(int id, GameColor color) {
 		for (Die die : table) {
 			if (die.getDieId() == id && die.getDieColor() == color) {
-				//TODO: finish
 			}
 		}
 	}

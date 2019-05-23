@@ -80,9 +80,5 @@ public class DieOfferPane extends HBox {
 
 		updateDice();
 	}
-	public void update(DiePane diePane) {
-		roundDies.clear();
-		roundDies.add(diePane);
-		addDice();
-	}
+
 }

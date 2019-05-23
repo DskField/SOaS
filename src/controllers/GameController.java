@@ -39,21 +39,21 @@ public class GameController {
 		//		users.add(new User("speler3", 0, 0, GameColor.RED, 0));
 		//		users.add(new User("speler4", 0, 0, GameColor.RED, 0));
 		//		pf.createGame(users);
-		joinGame(4, new User("speler1", 0, 0, GameColor.RED, 0));
+		joinGame(1, new User("speler1", 0, 0, GameColor.RED, 0));
 	}
 
 	public void joinGame(int idGame, User clientUser) {
 		game = new Game(idGame, clientUser);
 		game.persistenceFacade.setCardsGame(idGame);
 		game.loadGame();
-		System.out.println(game.getCurrentRound());
+		System.out.println("Join Game: currentround" + game.getCurrentRound());
 
 		// getClientPlayer().getGlassWindow().setPaterNull(null);
 		if (getClientPlayer().getGlassWindow().getPatternCard() == null) {
 			choiceScene = new ChoiceScene(this, getPatternChoices());
 			mainApplication.setScene(choiceScene);
 		}
-		System.out.println("-2");
+//		System.out.println("-2");
 		createTimer();
 	}
 
@@ -88,6 +88,7 @@ public class GameController {
 	}
 
 	// kevin stuff
+	//FIXME spelling Pattern
 	public void setClientPlayerPaternCard(int idPatternCard) {
 		game.setClientPlayerPaternCard(idPatternCard);
 
@@ -133,10 +134,11 @@ public class GameController {
 	private void update() {
 		if (gameScene == null) {
 			for (Player i : game.getPlayersWithoutPatternCards()) {
-				System.out.println(i.getUsername());
+				System.out.println( i.getUsername());
 			}
 			if (game.getPlayersWithoutPatternCards().isEmpty() && game.getPlayerWithPatternCardButWithoutCurrencyStones().isEmpty()) {
 				game.loadGame();
+				System.out.println("y u do this");
 				gameScene = new GameScene(this);
 				mainApplication.setScene(gameScene);
 			} else {
@@ -146,11 +148,12 @@ public class GameController {
 				}
 			}
 		} else {
+			
 			gameScene.updateChat(game.updateChat());
 			gameScene.updateScore(game.updateScore());
 			gameScene.updateDieOfferPane(game.getTable());
 			gameScene.updateTurn(checkMyTurn());
-			System.out.println("gamecontroller.update"+ game.getTable());
+			System.out.println("gamecontroller.update"+ game.getTable().size());
 		}
 	}
 
@@ -167,11 +170,11 @@ public class GameController {
 	public int getToolCard(int arrayNumber) {
 		return game.getToolCards().get(arrayNumber).getCardID();
 	}
-	/*
-	 * Returns true if its your turn
+	/**
+	 * @return boolean -  true if its your turn
 	 */
 	private boolean checkMyTurn() {
-		if(game.getCurrentPlayer().equals(game.getClientPlayer())) {
+		if(game.getCurrentPlayer().getPlayerID() == game.getClientPlayer().getPlayerID()) {
 			return true;
 		}else {
 			return false;
