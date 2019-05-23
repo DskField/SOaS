@@ -151,6 +151,7 @@ public class GameController {
 				gameScene.updateRoundTrack(game.getRoundTrack());
 				gameScene.updateChat(game.updateChat());
 				gameScene.updateGlassWindow(game.updateGlassWindow());
+				game.loadCurrentPlayer();
 
 				if (game.getCurrentPlayer().getPlayerID() != getClientPlayer().getPlayerID()) {
 					gameScene.disableDieOfferPane(true);
@@ -357,9 +358,6 @@ public class GameController {
 	}
 
 	public void nextTurn() {
-		if (checkMyTurn()) {
-			gameScene.disableDieOfferPane(false);
-		}
 		game.nextTurn();
 	}
 }

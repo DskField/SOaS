@@ -80,7 +80,6 @@ class PlayerDAO {
 
 	private void updatePlayer(Player oldPlayer, Player newPlayer) {
 		try {
-			System.out.println(oldPlayer.getSeqnr() + " " + newPlayer.getSeqnr());
 			PreparedStatement stmtOldPlayer = con.prepareStatement("UPDATE player SET seqnr = ?, isCurrentPlayer = FALSE WHERE idPlayer = ?;");
 			stmtOldPlayer.setInt(1, oldPlayer.getSeqnr());
 			stmtOldPlayer.setInt(2, oldPlayer.getPlayerID());

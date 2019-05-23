@@ -295,9 +295,8 @@ public class GameScene extends Scene {
 
 	//Handles 
 	private void handleNextButton() {
-		dieOfferPane.setDisable(true);
+		nextButton.setDisable(true);
 		gameController.nextTurn();
-
 	}
 
 	/**
