@@ -75,4 +75,5 @@ public class DieOfferPane extends HBox {
 		getChildren().remove(diePane);
 		dice.remove(dice.indexOf(diePane));
 	}
+
 }

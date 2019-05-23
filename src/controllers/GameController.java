@@ -39,13 +39,16 @@ public class GameController {
 		//		users.add(new User("speler3", 0, 0, GameColor.RED, 0));
 		//		users.add(new User("speler4", 0, 0, GameColor.RED, 0));
 		//		pf.createGame(users);
-		joinGame(1, new User("speler4", 0, 0, GameColor.RED, 0));
+		joinGame(1, new User("speler1", 0, 0, GameColor.RED, 0));
 	}
 
 	public void joinGame(int idGame, User clientUser) {
 		game = new Game(idGame, clientUser);
 		//		game.persistenceFacade.setCardsGame(idGame);
 		game.loadGame();
+		System.out.println("Join Game: currentround" + game.getCurrentRound());
+
+		// getClientPlayer().getGlassWindow().setPaterNull(null);
 		if (getClientPlayer().getGlassWindow().getPatternCard() == null) {
 			choiceScene = new ChoiceScene(this, getPatternChoices());
 			mainApplication.setScene(choiceScene);
@@ -72,23 +75,11 @@ public class GameController {
 		return game.getPlayers();
 	}
 
-	public Game getGame() {
-		return game;
-	}
-
 	/**
 	 * Get new dies for the round if its your turn
 	 * 
 	 * @return ArrayList<Die> - new dice
 	 */
-	public ArrayList<Die> getDiceOffering() {
-		game.shakeSack();
-		return game.getTable();
-	}
-
-	public int getInitialDieAmount() {
-		return getPlayers().size() * 2 + 1;
-	}
 
 	// kevin stuff
 	public ArrayList<PatternCard> getPatternChoices() {
@@ -96,6 +87,7 @@ public class GameController {
 	}
 
 	// kevin stuff
+	//FIXME spelling Pattern
 	public void setClientPlayerPaternCard(int idPatternCard) {
 		game.setClientPlayerPaternCard(idPatternCard);
 
@@ -136,12 +128,13 @@ public class GameController {
 	}
 
 	/**
-	 * updates the catPane by using information out of the game model.
+	 * updates the view by using information out of the game model.
 	 */
 	public void update() {
 		if (gameScene == null) {
 			if (game.getPlayersWithoutPatternCards().isEmpty() && game.getPlayerWithPatternCardButWithoutCurrencyStones().isEmpty()) {
 				game.loadGame();
+				System.out.println("y u do this");
 				gameScene = new GameScene(this);
 				mainApplication.setScene(gameScene);
 				gameScene.updateTable(game.getTable());
@@ -155,12 +148,14 @@ public class GameController {
 				}
 			}
 		} else {
+			
 			gameScene.updateChat(game.updateChat());
 			gameScene.updateGlassWindow(game.updateGlassWindow());
 
 			if (game.getCurrentPlayer().getPlayerID() != getClientPlayer().getPlayerID()) {
 				gameScene.updateTable(game.getTable());
 			}
+			gameScene.updateTurn(checkMyTurn());
 		}
 	}
 
@@ -177,8 +172,17 @@ public class GameController {
 	public int getToolCard(int arrayNumber) {
 		return game.getToolCards().get(arrayNumber).getCardID();
 	}
-
 	/**
+	 * @return boolean -  true if its your turn
+	 */
+	private boolean checkMyTurn() {
+		if(game.getCurrentPlayer().getPlayerID() == game.getClientPlayer().getPlayerID()) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	/*
 	 * Checks if there are already dice on the window.
 	 */
 	private boolean checkFirstDie() {
@@ -192,6 +196,8 @@ public class GameController {
 		}
 		return true;
 	}
+		
+
 
 	/**
 	 * Gets all diagonal dice for a certain SpaceGlass
@@ -344,4 +350,7 @@ public class GameController {
 		gameScene.gameFinish(winText);
 	}
 
+	public void nextTurn() {
+		game.nextTurn();
+	}
 }

@@ -44,11 +44,36 @@ class DieDAO {
 		return results;
 	}
 
+	private ArrayList<Die> selectDiceWithEyes(String query) {
+		ArrayList<Die> results = new ArrayList<Die>();
+
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			ResultSet dbResultSet = stmt.executeQuery();
+			con.commit();
+			while (dbResultSet.next()) {
+				int number = dbResultSet.getInt("g.dienumber");
+				String color = dbResultSet.getString("g.diecolor");
+				int round = dbResultSet.getInt("g.round");
+				int value = dbResultSet.getInt("g.eyes");
+				System.out.println(color);
+				Die die = new Die(number, color, round, value);
+				results.add(die);
+			}
+			con.commit();
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("DieDAO " + e.getMessage());
+		}
+		return results;
+	}
+
 	/**
 	 * Load the round track form the db
 	 * 
 	 * @param query - The query you made to return the round track
-	 * @return An Array with the type Round filled with Die, in the correct format for the roundTrack
+	 * @return An Array with the type Round filled with Die, in the correct format
+	 *         for the roundTrack
 	 */
 	private Round[] selectTrackDice(String query) {
 		Round[] result = new Round[10];
@@ -81,12 +106,13 @@ class DieDAO {
 	 * Update dice that got rolled this round
 	 * 
 	 * @param gameID - The id of the game
-	 * @param dice - The dice that got rolled in this round
+	 * @param dice   - The dice that got rolled in this round
 	 */
 	private void updateDice(int gameID, ArrayList<Die> dice) {
 		try {
 			for (Die die : dice) {
-				PreparedStatement stmt = con.prepareStatement("UPDATE gameDie SET eyes = ?, round = ? WHERE idgame = ? AND dienumber = ? AND diecolor = ?;");
+				PreparedStatement stmt = con.prepareStatement(
+						"UPDATE gameDie SET eyes = ?, round = ? WHERE idgame = ? AND dienumber = ? AND diecolor = ?;");
 				stmt.setInt(1, die.getDieValue());
 				stmt.setInt(2, die.getRound());
 				stmt.setInt(3, gameID);
@@ -110,13 +136,14 @@ class DieDAO {
 	 * Update the dice that didn't got picked this round
 	 * 
 	 * @param gameID - The game ID
-	 * @param round - The ID of the currentRound
-	 * @param dice - The dice that didn't got picked
+	 * @param round  - The ID of the currentRound
+	 * @param dice   - The dice that didn't got picked
 	 */
 	private void updateRound(int gameID, int round, ArrayList<Die> dice) {
 		try {
 			for (Die die : dice) {
-				PreparedStatement stmt = con.prepareStatement("UPDATE gameDie SET eyes = ?, round = ?, roundtrack = ? WHERE idgame = ? AND dienumber = ? AND diecolor = ?;");
+				PreparedStatement stmt = con.prepareStatement(
+						"UPDATE gameDie SET eyes = ?, round = ?, roundtrack = ? WHERE idgame = ? AND dienumber = ? AND diecolor = ?;");
 				stmt.setInt(1, die.getDieValue());
 				stmt.setInt(2, die.getRound());
 				stmt.setInt(3, round);
@@ -133,12 +160,14 @@ class DieDAO {
 	}
 
 	void insertDice(int idGame) {
-		GameColor[] possibleColors = { GameColor.RED, GameColor.GREEN, GameColor.YELLOW, GameColor.PURPLE, GameColor.BLUE };
+		GameColor[] possibleColors = { GameColor.RED, GameColor.GREEN, GameColor.YELLOW, GameColor.PURPLE,
+				GameColor.BLUE };
 
 		try {
 			for (GameColor color : possibleColors) {
 				for (int i = 1; i <= 18; i++) {
-					PreparedStatement stmt = con.prepareStatement("INSERT INTO gamedie VALUES (?, ?, ?, NULL, NULL, NULL, null);");
+					PreparedStatement stmt = con
+							.prepareStatement("INSERT INTO gamedie VALUES (?, ?, ?, NULL, NULL, NULL, null);");
 					stmt.setInt(1, idGame);
 					stmt.setInt(2, i);
 					stmt.setString(3, color.getDatabaseName());
@@ -158,12 +187,21 @@ class DieDAO {
 	}
 
 	ArrayList<Die> getGameDice(int gameID) {
-		return selectDie("SELECT * FROM gameDie g LEFT JOIN playerframefield p ON g.idgame = p.idgame AND g.dienumber = p.dienumber AND g.diecolor = p.diecolor WHERE g.idgame = " + gameID
-				+ " AND g.roundtrack IS NULL AND p.idgame IS NULL;");
+		return selectDie(
+				"SELECT * FROM gameDie g LEFT JOIN playerframefield p ON g.idgame = p.idgame AND g.dienumber = p.dienumber AND g.diecolor = p.diecolor WHERE g.idgame = "
+						+ gameID + " AND g.roundtrack IS NULL AND p.idgame IS NULL;");
 	}
 
 	Round[] getRoundTrack(int gameID) {
 		return selectTrackDice("SELECT * FROM gameDie WHERE idgame = " + gameID + " AND roundtrack IS NOT NULL;");
+	}
+
+	ArrayList<Die> getTableDice(int gameID, int round) {
+		return selectDiceWithEyes("SELECT * FROM playerframefield AS f  " 
+								+ "RIGHT JOIN gamedie AS g "
+								+ " ON f.idgame = g.idgame AND f.dienumber = g.dienumber AND f.diecolor = g.diecolor "
+								+ " WHERE f.idgame IS NULL AND f.dienumber IS NULL AND f.diecolor IS NULL AND "
+								+ "g.roundtrack IS NULL AND g.idgame = "+ gameID + " AND g.round =" + round);
 	}
 
 	void updateDiceRoll(int gameID, ArrayList<Die> dice) {
