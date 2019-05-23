@@ -341,7 +341,7 @@ public class Game {
 				player.setScore(scoreHandler.getScore(player, false));
 			}
 
-			player.loadGlassWindow(persistenceFacade.getGlassWindow(player.getPlayerID()));
+			player.getGlassWindow().loadSpaces(persistenceFacade.getGlassWindow(player.getPlayerID()).getSpaces());
 		}
 
 		return players;
