@@ -62,7 +62,12 @@ public class GoalCardHandler {
 
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
-				switch (glasswindow.getSpace(x, y).getDie().getDieValue()) {
+				Die die = glasswindow.getSpace(x, y).getDie();
+				if (die == null) {
+					continue;
+				}
+
+				switch (die.getDieValue()) {
 				case (1):
 					values.set(0, values.get(0) + 1);
 					break;
