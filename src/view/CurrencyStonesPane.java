@@ -11,13 +11,12 @@ public class CurrencyStonesPane extends FlowPane {
 
 	private GameController gc;
 
-	//TODO isnt MVC compliant, Give Player instead
 	public CurrencyStonesPane(Player player) {
 		setPrefSize(SIZE, SIZE);
 		showStones(player);
 	}
 
-	// Draws a stone for each currenc	ystone from player
+	// Draws a stone for each currencystone from player
 
 	public void showStones(Player player) {
 		getChildren().clear();

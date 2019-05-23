@@ -80,4 +80,5 @@ public class DieOfferPane extends HBox {
 
 		updateDice();
 	}
+
 }
