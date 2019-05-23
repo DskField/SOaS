@@ -18,7 +18,8 @@ class GameDAO {
 		int last = 0;
 
 		try {
-			PreparedStatement stmt = con.prepareStatement("INSERT INTO game (idgame, turn_idplayer, creationdate) VALUES(null, null, now());");
+			PreparedStatement stmt = con.prepareStatement(
+					"INSERT INTO game (idgame, turn_idplayer, creationdate) VALUES(null, null, now());");
 			stmt.executeUpdate();
 			stmt.close();
 
@@ -47,5 +48,24 @@ class GameDAO {
 		} catch (SQLException e) {
 			System.err.println("GameDAO: " + e.getMessage());
 		}
+	}
+
+	int getCurrentRound(int idgame) {
+		int currentRound = 0;
+		try {
+
+			PreparedStatement stmtCurrentRound = con
+					.prepareStatement("SELECT MAX(roundtrack) AS currentround FROM gamedie WHERE idgame = " + idgame);
+			ResultSet dbResultSet = stmtCurrentRound.executeQuery();
+			con.commit();
+			while (dbResultSet.next()) {
+				currentRound = dbResultSet.getInt("currentround") + 1;
+			}
+			con.commit();
+			stmtCurrentRound.close();
+		} catch (SQLException e) {
+			System.err.println("DieDAO " + e.getMessage());
+		}
+		return currentRound;
 	}
 }
