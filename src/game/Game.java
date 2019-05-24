@@ -51,7 +51,7 @@ public class Game {
 	 * @param gameID - The id of the game
 	 */
 
-	public Game(int gameID, User clientUser) {
+	public Game(int gameID, User clientUser, PersistenceFacade persistencefacade) {
 		this.gameID = gameID;
 		this.clientUser = clientUser;
 
@@ -68,7 +68,7 @@ public class Game {
 
 		random = new Random();
 
-		persistenceFacade = new PersistenceFacade();
+		persistenceFacade = persistencefacade;
 
 		for (int i = 0; i < roundTrack.length; i++) {
 			roundTrack[i] = new Round();

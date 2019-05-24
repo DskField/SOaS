@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import client.User;
+import database.PersistenceFacade;
 import game.CollectiveGoalCard;
 import game.Die;
 import game.Game;
@@ -27,12 +28,14 @@ public class GameController {
 	private GameScene gameScene;
 	private ChoiceScene choiceScene;
 	private AnimationTimerExt timer;
+	private PersistenceFacade persistencefacade;
 
 	//TODO: write query for this
 	private boolean dieNotPlaced = true;
 
-	public GameController(MainApplication mainApplication) {
+	public GameController(MainApplication mainApplication, PersistenceFacade persistencefacade) {
 		this.mainApplication = mainApplication;
+		this.persistencefacade = persistencefacade;
 		// Temporary call, when the game will be created the ClientController needs
 		// to give the information to the GameController
 		//		PersistenceFacade pf = new PersistenceFacade();
@@ -48,7 +51,7 @@ public class GameController {
 	}
 
 	public void joinGame(int idGame, User clientUser) {
-		game = new Game(idGame, clientUser);
+		game = new Game(idGame, clientUser, persistencefacade);
 		//		game.persistenceFacade.setCardsGame(idGame);
 		game.loadGame();
 
