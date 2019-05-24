@@ -40,7 +40,7 @@ public class GameController {
 		//		users.add(new User("speler1", 0, 0, GameColor.RED, 0));
 		//		users.add(new User("speler2", 0, 0, GameColor.RED, 0));
 		//		pf.createGame(users);
-		//		pf.setCardsGame(6);
+		//		pf.setCardsGame(7);
 		//		System.out.println("Created game");
 		joinGame(6, new User("speler1", 0, 0, GameColor.RED, 0));
 	}

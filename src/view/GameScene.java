@@ -190,11 +190,10 @@ public class GameScene extends Scene {
 	public void updateRoundTrack(Round[] rounds) {
 		roundPane.getChildren().clear();
 		for (int i = 0; i < rounds.length; i++) {
-			Round round = rounds[i];
-			roundPane.clear(i);
-			for (Die die : round.getDice()) {
+			roundPane.clear(i + 1);
+			for (Die die : rounds[i].getDice()) {
 				DiePane diePane = new DiePane(die.getDieId(), die.getDieValue(), die.getDieColor());
-				roundPane.addDie(i, diePane);
+				roundPane.addDie(i + 1, diePane);
 			}
 		}
 		roundPane.update();

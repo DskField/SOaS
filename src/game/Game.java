@@ -316,7 +316,7 @@ public class Game {
 
 	public void nextRound() {
 		if (!table.isEmpty()) {
-			roundTrack[currentRound].addDice(table);
+			roundTrack[currentRound - 1].addDice(table);
 			persistenceFacade.updateDiceRound(gameID, currentRound, table);
 			table.clear();
 			currentRound++;
