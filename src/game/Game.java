@@ -234,6 +234,8 @@ public class Game {
 	}
 
 	public void nextTurn() {
+		updatePlayers();
+
 		int totalPlayers = players.size();
 		int maxSeqnr = totalPlayers * 2;
 		int nextSeqnr = 0;
@@ -314,16 +316,27 @@ public class Game {
 		}
 	}
 
+	public void updatePlayers() {
+		ArrayList<Player> tempPlayers = persistenceFacade.getAllPlayersInGame(gameID);
+
+		for (Player temp : tempPlayers) {
+			for (Player player : players) {
+				if (temp.getPlayerID() == player.getPlayerID()) {
+					player.setSeqnr(temp.getSeqnr());
+				}
+			}
+		}
+	}
+
 	public void nextRound() {
 		if (!table.isEmpty()) {
 			roundTrack[currentRound - 1].addDice(table);
 			persistenceFacade.updateDiceRound(gameID, currentRound, table);
 			table.clear();
 			currentRound++;
-		} else {
-			shakeSack();
-
 		}
+
+		shakeSack();
 	}
 
 	/**
