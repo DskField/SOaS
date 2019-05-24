@@ -25,6 +25,7 @@ public class ChallengeListPane extends BorderPane {
 	private ListView<ToggleButton> challengeList;
 	private ToggleGroup togglegroup;
 	private HandleButton handleButton;
+	private ArrayList<Challenge> challenges;
 
 	// Magic Numbers
 	final private static int reactionButtonWidth = 180;
@@ -36,12 +37,21 @@ public class ChallengeListPane extends BorderPane {
 	final private static Color statsBackgroundColor = Color.AQUAMARINE;
 	final private static int labelSize = 30;
 
-	public ChallengeListPane(ArrayList<Challenge> challenges, ClientScene clientscene) {
+	public ChallengeListPane(ClientScene clientscene) {
 		this.clientscene = clientscene;
 		this.challengeList = new ListView<ToggleButton>();
-		togglegroup = new ToggleGroup();
+		this.togglegroup = new ToggleGroup();
 		this.handleButton = new HandleButton();
 
+		createLeft();		
+	}
+
+	private void createLeft() {
+		challengeList.getItems().clear();
+		togglegroup.getToggles().clear();
+		challenges = clientscene.getChallenges();
+		this.setLeft(null);
+		
 		for (Challenge chal : challenges) {
 			if (chal.getPlayers().get(clientscene.getUsername()).equals("uitgedaagde")) {
 				ToggleButton togglebutton = new ToggleButton("Challenge " + chal.getGameID());
@@ -54,7 +64,7 @@ public class ChallengeListPane extends BorderPane {
 
 		this.setLeft(challengeList);
 	}
-
+	
 	private void createCenter(int idGame) {
 		Label challengeInfo = new Label("Uitdaging: Game " + idGame);
 		challengeInfo.setMinSize(statsWidth, statsHeight);
@@ -78,12 +88,12 @@ public class ChallengeListPane extends BorderPane {
 		gameSizeLabel.setFont(Font.font(labelSize));
 
 		Button acceptButton = new Button("Accepteren");
-		acceptButton.setOnAction(e -> clientscene.handleReaction(true, idGame));
+		acceptButton.setOnAction(e -> handleReactionButton(true, idGame));
 		acceptButton.setMinSize(reactionButtonWidth, reactionButtonHeight);
 		acceptButton.setMaxSize(reactionButtonWidth, reactionButtonHeight);
 
 		Button declineButton = new Button("Weigeren");
-		declineButton.setOnAction(e -> clientscene.handleReaction(false, idGame));
+		declineButton.setOnAction(e -> handleReactionButton(false, idGame));
 		declineButton.setMinSize(reactionButtonWidth, reactionButtonHeight);
 		declineButton.setMaxSize(reactionButtonWidth, reactionButtonHeight);
 
@@ -103,6 +113,13 @@ public class ChallengeListPane extends BorderPane {
 
 		this.setCenter(centerBox);
 	}
+	
+	private void handleReactionButton(boolean accepted, int idGame) {
+		clientscene.handleReaction(accepted, idGame);
+		this.setCenter(null);
+		clientscene.updateClient();
+		createLeft();
+	}
 
 	private class HandleButton implements EventHandler<MouseEvent> {
 		@Override
@@ -110,7 +127,6 @@ public class ChallengeListPane extends BorderPane {
 			String[] lobby = ((ToggleButton) e.getSource()).getText().split(" ");
 			createCenter(Integer.parseInt(lobby[1]));
 			// TODO TOM only update the variables and set errormessage visible to false
-			// createStats(idGame);
 		}
 	}
 }

@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 import java.util.Map;
 
+import client.Challenge;
 import client.Lobby;
 import controllers.ClientController;
 import game.Player;
@@ -30,7 +31,7 @@ public class ClientScene extends Scene {
 		this.clientcontroller = controller;
 		this.lobbyListPane = new LobbyListPane(clientcontroller.getLobbies(), this);
 		this.userListPane = new UserListPane();
-		this.challengeListPane = new ChallengeListPane(clientcontroller.getChallenges(), this);
+		this.challengeListPane = new ChallengeListPane(this);
 
 		// initialize
 		clientmenupane = new ClientMenuPane(this);
@@ -77,7 +78,7 @@ public class ClientScene extends Scene {
 	}
 
 	public String getChallengerUsername(int idGame) {
-		for (Map.Entry<String, String> entry : clientcontroller.getChallenges().get(idGame).getPlayers().entrySet()) {
+		for (Map.Entry<String, String> entry : clientcontroller.getSpecificChallenge(idGame).getPlayers().entrySet()) {
 			if (entry.getValue().equals("uitdager"))
 				return entry.getKey();
 		}
@@ -91,6 +92,14 @@ public class ClientScene extends Scene {
 	
 	public String getUsername() {
 		return clientcontroller.getUsername();
+	}
+	
+	public void updateClient() {
+		clientcontroller.updateClient();
+	}
+	
+	public ArrayList<Challenge> getChallenges() {
+		return clientcontroller.getChallenges();
 	}
 
 }

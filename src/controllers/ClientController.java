@@ -119,7 +119,8 @@ public class ClientController {
 	}
 
 	// Updat with Timer
-	private void updateClient() {
+	public void updateClient() {
+		client.updateClient();
 		// 3 to 6 seconds
 		while (checkUpdateClient) {
 			client.updateClient();

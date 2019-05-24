@@ -31,11 +31,12 @@ public class Client {
 
 	// Update
 	public void updateClient() {
-		if (persistencefacade.updateChallenge(username, challenges))
+		this.challenges = persistencefacade.getChallenges(username);
+		if (!persistencefacade.updateChallenge(username, challenges))
 			this.challenges = persistencefacade.getChallenges(username);
-		if (persistencefacade.updateUser(username, user))
+		if (!persistencefacade.updateUser(username, user))
 			this.user = persistencefacade.getUser(username);
-		if (persistencefacade.updateLobby(username, lobbies))
+		if (!persistencefacade.updateLobby(username, lobbies))
 			this.lobbies = persistencefacade.getLobbies(username);
 	}
 
