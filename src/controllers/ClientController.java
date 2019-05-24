@@ -3,14 +3,7 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.Comparator;
-import java.util.stream.Collectors.*;
-import java.util.Map.Entry.*;
 
 import client.Challenge;
 import client.Client;
@@ -77,12 +70,12 @@ public class ClientController {
 		gamecontroller.joinGame(idGame, client.getUser());
 	}
 
-	// TODO TOM FIND SOLUTION - TEMPORARY FIX
+	// TODO TOM MOVE FACADE - TEMPORARY FIX
 	public ArrayList<Player> getPlayers(int gameID) {
 		return persistencefacade.getAllPlayersInGame(gameID);
 	}
 
-	// TODO TOM FIND SOLUTION - TEMPORARY FIX
+	// TODO TOM MOVE FACADE - TEMPORARY FIX
 	public ArrayList<ArrayList<String>> getScore(int gameID, ArrayList<Player> players) {
 		ScoreHandler scorehandler = new ScoreHandler(persistencefacade.getSharedCollectiveGoalCards(gameID));
 		ArrayList<String> playerToInt = new ArrayList<>();
