@@ -34,36 +34,51 @@ public class DieOfferPane extends HBox {
 	}
 
 	public void addDice(ArrayList<Die> roundDies) {
-		dice.clear();
+		if (checkDice(roundDies)) {
+			dice.clear();
 
-		for (Die die : roundDies) {
-			DiePane diePane = new DiePane(die.getDieId(), die.getDieValue(), die.getDieColor());
-			setPadding(new Insets(5));
-			setSpacing(15);
-			diePane.resize(squareSize);
-			dice.add(diePane);
+			for (Die die : roundDies) {
+				DiePane diePane = new DiePane(die.getDieId(), die.getDieValue(), die.getDieColor());
+				setPadding(new Insets(5));
+				setSpacing(15);
+				diePane.resize(squareSize);
+				dice.add(diePane);
 
-			diePane.setOnMouseClicked(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					diePane.requestFocus();
-				}
-			});
-
-			diePane.focusedProperty().addListener(new ChangeListener<Boolean>() {
-				@Override
-				public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-					if (newValue) {
-						diePane.setBorder(new Border(new BorderStroke(Color.TURQUOISE, BorderStrokeStyle.SOLID, null, new BorderWidths(5))));
-						gameController.selectDie(diePane);
-					} else {
-						diePane.setBorder(null);
+				diePane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						diePane.requestFocus();
 					}
-				}
-			});
-		}
+				});
 
-		updateDice();
+				diePane.focusedProperty().addListener(new ChangeListener<Boolean>() {
+					@Override
+					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+						if (newValue) {
+							diePane.setBorder(new Border(new BorderStroke(Color.TURQUOISE, BorderStrokeStyle.SOLID, null, new BorderWidths(5))));
+							gameController.selectDie(diePane);
+						} else {
+							diePane.setBorder(null);
+						}
+					}
+				});
+			}
+
+			updateDice();
+		}
+	}
+
+	private boolean checkDice(ArrayList<Die> newDice) {
+		if (newDice.size() == dice.size()) {
+			for (Die die : newDice) {
+				if (die.getDieValue() != dice.get(newDice.indexOf(die)).getEyes() && die.getDieColor() != dice.get(newDice.indexOf(die)).getColor()) {
+					return false;
+				}
+			}
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private void updateDice() {

@@ -199,10 +199,6 @@ public class GameScene extends Scene {
 		roundPane.update();
 	}
 
-	public void updateDieOfferPane(ArrayList<Die> offer) {
-		dieOfferPane.addDice(offer);
-	}
-
 	public void disableOffer(boolean b) {
 		dieOfferPane.setDisable(b);
 	}

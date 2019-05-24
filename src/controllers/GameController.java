@@ -39,10 +39,12 @@ public class GameController {
 		//		ArrayList<User> users = new ArrayList<User>();
 		//		users.add(new User("speler1", 0, 0, GameColor.RED, 0));
 		//		users.add(new User("speler2", 0, 0, GameColor.RED, 0));
+		//		users.add(new User("speler3", 0, 0, GameColor.RED, 0));
+		//		users.add(new User("speler4", 0, 0, GameColor.RED, 0));
 		//		pf.createGame(users);
-		//		pf.setCardsGame(9);
+		//		pf.setCardsGame(10);
 		//		System.out.println("Created game");
-		joinGame(9, new User("speler1", 0, 0, GameColor.RED, 0));
+		joinGame(10, new User("speler1", 0, 0, GameColor.RED, 0));
 	}
 
 	public void joinGame(int idGame, User clientUser) {
@@ -156,15 +158,11 @@ public class GameController {
 				gameScene.updateRoundTrack(game.getRoundTrack());
 				gameScene.updateGlassWindow(game.updateGlassWindow());
 
-				if (game.getCurrentPlayer().getPlayerID() != getClientPlayer().getPlayerID()) {
-					gameScene.disableDieOfferPane(true);
-					gameScene.updateTable(game.getTable());
-				}
-
 				if (dieNotPlaced && checkMyTurn()) {
 					gameScene.disableDieOfferPane(false);
 				} else {
 					gameScene.disableDieOfferPane(true);
+					gameScene.updateTable(game.getTable());
 				}
 
 				gameScene.updateTurn(checkMyTurn());
@@ -254,7 +252,7 @@ public class GameController {
 
 				if (nextSeqnr == 1) {
 					game.nextRound();
-					gameScene.updateDieOfferPane(game.getTable());
+					gameScene.updateTable(game.getTable());
 				}
 
 				return;
