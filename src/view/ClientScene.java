@@ -29,7 +29,7 @@ public class ClientScene extends Scene {
 	public ClientScene(ClientController controller) {
 		super(new BorderPane());
 		this.clientcontroller = controller;
-		this.lobbyListPane = new LobbyListPane(clientcontroller.getLobbies(), this);
+		this.lobbyListPane = new LobbyListPane(this);
 		this.userListPane = new UserListPane();
 		this.challengeListPane = new ChallengeListPane(this);
 
@@ -48,15 +48,21 @@ public class ClientScene extends Scene {
 		return clientcontroller.getSpecificLobby(gameID);
 	}
 
+	public ArrayList<Lobby> getLobbies() {
+		return clientcontroller.getLobbies();
+	}
+	
 	public void handleUserListButton() {
 		rootPane.setCenter(userListPane);
 	}
 
 	public void handleLobbyListButton() {
+		lobbyListPane.createLeft();
 		rootPane.setCenter(lobbyListPane);
 	}
 
 	public void handleChallengeListButton() {
+		challengeListPane.createLeft();
 		rootPane.setCenter(challengeListPane);
 	}
 
@@ -100,6 +106,10 @@ public class ClientScene extends Scene {
 	
 	public ArrayList<Challenge> getChallenges() {
 		return clientcontroller.getChallenges();
+	}
+	
+	public Challenge getSpecificChallenge(int idGame) {
+		return clientcontroller.getSpecificChallenge(idGame);
 	}
 
 }

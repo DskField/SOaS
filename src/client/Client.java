@@ -18,9 +18,9 @@ public class Client {
 	public Client(String username, PersistenceFacade persistencefacade) {
 		this.username = username;
 		this.persistencefacade = persistencefacade;
-		this.lobbies = persistencefacade.getLobbies(username);
 		this.user = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username)
 				: new User(username, 0, 0, GameColor.EMPTY, 0);
+		this.lobbies = persistencefacade.getLobbies(username);
 		this.challenges = persistencefacade.getChallenges(username);
 
 		user.setGamesWon(calcWon());

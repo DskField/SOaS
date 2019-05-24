@@ -26,6 +26,7 @@ public class LobbyListPane extends BorderPane {
 	private HandleButton handlebutton;
 	private ClientScene clientscene;
 	private Label errorMessage;
+	private ArrayList<Lobby> lobbies;
 
 	// Magic Numbers
 	final private static int labelSize = 30;
@@ -40,18 +41,32 @@ public class LobbyListPane extends BorderPane {
 	final private static int joinGameButtonWidth = 400;
 	final private static int joinGameButtonHeight = 150;
 
-	public LobbyListPane(ArrayList<Lobby> lobbies, ClientScene clientscene) {
+	public LobbyListPane(ClientScene clientscene) {
 		this.clientscene = clientscene;
 		lobbyList = new ListView<ToggleButton>();
 		togglegroup = new ToggleGroup();
 		this.handlebutton = new HandleButton();
 
+		createLeft();
+	}
+
+	public void createLeft() {
+		lobbyList.getItems().clear();
+		togglegroup.getToggles().clear();
+		this.lobbies = clientscene.getLobbies();
+//		this.setLeft(null);
+
 		for (Lobby lob : lobbies) {
-			ToggleButton togglebutton = new ToggleButton("Uitdaging " + lob.getGameID());
-			togglebutton.setAlignment(Pos.CENTER);
-			togglebutton.setOnMouseClicked(handlebutton);
-			lobbyList.getItems().add(togglebutton);
-			togglegroup.getToggles().add(togglebutton);
+			if (clientscene.getSpecificChallenge(lob.getGameID()) != null) {
+				if (!clientscene.getSpecificChallenge(lob.getGameID()).getPlayers().get(clientscene.getUsername())
+						.equals("uitgedaagde")) {
+					ToggleButton togglebutton = new ToggleButton("Uitdaging " + lob.getGameID());
+					togglebutton.setAlignment(Pos.CENTER);
+					togglebutton.setOnMouseClicked(handlebutton);
+					lobbyList.getItems().add(togglebutton);
+					togglegroup.getToggles().add(togglebutton);
+				}
+			}
 		}
 
 		this.setLeft(lobbyList);
@@ -98,7 +113,6 @@ public class LobbyListPane extends BorderPane {
 			won = clientscene.getLobby(idGame).isWon() ? "Gewonnen" : "Verloren";
 		else
 			won = String.format("%0$-22s", "");
-		// won = String.format("%0$-15s", won);
 		Label wonLabel = new Label(won);
 		wonLabel.setFont(Font.font(labelSize));
 

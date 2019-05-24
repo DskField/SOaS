@@ -43,15 +43,15 @@ public class ChallengeListPane extends BorderPane {
 		this.togglegroup = new ToggleGroup();
 		this.handleButton = new HandleButton();
 
-		createLeft();		
+		createLeft();
 	}
 
-	private void createLeft() {
+	public void createLeft() {
 		challengeList.getItems().clear();
 		togglegroup.getToggles().clear();
 		challenges = clientscene.getChallenges();
-		this.setLeft(null);
-		
+//		this.setLeft(null);
+
 		for (Challenge chal : challenges) {
 			if (chal.getPlayers().get(clientscene.getUsername()).equals("uitgedaagde")) {
 				ToggleButton togglebutton = new ToggleButton("Challenge " + chal.getGameID());
@@ -64,7 +64,7 @@ public class ChallengeListPane extends BorderPane {
 
 		this.setLeft(challengeList);
 	}
-	
+
 	private void createCenter(int idGame) {
 		Label challengeInfo = new Label("Uitdaging: Game " + idGame);
 		challengeInfo.setMinSize(statsWidth, statsHeight);
@@ -113,7 +113,7 @@ public class ChallengeListPane extends BorderPane {
 
 		this.setCenter(centerBox);
 	}
-	
+
 	private void handleReactionButton(boolean accepted, int idGame) {
 		clientscene.handleReaction(accepted, idGame);
 		this.setCenter(null);
