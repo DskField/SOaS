@@ -214,6 +214,8 @@ public class Game {
 	 * Removes the die from the list with dice and places them on the list table. It also rolls the dice
 	 */
 	public void shakeSack() {
+		updateDice();
+
 		int numDice = players.size() * 2 + 1;
 		for (int i = 0; i < numDice; i++) {
 			int index = random.nextInt(dice.size());
@@ -222,6 +224,10 @@ public class Game {
 			dice.remove(index);
 			persistenceFacade.updateDiceRoll(gameID, table);
 		}
+	}
+
+	public void updateDice() {
+		dice = persistenceFacade.getGameDice(gameID);
 	}
 
 	/**

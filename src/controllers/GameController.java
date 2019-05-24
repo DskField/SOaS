@@ -42,9 +42,9 @@ public class GameController {
 		//		users.add(new User("speler3", 0, 0, GameColor.RED, 0));
 		//		users.add(new User("speler4", 0, 0, GameColor.RED, 0));
 		//		pf.createGame(users);
-		//		pf.setCardsGame(11);
+		//		pf.setCardsGame(12);
 		//		System.out.println("Created game");
-		joinGame(11, new User("speler1", 0, 0, GameColor.RED, 0));
+		joinGame(12, new User("speler1", 0, 0, GameColor.RED, 0));
 	}
 
 	public void joinGame(int idGame, User clientUser) {
