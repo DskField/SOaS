@@ -233,89 +233,6 @@ public class Game {
 		loadCards();
 	}
 
-	public void nextTurn() {
-		updatePlayers();
-
-		int totalPlayers = players.size();
-		int maxSeqnr = totalPlayers * 2;
-		int nextSeqnr = 0;
-
-		for (Player player : players) {
-			if (player.getPlayerID() == currentPlayer.getPlayerID()) {
-				switch (player.getSeqnr()) {
-				case 1:
-					player.setSeqnr(maxSeqnr);
-					nextSeqnr = 2;
-					break;
-				case 2:
-					player.setSeqnr(maxSeqnr - 1);
-					nextSeqnr = 3;
-					break;
-				case 3:
-					if (totalPlayers == 2) {
-						player.setSeqnr(1);
-					} else {
-						player.setSeqnr(maxSeqnr - 2);
-					}
-					nextSeqnr = 4;
-					break;
-				case 4:
-					if (totalPlayers == 2) {
-						player.setSeqnr(2);
-						nextSeqnr = 1;
-						break;
-					} else if (totalPlayers == 3) {
-						player.setSeqnr(2);
-					} else if (totalPlayers == 4) {
-						player.setSeqnr(maxSeqnr - 3);
-					}
-					nextSeqnr = 5;
-					break;
-				case 5:
-					if (totalPlayers == 3) {
-						player.setSeqnr(1);
-					} else if (totalPlayers == 4) {
-						player.setSeqnr(3);
-					}
-					nextSeqnr = 6;
-					break;
-				case 6:
-					if (totalPlayers == 3) {
-						player.setSeqnr(3);
-						nextSeqnr = 1;
-						break;
-					} else if (totalPlayers == 4) {
-						player.setSeqnr(2);
-						nextSeqnr = 7;
-						break;
-					}
-				case 7:
-					player.setSeqnr(1);
-					nextSeqnr = 8;
-					break;
-				case 8:
-					player.setSeqnr(4);
-					nextSeqnr = 1;
-					break;
-				}
-
-				for (Player player2 : players) {
-					if (player2.getSeqnr() == nextSeqnr) {
-						currentPlayer = player2;
-					}
-				}
-
-				persistenceFacade.updatePlayerTurn(player, currentPlayer, gameID);
-
-				if (nextSeqnr == 1) {
-					nextRound();
-				}
-
-				return;
-			}
-		}
-	}
-
 	public void updatePlayers() {
 		ArrayList<Player> tempPlayers = persistenceFacade.getAllPlayersInGame(gameID);
 
@@ -326,6 +243,22 @@ public class Game {
 				}
 			}
 		}
+	}
+
+	public void setSeqnr(Player player, int newSeqnr) {
+		for (Player P : players) {
+			if (P.getPlayerID() == player.getPlayerID()) {
+				P.setSeqnr(newSeqnr);
+			}
+		}
+	}
+
+	public void setCurrentPlayer(Player player) {
+		currentPlayer = player;
+	}
+
+	public void updatePlayerTurn(Player oldPlayer) {
+		persistenceFacade.updatePlayerTurn(oldPlayer, currentPlayer, gameID);
 	}
 
 	public void nextRound() {
