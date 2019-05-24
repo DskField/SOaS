@@ -34,7 +34,7 @@ public class DieOfferPane extends HBox {
 	}
 
 	public void addDice(ArrayList<Die> roundDies) {
-		if (checkDice(roundDies)) {
+		if (!checkDice(roundDies)) {
 			dice.clear();
 
 			for (Die die : roundDies) {
