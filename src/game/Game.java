@@ -433,6 +433,7 @@ public class Game {
 	}
 
 	public Round[] getRoundTrack() {
+		roundTrack = persistenceFacade.getRoundTrack(gameID);
 		return roundTrack;
 	}
 

@@ -191,10 +191,10 @@ public class GameScene extends Scene {
 		roundPane.getChildren().clear();
 		for (int i = 0; i < rounds.length; i++) {
 			Round round = rounds[i];
-			roundPane.clear(i + 1);
+			roundPane.clear(i);
 			for (Die die : round.getDice()) {
 				DiePane diePane = new DiePane(die.getDieId(), die.getDieValue(), die.getDieColor());
-				roundPane.addDie(i + 1, diePane);
+				roundPane.addDie(i, diePane);
 			}
 		}
 		roundPane.update();

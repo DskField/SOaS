@@ -39,8 +39,6 @@ public class GameController {
 		//		ArrayList<User> users = new ArrayList<User>();
 		//		users.add(new User("speler1", 0, 0, GameColor.RED, 0));
 		//		users.add(new User("speler2", 0, 0, GameColor.RED, 0));
-		//				users.add(new User("speler3", 0, 0, GameColor.RED, 0));
-		//				users.add(new User("speler4", 0, 0, GameColor.RED, 0));
 		//		pf.createGame(users);
 		//		pf.setCardsGame(6);
 		//		System.out.println("Created game");
