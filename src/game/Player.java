@@ -12,8 +12,6 @@ public class Player {
 	private int seqnr;
 	private int score;
 
-	private boolean isCurrentPlayer;
-
 	public Player(int playerID, int seqnr, GameColor personalGoalCard, String username) {
 		currencyStones = new ArrayList<>();
 		this.personalGoalCard = personalGoalCard;
@@ -61,14 +59,6 @@ public class Player {
 
 	public String getUsername() {
 		return username;
-	}
-
-	public boolean isCurrentPlayer() {
-		return isCurrentPlayer;
-	}
-
-	public void setCurrentPlayer(boolean isCurrentPlayer) {
-		this.isCurrentPlayer = isCurrentPlayer;
 	}
 
 	public void setScore(int score) {

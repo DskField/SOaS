@@ -16,7 +16,7 @@ public class RoundPane extends Pane {
 
 	private HashMap<Integer, ArrayList<DiePane>> roundTrack;
 
-	public RoundPane(int x, int y ) {
+	public RoundPane(int x, int y) {
 		this.x = x;
 		this.y = y;
 
@@ -78,6 +78,7 @@ public class RoundPane extends Pane {
 	void addDie(Integer round, DiePane diePane) {
 		roundTrack.get(round).add(diePane);
 	}
+
 	void clear(Integer round) {
 		roundTrack.get(round).clear();
 	}

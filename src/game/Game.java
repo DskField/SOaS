@@ -97,9 +97,11 @@ public class Game {
 		dice = persistenceFacade.getGameDice(gameID);
 		roundTrack = persistenceFacade.getRoundTrack(gameID);
 		table = persistenceFacade.getTableDice(gameID, currentRound);
-		if (table.isEmpty() && roundTrack[currentRound - 1].getDice().isEmpty() && currentPlayer.getPlayerID() == clientPlayer.getPlayerID()) {
-			//if its my turn when I join the game it shakes the sack
-			shakeSack();
+		if (currentRound <= 10) {
+			if (table.isEmpty() && roundTrack[currentRound - 1].getDice().isEmpty() && currentPlayer.getPlayerID() == clientPlayer.getPlayerID()) {
+				//if its my turn when I join the game it shakes the sack
+				shakeSack();
+			}
 		}
 	}
 
@@ -214,6 +216,8 @@ public class Game {
 	 * Removes the die from the list with dice and places them on the list table. It also rolls the dice
 	 */
 	public void shakeSack() {
+		updateDice();
+
 		int numDice = players.size() * 2 + 1;
 		for (int i = 0; i < numDice; i++) {
 			int index = random.nextInt(dice.size());
@@ -222,6 +226,10 @@ public class Game {
 			dice.remove(index);
 			persistenceFacade.updateDiceRoll(gameID, table);
 		}
+	}
+
+	public void updateDice() {
+		dice = persistenceFacade.getGameDice(gameID);
 	}
 
 	/**
@@ -233,96 +241,44 @@ public class Game {
 		loadCards();
 	}
 
-	public void nextTurn() {
-		int totalPlayers = players.size();
-		int maxSeqnr = totalPlayers * 2;
-		int nextSeqnr = 0;
+	public void updatePlayers() {
+		ArrayList<Player> tempPlayers = persistenceFacade.getAllPlayersInGame(gameID);
 
-		for (Player player : players) {
-			if (player.getPlayerID() == currentPlayer.getPlayerID()) {
-				switch (player.getSeqnr()) {
-				case 1:
-					player.setSeqnr(maxSeqnr);
-					nextSeqnr = 2;
-					break;
-				case 2:
-					player.setSeqnr(maxSeqnr - 1);
-					nextSeqnr = 3;
-					break;
-				case 3:
-					if (totalPlayers == 2) {
-						player.setSeqnr(1);
-					} else {
-						player.setSeqnr(maxSeqnr - 2);
-					}
-					nextSeqnr = 4;
-					break;
-				case 4:
-					if (totalPlayers == 2) {
-						player.setSeqnr(2);
-						nextSeqnr = 1;
-						break;
-					} else if (totalPlayers == 3) {
-						player.setSeqnr(2);
-					} else if (totalPlayers == 4) {
-						player.setSeqnr(maxSeqnr - 3);
-					}
-					nextSeqnr = 5;
-					break;
-				case 5:
-					if (totalPlayers == 3) {
-						player.setSeqnr(1);
-					} else if (totalPlayers == 4) {
-						player.setSeqnr(3);
-					}
-					nextSeqnr = 6;
-					break;
-				case 6:
-					if (totalPlayers == 3) {
-						player.setSeqnr(3);
-						nextSeqnr = 1;
-						break;
-					} else if (totalPlayers == 4) {
-						player.setSeqnr(2);
-						nextSeqnr = 7;
-						break;
-					}
-				case 7:
-					player.setSeqnr(1);
-					nextSeqnr = 8;
-					break;
-				case 8:
-					player.setSeqnr(4);
-					nextSeqnr = 1;
-					break;
+		for (Player temp : tempPlayers) {
+			for (Player player : players) {
+				if (temp.getPlayerID() == player.getPlayerID()) {
+					player.setSeqnr(temp.getSeqnr());
 				}
-
-				for (Player player2 : players) {
-					if (player2.getSeqnr() == nextSeqnr) {
-						currentPlayer = player2;
-					}
-				}
-
-				persistenceFacade.updatePlayerTurn(player, currentPlayer, gameID);
-
-				if (nextSeqnr == 1) {
-					nextRound();
-				}
-
-				return;
 			}
 		}
 	}
 
+	public void setSeqnr(Player player, int newSeqnr) {
+		for (Player P : players) {
+			if (P.getPlayerID() == player.getPlayerID()) {
+				P.setSeqnr(newSeqnr);
+			}
+		}
+	}
+
+	public void setCurrentPlayer(Player player) {
+		currentPlayer = player;
+	}
+
+	public void updatePlayerTurn(Player oldPlayer) {
+		persistenceFacade.updatePlayerTurn(oldPlayer, currentPlayer, gameID);
+	}
+
 	public void nextRound() {
 		if (!table.isEmpty()) {
-			roundTrack[currentRound].addDice(table);
+			roundTrack[currentRound - 1].addDice(table);
 			persistenceFacade.updateDiceRound(gameID, currentRound, table);
 			table.clear();
 			currentRound++;
-		} else {
-			shakeSack();
+		}
 
+		if (currentRound <= 10) {
+			shakeSack();
 		}
 	}
 
@@ -433,6 +389,7 @@ public class Game {
 	}
 
 	public Round[] getRoundTrack() {
+		roundTrack = persistenceFacade.getRoundTrack(gameID);
 		return roundTrack;
 	}
 

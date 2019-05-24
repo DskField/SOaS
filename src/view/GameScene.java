@@ -115,11 +115,11 @@ public class GameScene extends Scene {
 	}
 
 	public void selectDie(ArrayList<SpaceGlass> available) {
-		if (gameController.getClientPlayer().getColor() == smallGlassWindow1.getColor()) {
+		if (smallGlassWindow1 != null && gameController.getClientPlayer().getColor() == smallGlassWindow1.getColor()) {
 			switchGlassWindows(1);
-		} else if (gameController.getClientPlayer().getColor() == smallGlassWindow2.getColor()) {
+		} else if (smallGlassWindow2 != null && gameController.getClientPlayer().getColor() == smallGlassWindow2.getColor()) {
 			switchGlassWindows(2);
-		} else if (gameController.getClientPlayer().getColor() == smallGlassWindow3.getColor()) {
+		} else if (smallGlassWindow3 != null && gameController.getClientPlayer().getColor() == smallGlassWindow3.getColor()) {
 			switchGlassWindows(3);
 		}
 		removeHighlight();
@@ -190,18 +190,13 @@ public class GameScene extends Scene {
 	public void updateRoundTrack(Round[] rounds) {
 		roundPane.getChildren().clear();
 		for (int i = 0; i < rounds.length; i++) {
-			Round round = rounds[i];
 			roundPane.clear(i + 1);
-			for (Die die : round.getDice()) {
+			for (Die die : rounds[i].getDice()) {
 				DiePane diePane = new DiePane(die.getDieId(), die.getDieValue(), die.getDieColor());
 				roundPane.addDie(i + 1, diePane);
 			}
 		}
 		roundPane.update();
-	}
-
-	public void updateDieOfferPane(ArrayList<Die> offer) {
-		dieOfferPane.addDice(offer);
 	}
 
 	public void disableOffer(boolean b) {

@@ -42,8 +42,9 @@ public class GameController {
 		//		users.add(new User("speler3", 0, 0, GameColor.RED, 0));
 		//		users.add(new User("speler4", 0, 0, GameColor.RED, 0));
 		//		pf.createGame(users);
-		//		pf.setCardsGame(5);
-		joinGame(5, new User("speler1", 0, 0, GameColor.RED, 0));
+		//		pf.setCardsGame(13);
+		//		System.out.println("Created game");
+		joinGame(13, new User("speler1", 0, 0, GameColor.RED, 0));
 	}
 
 	public void joinGame(int idGame, User clientUser) {
@@ -123,7 +124,7 @@ public class GameController {
 		timer = new AnimationTimerExt(3000) {
 			@Override
 			public void doAction() {
-				update();
+				check();
 			}
 		};
 
@@ -133,7 +134,7 @@ public class GameController {
 	/**
 	 * updates the view by using information out of the game model.
 	 */
-	public void update() {
+	public void check() {
 		if (gameScene == null) {
 			if (game.getPlayersWithoutPatternCards().isEmpty() && game.getPlayerWithPatternCardButWithoutCurrencyStones().isEmpty()) {
 				game.loadGame();
@@ -151,29 +152,114 @@ public class GameController {
 			}
 		} else {
 			if (game.getCurrentRound() <= 10) {
-				game.loadCurrentRound();
-				game.loadCurrentPlayer();
-				gameScene.updateRoundTrack(game.getRoundTrack());
-				gameScene.updateGlassWindow(game.updateGlassWindow());
-
-				if (game.getCurrentPlayer().getPlayerID() != getClientPlayer().getPlayerID()) {
-					gameScene.disableDieOfferPane(true);
-					gameScene.updateTable(game.getTable());
-					dieNotPlaced = true;
-				}
-
-				if (dieNotPlaced) {
-					gameScene.disableDieOfferPane(false);
-				} else {
-					gameScene.disableDieOfferPane(true);
-				}
-
-				gameScene.updateTurn(checkMyTurn());
-
-				gameScene.updateChat(game.updateChat());
+				update();
 			} else {
 				gameFinish();
 				timer.stop();
+			}
+		}
+	}
+
+	public void update() {
+		game.loadCurrentRound();
+		game.updatePlayers();
+		game.loadCurrentPlayer();
+		gameScene.updateRoundTrack(game.getRoundTrack());
+		gameScene.updateGlassWindow(game.updateGlassWindow());
+		gameScene.updateTable(game.getTable());
+
+		if (dieNotPlaced && checkMyTurn()) {
+			gameScene.disableDieOfferPane(false);
+		} else {
+			gameScene.disableDieOfferPane(true);
+		}
+
+		gameScene.updateTurn(checkMyTurn());
+
+		gameScene.updateChat(game.updateChat());
+	}
+
+	public void nextTurn() {
+		dieNotPlaced = true;
+		game.updatePlayers();
+
+		int totalPlayers = game.getPlayers().size();
+		int maxSeqnr = totalPlayers * 2;
+		int nextSeqnr = 0;
+
+		for (Player player : game.getPlayers()) {
+			if (player.getPlayerID() == game.getCurrentPlayer().getPlayerID()) {
+				switch (player.getSeqnr()) {
+				case 1:
+					game.setSeqnr(player, maxSeqnr);
+					nextSeqnr = 2;
+					break;
+				case 2:
+					game.setSeqnr(player, maxSeqnr - 1);
+					nextSeqnr = 3;
+					break;
+				case 3:
+					if (totalPlayers == 2) {
+						game.setSeqnr(player, 1);
+					} else {
+						game.setSeqnr(player, maxSeqnr - 2);
+					}
+					nextSeqnr = 4;
+					break;
+				case 4:
+					if (totalPlayers == 2) {
+						game.setSeqnr(player, 2);
+						nextSeqnr = 1;
+						break;
+					} else if (totalPlayers == 3) {
+						game.setSeqnr(player, 2);
+					} else if (totalPlayers == 4) {
+						game.setSeqnr(player, maxSeqnr - 3);
+					}
+					nextSeqnr = 5;
+					break;
+				case 5:
+					if (totalPlayers == 3) {
+						game.setSeqnr(player, 1);
+					} else if (totalPlayers == 4) {
+						game.setSeqnr(player, 3);
+					}
+					nextSeqnr = 6;
+					break;
+				case 6:
+					if (totalPlayers == 3) {
+						game.setSeqnr(player, 3);
+						nextSeqnr = 1;
+						break;
+					} else if (totalPlayers == 4) {
+						game.setSeqnr(player, 2);
+						nextSeqnr = 7;
+						break;
+					}
+				case 7:
+					game.setSeqnr(player, 1);
+					nextSeqnr = 8;
+					break;
+				case 8:
+					game.setSeqnr(player, 4);
+					nextSeqnr = 1;
+					break;
+				}
+
+				for (Player player2 : game.getPlayers()) {
+					if (player2.getSeqnr() == nextSeqnr) {
+						game.setCurrentPlayer(player2);
+					}
+				}
+
+				game.updatePlayerTurn(player);
+
+				if (nextSeqnr == 1) {
+					game.nextRound();
+					gameScene.updateTable(game.getTable());
+				}
+
+				return;
 			}
 		}
 	}
@@ -360,6 +446,7 @@ public class GameController {
 		int maxScore = -99;
 		Player winner = game.getPlayers().get(0);
 		game.setFinalScore();
+		gameScene.updateScore(game.getPlayers());
 		for (Player player : game.getPlayers()) {
 			if (maxScore < player.getScore()) {
 				maxScore = player.getScore();
@@ -368,9 +455,5 @@ public class GameController {
 		}
 		String winText = winner.getUsername() + " heeft het spel gewonnen met een score van:  " + maxScore;
 		gameScene.gameFinish(winText);
-	}
-
-	public void nextTurn() {
-		game.nextTurn();
 	}
 }
