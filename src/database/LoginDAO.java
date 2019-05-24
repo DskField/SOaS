@@ -41,6 +41,7 @@ public class LoginDAO {
 			PreparedStatement stmt = con.prepareStatement("INSERT INTO account VALUES(?, ?)");
 			stmt.setString(1, username);
 			stmt.setString(2, password);
+			stmt.executeUpdate();
 			con.commit();
 			stmt.close();
 			return true;
@@ -56,9 +57,12 @@ public class LoginDAO {
 	}
 
 	public boolean insertCorrect(String username, String password) {
-		if (selectUsername(username)[0].equals(username))
+		if (selectUsername(username)[0].equals(username)) {
+			System.out.println("bestaat al");
 			return false;
-		else
+		} else {
+			System.out.println("bestaat niet");
 			return insertAccount(username, password);
+		}
 	}
 }

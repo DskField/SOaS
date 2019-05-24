@@ -3,6 +3,7 @@ package client;
 import java.util.ArrayList;
 
 import database.PersistenceFacade;
+import game.GameColor;
 
 public class Client {
 
@@ -18,12 +19,14 @@ public class Client {
 		this.username = username;
 		this.persistencefacade = persistencefacade;
 		this.lobbies = persistencefacade.getLobbies(username);
-		this.user = persistencefacade.getUser(username);
+		this.user = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username)
+				: new User(username, 0, 0, GameColor.EMPTY, 0);
 		this.challenges = persistencefacade.getChallenges(username);
 
 		user.setGamesWon(calcWon());
 		user.setGamesLost(calcLost());
 		user.setTotalOpponents(calcOpponents());
+
 	}
 
 	// Update
