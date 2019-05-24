@@ -157,12 +157,12 @@ public class GameController {
 				game.loadCurrentPlayer();
 				gameScene.updateRoundTrack(game.getRoundTrack());
 				gameScene.updateGlassWindow(game.updateGlassWindow());
+				gameScene.updateTable(game.getTable());
 
 				if (dieNotPlaced && checkMyTurn()) {
 					gameScene.disableDieOfferPane(false);
 				} else {
 					gameScene.disableDieOfferPane(true);
-					gameScene.updateTable(game.getTable());
 				}
 
 				gameScene.updateTurn(checkMyTurn());
