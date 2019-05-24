@@ -29,7 +29,7 @@ public class ClientController {
 	public ClientController(MainApplication mainapplication) {
 		this.persistencefacade = new PersistenceFacade();
 		this.mainapplication = mainapplication;
-		// this.gamecontroller = new GameController(mainapplication);
+		this.gamecontroller = new GameController(mainapplication);
 		// handleLogin("speler1", "speler1");
 		mainapplication.setScene(new Scene(new LoginPane(this)));
 	}
