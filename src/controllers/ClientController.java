@@ -62,6 +62,10 @@ public class ClientController {
 		return client.getLobbies();
 	}
 
+	public Challenge getSpecificChallenge(int gameID) {
+		return client.getChallenge(gameID);
+	}
+	
 	public Lobby getSpecificLobby(int gameID) {
 		return client.getLobby(gameID);
 	}
@@ -70,6 +74,14 @@ public class ClientController {
 		gamecontroller.joinGame(idGame, client.getUser());
 	}
 
+	public void handleReaction(boolean accepted, int idGame) {
+		persistencefacade.updatePlayerStatus(client.getUser().getUsername(), accepted, idGame);
+	}
+	
+	public String getUsername() {
+		return client.getUser().getUsername();
+	}
+	
 	// TODO TOM MOVE FACADE - TEMPORARY FIX
 	public ArrayList<Player> getPlayers(int gameID) {
 		return persistencefacade.getAllPlayersInGame(gameID);

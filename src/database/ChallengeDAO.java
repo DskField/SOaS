@@ -58,9 +58,27 @@ class ChallengeDAO {
 		}
 		return results;
 	}
+	
+	private void updatePlayerStatus(String query, String username, boolean accepted, int idGame) {
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			stmt.setString(1, accepted ? "geaccepteerd" : "geweigerd");
+			stmt.setString(2, username);
+			stmt.setInt(3, idGame);
+			stmt.executeUpdate();
+			con.commit();
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("ChallengeDAO: " + e.getMessage());
+		}
+	}
 
 	public ArrayList<Challenge> getChallenges(String username) {
 		return selectChallenges("SELECT DISTINCT(game_idgame)\r\n" + "FROM player\r\n" + "WHERE playstatus_playstatus IN (\"uitdager\", \"uitgedaagde\", \"geaccepteerd\", \"geweigerd\") AND username = ?", username);
+	}
+	
+	public void updateStatus(String username, boolean accepted, int idGame) {
+		updatePlayerStatus("UPDATE player SET playstatus_playstatus = ? WHERE username = ? AND game_idgame = ?", username, accepted, idGame);
 	}
 
 	public boolean checkUpdate(String username, ArrayList<Challenge> oldList) {

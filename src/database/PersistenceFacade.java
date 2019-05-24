@@ -55,6 +55,10 @@ public class PersistenceFacade {
 	public boolean updateChallenge(String username, ArrayList<Challenge> oldList) {
 		return challengeDAO.checkUpdate(username, oldList);
 	}
+	
+	public void updatePlayerStatus(String username, boolean accepted, int idGame) {
+		challengeDAO.updateStatus(username, accepted, idGame);
+	}
 
 	// LobbyDAO
 	public ArrayList<Lobby> getLobbies(String username) {

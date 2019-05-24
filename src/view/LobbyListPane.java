@@ -28,7 +28,7 @@ public class LobbyListPane extends BorderPane {
 	private Label errorMessage;
 
 	// Magic Numbers
-	final private static int LabelSize = 30;
+	final private static int labelSize = 30;
 	final private static int textSize = 25;
 	final private static int titleLabelSize = 50;
 	final private static Color statsBackgroundColor = Color.AQUAMARINE;
@@ -64,7 +64,7 @@ public class LobbyListPane extends BorderPane {
 		titleLabel.setFont(Font.font(titleLabelSize));
 
 		Label gamestateLabel = new Label("Game Status:");
-		gamestateLabel.setFont(Font.font(LabelSize));
+		gamestateLabel.setFont(Font.font(labelSize));
 
 		Label gamestateTextLabel = new Label(clientscene.getLobby(idGame).getGameState());
 		gamestateTextLabel.setFont(Font.font(textSize));
@@ -76,7 +76,7 @@ public class LobbyListPane extends BorderPane {
 
 		// Scoreboard
 		Label scoreboardLabel = new Label("Scoreboard:");
-		scoreboardLabel.setFont(Font.font(LabelSize));
+		scoreboardLabel.setFont(Font.font(labelSize));
 
 		VBox playerList = new VBox();
 		playerList.setAlignment(Pos.CENTER);
@@ -91,7 +91,7 @@ public class LobbyListPane extends BorderPane {
 		}
 
 		Label rondeLabel = new Label("Ronde: " + (clientscene.getLobby(idGame).getCurrentRound() - 1));
-		rondeLabel.setFont(Font.font(LabelSize));
+		rondeLabel.setFont(Font.font(labelSize));
 
 		String won;
 		if (clientscene.getLobby(idGame).getGameState().equals("uitgespeeld"))
@@ -100,7 +100,7 @@ public class LobbyListPane extends BorderPane {
 			won = String.format("%0$-22s", "");
 		// won = String.format("%0$-15s", won);
 		Label wonLabel = new Label(won);
-		wonLabel.setFont(Font.font(LabelSize));
+		wonLabel.setFont(Font.font(labelSize));
 
 		VBox statsPane = new VBox();
 		statsPane.setSpacing(statsPaneSpacing);
@@ -154,7 +154,6 @@ public class LobbyListPane extends BorderPane {
 		public void handle(MouseEvent e) {
 			String[] lobby = ((ToggleButton) e.getSource()).getText().split(" ");
 			int idGame = Integer.parseInt(lobby[1]);
-			System.out.println(idGame);
 			// TODO TOM only update the variables and set errormessage visible to false
 			createStats(idGame);
 		}

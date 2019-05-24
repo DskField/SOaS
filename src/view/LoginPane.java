@@ -1,11 +1,14 @@
 package view;
 
 import controllers.ClientController;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -44,6 +47,16 @@ public class LoginPane extends BorderPane {
 		setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
 		createButtons();
 		createTextFields();
+		
+		// Try to login on enterkey
+		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent key) {
+				if (key.getCode() == KeyCode.ENTER) {
+					clientcontroller.handleLogin(username.getText(), password.getText());
+				}
+			}
+		});
 	}
 
 	public void createButtons() {
@@ -60,6 +73,7 @@ public class LoginPane extends BorderPane {
 		buttons.setSpacing(buttonSpacing);
 		buttons.getChildren().addAll(login, register);
 		buttons.setAlignment(Pos.CENTER);
+		
 	}
 
 	public void createTextFields() {
@@ -91,5 +105,9 @@ public class LoginPane extends BorderPane {
 		textfields.getChildren().addAll(sagrada, butAndfields);
 		textfields.setAlignment(Pos.CENTER);
 		setCenter(textfields);
+		
+		// TODO DELETE
+		username.setText("speler1");
+		password.setText("speler1");
 	}
 }

@@ -97,6 +97,16 @@ public class Client {
 			if (lob.getGameID() == gameID)
 				return lob;
 		}
+		System.err.println("Client: specific lobby not found");
+		return null;
+	}
+	
+	public Challenge getChallenge(int gameID) {
+		for (Challenge chal : challenges) {
+			if (chal.getGameID() == gameID) 
+				return chal;
+		}
+		System.err.println("Client: specific challenge not found");
 		return null;
 	}
 }
