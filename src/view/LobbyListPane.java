@@ -54,7 +54,6 @@ public class LobbyListPane extends BorderPane {
 		lobbyList.getItems().clear();
 		togglegroup.getToggles().clear();
 		this.lobbies = clientscene.getLobbies();
-//		this.setLeft(null);
 
 		for (Lobby lob : lobbies) {
 			if (clientscene.getSpecificChallenge(lob.getGameID()) != null) {
@@ -69,7 +68,11 @@ public class LobbyListPane extends BorderPane {
 			}
 		}
 
-		this.setLeft(lobbyList);
+		lobbyList.setMaxHeight(800);
+		lobbyList.setStyle("#lv .list-cell {-fx-alignment: center;}");
+		BorderPane bp = new BorderPane();
+		bp.setCenter(lobbyList);
+		this.setLeft(bp);
 	}
 
 	public void createStats(int idGame) {

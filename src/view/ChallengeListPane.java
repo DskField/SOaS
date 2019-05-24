@@ -50,7 +50,6 @@ public class ChallengeListPane extends BorderPane {
 		challengeList.getItems().clear();
 		togglegroup.getToggles().clear();
 		challenges = clientscene.getChallenges();
-//		this.setLeft(null);
 
 		for (Challenge chal : challenges) {
 			if (chal.getPlayers().get(clientscene.getUsername()).equals("uitgedaagde")) {
@@ -62,6 +61,7 @@ public class ChallengeListPane extends BorderPane {
 			}
 		}
 
+		challengeList.setMaxHeight(800);
 		this.setLeft(challengeList);
 	}
 
