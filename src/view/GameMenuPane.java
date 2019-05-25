@@ -12,12 +12,13 @@ import javafx.stage.Stage;
 
 class GameMenuPane extends VBox {
 
-	private final int BUTTONWIDTH = 300;
-	private final int BUTTONHEIGHT = 100;
-	private final int SPACING = 50;
+	private static final int BUTTONWIDTH = 300;
+	private static final int BUTTONHEIGHT = 100;
+	private static final int SPACING = 50;
 
 	private Button btn_resume;
 	private Button btn_rules;
+	private Button btn_Cheat;
 	private Button btn_toMenu;
 	private Button btn_exit;
 	private Stage stage;
@@ -32,6 +33,9 @@ class GameMenuPane extends VBox {
 		setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.7), null, null)));
 		// set size
 		setMinSize(stage.getWidth(), stage.getHeight());
+		showButtons();
+	}
+	private void showButtons() {
 		// Give buttons text and style
 		btn_resume = new Button("Hervatten");
 		btn_resume.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
@@ -39,6 +43,9 @@ class GameMenuPane extends VBox {
 		btn_rules = new Button("Regels");
 		btn_rules.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
 		btn_rules.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
+		btn_Cheat = new Button("Cheat mode: ");
+		btn_Cheat.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
+		btn_Cheat.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
 		btn_toMenu = new Button("Terug naar hoofd menu");
 		btn_toMenu.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
 		btn_toMenu.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
@@ -51,7 +58,7 @@ class GameMenuPane extends VBox {
 		btn_toMenu.setOnAction(e -> toMenu());
 		btn_exit.setOnAction(e -> exit());
 		// add button to pane
-		getChildren().addAll(btn_resume, btn_rules, btn_toMenu, btn_exit);
+		getChildren().addAll(btn_resume, btn_rules,btn_Cheat, btn_toMenu, btn_exit);
 
 		// If escape key is pressed it registers it as if btn_resume is clicked
 		btn_resume.setCancelButton(true);
@@ -74,7 +81,7 @@ class GameMenuPane extends VBox {
 		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
 	}
 
-	// exit to main menu by switching the scene to ClientScene and it hides gamemenu
+	//TODO Back to client
 	private void toMenu() {
 		//		ClientScene clientScene = new ClientScene();
 		//		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
