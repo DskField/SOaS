@@ -74,6 +74,11 @@ public class GameScene extends Scene {
 	private DieOfferPane dieOfferPane;
 	private Button nextButton;
 	private GameController gameController;
+	public Stage stage;
+	
+	//TODO might wanna change this, 
+	private GameScene gS;
+
 
 	/**
 	 * Creates the GameScene
@@ -87,6 +92,10 @@ public class GameScene extends Scene {
 		setRoot(rootPane);
 		rootPane.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
 
+		gS = this;
+		stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
+
+		
 		// creates and sets everything in the right place
 		createCenter();
 		createLeft();
@@ -97,9 +106,8 @@ public class GameScene extends Scene {
 			@Override
 			public void handle(KeyEvent key) {
 				if (key.getCode() == KeyCode.ESCAPE) {
-					Stage stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
 					Popup gameMenuPopup = new Popup();
-					GameMenuPane gameMenu = new GameMenuPane();
+					GameMenuPane gameMenu = new GameMenuPane(gameController);
 					gameMenuPopup.getContent().add(gameMenu);
 					gameMenuPopup.setAutoHide(true);
 					gameMenuPopup.show(stage);
@@ -129,7 +137,7 @@ public class GameScene extends Scene {
 	public void removeHighlight() {
 		mainGlassWindow.removeHighlightSpaces();
 	}
-
+	
 	public DiePane getSelectedDie() {
 		try {
 			return (DiePane) focusOwnerProperty().get();
@@ -348,7 +356,7 @@ public class GameScene extends Scene {
 		// adds the rightBox to the rootPane
 		rootPane.setRight(rightBox);
 	}
-
+	
 	public void switchGlassWindows(int source) {
 		mainGlassWindow.removeHighlightSpaces();
 		leftBox.getChildren().remove(mainGlassWindow);
@@ -406,5 +414,12 @@ public class GameScene extends Scene {
 		rootPane.setCenter(winner);
 		rootPane.setDisable(true);
 	}
+	/*
+	 * cycles through cheatmodes
+	 * @return cheatMode - 0 = nocheats
+	 * 				 1 = basic cheat
+	 * 				 2 = advanced cheat
+	 */
+
 
 }

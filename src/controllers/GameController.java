@@ -29,6 +29,8 @@ public class GameController {
 	private ChoiceScene choiceScene;
 	private AnimationTimerExt timer;
 	private PersistenceFacade persistencefacade;
+	
+	private int cheatMode;
 
 	//TODO: write query for this
 	private boolean dieNotPlaced = true;
@@ -48,6 +50,8 @@ public class GameController {
 		//		pf.setCardsGame(13);
 		//		System.out.println("Created game");
 		// 		joinGame(13, new User("speler1", 0, 0, GameColor.RED, 0));
+		
+		cheatMode = 0;
 	}
 
 	public void joinGame(int idGame, User clientUser) {
@@ -417,7 +421,12 @@ public class GameController {
 	}
 
 	public void selectDie(DiePane diePane) {
-		gameScene.selectDie(getAvailableSpaces(diePane));
+		if(cheatMode==1) {
+			gameScene.selectDie(getAvailableSpaces(diePane));
+
+		}else {
+			System.out.println("not cheating");
+		}
 	}
 
 	/**
@@ -459,4 +468,40 @@ public class GameController {
 		String winText = winner.getUsername() + " heeft het spel gewonnen met een score van:  " + maxScore;
 		gameScene.gameFinish(winText);
 	}
+	public int cycleCheat() {
+		switch (cheatMode) {
+		case 0:
+			 cheat();
+			cheatMode++;
+			break;
+		case 1:
+			advancedCheat();
+			cheatMode++;
+			break;
+		case 2:
+			cheatMode =0;
+			break;
+		default:
+			System.err.println("GameController.cycle cheatmode: "+ cheatMode + "not recognized UwU, setting to 0");
+			break; 
+		}
+		return cheatMode;
+	}
+	private void cheat() {
+		
+		
+//		stage.hide();
+//		Runtime rt = Runtime.getRuntime();
+//		String url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+//		try {
+//			rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+	}
+	private void advancedCheat() {
+		
+	}  
 }

@@ -1,5 +1,7 @@
 package view;
 
+
+import controllers.GameController;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -22,9 +24,11 @@ class GameMenuPane extends VBox {
 	private Button btn_toMenu;
 	private Button btn_exit;
 	private Stage stage;
+	
+	private GameController gC;
 
-	GameMenuPane() {
-
+	GameMenuPane(GameController gC) {
+		this.gC=gC;
 		// get the main stage
 		this.stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
 		// Do some Styling
@@ -55,6 +59,7 @@ class GameMenuPane extends VBox {
 		// give actions to buttons
 		btn_resume.setOnAction(e -> resume());
 		btn_rules.setOnAction(e -> showRules());
+		btn_Cheat.setOnAction(e -> cycleCheatFunction() );
 		btn_toMenu.setOnAction(e -> toMenu());
 		btn_exit.setOnAction(e -> exit());
 		// add button to pane
@@ -80,7 +85,10 @@ class GameMenuPane extends VBox {
 		rulePopup.setY(stage.getHeight() / 2);
 		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
 	}
-
+	private void cycleCheatFunction() {
+		gC.cycleCheat();
+		
+	}
 	//TODO Back to client
 	private void toMenu() {
 		//		ClientScene clientScene = new ClientScene();
