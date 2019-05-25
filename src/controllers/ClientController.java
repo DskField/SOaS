@@ -141,14 +141,17 @@ public class ClientController {
 		// 3 to 6 seconds
 		if (clientscene.isShownChallengeList()) {
 			client.updateChallenge();
+			clientscene.handleChallengeListButton();
 		}
 		
 		if (clientscene.isShownLobbyList()) {
 			client.updateLobby();
+			clientscene.handleLobbyListButton();
 		}
 		
 		if (clientscene.isShownUserList()) {
 			client.updateUser();
+			clientscene.handleUserListButton();
 		}			
 	}
 
