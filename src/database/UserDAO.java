@@ -18,7 +18,8 @@ class UserDAO {
 	private User selectUser(String username) {
 		User result = null;
 		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT idplayer, username, score, MAX(score) AS maxscore, playstatus_playstatus FROM player GROUP BY idplayer");
+			PreparedStatement stmt = con.prepareStatement(
+					"SELECT idplayer, username, score, MAX(score) AS maxscore, playstatus_playstatus FROM player GROUP BY idplayer");
 			ResultSet dbResultSet = stmt.executeQuery();
 
 			int gamesPlayed = 0;
@@ -33,27 +34,30 @@ class UserDAO {
 				}
 
 				// MaxScore
-				maxScore = maxScore < dbResultSet.getInt("score") && dbResultSet.getString("username").equals(username) ? dbResultSet.getInt("score") : maxScore;
+				maxScore = maxScore < dbResultSet.getInt("score") && dbResultSet.getString("username").equals(username) ? dbResultSet.getInt("score")
+						: maxScore;
 			}
 			stmt.close();
 
 			// MostPlacedColor
-			PreparedStatement stmtMostPlacedColor = con.prepareStatement("SELECT diecolor FROM player AS p1 " + "JOIN playerframefield AS p2 ON p1.idplayer = p2.player_idplayer " + "WHERE username = ? "
-					+ "GROUP BY diecolor " + "ORDER BY COUNT(diecolor) DESC " + "LIMIT 1");
+			PreparedStatement stmtMostPlacedColor = con
+					.prepareStatement("SELECT diecolor FROM player AS p1 " + "JOIN playerframefield AS p2 ON p1.idplayer = p2.player_idplayer "
+							+ "WHERE username = ? " + "GROUP BY diecolor " + "ORDER BY COUNT(diecolor) DESC " + "LIMIT 1");
 			stmtMostPlacedColor.setString(1, username);
 			ResultSet dbResultSetMostPlacedColor = stmtMostPlacedColor.executeQuery();
-			dbResultSetMostPlacedColor.next();
-			GameColor mostPlacedColor = GameColor.getEnum(dbResultSetMostPlacedColor.getString("diecolor"));
+			GameColor mostPlacedColor = dbResultSetMostPlacedColor.next() && dbResultSetMostPlacedColor.getString("diecolor") != null
+					? GameColor.getEnum(dbResultSetMostPlacedColor.getString("diecolor"))
+					: GameColor.EMPTY;
 			stmtMostPlacedColor.close();
 
 			// MostPlacedValue
-			PreparedStatement stmtMostPlacedValue = con.prepareStatement("SELECT eyes\r\n" + "FROM player AS p1\r\n" + "JOIN playerframefield AS p2 ON p1.idplayer = p2.player_idplayer\r\n"
-					+ "JOIN gamedie AS gd ON p2.idgame = gd.idgame AND p2.dienumber = gd.dienumber AND p2.diecolor = gd.diecolor\r\n" + "WHERE username = ?\r\n" + "GROUP BY eyes\r\n" + "ORDER BY COUNT(eyes) DESC\r\n"
-					+ "LIMIT 1");
+			PreparedStatement stmtMostPlacedValue = con.prepareStatement(
+					"SELECT eyes\r\n" + "FROM player AS p1\r\n" + "JOIN playerframefield AS p2 ON p1.idplayer = p2.player_idplayer\r\n"
+							+ "JOIN gamedie AS gd ON p2.idgame = gd.idgame AND p2.dienumber = gd.dienumber AND p2.diecolor = gd.diecolor\r\n"
+							+ "WHERE username = ?\r\n" + "GROUP BY eyes\r\n" + "ORDER BY COUNT(eyes) DESC\r\n" + "LIMIT 1");
 			stmtMostPlacedValue.setString(1, username);
 			ResultSet dbResultSetMostPlacedValue = stmtMostPlacedValue.executeQuery();
-			dbResultSetMostPlacedValue.next();
-			int mostPlacedValue = dbResultSetMostPlacedValue.getInt("eyes");
+			int mostPlacedValue = dbResultSetMostPlacedValue.next() ? dbResultSetMostPlacedValue.getInt("eyes") : 0;
 			stmtMostPlacedValue.close();
 
 			result = new User(username, gamesPlayed, maxScore, mostPlacedColor, mostPlacedValue);
@@ -62,6 +66,7 @@ class UserDAO {
 			stmt.close();
 		} catch (SQLException e) {
 			System.err.println("UserDAO " + e.getMessage());
+			e.printStackTrace();
 		}
 		return result;
 	}
