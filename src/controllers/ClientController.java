@@ -44,7 +44,7 @@ public class ClientController {
 			mainapplication.setScene(clientscene);
 
 			// TODO TOM fix timer/update
-			createTimer();
+			//createTimer();
 		}
 
 		return persistencefacade.loginCorrect(username, password);

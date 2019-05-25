@@ -27,12 +27,12 @@ public class UserListPane extends BorderPane {
 	private ClientScene clientscene;
 	private ListView<HBox> userList;
 	private ToggleGroup togglegroup;
-	private HandleButton handlebutton;
 	private ArrayList<String> users;
 	private HandleRadioButton handleradiobutton;
 	private ArrayList<CheckBox> inviteCheckBoxGroup;
 	private Label errorMessage;
 	private Button invitePlayers;
+	private String opponentUsername;
 
 	// Magic Numbers
 	final private static Color statsBackgroundColor = Color.AQUAMARINE;
@@ -43,17 +43,21 @@ public class UserListPane extends BorderPane {
 	final private static int inviteButtonSize = 40;
 	final private static int errorMessageSize = 23;
 	final private static Color errorMessageColor = Color.RED;
+	final private static int viewStatsWidth = 70;
+	final private static int viewStatsHeight = 30;
+	final private static int inviteRadioButtonWidth = 100;
+	final private static int inviteRadioButtonHeight = 30;
 
 	public UserListPane(ClientScene clientscene) {
 		this.clientscene = clientscene;
 		this.userList = new ListView<HBox>();
 		this.togglegroup = new ToggleGroup();
-		this.handlebutton = new HandleButton();
 		this.handleradiobutton = new HandleRadioButton();
 		this.inviteCheckBoxGroup = new ArrayList<CheckBox>();
+		this.opponentUsername = "";
 
 		createLeft();
-		createCenter("");
+		createCenter(opponentUsername);
 	}
 
 	public void createLeft() {
@@ -68,6 +72,13 @@ public class UserListPane extends BorderPane {
 			CheckBox inviteRadioButton = new CheckBox();
 			inviteRadioButton.setOnMouseClicked(handleradiobutton);
 			inviteRadioButton.setText(username);
+			inviteRadioButton.setMinSize(inviteRadioButtonWidth, inviteRadioButtonHeight);
+			inviteRadioButton.setMaxSize(inviteRadioButtonWidth, inviteRadioButtonHeight);
+
+			Button viewStats = new Button("vergelijk");
+			viewStats.setMinSize(viewStatsWidth, viewStatsHeight);
+			viewStats.setMaxSize(viewStatsWidth, viewStatsHeight);
+			viewStats.setOnAction(e -> createCenter(username));
 
 			for (CheckBox box : inviteCheckBoxGroup) {
 				if (box.getText().equals(inviteRadioButton.getText()))
@@ -75,17 +86,17 @@ public class UserListPane extends BorderPane {
 			}
 
 			HBox playerLine = new HBox();
-			playerLine.getChildren().addAll(inviteRadioButton);
-			playerLine.setOnMouseClicked(handlebutton);
-			playerLine.setSpacing(10);
+			playerLine.getChildren().addAll(inviteRadioButton, viewStats);
 
 			userList.getItems().add(playerLine);
+			playerLine.setSpacing((userList.getWidth() - (inviteRadioButton.getWidth() + viewStats.getWidth())) / 4);
 		}
 
 		this.setLeft(userList);
 	}
 
 	public void createCenter(String opponentUsername) {
+		this.opponentUsername = opponentUsername;
 		VBox centerpane = new VBox();
 
 		errorMessage = new Label();
@@ -175,16 +186,6 @@ public class UserListPane extends BorderPane {
 		}
 		clientscene.createGame(result);
 		clientscene.updateClient();
-	}
-
-	private class HandleButton implements EventHandler<MouseEvent> {
-		@Override
-		public void handle(MouseEvent e) {
-			String user = ((Labeled) ((HBox) e.getSource()).getChildren().get(0)).getText();
-			createCenter(user);
-			// createCenter(Integer.parseInt(lobby[1]));
-			// TODO TOM only update the variables and set errormessage visible to false
-		}
 	}
 
 	private class HandleRadioButton implements EventHandler<MouseEvent> {
