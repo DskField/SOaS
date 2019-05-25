@@ -1,6 +1,5 @@
 package view;
 
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -52,7 +51,7 @@ public class ClientMenuPane extends VBox {
 		logoutButton = new ToggleButton("Uitloggen");
 		logoutButton.setMinSize(buttonWidth, buttonHeight);
 		logoutButton.setMaxSize(buttonWidth, buttonHeight);
-		logoutButton.setOnAction(e -> Platform.exit());
+		logoutButton.setOnAction(e -> clientscene.logOut());
 
 		ToggleGroup togglegroup = new ToggleGroup();
 		togglegroup.getToggles().addAll(userListButton, lobbyListButton, challengeListButton, logoutButton);

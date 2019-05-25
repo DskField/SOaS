@@ -8,6 +8,7 @@ import java.util.Comparator;
 import client.Challenge;
 import client.Client;
 import client.Lobby;
+import client.User;
 import database.PersistenceFacade;
 import game.Player;
 import javafx.animation.AnimationTimer;
@@ -65,7 +66,7 @@ public class ClientController {
 	public Challenge getSpecificChallenge(int gameID) {
 		return client.getChallenge(gameID);
 	}
-	
+
 	public Lobby getSpecificLobby(int gameID) {
 		return client.getLobby(gameID);
 	}
@@ -77,11 +78,24 @@ public class ClientController {
 	public void handleReaction(boolean accepted, int idGame) {
 		persistencefacade.updatePlayerStatus(client.getUser().getUsername(), accepted, idGame);
 	}
+
+	public User getUser() {
+		return client.getUser();
+	}
 	
+	public User getOpponent(String username) {
+		return client.getOpponent(username);
+	}
+	
+	public void createGame(ArrayList<User> users) {
+		persistencefacade.createGame(users);
+	}
+	
+	//  use getUser method
 	public String getUsername() {
 		return client.getUser().getUsername();
 	}
-	
+
 	// TODO TOM MOVE FACADE - TEMPORARY FIX
 	public ArrayList<Player> getPlayers(int gameID) {
 		return persistencefacade.getAllPlayersInGame(gameID);
@@ -112,12 +126,16 @@ public class ClientController {
 		Collections.reverse(comparator);
 
 		for (int c = 0; c < players.size(); c++) {
-			result.add(new ArrayList<String>(Arrays.asList(players.get(comparator.get(c).get(0)).getUsername(),
-					String.valueOf(comparator.get(c).get(1)))));
+			result.add(new ArrayList<String>(
+					Arrays.asList(players.get(comparator.get(c).get(0)).getUsername(), String.valueOf(comparator.get(c).get(1)))));
 		}
 		return result;
 	}
 
+	public void logOut() {
+		mainapplication.setScene(new Scene(new LoginPane(this)));
+	}
+	
 	// Updat with Timer
 	public void updateClient() {
 		client.updateClient();
@@ -157,5 +175,9 @@ public class ClientController {
 		};
 
 		timer.start();
+	}
+
+	public ArrayList<String> getAllUsernames() {
+		return persistencefacade.getAllUsername();
 	}
 }

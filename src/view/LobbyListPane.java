@@ -59,7 +59,7 @@ public class LobbyListPane extends BorderPane {
 			if (clientscene.getSpecificChallenge(lob.getGameID()) != null) {
 				if (!clientscene.getSpecificChallenge(lob.getGameID()).getPlayers().get(clientscene.getUsername())
 						.equals("uitgedaagde")) {
-					ToggleButton togglebutton = new ToggleButton("Uitdaging " + lob.getGameID());
+					ToggleButton togglebutton = new ToggleButton("Game " + lob.getGameID());
 					togglebutton.setAlignment(Pos.CENTER);
 					togglebutton.setOnMouseClicked(handlebutton);
 					lobbyList.getItems().add(togglebutton);
@@ -68,11 +68,7 @@ public class LobbyListPane extends BorderPane {
 			}
 		}
 
-		lobbyList.setMaxHeight(800);
-		lobbyList.setStyle("#lv .list-cell {-fx-alignment: center;}");
-		BorderPane bp = new BorderPane();
-		bp.setCenter(lobbyList);
-		this.setLeft(bp);
+		this.setLeft(lobbyList);
 	}
 
 	public void createStats(int idGame) {

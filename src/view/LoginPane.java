@@ -1,6 +1,7 @@
 package view;
 
 import controllers.ClientController;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -15,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class LoginPane extends BorderPane {
 
@@ -22,7 +24,12 @@ public class LoginPane extends BorderPane {
 	private ClientController clientcontroller;
 	private TextField username;
 	private PasswordField password;
+	private Label errorMessage;
 
+	// Magic Numbers Label
+	final private static int errorMessageSize = 23;
+	final private static Color errorMessageColor = Color.RED;
+	
 	// Magic Numbers constructor
 	final private static int paneWidth = 500;
 	final private static int paneHeight = 500;
@@ -47,7 +54,7 @@ public class LoginPane extends BorderPane {
 		setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
 		createButtons();
 		createTextFields();
-		
+
 		// Try to login on enterkey
 		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
@@ -64,16 +71,28 @@ public class LoginPane extends BorderPane {
 
 		Button login = new Button("Login");
 		login.setPrefSize(buttonWidth, buttonHeight);
-		login.setOnAction(e -> clientcontroller.handleLogin(username.getText(), password.getText()));
+		login.setOnAction(e -> handleLogin(username.getText(), password.getText()));
 
 		Button register = new Button("Registreer");
 		register.setPrefSize(buttonWidth, buttonHeight);
-		register.setOnAction(e -> clientcontroller.handleRegister(username.getText(), password.getText()));
+		register.setOnAction(e -> handleRegister(username.getText(), password.getText()));
 
 		buttons.setSpacing(buttonSpacing);
 		buttons.getChildren().addAll(login, register);
 		buttons.setAlignment(Pos.CENTER);
-		
+
+	}
+	
+	private void handleLogin(String username, String password) {
+		if (!clientcontroller.handleLogin(username, password)) 
+			errorMessage.setText("Gebruikersnaam of Wachtwoord is incorrect");
+	}
+	
+	private void handleRegister(String username, String password) {
+		if (!clientcontroller.handleRegister(username, password))
+			errorMessage.setText("Gebruikersnaam is al in gebruik");
+		else
+			errorMessage.setText("");
 	}
 
 	public void createTextFields() {
@@ -102,10 +121,19 @@ public class LoginPane extends BorderPane {
 		textfields.setScaleX(textfieldsScaling);
 		textfields.setScaleY(textfieldsScaling);
 
-		textfields.getChildren().addAll(sagrada, butAndfields);
+		Button quit = new Button("Afsluiten");
+		quit.setPrefSize((buttonWidth * 2), buttonHeight);
+		quit.setOnAction(e -> Platform.exit());
+		
+		errorMessage = new Label();
+		errorMessage.setFont(Font.font(errorMessageSize));
+		errorMessage.setTextFill(errorMessageColor);
+		errorMessage.setAlignment(Pos.CENTER);
+		
+		textfields.getChildren().addAll(sagrada, butAndfields, quit, errorMessage);
 		textfields.setAlignment(Pos.CENTER);
 		setCenter(textfields);
-		
+
 		// TODO DELETE
 		username.setText("speler1");
 		password.setText("speler1");

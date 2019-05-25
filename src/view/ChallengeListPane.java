@@ -53,7 +53,7 @@ public class ChallengeListPane extends BorderPane {
 
 		for (Challenge chal : challenges) {
 			if (chal.getPlayers().get(clientscene.getUsername()).equals("uitgedaagde")) {
-				ToggleButton togglebutton = new ToggleButton("Challenge " + chal.getGameID());
+				ToggleButton togglebutton = new ToggleButton("Uitdaging " + chal.getGameID());
 				togglebutton.setAlignment(Pos.CENTER);
 				togglebutton.setOnMouseClicked(handleButton);
 				challengeList.getItems().add(togglebutton);
@@ -61,7 +61,6 @@ public class ChallengeListPane extends BorderPane {
 			}
 		}
 
-		challengeList.setMaxHeight(800);
 		this.setLeft(challengeList);
 	}
 
@@ -124,8 +123,8 @@ public class ChallengeListPane extends BorderPane {
 	private class HandleButton implements EventHandler<MouseEvent> {
 		@Override
 		public void handle(MouseEvent e) {
-			String[] lobby = ((ToggleButton) e.getSource()).getText().split(" ");
-			createCenter(Integer.parseInt(lobby[1]));
+			String[] challenge = ((ToggleButton) e.getSource()).getText().split(" ");
+			createCenter(Integer.parseInt(challenge[1]));
 			// TODO TOM only update the variables and set errormessage visible to false
 		}
 	}

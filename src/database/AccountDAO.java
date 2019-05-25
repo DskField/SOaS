@@ -4,11 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-public class LoginDAO {
+public class AccountDAO {
 	Connection con;
 
-	public LoginDAO(Connection con) {
+	public AccountDAO(Connection con) {
 		this.con = con;
 	}
 
@@ -30,7 +31,7 @@ public class LoginDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("LoginDAO selectUsername " + e.getMessage());
+			System.err.println("AccountDAO selectUsername " + e.getMessage());
 		}
 		return result;
 	}
@@ -46,9 +47,30 @@ public class LoginDAO {
 			stmt.close();
 			return true;
 		} catch (SQLException e) {
-			System.err.println("LoginDAO insertAccount " + e.getMessage());
+			System.err.println("AccountDAO insertAccount " + e.getMessage());
 			return false;
 		}
+	}
+
+	ArrayList<String> selectAllUsername() {
+		ArrayList<String> result = new ArrayList<>();
+
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM account");
+			ResultSet dbResultSet = stmt.executeQuery();
+			while (dbResultSet.next()) {
+				result.add(dbResultSet.getString("username"));
+			}
+			con.commit();
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("AccountDAO selectAllUsername " + e.getMessage());
+		}
+		return result;
+	}
+
+	public ArrayList<String> getAllUsernames() {
+		return selectAllUsername();
 	}
 
 	public boolean loginCorrect(String username, String password) {
@@ -57,12 +79,6 @@ public class LoginDAO {
 	}
 
 	public boolean insertCorrect(String username, String password) {
-		if (selectUsername(username)[0].equals(username)) {
-			System.out.println("bestaat al");
-			return false;
-		} else {
-			System.out.println("bestaat niet");
-			return insertAccount(username, password);
-		}
+		return selectUsername(username)[0].equals(username) ? false : insertAccount(username, password);
 	}
 }

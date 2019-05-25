@@ -18,26 +18,20 @@ public class Client {
 	public Client(String username, PersistenceFacade persistencefacade) {
 		this.username = username;
 		this.persistencefacade = persistencefacade;
-		this.user = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username)
-				: new User(username, 0, 0, GameColor.EMPTY, 0);
+		this.user = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username) : new User(username, 0, 0, GameColor.EMPTY, 0);
 		this.lobbies = persistencefacade.getLobbies(username);
 		this.challenges = persistencefacade.getChallenges(username);
 
 		user.setGamesWon(calcWon());
 		user.setGamesLost(calcLost());
 		user.setTotalOpponents(calcOpponents());
-
 	}
 
 	// Update
 	public void updateClient() {
 		this.challenges = persistencefacade.getChallenges(username);
-		if (!persistencefacade.updateChallenge(username, challenges))
-			this.challenges = persistencefacade.getChallenges(username);
-		if (!persistencefacade.updateUser(username, user))
-			this.user = persistencefacade.getUser(username);
-		if (!persistencefacade.updateLobby(username, lobbies))
-			this.lobbies = persistencefacade.getLobbies(username);
+		this.lobbies = persistencefacade.getLobbies(username);
+		this.user = persistencefacade.getUser(username);
 	}
 
 	// calculaters
@@ -86,7 +80,8 @@ public class Client {
 	}
 
 	public User getOpponent(String username) {
-		this.opponent = persistencefacade.getUser(username);
+		this.opponent = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username)
+				: new User(username, 0, 0, GameColor.EMPTY, 0);
 		opponent.setGamesWon(calcWon());
 		opponent.setGamesLost(calcLost());
 		opponent.setTotalOpponents(calcOpponents());
@@ -101,13 +96,12 @@ public class Client {
 		System.err.println("Client: specific lobby not found");
 		return null;
 	}
-	
+
 	public Challenge getChallenge(int gameID) {
 		for (Challenge chal : challenges) {
-			if (chal.getGameID() == gameID) 
+			if (chal.getGameID() == gameID)
 				return chal;
 		}
-		System.err.println("Client: specific challenge not found");
 		return null;
 	}
 }

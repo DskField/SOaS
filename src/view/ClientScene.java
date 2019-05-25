@@ -5,6 +5,7 @@ import java.util.Map;
 
 import client.Challenge;
 import client.Lobby;
+import client.User;
 import controllers.ClientController;
 import game.Player;
 import javafx.scene.Scene;
@@ -30,14 +31,14 @@ public class ClientScene extends Scene {
 		super(new BorderPane());
 		this.clientcontroller = controller;
 		this.lobbyListPane = new LobbyListPane(this);
-		this.userListPane = new UserListPane();
+		this.userListPane = new UserListPane(this);
 		this.challengeListPane = new ChallengeListPane(this);
 
 		// initialize
 		clientmenupane = new ClientMenuPane(this);
 		rootPane = new BorderPane();
 		rootPane.setLeft(clientmenupane);
-		rootPane.setCenter(lobbyListPane);
+		rootPane.setCenter(userListPane);
 
 		// sets the rootPane and handles makeup
 		setRoot(rootPane);
@@ -47,12 +48,25 @@ public class ClientScene extends Scene {
 	public Lobby getLobby(int gameID) {
 		return clientcontroller.getSpecificLobby(gameID);
 	}
+	
+	public User getUser() {
+		return clientcontroller.getUser();
+	}
+	
+	public User getOpponent(String username) {
+		return clientcontroller.getOpponent(username);
+	}
+	
+	public void createGame(ArrayList<User> users) {
+		clientcontroller.createGame(users);
+	}
 
 	public ArrayList<Lobby> getLobbies() {
 		return clientcontroller.getLobbies();
 	}
 	
 	public void handleUserListButton() {
+		userListPane.createLeft();
 		rootPane.setCenter(userListPane);
 	}
 
@@ -110,6 +124,14 @@ public class ClientScene extends Scene {
 	
 	public Challenge getSpecificChallenge(int idGame) {
 		return clientcontroller.getSpecificChallenge(idGame);
+	}
+
+	public ArrayList<String> getUsers() {
+		return clientcontroller.getAllUsernames();
+	}
+
+	public void logOut() {
+		clientcontroller.logOut();
 	}
 
 }

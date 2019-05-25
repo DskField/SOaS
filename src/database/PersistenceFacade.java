@@ -35,16 +35,20 @@ public class PersistenceFacade {
 	private LobbyDAO lobbyDAO = new LobbyDAO(baseDAO.getConnection());
 	private UserDAO userDAO = new UserDAO(baseDAO.getConnection());
 
-	// Login
-	private LoginDAO loginDAO = new LoginDAO(baseDAO.getConnection());
+	// Account
+	private AccountDAO accountDAO = new AccountDAO(baseDAO.getConnection());
 
-	// Login
+	// Account
 	public boolean loginCorrect(String username, String password) {
-		return loginDAO.loginCorrect(username, password);
+		return accountDAO.loginCorrect(username, password);
 	}
 
 	public boolean insertCorrect(String username, String password) {
-		return loginDAO.insertCorrect(username, password);
+		return accountDAO.insertCorrect(username, password);
+	}
+	
+	public ArrayList<String> getAllUsername() {
+		return accountDAO.getAllUsernames();
 	}
 
 	// ChallengeDAO
