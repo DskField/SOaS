@@ -29,7 +29,8 @@ public class LoginPane extends BorderPane {
 	// Magic Numbers Label
 	final private static int errorMessageSize = 23;
 	final private static Color errorMessageColor = Color.RED;
-	
+	final private static Color errorMessageConfirmColor = Color.LIMEGREEN;
+
 	// Magic Numbers constructor
 	final private static int paneWidth = 500;
 	final private static int paneHeight = 500;
@@ -82,17 +83,22 @@ public class LoginPane extends BorderPane {
 		buttons.setAlignment(Pos.CENTER);
 
 	}
-	
+
 	private void handleLogin(String username, String password) {
-		if (!clientcontroller.handleLogin(username, password)) 
+		if (!clientcontroller.handleLogin(username, password)) {
 			errorMessage.setText("Gebruikersnaam of Wachtwoord is incorrect");
+			errorMessage.setTextFill(errorMessageColor);
+		}
 	}
-	
+
 	private void handleRegister(String username, String password) {
-		if (!clientcontroller.handleRegister(username, password))
+		if (!clientcontroller.handleRegister(username, password)) {
 			errorMessage.setText("Gebruikersnaam is al in gebruik");
-		else
-			errorMessage.setText("");
+			errorMessage.setTextFill(errorMessageColor);
+		} else {
+			errorMessage.setText("Account geregistreerd");
+			errorMessage.setTextFill(errorMessageConfirmColor);
+		}
 	}
 
 	public void createTextFields() {
@@ -124,12 +130,12 @@ public class LoginPane extends BorderPane {
 		Button quit = new Button("Afsluiten");
 		quit.setPrefSize((buttonWidth * 2), buttonHeight);
 		quit.setOnAction(e -> Platform.exit());
-		
+
 		errorMessage = new Label();
 		errorMessage.setFont(Font.font(errorMessageSize));
 		errorMessage.setTextFill(errorMessageColor);
 		errorMessage.setAlignment(Pos.CENTER);
-		
+
 		textfields.getChildren().addAll(sagrada, butAndfields, quit, errorMessage);
 		textfields.setAlignment(Pos.CENTER);
 		setCenter(textfields);
