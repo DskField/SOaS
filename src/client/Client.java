@@ -28,10 +28,20 @@ public class Client {
 	}
 
 	// Update
-	public void updateClient() {
-		this.challenges = persistencefacade.getChallenges(username);
-		this.lobbies = persistencefacade.getLobbies(username);
-		this.user = persistencefacade.getUser(username);
+	public void updateChallenge() {
+		this.challenges = persistencefacade.getChallenges(user.getUsername());
+		System.out.println("Challenge updated");
+	}
+
+	public void updateLobby() {
+		this.lobbies = persistencefacade.getLobbies(user.getUsername());
+		System.out.println("Lobby updated");
+	}
+
+	public void updateUser() {
+		this.user = persistencefacade.getUser(user.getUsername()) != null ? persistencefacade.getUser(user.getUsername())
+				: new User(user.getUsername(), 0, 0, GameColor.EMPTY, 0);
+		System.out.println("User updated");
 	}
 
 	// calculaters

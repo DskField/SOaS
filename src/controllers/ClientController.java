@@ -24,6 +24,7 @@ public class ClientController {
 	private GameController gamecontroller;
 	private MainApplication mainapplication;
 	private PersistenceFacade persistencefacade;
+	private ClientScene clientscene;
 
 	private AnimationTimerExt timer;
 
@@ -39,12 +40,11 @@ public class ClientController {
 	public boolean handleLogin(String username, String password) {
 		if (persistencefacade.loginCorrect(username, password)) {
 			client = new Client(username, persistencefacade);
-			mainapplication.setScene(new ClientScene(this));
-			// TODO TOM has to be deleted later on
-			// gamecontroller.joinGame(1, client.getUser());
+			this.clientscene = new ClientScene(this);
+			mainapplication.setScene(clientscene);
 
 			// TODO TOM fix timer/update
-			// createTimer();
+			createTimer();
 		}
 
 		return persistencefacade.loginCorrect(username, password);
@@ -82,16 +82,16 @@ public class ClientController {
 	public User getUser() {
 		return client.getUser();
 	}
-	
+
 	public User getOpponent(String username) {
 		return client.getOpponent(username);
 	}
-	
+
 	public void createGame(ArrayList<User> users) {
 		persistencefacade.createGame(users);
 	}
-	
-	//  use getUser method
+
+	// use getUser method
 	public String getUsername() {
 		return client.getUser().getUsername();
 	}
@@ -135,14 +135,21 @@ public class ClientController {
 	public void logOut() {
 		mainapplication.setScene(new Scene(new LoginPane(this)));
 	}
-	
+
 	// Updat with Timer
 	public void updateClient() {
-		client.updateClient();
 		// 3 to 6 seconds
-		while (checkUpdateClient) {
-			client.updateClient();
+		if (clientscene.isShownChallengeList()) {
+			client.updateChallenge();
 		}
+		
+		if (clientscene.isShownLobbyList()) {
+			client.updateLobby();
+		}
+		
+		if (clientscene.isShownUserList()) {
+			client.updateUser();
+		}			
 	}
 
 	public abstract class AnimationTimerExt extends AnimationTimer {
@@ -170,7 +177,7 @@ public class ClientController {
 		timer = new AnimationTimerExt(3000) {
 			@Override
 			public void doAction() {
-				client.updateClient();
+				updateClient();
 			}
 		};
 

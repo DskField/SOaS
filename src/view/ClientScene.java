@@ -45,18 +45,35 @@ public class ClientScene extends Scene {
 		rootPane.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
 	}
 
+	// check which pane is visible
+	public boolean isShownLobbyList() {
+		return rootPane.getCenter() == lobbyListPane;
+	}
+
+	public boolean isShownChallengeList() {
+		return rootPane.getCenter() == challengeListPane;
+	}
+
+	public boolean isShownUserList() {
+		return rootPane.getCenter() == userListPane;
+	}
+
+	public void updateClient() {
+		clientcontroller.updateClient();
+	}
+
 	public Lobby getLobby(int gameID) {
 		return clientcontroller.getSpecificLobby(gameID);
 	}
-	
+
 	public User getUser() {
 		return clientcontroller.getUser();
 	}
-	
+
 	public User getOpponent(String username) {
 		return clientcontroller.getOpponent(username);
 	}
-	
+
 	public void createGame(ArrayList<User> users) {
 		clientcontroller.createGame(users);
 	}
@@ -64,7 +81,7 @@ public class ClientScene extends Scene {
 	public ArrayList<Lobby> getLobbies() {
 		return clientcontroller.getLobbies();
 	}
-	
+
 	public void handleUserListButton() {
 		userListPane.createLeft();
 		rootPane.setCenter(userListPane);
@@ -109,19 +126,15 @@ public class ClientScene extends Scene {
 	public int getGameSize(int idGame) {
 		return clientcontroller.getSpecificChallenge(idGame).getPlayers().size();
 	}
-	
+
 	public String getUsername() {
 		return clientcontroller.getUsername();
 	}
-	
-	public void updateClient() {
-		clientcontroller.updateClient();
-	}
-	
+
 	public ArrayList<Challenge> getChallenges() {
 		return clientcontroller.getChallenges();
 	}
-	
+
 	public Challenge getSpecificChallenge(int idGame) {
 		return clientcontroller.getSpecificChallenge(idGame);
 	}
