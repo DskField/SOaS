@@ -46,7 +46,7 @@ public class PersistenceFacade {
 	public boolean insertCorrect(String username, String password) {
 		return accountDAO.insertCorrect(username, password);
 	}
-	
+
 	public ArrayList<String> getAllUsername() {
 		return accountDAO.getAllUsernames();
 	}
@@ -59,7 +59,7 @@ public class PersistenceFacade {
 	public boolean updateChallenge(String username, ArrayList<Challenge> oldList) {
 		return challengeDAO.checkUpdate(username, oldList);
 	}
-	
+
 	public void updatePlayerStatus(String username, boolean accepted, int idGame) {
 		challengeDAO.updateStatus(username, accepted, idGame);
 	}
@@ -82,11 +82,12 @@ public class PersistenceFacade {
 		return userDAO.checkUpdate(username, oldUser);
 	}
 
-	//GAME
+	// GAME
 	/**
 	 * Creates a game in the database
 	 * 
-	 * @param users - List of users in the game, The first user NEEDS to be the creator
+	 * @param users - List of users in the game, The first user NEEDS to be the
+	 *              creator
 	 */
 	public void createGame(ArrayList<User> users) {
 		int gameID = gameDAO.createGame();
@@ -98,8 +99,15 @@ public class PersistenceFacade {
 	}
 
 	public void setCardsGame(int idGame) {
-		for (Player player : playerDAO.getAllPlayersInGame(idGame)) {
-			patternCardDAO.insertPatternCardOptions(player.getPlayerID());
+		ArrayList<Player> players = playerDAO.getAllPlayersInGame(idGame);
+
+		ArrayList<PatternCard> patternCards = new ArrayList<>();
+
+		for (Player player : players) {
+			for (PatternCard pCard : patternCardDAO.getPlayerOptions(player.getPlayerID())) {
+				patternCards.add(pCard);
+			}
+			patternCardDAO.insertPatternCardOptions(player.getPlayerID(), patternCards);
 		}
 		collectiveGoalCardDAO.insertRandomSharedCollectiveGoalCards(idGame);
 		toolCardDAO.insertRandomGameToolCards(idGame);
@@ -207,7 +215,7 @@ public class PersistenceFacade {
 		return dieDAO.getTableDice(gameID, round);
 	}
 
-	//MessageDAO
+	// MessageDAO
 	public ArrayList<Message> getALLMessages(ArrayList<Player> players) {
 		return messageDAO.getALLMessages(players);
 	}
@@ -220,7 +228,7 @@ public class PersistenceFacade {
 		messageDAO.sendMessage(message);
 	}
 
-	//SpaceGlassDAO
+	// SpaceGlassDAO
 	public GlassWindow getGlassWindow(int idPlayer) {
 		return spaceGlassDAO.getGlassWindow(idPlayer);
 	}
@@ -229,11 +237,7 @@ public class PersistenceFacade {
 		spaceGlassDAO.updateSpaceGlass(idPlayer, glassWindow, gameId);
 	}
 
-	//PatternCardDAO
-	public void insertPatternCardOptions(int idPlayer) {
-		patternCardDAO.insertPatternCardOptions(idPlayer);
-	}
-
+	// PatternCardDAO
 	public PatternCard getplayerPatternCard(int idPlayer) {
 		return patternCardDAO.getplayerPatternCard(idPlayer);
 	}

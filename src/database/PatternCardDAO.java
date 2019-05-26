@@ -38,15 +38,18 @@ class PatternCardDAO {
 
 	//Is used to obtain the options given to a player at the start of a game
 	ArrayList<PatternCard> getPlayerOptions(int idPlayer) {
-		return selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard IN (SELECT patterncard_idpatterncard FROM patterncardoption WHERE player_idplayer = " + idPlayer + ")");
+		return selectPatternCard("SELECT *  patterncard WHERE idpatterncard IN (SELECT patterncard_idpatterncard FROM patterncardoption WHERE player_idplayer = " + idPlayer + ")");
 	}
 
 	void addPatternCard(PatternCard patternCard) {
 		insertPatternCard(patternCard);
 	}
-
-	void insertPatternCardOptions(int idPlayer) {
+ 
+	void insertPatternCardOptions(int idPlayer, ArrayList<PatternCard> patternCards) {
 		ArrayList<PatternCard> list = getStandardPatternCards();
+		for(PatternCard pattern: patternCards) {
+			list.remove(pattern);
+		}
 		Collections.shuffle(list);
 
 		try {
