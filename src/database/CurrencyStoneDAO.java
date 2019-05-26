@@ -75,7 +75,7 @@ class CurrencyStoneDAO {
 	}
 
 	ArrayList<CurrencyStone> getCurrencyStonesOnCard(int idToolCard, int idGame) {
-		return selectCurrencyStone("SELECT * FROM gamefavortoken JOIN gametoolcard ON gamefavortoken.gametoolcard = gametoolcard.gametoolcard WHERE idtoolcard = " + idToolCard + " AND idgame = " + idGame);
+		return selectCurrencyStone("SELECT * FROM gamefavortoken gf JOIN gametoolcard gt ON gf.gametoolcard = gt.gametoolcard WHERE gt.idtoolcard = "+ idToolCard + "  AND gf.idgame = "+ idGame);
 	}
 
 	void updateGameFavorTokenUsed(int stoneID, int idGame, int gametoolcard) {

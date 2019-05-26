@@ -3,11 +3,13 @@ package view;
 import java.util.ArrayList;
 
 import controllers.GameController;
+import game.CurrencyStone;
 import game.Die;
 import game.Message;
 import game.Player;
 import game.Round;
 import game.SpaceGlass;
+import game.ToolCard;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -275,6 +277,7 @@ public class GameScene extends Scene {
 			toolCardBox.getChildren().add(toolCardPane);
 		}
 
+
 		// handles the makeup of the various boxes
 		goalCardsBox.setSpacing(10);
 		goalCardsBox.setAlignment(Pos.CENTER);
@@ -296,7 +299,7 @@ public class GameScene extends Scene {
 		rootPane.setCenter(centerBox);
 	}
 
-	//Handles 
+	//Handles button
 	private void handleNextButton() {
 		nextButton.setDisable(true);
 		gameController.nextTurn();
@@ -413,5 +416,29 @@ public class GameScene extends Scene {
 		Label winner = new Label(winText);
 		rootPane.setCenter(winner);
 		rootPane.setDisable(true);
+	}
+
+	public void updateToolCards(ArrayList<ToolCard> toolCards) {
+		for (ToolCardPane toolCardPane : toolCardPanes) {
+			for (ToolCard toolCard : toolCards) {// for toolcard make an arralist with currencyStonepaness
+				ArrayList<CurrencyStonePane> stonePanes = new ArrayList<>();
+				stonePanes.clear();
+				Player thisPlayer = null;
+				if(!toolCard.getCurrencyStones().isEmpty()) {//if toolcard has currencystones
+					for(CurrencyStone stone: toolCard.getCurrencyStones()) {//for every stone that card has make a StonePane and add to ArrayList of stonepanes				
+						for(Player player:gameController.getPlayers()) {//Check whose currencystone it is						
+							if(stone.getPlayerID() == player.getPlayerID()) {//if playerid's match use that player to get the color
+								thisPlayer = player;
+							}
+						}
+						CurrencyStonePane stonePane = new CurrencyStonePane(thisPlayer.getColor());
+						stonePanes.add(stonePane);
+					}
+					if(toolCard.getSeqnr() == toolCardPane.getSeqNr()) {
+						toolCardPane.updateStones(stonePanes);
+					}
+				}
+			}
+		}
 	}
 }

@@ -73,6 +73,9 @@ public class Game {
 		for (int i = 0; i < roundTrack.length; i++) {
 			roundTrack[i] = new Round();
 		}
+		
+		
+		
 	}
 
 	public void loadGame() {
@@ -152,19 +155,18 @@ public class Game {
 
 	private void loadCurrencyStones() {
 		currencyStones = persistenceFacade.getAllStonesInGame(gameID);
-
 		for (CurrencyStone cs : currencyStones) {
 			for (Player player : players) {
 				if (cs.getPlayerID() == player.getPlayerID()) {
 					player.addCurrencyStone(cs);
 				}
 			}
-
-			for (ToolCard toolCard : toolCards) {
-				if (cs.getCardID() == toolCard.getCardID()) {
-					toolCard.addCurrencyStone(cs);
-				}
+		}
+		for(ToolCard toolCard: toolCards) {
+			for(CurrencyStone currencyStone :persistenceFacade.getCurrencyStonesOnCard(toolCard.getCardID(), gameID)) {
+				toolCard.addCurrencyStone(currencyStone);
 			}
+
 		}
 	}
 

@@ -9,6 +9,7 @@ public class ToolCard extends Card {
 
 	public ToolCard(int cardID, String name, int seqnr, String cardDescription) {
 		super(cardID, name, cardDescription);
+		currencyStones = new ArrayList<>();
 		this.seqnr = seqnr;
 	}
 

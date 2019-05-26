@@ -173,9 +173,11 @@ public class GameController {
 		game.loadCurrentRound();
 		game.updatePlayers();
 		game.loadCurrentPlayer();
+		
 		gameScene.updateRoundTrack(game.getRoundTrack());
 		gameScene.updateGlassWindow(game.updateGlassWindow());
 		gameScene.updateTable(game.getTable());
+		gameScene.updateToolCards(game.getToolCards());
 
 		if (dieNotPlaced && checkMyTurn()) {
 			gameScene.disableDieOfferPane(false);
@@ -527,9 +529,7 @@ public class GameController {
 		boolean belowSame = false;
 		
 		
-		System.out.println(available);
 		for (SpaceGlass sG : available) {
-			System.out.println(sG.getXCor() + " "+ sG.getYCor());
 			int currentX = sG.getXCor();
 			int currentY = sG.getYCor();
 
@@ -548,14 +548,15 @@ public class GameController {
 				leftSame = false;
 			}
 			if (currentY > minY) {//ABOVE
-				belowSame = (pC.getSpaceColor(sG.getXCor(), sG.getYCor() + 1).equals(newDie.getColor())
-						|| pC.getSpaceValue(sG.getXCor(), sG.getYCor() + 1) == newDie.getEyes());
+				aboveSame = pC.getSpaceColor(sG.getXCor(), sG.getYCor() - 1).equals(newDie.getColor())
+						|| pC.getSpaceValue(sG.getXCor(), sG.getYCor() - 1) == newDie.getEyes();
+
 			} else {
 				aboveSame = false;
 			}
 			if (currentY < maxY) {//BELOW
-				aboveSame = pC.getSpaceColor(sG.getXCor(), sG.getYCor() - 1).equals(newDie.getColor())
-						|| pC.getSpaceValue(sG.getXCor(), sG.getYCor() - 1) == newDie.getEyes();
+				belowSame = (pC.getSpaceColor(sG.getXCor(), sG.getYCor() + 1).equals(newDie.getColor())
+						|| pC.getSpaceValue(sG.getXCor(), sG.getYCor() + 1) == newDie.getEyes());
 
 			} else {
 				belowSame = false;
@@ -567,7 +568,6 @@ public class GameController {
 			}
 
 		}
-		System.out.println("gamecontroller.best : " + best);
 		return best;
 
 	}

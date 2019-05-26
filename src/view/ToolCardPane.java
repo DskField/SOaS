@@ -1,17 +1,25 @@
 package view;
 
+import java.util.ArrayList;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class ToolCardPane extends AnchorPane {
 	ImageView imageView;
+	int seqNr;
 	public ToolCardPane(int seqNr) {
+		this.seqNr = seqNr;
 		imageView = new ImageView();
 		lookForImage(seqNr);
 		getChildren().add(imageView);
 	}
 	
+	public int getSeqNr() {
+		return seqNr;
+	}
+
 	private void lookForImage(int seqNr) {
 		switch(seqNr) {
 		
@@ -67,5 +75,8 @@ public class ToolCardPane extends AnchorPane {
 			imageView.setImage(new Image(
 					"file:Resources\\images\\Private Goalcards\\back.png"));
 			}
+	}
+	public void updateStones(ArrayList<CurrencyStonePane> stones) {
+		getChildren().addAll(stones);		
 	}
 }
