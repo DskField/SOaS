@@ -23,6 +23,11 @@ public class ClientScene extends Scene {
 	private LobbyListPane lobbyListPane;
 	private UserListPane userListPane;
 	private ChallengeListPane challengeListPane;
+	
+	// booleans for update
+	private boolean isVisibleLobbyList;
+	private boolean isVisibleChallengeList;
+	private boolean isVisibleUserList;
 
 	// Magic Numbers
 	final private static Color backgroundColor = Color.ALICEBLUE;
@@ -39,6 +44,9 @@ public class ClientScene extends Scene {
 		rootPane = new BorderPane();
 		rootPane.setLeft(clientmenupane);
 		rootPane.setCenter(userListPane);
+		isVisibleUserList = true;
+		isVisibleLobbyList = false;
+		isVisibleChallengeList = false;
 
 		// sets the rootPane and handles makeup
 		setRoot(rootPane);
@@ -47,15 +55,15 @@ public class ClientScene extends Scene {
 
 	// check which pane is visible
 	public boolean isShownLobbyList() {
-		return rootPane.getCenter() == lobbyListPane;
+		return isVisibleLobbyList;
 	}
 
 	public boolean isShownChallengeList() {
-		return rootPane.getCenter() == challengeListPane;
+		return isVisibleChallengeList;
 	}
 
 	public boolean isShownUserList() {
-		return rootPane.getCenter() == userListPane;
+		return isVisibleUserList;
 	}
 
 	public void updateClient() {
@@ -83,16 +91,25 @@ public class ClientScene extends Scene {
 	}
 
 	public void handleUserListButton() {
+		isVisibleUserList = true;
+		isVisibleLobbyList = false;
+		isVisibleChallengeList = false;
 		userListPane.createLeft();
 		rootPane.setCenter(userListPane);
 	}
 
 	public void handleLobbyListButton() {
+		isVisibleUserList = false;
+		isVisibleLobbyList = true;
+		isVisibleChallengeList = false;
 		lobbyListPane.createLeft();
-		rootPane.setCenter(lobbyListPane);
+		rootPane.setCenter(lobbyListPane);	
 	}
 
 	public void handleChallengeListButton() {
+		isVisibleUserList = false;
+		isVisibleLobbyList = false;
+		isVisibleChallengeList = true;
 		challengeListPane.createLeft();
 		rootPane.setCenter(challengeListPane);
 	}
