@@ -9,8 +9,8 @@ import javafx.scene.paint.Color;
 
 class RuleDrawPane extends StackPane {
 	// constants
-	private final int PANEWIDTH = 800;
-	private final int PANEHEIGHT = 750;
+	private static final int PANEWIDTH = 800;
+	private static final int PANEHEIGHT = 750;
 
 	// instance variables
 	private ImageView imageView;

@@ -414,12 +414,4 @@ public class GameScene extends Scene {
 		rootPane.setCenter(winner);
 		rootPane.setDisable(true);
 	}
-	/*
-	 * cycles through cheatmodes
-	 * @return cheatMode - 0 = nocheats
-	 * 				 1 = basic cheat
-	 * 				 2 = advanced cheat
-	 */
-
-
 }

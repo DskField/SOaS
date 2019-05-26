@@ -47,7 +47,19 @@ class GameMenuPane extends VBox {
 		btn_rules = new Button("Regels");
 		btn_rules.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
 		btn_rules.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
-		btn_Cheat = new Button("Cheat mode: ");
+		btn_Cheat = new Button("Cheat mode: Off");
+		switch (gC.getCheatMode()) {
+		case 0:
+			btn_Cheat.setText("Cheat mode: Off");
+			break;
+		case 1:
+			btn_Cheat.setText("Cheat mode: On");
+			break;
+		case 2:
+			btn_Cheat.setText("Cheat mode: Advanced");
+		default:
+			break;
+		}
 		btn_Cheat.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
 		btn_Cheat.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
 		btn_toMenu = new Button("Terug naar hoofd menu");
@@ -87,13 +99,23 @@ class GameMenuPane extends VBox {
 	}
 	private void cycleCheatFunction() {
 		gC.cycleCheat();
+		switch (gC.getCheatMode()) {
+		case 0:
+			btn_Cheat.setText("Cheat mode: Off");
+			break;
+		case 1:
+			btn_Cheat.setText("Cheat mode: On");
+			break;
+		case 2:
+			btn_Cheat.setText("Cheat mode: Advanced");
+			break;
+		default:
+			break;
+		}
 		
 	}
 	//TODO Back to client
 	private void toMenu() {
-		//		ClientScene clientScene = new ClientScene();
-		//		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
-		//		stage.setScene(clientScene);
 
 	}
 

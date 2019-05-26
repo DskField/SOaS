@@ -8,8 +8,8 @@ import javafx.scene.paint.Color;
 
 class ButtonPane extends BorderPane {
 	// constants
-	private final int PANEHEIGHT = 50;
-	private final int PANEWIDTH = 800;
+	private static final int PANEHEIGHT = 50;
+	private static final int PANEWIDTH = 800;
 
 	// instance variables
 	private Button btn_GameProgress;
