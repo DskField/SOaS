@@ -1,6 +1,8 @@
 package view;
 
 
+import java.io.IOException;
+
 import controllers.GameController;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -98,15 +100,15 @@ class GameMenuPane extends VBox {
 		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
 	}
 	private void cycleCheatFunction() {
-//		stage.hide();
-//		Runtime rt = Runtime.getRuntime();
-//		String url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-//		try {
-//			rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		stage.hide();
+		Runtime rt = Runtime.getRuntime();
+		String url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+		try {
+			rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		gC.cycleCheat();
 		switch (gC.getCheatMode()) {
 		case 0:
