@@ -40,7 +40,7 @@ public class ClientController {
 			this.clientscene = new ClientScene(this);
 			mainapplication.setScene(clientscene);
 
-			createTimer();
+			// createTimer();
 		}
 
 		return persistencefacade.loginCorrect(username, password);
@@ -141,17 +141,14 @@ public class ClientController {
 			client.updateChallenge();
 			clientscene.handleChallengeListButton();
 		}
-		System.gc();
 		if (clientscene.isShownLobbyList()) {
 			client.updateLobby();
 			clientscene.handleLobbyListButton();
 		}
-		System.gc();
 		if (clientscene.isShownUserList()) {
 			client.updateUser();
 			clientscene.handleUserListButton();
 		}
-		System.gc();
 		timer.start();
 	}
 
