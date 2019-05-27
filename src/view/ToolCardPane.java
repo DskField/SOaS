@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 
-public class ToolCardPane extends AnchorPane {
+public class ToolCardPane extends FlowPane {
 	ImageView imageView;
 	int seqNr;
 	public ToolCardPane(int seqNr) {
