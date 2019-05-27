@@ -3,8 +3,8 @@ package game;
 import java.util.Random;
 
 public class PatternCardGenerator {
-
 	private Random rng;
+
 
 	public PatternCard getCard() {
 		return generateCard();
@@ -51,14 +51,25 @@ public class PatternCardGenerator {
 			}
 		}
 
-		PatternCard generatedCard = new PatternCard(0, "Generated_Card", 0);
+		PatternCard generatedCard = new PatternCard(0, "Generated_Card", generateDifficulty(pattern));
 		generatedCard.addPattern(pattern);
 		return generatedCard;
 	}
 
 	private int generateDifficulty(SpacePattern[][] pattern) {
-		return 0;
-		//TODO make an algorithm for calculating the difficulty
+		int notEmpty = 0;
+		for(SpacePattern[] pRow: pattern) {
+			for(SpacePattern place: pRow) {
+				if(!place.getColor().equals(GameColor.EMPTY)) {
+					notEmpty +=1;
+				}
+			}
+		}
+		double difficulty = notEmpty / 3.33;
+
+		int intDifficulty = (int)difficulty;
+		
+		return intDifficulty;
 	}
 
 	//Creates a new SpacePattern that is either blank or has a random value/color
@@ -72,7 +83,7 @@ public class PatternCardGenerator {
 		} else {
 			if (random == 1 || random == 4) {
 				int value = rng.nextInt(6) + 1;
-				generatedPattern = new SpacePattern(x, y, GameColor.EMPTY, value);
+				generatedPattern = new SpacePattern(x, y, GameColor.GREY, value);
 			} else {
 				int value = rng.nextInt(5);
 				GameColor[] colors = new GameColor[] { GameColor.RED, GameColor.YELLOW, GameColor.GREEN, GameColor.BLUE, GameColor.PURPLE };

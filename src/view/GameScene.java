@@ -3,11 +3,13 @@ package view;
 import java.util.ArrayList;
 
 import controllers.GameController;
+import game.CurrencyStone;
 import game.Die;
 import game.Message;
 import game.Player;
 import game.Round;
 import game.SpaceGlass;
+import game.ToolCard;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -74,6 +76,11 @@ public class GameScene extends Scene {
 	private DieOfferPane dieOfferPane;
 	private Button nextButton;
 	private GameController gameController;
+	public Stage stage;
+	
+	//TODO might wanna change this, 
+	private GameScene gS;
+
 
 	/**
 	 * Creates the GameScene
@@ -87,6 +94,10 @@ public class GameScene extends Scene {
 		setRoot(rootPane);
 		rootPane.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
 
+		gS = this;
+		stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
+
+		
 		// creates and sets everything in the right place
 		createCenter();
 		createLeft();
@@ -97,9 +108,8 @@ public class GameScene extends Scene {
 			@Override
 			public void handle(KeyEvent key) {
 				if (key.getCode() == KeyCode.ESCAPE) {
-					Stage stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
 					Popup gameMenuPopup = new Popup();
-					GameMenuPane gameMenu = new GameMenuPane();
+					GameMenuPane gameMenu = new GameMenuPane(gameController);
 					gameMenuPopup.getContent().add(gameMenu);
 					gameMenuPopup.setAutoHide(true);
 					gameMenuPopup.show(stage);
@@ -129,7 +139,7 @@ public class GameScene extends Scene {
 	public void removeHighlight() {
 		mainGlassWindow.removeHighlightSpaces();
 	}
-
+	
 	public DiePane getSelectedDie() {
 		try {
 			return (DiePane) focusOwnerProperty().get();
@@ -267,6 +277,7 @@ public class GameScene extends Scene {
 			toolCardBox.getChildren().add(toolCardPane);
 		}
 
+
 		// handles the makeup of the various boxes
 		goalCardsBox.setSpacing(10);
 		goalCardsBox.setAlignment(Pos.CENTER);
@@ -288,7 +299,7 @@ public class GameScene extends Scene {
 		rootPane.setCenter(centerBox);
 	}
 
-	//Handles 
+	//Handles button
 	private void handleNextButton() {
 		nextButton.setDisable(true);
 		gameController.nextTurn();
@@ -348,7 +359,7 @@ public class GameScene extends Scene {
 		// adds the rightBox to the rootPane
 		rootPane.setRight(rightBox);
 	}
-
+	
 	public void switchGlassWindows(int source) {
 		mainGlassWindow.removeHighlightSpaces();
 		leftBox.getChildren().remove(mainGlassWindow);
@@ -407,4 +418,27 @@ public class GameScene extends Scene {
 		rootPane.setDisable(true);
 	}
 
+	public void updateToolCards(ArrayList<ToolCard> toolCards) {
+		for (ToolCardPane toolCardPane : toolCardPanes) {
+			for (ToolCard toolCard : toolCards) {// for toolcard make an arralist with currencyStonepaness
+				ArrayList<CurrencyStonePane> stonePanes = new ArrayList<>();
+				stonePanes.clear();
+				Player thisPlayer = null;
+				if(!toolCard.getCurrencyStones().isEmpty()) {//if toolcard has currencystones
+					for(CurrencyStone stone: toolCard.getCurrencyStones()) {//for every stone that card has make a StonePane and add to ArrayList of stonepanes				
+						for(Player player:gameController.getPlayers()) {//Check whose currencystone it is						
+							if(stone.getPlayerID() == player.getPlayerID()) {//if playerid's match use that player to get the color
+								thisPlayer = player;
+							}
+						}
+						CurrencyStonePane stonePane = new CurrencyStonePane(thisPlayer.getColor());
+						stonePanes.add(stonePane);
+					}
+					if(toolCard.getSeqnr() == toolCardPane.getSeqNr()) {
+						toolCardPane.updateStones(stonePanes);
+					}
+				}
+			}
+		}
+	}
 }

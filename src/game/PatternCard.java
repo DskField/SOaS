@@ -1,7 +1,6 @@
 package game;
 
 public class PatternCard {
-
 	private int patternCardId;
 	private String name;
 	private int difficulty;

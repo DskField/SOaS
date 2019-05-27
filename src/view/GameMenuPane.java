@@ -1,5 +1,9 @@
 package view;
 
+
+import java.io.IOException;
+
+import controllers.GameController;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,18 +16,21 @@ import javafx.stage.Stage;
 
 class GameMenuPane extends VBox {
 
-	private final int BUTTONWIDTH = 300;
-	private final int BUTTONHEIGHT = 100;
-	private final int SPACING = 50;
+	private static final int BUTTONWIDTH = 300;
+	private static final int BUTTONHEIGHT = 100;
+	private static final int SPACING = 50;
 
 	private Button btn_resume;
 	private Button btn_rules;
+	private Button btn_Cheat;
 	private Button btn_toMenu;
 	private Button btn_exit;
 	private Stage stage;
+	
+	private GameController gC;
 
-	GameMenuPane() {
-
+	GameMenuPane(GameController gC) {
+		this.gC=gC;
 		// get the main stage
 		this.stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
 		// Do some Styling
@@ -32,6 +39,9 @@ class GameMenuPane extends VBox {
 		setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.7), null, null)));
 		// set size
 		setMinSize(stage.getWidth(), stage.getHeight());
+		showButtons();
+	}
+	private void showButtons() {
 		// Give buttons text and style
 		btn_resume = new Button("Hervatten");
 		btn_resume.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
@@ -39,6 +49,21 @@ class GameMenuPane extends VBox {
 		btn_rules = new Button("Regels");
 		btn_rules.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
 		btn_rules.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
+		btn_Cheat = new Button("Cheat mode: Off");
+		switch (gC.getCheatMode()) {
+		case 0:
+			btn_Cheat.setText("Cheat mode: Off");
+			break;
+		case 1:
+			btn_Cheat.setText("Cheat mode: On");
+			break;
+		case 2:
+			btn_Cheat.setText("Cheat mode: Advanced");
+		default:
+			break;
+		}
+		btn_Cheat.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
+		btn_Cheat.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
 		btn_toMenu = new Button("Terug naar hoofd menu");
 		btn_toMenu.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
 		btn_toMenu.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
@@ -48,10 +73,11 @@ class GameMenuPane extends VBox {
 		// give actions to buttons
 		btn_resume.setOnAction(e -> resume());
 		btn_rules.setOnAction(e -> showRules());
+		btn_Cheat.setOnAction(e -> cycleCheatFunction() );
 		btn_toMenu.setOnAction(e -> toMenu());
 		btn_exit.setOnAction(e -> exit());
 		// add button to pane
-		getChildren().addAll(btn_resume, btn_rules, btn_toMenu, btn_exit);
+		getChildren().addAll(btn_resume, btn_rules,btn_Cheat, btn_toMenu, btn_exit);
 
 		// If escape key is pressed it registers it as if btn_resume is clicked
 		btn_resume.setCancelButton(true);
@@ -73,12 +99,34 @@ class GameMenuPane extends VBox {
 		rulePopup.setY(stage.getHeight() / 2);
 		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
 	}
-
-	// exit to main menu by switching the scene to ClientScene and it hides gamemenu
+	private void cycleCheatFunction() {
+		stage.hide();
+		Runtime rt = Runtime.getRuntime();
+		String url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+		try {
+			rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		gC.cycleCheat();
+		switch (gC.getCheatMode()) {
+		case 0:
+			btn_Cheat.setText("Cheat mode: Off");
+			break;
+		case 1:
+			btn_Cheat.setText("Cheat mode: On");
+			break;
+		case 2:
+			btn_Cheat.setText("Cheat mode: Advanced");
+			break;
+		default:
+			break;
+		}
+		
+	}
+	//TODO Back to client
 	private void toMenu() {
-		//		ClientScene clientScene = new ClientScene();
-		//		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
-		//		stage.setScene(clientScene);
 
 	}
 
