@@ -4,16 +4,21 @@ import java.util.ArrayList;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 
-public class ToolCardPane extends FlowPane {
+public class ToolCardPane extends BorderPane {
+	private FlowPane flowPane;
+	private static final int vBoxPrefWidth = 230;
 	ImageView imageView;
 	int seqNr;
 	public ToolCardPane(int seqNr) {
+		flowPane = new FlowPane();
+		flowPane.setPrefWidth(vBoxPrefWidth);
 		this.seqNr = seqNr;
 		imageView = new ImageView();
 		lookForImage(seqNr);
-		getChildren().add(imageView);
+		getChildren().addAll(imageView, flowPane);
 	}
 	
 	public int getSeqNr() {
@@ -77,6 +82,7 @@ public class ToolCardPane extends FlowPane {
 			}
 	}
 	public void updateStones(ArrayList<CurrencyStonePane> stones) {
-		getChildren().addAll(stones);		
+		flowPane.getChildren().clear();
+		flowPane.getChildren().addAll(stones);
 	}
 }
