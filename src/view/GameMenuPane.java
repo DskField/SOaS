@@ -127,7 +127,8 @@ class GameMenuPane extends VBox {
 	}
 	//TODO Back to client
 	private void toMenu() {
-
+		gC.returnToClient();
+		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
 	}
 
 	// exit game to windows

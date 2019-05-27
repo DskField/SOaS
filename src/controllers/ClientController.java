@@ -29,7 +29,7 @@ public class ClientController {
 	public ClientController(MainApplication mainapplication) {
 		this.persistencefacade = new PersistenceFacade();
 		this.mainapplication = mainapplication;
-		this.gamecontroller = new GameController(mainapplication, persistencefacade);
+		this.gamecontroller = new GameController(mainapplication, persistencefacade, this);
 		mainapplication.setScene(new Scene(new LoginPane(this)));
 	}
 
@@ -44,6 +44,11 @@ public class ClientController {
 		}
 
 		return persistencefacade.loginCorrect(username, password);
+	}
+	
+	public void returnToClient() {
+//		timer.start();
+		mainapplication.setScene(clientscene);
 	}
 
 	public boolean handleRegister(String username, String password) {
@@ -68,7 +73,7 @@ public class ClientController {
 	}
 
 	public void joinGame(int idGame) {
-		timer.stop();
+//		timer.stop();
 		gamecontroller.joinGame(idGame, client.getUser());
 	}
 
@@ -129,14 +134,14 @@ public class ClientController {
 	}
 
 	public void logOut() {
-		timer.stop();
+//		timer.stop();
 		mainapplication.setScene(new Scene(new LoginPane(this)));
 	}
 
 	// Updat with Timer
 	public void updateClient() {
 		// 3 to 6 seconds
-		timer.stop();
+//		timer.stop();
 		if (clientscene.isShownChallengeList()) {
 			client.updateChallenge();
 			clientscene.handleChallengeListButton();
@@ -149,7 +154,7 @@ public class ClientController {
 			client.updateUser();
 			clientscene.handleUserListButton();
 		}
-		timer.start();
+//		timer.start();
 	}
 
 	public abstract class AnimationTimerExt extends AnimationTimer {

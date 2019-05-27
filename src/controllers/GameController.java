@@ -29,15 +29,17 @@ public class GameController {
 	private ChoiceScene choiceScene;
 	private AnimationTimerExt timer;
 	private PersistenceFacade persistencefacade;
+	private ClientController clientcontroller;
 
 	private int cheatMode;
 
 	// TODO: write query for this
 	private boolean dieNotPlaced = true;
 
-	public GameController(MainApplication mainApplication, PersistenceFacade persistencefacade) {
+	public GameController(MainApplication mainApplication, PersistenceFacade persistencefacade, ClientController clientcontroller) {
 		this.mainApplication = mainApplication;
 		this.persistencefacade = persistencefacade;
+		this.clientcontroller = clientcontroller;
 		// Temporary call, when the game will be created the ClientController needs
 		// to give the information to the GameController
 		// PersistenceFacade pf = new PersistenceFacade();
@@ -54,6 +56,11 @@ public class GameController {
 		cheatMode = 0;
 	}
 
+	public void returnToClient() {
+		timer.stop();
+		clientcontroller.returnToClient();
+	}
+	
 	public void joinGame(int idGame, User clientUser) {
 		game = new Game(idGame, clientUser, persistencefacade);
 		// game.persistenceFacade.setCardsGame(idGame);
