@@ -11,7 +11,10 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -45,6 +48,7 @@ public class ChoiceScene extends Scene {
 			pc.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
+					pc.setBorder(new Border(new BorderStroke(Color.WHITE, null, null, null)));
 					for (PatternCard patternCard : gameController.getPatternChoices()) {
 						if (patternCard.getPatternCardId() == pc.getPatternCardID()) {
 							gameController.setClientPlayerPaternCard(patternCard.getPatternCardId());

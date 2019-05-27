@@ -286,6 +286,7 @@ public class GameScene extends Scene {
 		PublicCardsBox.getChildren().addAll(goalCardsBox, toolCardBox);
 		PublicCardsBox.setSpacing(10);
 		cardBox.getChildren().addAll(personalInfo, PublicCardsBox);
+		cardBox.setSpacing(10);
 		cardBox.setAlignment(Pos.CENTER_LEFT);
 		cardBox.setPrefHeight(480);
 
