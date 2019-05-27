@@ -4,10 +4,9 @@ import java.util.ArrayList;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 
-public class ToolCardPane extends BorderPane {
+public class ToolCardPane extends FlowPane {
 	private FlowPane flowPane;
 	private static final int vBoxPrefWidth = 230;
 	ImageView imageView;
