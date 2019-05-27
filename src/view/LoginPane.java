@@ -93,7 +93,7 @@ public class LoginPane extends BorderPane {
 
 	private void handleRegister(String username, String password) {
 		if (!clientcontroller.handleRegister(username, password)) {
-			errorMessage.setText("Gebruikersnaam is al in gebruik");
+			errorMessage.setText("Mislukt, controleer de gebruikersnaam en wachtwoord");
 			errorMessage.setTextFill(errorMessageColor);
 		} else {
 			errorMessage.setText("Account geregistreerd");

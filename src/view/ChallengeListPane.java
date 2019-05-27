@@ -25,7 +25,7 @@ public class ChallengeListPane extends BorderPane {
 	private ListView<ToggleButton> challengeList;
 	private ToggleGroup togglegroup;
 	private HandleButton handleButton;
-	private ArrayList<Challenge> challenges;
+	private ArrayList<Integer> challenges;
 
 	// Magic Numbers
 	final private static int reactionButtonWidth = 180;
@@ -51,14 +51,12 @@ public class ChallengeListPane extends BorderPane {
 		togglegroup.getToggles().clear();
 		challenges = clientscene.getChallenges();
 
-		for (Challenge chal : challenges) {
-			if (chal.getPlayers().get(clientscene.getUsername()).equals("uitgedaagde")) {
-				ToggleButton togglebutton = new ToggleButton("Uitdaging " + chal.getGameID());
+		for (Integer chal : challenges) {
+				ToggleButton togglebutton = new ToggleButton("Uitdaging " + chal);
 				togglebutton.setAlignment(Pos.CENTER);
 				togglebutton.setOnMouseClicked(handleButton);
 				challengeList.getItems().add(togglebutton);
 				togglegroup.getToggles().add(togglebutton);
-			}
 		}
 
 		this.setLeft(challengeList);

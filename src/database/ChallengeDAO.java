@@ -16,49 +16,53 @@ class ChallengeDAO {
 		this.con = con;
 	}
 
-	private ArrayList<Challenge> selectChallenges(String query, String username) {
-		ArrayList<Challenge> results = new ArrayList<>();
+	private ArrayList<Integer> selectAllChallenges(String query, String username) {
+		ArrayList<Integer> results = new ArrayList<>();
 
-		// Get all challenges gameID
-		ArrayList<Integer> distinctGameID = new ArrayList<>();
 		try {
-			PreparedStatement stmtDistinctGameID = con.prepareStatement(query);
-			stmtDistinctGameID.setString(1, username);
-			ResultSet dbResultSetDistinctGameID = stmtDistinctGameID.executeQuery();
-			while (dbResultSetDistinctGameID.next()) {
-				distinctGameID.add(dbResultSetDistinctGameID.getInt("game_idgame"));
+			PreparedStatement stmt = con.prepareStatement(query);
+			stmt.setString(1, username);
+			ResultSet dbResultSet = stmt.executeQuery();
+
+			while (dbResultSet.next()) {
+				results.add(dbResultSet.getInt("game_idgame"));
 			}
-			stmtDistinctGameID.close();
+
+			con.commit();
+			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("ChallengeDAO " + e.getMessage());
-		}
-
-		// for every challenge gameID make object for results
-		for (Integer i : distinctGameID) {
-			try {
-				PreparedStatement stmt = con.prepareStatement("SELECT * FROM player WHERE game_idgame = " + i);
-				ResultSet dbResultSet = stmt.executeQuery();
-				HashMap<String, String> players = new HashMap<>();
-				while (dbResultSet.next()) {
-					// Separated the variables on purpose for clarity
-
-					// Hashmap
-					String playername = dbResultSet.getString("username");
-					String playstatus = dbResultSet.getString("playstatus_playstatus");
-					players.put(playername, playstatus);
-				}
-				Challenge challenge = new Challenge(i, players);
-				results.add(challenge);
-
-				con.commit();
-				stmt.close();
-			} catch (SQLException e1) {
-				System.err.println("ChallengeDAO " + e1.getMessage());
-			}
+			System.err.println("ChallengeDAO: " + e.getMessage());
 		}
 		return results;
 	}
-	
+
+	private Challenge selectChallenge(String query, int idGame) {
+		Challenge challenge = null;
+
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			stmt.setInt(1, idGame);
+			ResultSet dbResultSet = stmt.executeQuery();
+			HashMap<String, String> players = new HashMap<>();
+			while (dbResultSet.next()) {
+				String playername = dbResultSet.getString("username");
+				String playerstatus = dbResultSet.getString("playstatus_playstatus");
+				players.put(playername, playerstatus);
+			}
+			challenge = new Challenge(idGame, players);
+
+			con.commit();
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("ChallengeDAO: " + e.getMessage());
+		}
+		return challenge;
+	}
+
+	public Challenge getChallenge(int idGame) {
+		return selectChallenge("SELECT * FROM player WHERE game_idgame = ?", idGame);
+	}
+
 	private void updatePlayerStatus(String query, String username, boolean accepted, int idGame) {
 		try {
 			PreparedStatement stmt = con.prepareStatement(query);
@@ -73,18 +77,39 @@ class ChallengeDAO {
 		}
 	}
 
-	public ArrayList<Challenge> getChallenges(String username) {
-		return selectChallenges("SELECT DISTINCT(game_idgame)\r\n" + "FROM player\r\n" + "WHERE playstatus_playstatus IN (\"uitdager\", \"uitgedaagde\", \"geaccepteerd\", \"geweigerd\") AND username = ?", username);
-	}
-	
-	public void updateStatus(String username, boolean accepted, int idGame) {
-		updatePlayerStatus("UPDATE player SET playstatus_playstatus = ? WHERE username = ? AND game_idgame = ?", username, accepted, idGame);
+	private boolean openInvite(String query, String username, String opponentname) {
+		boolean hasOpenInvite = false;
+
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			stmt.setString(1, username);
+			stmt.setString(2, opponentname);
+			ResultSet dbResultSet = stmt.executeQuery();
+			dbResultSet.next();
+			hasOpenInvite = dbResultSet.getInt("openinvites") != 0 ? true : false;
+			con.commit();
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("ChallengeDAO: " + e.getMessage());
+		}
+		return hasOpenInvite;
 	}
 
-	public boolean checkUpdate(String username, ArrayList<Challenge> oldList) {
-		if (oldList.equals(getChallenges(username)))
-			return true;
-		else
-			return false;
+	public boolean hasOpenInvite(String username, String opponentname) {
+		return openInvite("SELECT COUNT(*) AS openinvites\r\n FROM player AS p1\r\n"
+				+ "JOIN player AS p2 ON p1.game_idgame = p2.game_idgame\r\n"
+				+ "WHERE p1.username = ? AND p1.playstatus_playstatus = \"uitdager\" AND p2.username = ? AND p2.playstatus_playstatus = \"uitgedaagde\"",
+				username, opponentname);
+	}
+
+	public ArrayList<Integer> getChallenges(String username) {
+		return selectAllChallenges(
+				"SELECT game_idgame FROM player WHERE playstatus_playstatus = \"uitgedaagde\" AND username = ?",
+				username);
+	}
+
+	public void updateStatus(String username, boolean accepted, int idGame) {
+		updatePlayerStatus("UPDATE player SET playstatus_playstatus = ? WHERE username = ? AND game_idgame = ?",
+				username, accepted, idGame);
 	}
 }

@@ -26,7 +26,7 @@ public class LobbyListPane extends BorderPane {
 	private HandleButton handlebutton;
 	private ClientScene clientscene;
 	private Label errorMessage;
-	private ArrayList<Lobby> lobbies;
+	private ArrayList<Integer> lobbies;
 
 	// Magic Numbers
 	final private static int labelSize = 30;
@@ -55,17 +55,12 @@ public class LobbyListPane extends BorderPane {
 		togglegroup.getToggles().clear();
 		this.lobbies = clientscene.getLobbies();
 
-		for (Lobby lob : lobbies) {
-			if (clientscene.getSpecificChallenge(lob.getGameID()) != null) {
-				if (!clientscene.getSpecificChallenge(lob.getGameID()).getPlayers().get(clientscene.getUsername())
-						.equals("uitgedaagde")) {
-					ToggleButton togglebutton = new ToggleButton("Game " + lob.getGameID());
-					togglebutton.setAlignment(Pos.CENTER);
-					togglebutton.setOnMouseClicked(handlebutton);
-					lobbyList.getItems().add(togglebutton);
-					togglegroup.getToggles().add(togglebutton);
-				}
-			}
+		for (Integer lob : lobbies) {			
+				ToggleButton togglebutton = new ToggleButton("Game " + lob);
+				togglebutton.setAlignment(Pos.CENTER);
+				togglebutton.setOnMouseClicked(handlebutton);
+				lobbyList.getItems().add(togglebutton);
+				togglegroup.getToggles().add(togglebutton);
 		}
 
 		this.setLeft(lobbyList);
@@ -96,13 +91,13 @@ public class LobbyListPane extends BorderPane {
 		playerList.setAlignment(Pos.CENTER);
 		playerList.getChildren().add(scoreboardLabel);
 
-//		ArrayList<ArrayList<String>> scoreboardList = clientscene.getScore(idGame, clientscene.getPlayers(idGame));
-//		for (int i = 0; i < scoreboardList.size(); i++) {
-//			Label playername = new Label(
-//					(i + 1) + ". " + scoreboardList.get(i).get(0) + ": " + scoreboardList.get(i).get(1));
-//			playername.setFont(Font.font(textSize));
-//			playerList.getChildren().add(playername);
-//		}
+		ArrayList<ArrayList<String>> scoreboardList = clientscene.getScore(idGame, clientscene.getPlayers(idGame));
+		for (int i = 0; i < scoreboardList.size(); i++) {
+			Label playername = new Label(
+					(i + 1) + ". " + scoreboardList.get(i).get(0) + ": " + scoreboardList.get(i).get(1));
+			playername.setFont(Font.font(textSize));
+			playerList.getChildren().add(playername);
+		}
 
 		Label rondeLabel = new Label("Ronde: " + (clientscene.getLobby(idGame).getCurrentRound() - 1));
 		rondeLabel.setFont(Font.font(labelSize));

@@ -40,28 +40,34 @@ public class ClientController {
 			this.clientscene = new ClientScene(this);
 			mainapplication.setScene(clientscene);
 
-			// createTimer();
+			createTimer();
 		}
 
 		return persistencefacade.loginCorrect(username, password);
 	}
-	
+
 	public void returnToClient() {
-//		timer.start();
+		timer.start();
 		mainapplication.setScene(clientscene);
 	}
 
 	public boolean handleRegister(String username, String password) {
+		if (username.length() < 3 || username.length() > 25 || password.length() < 3 || password.length() > 25) {
+			return false;
+		}
+		if (!username.matches("[a-zA-Z0-9]*") && !password.matches("[a-zA-Z0-9]*")) {
+			return false;
+		}
 		return persistencefacade.insertCorrect(username, password);
 	}
 
 	// Getters
-	public ArrayList<Challenge> getChallenges() {
+	public ArrayList<Integer> getChallenges() {
 		return client.getChallenges();
 	}
 
-	public ArrayList<Lobby> getLobbies() {
-		return client.getLobbies();
+	public ArrayList<Integer> getLobbies() {
+		return client.getAllLobbies();
 	}
 
 	public Challenge getSpecificChallenge(int gameID) {
@@ -73,7 +79,7 @@ public class ClientController {
 	}
 
 	public void joinGame(int idGame) {
-//		timer.stop();
+		timer.stop();
 		gamecontroller.joinGame(idGame, client.getUser());
 	}
 
@@ -89,8 +95,13 @@ public class ClientController {
 		return client.getOpponent(username);
 	}
 
-	public void createGame(ArrayList<User> users) {
+	public boolean createGame(ArrayList<User> users) {
+		for (User u : users) {
+			if (persistencefacade.hasOpenInvite(client.getUser().getUsername(), u.getUsername()))
+				return false;
+		}
 		persistencefacade.createGame(users);
+		return true;
 	}
 
 	public String getUsername() {
@@ -127,34 +138,29 @@ public class ClientController {
 		Collections.reverse(comparator);
 
 		for (int c = 0; c < players.size(); c++) {
-			result.add(new ArrayList<String>(
-					Arrays.asList(players.get(comparator.get(c).get(0)).getUsername(), String.valueOf(comparator.get(c).get(1)))));
+			result.add(new ArrayList<String>(Arrays.asList(players.get(comparator.get(c).get(0)).getUsername(),
+					String.valueOf(comparator.get(c).get(1)))));
 		}
 		return result;
 	}
 
 	public void logOut() {
-//		timer.stop();
+		timer.stop();
 		mainapplication.setScene(new Scene(new LoginPane(this)));
 	}
 
 	// Updat with Timer
 	public void updateClient() {
 		// 3 to 6 seconds
-//		timer.stop();
 		if (clientscene.isShownChallengeList()) {
 			client.updateChallenge();
-			clientscene.handleChallengeListButton();
 		}
 		if (clientscene.isShownLobbyList()) {
 			client.updateLobby();
-			clientscene.handleLobbyListButton();
 		}
 		if (clientscene.isShownUserList()) {
 			client.updateUser();
-			clientscene.handleUserListButton();
 		}
-//		timer.start();
 	}
 
 	public abstract class AnimationTimerExt extends AnimationTimer {
@@ -182,7 +188,19 @@ public class ClientController {
 		timer = new AnimationTimerExt(3000) {
 			@Override
 			public void doAction() {
-				updateClient();
+				if (clientscene.isShownChallengeList()) {
+					clientscene.handleChallengeListButton();
+					System.out.println("Challenge Updated");
+				}
+				if (clientscene.isShownLobbyList()) {
+					clientscene.handleLobbyListButton();
+					System.out.println("Lobby Updated");
+				}
+				if (clientscene.isShownUserList()) {
+					clientscene.handleUserListButton();
+					System.out.println("User Updated");
+				}
+
 			}
 		};
 

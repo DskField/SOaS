@@ -52,25 +52,29 @@ public class PersistenceFacade {
 	}
 
 	// ChallengeDAO
-	public ArrayList<Challenge> getChallenges(String username) {
+	public ArrayList<Integer> getChallenges(String username) {
 		return challengeDAO.getChallenges(username);
 	}
-
-	public boolean updateChallenge(String username, ArrayList<Challenge> oldList) {
-		return challengeDAO.checkUpdate(username, oldList);
+	
+	public Challenge getChallenge(int idGame) {
+		return challengeDAO.getChallenge(idGame);
 	}
 
 	public void updatePlayerStatus(String username, boolean accepted, int idGame) {
 		challengeDAO.updateStatus(username, accepted, idGame);
 	}
-
-	// LobbyDAO
-	public ArrayList<Lobby> getLobbies(String username) {
-		return lobbyDAO.getLobbies(username);
+	
+	public boolean hasOpenInvite(String username, String opponentname) {
+		return challengeDAO.hasOpenInvite(username, opponentname);
 	}
 
-	public boolean updateLobby(String username, ArrayList<Lobby> oldList) {
-		return lobbyDAO.checkUpdate(username, oldList);
+	// LobbyDAO
+	public ArrayList<Integer> getAllLobbies(String username) {
+		return lobbyDAO.getAllLobbyID(username);
+	}
+	
+	public Lobby getLobby(int idGame, String username) {
+		return lobbyDAO.getLobby(idGame, username);
 	}
 
 	// UserDAO

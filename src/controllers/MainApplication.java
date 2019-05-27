@@ -10,6 +10,8 @@ public class MainApplication extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
+		//BaseDAO base = new BaseDAO();
+		
 	}
 
 	@Override

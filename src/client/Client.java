@@ -9,31 +9,35 @@ public class Client {
 
 	private String username;
 
-	private ArrayList<Lobby> lobbies;
+	private ArrayList<Integer> lobbiesGameID;
+	
+	private Lobby lobby;
+	private Challenge challenge;
 	private User user;
 	private User opponent;
-	private ArrayList<Challenge> challenges;
+	private ArrayList<Integer> challenges;
 	private PersistenceFacade persistencefacade;
 
 	public Client(String username, PersistenceFacade persistencefacade) {
 		this.username = username;
 		this.persistencefacade = persistencefacade;
 		this.user = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username) : new User(username, 0, 0, GameColor.EMPTY, 0);
-		this.lobbies = persistencefacade.getLobbies(username);
 		this.challenges = persistencefacade.getChallenges(username);
-
-		user.setGamesWon(calcWon());
-		user.setGamesLost(calcLost());
-		user.setTotalOpponents(calcOpponents());
+		this.lobbiesGameID = persistencefacade.getAllLobbies(user.getUsername());
+		
+		//TODO TOM won, lost, opponents
+//		user.setGamesWon(calcWon());
+//		user.setGamesLost(calcLost());
+//		user.setTotalOpponents(calcOpponents());
 	}
 
 	// Update
 	public void updateChallenge() {
-		this.challenges = persistencefacade.getChallenges(user.getUsername());
+		this.challenges = persistencefacade.getChallenges(user.getUsername());	
 	}
 
 	public void updateLobby() {
-		this.lobbies = persistencefacade.getLobbies(user.getUsername());
+		this.lobbiesGameID = persistencefacade.getAllLobbies(user.getUsername());
 	}
 
 	public void updateUser() {
@@ -42,43 +46,47 @@ public class Client {
 	}
 
 	// calculaters
-	private int calcWon() {
-		int won = 0;
-		for (Lobby lob : lobbies) {
-			if (lob.isWon())
-				won++;
-		}
-		return won;
-	}
-
-	private int calcLost() {
-		int lost = 0;
-		for (Lobby lob : lobbies) {
-			if (!lob.isWon() && lob.getGameState().equals("uitgespeeld"))
-				lost++;
-		}
-		return lost;
-	}
-
-	private int calcOpponents() {
-		int opponents = 0;
-		for (Lobby lob : lobbies) {
-			if (lob.getGameState().equals("uitgespeeld") || lob.getGameState().equals("aan de gang"))
-				opponents += lob.getLobbyResponse() - 1;
-		}
-		return opponents;
-	}
-
-	// GETTERS
-	public ArrayList<Lobby> getLobbies() {
-		return lobbies;
-	}
+//	private int calcWon() {
+//		int won = 0;
+//		for (Lobby lob : lobbies) {
+//			if (lob.isWon())
+//				won++;
+//		}
+//		return won;
+//	}
+//
+//	private int calcLost() {
+//		int lost = 0;
+//		for (Lobby lob : lobbies) {
+//			if (!lob.isWon() && lob.getGameState().equals("uitgespeeld"))
+//				lost++;
+//		}
+//		return lost;
+//	}
+//
+//	private int calcOpponents() {
+//		int opponents = 0;
+//		for (Lobby lob : lobbies) {
+//			if (lob.getGameState().equals("uitgespeeld") || lob.getGameState().equals("aan de gang"))
+//				opponents += lob.getLobbyResponse() - 1;
+//		}
+//		return opponents;
+//	}
+//
+//	// GETTERS
+//	public ArrayList<Lobby> getLobbies() {
+//		return lobbies;
+//	}
 
 	public User getUser() {
 		return user;
 	}
+	
+	public ArrayList<Integer> getAllLobbies() {
+		return lobbiesGameID;
+	}
 
-	public ArrayList<Challenge> getChallenges() {
+	public ArrayList<Integer> getChallenges() {
 		return challenges;
 	}
 
@@ -89,26 +97,19 @@ public class Client {
 	public User getOpponent(String username) {
 		this.opponent = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username)
 				: new User(username, 0, 0, GameColor.EMPTY, 0);
-		opponent.setGamesWon(calcWon());
-		opponent.setGamesLost(calcLost());
-		opponent.setTotalOpponents(calcOpponents());
+//		opponent.setGamesWon(calcWon());
+//		opponent.setGamesLost(calcLost());
+//		opponent.setTotalOpponents(calcOpponents());
 		return opponent;
 	}
 
 	public Lobby getLobby(int gameID) {
-		for (Lobby lob : lobbies) {
-			if (lob.getGameID() == gameID)
-				return lob;
-		}
-		System.err.println("Client: specific lobby not found");
-		return null;
+		this.lobby = persistencefacade.getLobby(gameID, user.getUsername());
+		return lobby;
 	}
 
 	public Challenge getChallenge(int gameID) {
-		for (Challenge chal : challenges) {
-			if (chal.getGameID() == gameID)
-				return chal;
-		}
-		return null;
+		this.challenge = persistencefacade.getChallenge(gameID);
+		return challenge;
 	}
 }
