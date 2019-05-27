@@ -18,8 +18,6 @@ import view.LoginPane;
 
 public class ClientController {
 
-	private boolean checkUpdateClient = false;
-
 	private Client client;
 	private GameController gamecontroller;
 	private MainApplication mainapplication;
@@ -32,7 +30,6 @@ public class ClientController {
 		this.persistencefacade = new PersistenceFacade();
 		this.mainapplication = mainapplication;
 		this.gamecontroller = new GameController(mainapplication, persistencefacade);
-		// handleLogin("speler1", "speler1");
 		mainapplication.setScene(new Scene(new LoginPane(this)));
 	}
 
@@ -43,8 +40,7 @@ public class ClientController {
 			this.clientscene = new ClientScene(this);
 			mainapplication.setScene(clientscene);
 
-			// TODO TOM fix timer/update
-			//createTimer();
+			// createTimer();
 		}
 
 		return persistencefacade.loginCorrect(username, password);
@@ -72,6 +68,7 @@ public class ClientController {
 	}
 
 	public void joinGame(int idGame) {
+		timer.stop();
 		gamecontroller.joinGame(idGame, client.getUser());
 	}
 
@@ -91,7 +88,6 @@ public class ClientController {
 		persistencefacade.createGame(users);
 	}
 
-	// use getUser method
 	public String getUsername() {
 		return client.getUser().getUsername();
 	}
@@ -133,26 +129,27 @@ public class ClientController {
 	}
 
 	public void logOut() {
+		timer.stop();
 		mainapplication.setScene(new Scene(new LoginPane(this)));
 	}
 
 	// Updat with Timer
 	public void updateClient() {
 		// 3 to 6 seconds
+		timer.stop();
 		if (clientscene.isShownChallengeList()) {
 			client.updateChallenge();
 			clientscene.handleChallengeListButton();
 		}
-		
 		if (clientscene.isShownLobbyList()) {
 			client.updateLobby();
 			clientscene.handleLobbyListButton();
 		}
-		
 		if (clientscene.isShownUserList()) {
 			client.updateUser();
 			clientscene.handleUserListButton();
-		}			
+		}
+		timer.start();
 	}
 
 	public abstract class AnimationTimerExt extends AnimationTimer {
