@@ -36,7 +36,7 @@ class ToolCardDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.out.println("ToolCardDAO " + e.getMessage());
+			System.out.println("ToolCardDAO (selectToolCards) --> " + e.getMessage());
 		}
 		return results;
 	}
@@ -79,15 +79,15 @@ class ToolCardDAO {
 				con.commit();
 				stmt.close();
 			} catch (SQLException e) {
-				System.err.println("ToolCardDAO " + e.getMessage());
+				System.err.println("ToolCardDAO (insertRandomGameToolCards #1) --> " + e.getMessage());
 				try {
 					con.rollback();
 				} catch (SQLException e1) {
-					System.err.println("The rollback failed: Please check the Database!");
+					System.err.println("ToolCardDAO (insertRandomGameToolCards #2) --> The rollback failed: Please check the Database!");
 				}
 			}
 		} else {
-			System.err.println("ToolCardDAO trying to select 3 random cards for a game that already has 3 cards");
+			System.err.println("ToolCardDAO (insertRandomGameToolCards #3) --> Trying to select 3 random cards for a game that already has 3 cards");
 		}
 	}
 }

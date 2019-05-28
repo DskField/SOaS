@@ -39,7 +39,7 @@ class DieDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("DieDAO " + e.getMessage());
+			System.err.println("DieDAO (selectDie) --> " + e.getMessage());
 		}
 		return results;
 	}
@@ -62,7 +62,7 @@ class DieDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("DieDAO " + e.getMessage());
+			System.err.println("DieDAO (selectDiceWithEyes) --> " + e.getMessage());
 		}
 		return results;
 	}
@@ -95,7 +95,7 @@ class DieDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("DieDAO " + e.getMessage());
+			System.err.println("DieDAO (selectTrackDice) --> " + e.getMessage());
 		}
 		return result;
 	}
@@ -120,11 +120,11 @@ class DieDAO {
 				stmt.close();
 			}
 		} catch (SQLException e) {
-			System.err.println("DieDAO: " + e.getMessage());
+			System.err.println("DieDAO (updateDice #1) --> " + e.getMessage());
 			try {
 				con.rollback();
 			} catch (SQLException e1) {
-				System.err.println("The rollback failed: Please check the Database!");
+				System.err.println("DieDAO (updateDice #2) --> The rollback failed: Please check the Database!");
 			}
 		}
 	}
@@ -151,7 +151,12 @@ class DieDAO {
 			}
 			con.commit();
 		} catch (SQLException e) {
-			System.err.println("DieDAO: " + e.getMessage());
+			System.err.println("DieDAO (updateRound #1) --> " + e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e2) {
+				System.err.println("DieDAO (updateRound #2) --> The rollback failed: Please check the Database!");
+			}
 		}
 	}
 
@@ -171,11 +176,11 @@ class DieDAO {
 			}
 			con.commit();
 		} catch (SQLException e) {
-			System.err.println("DieDAO: " + e.getMessage());
+			System.err.println("DieDAO (insertDice) --> " + e.getMessage());
 			try {
 				con.rollback();
 			} catch (SQLException e1) {
-				System.err.println("The rollback failed: Please check the Database!");
+				System.err.println("DieDAO (insertDice) --> The rollback failed: Please check the Database!");
 			}
 		}
 	}

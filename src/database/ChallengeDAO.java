@@ -73,7 +73,7 @@ class ChallengeDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("ChallengeDAO: " + e.getMessage());
+			System.err.println("ChallengeDAO (updatePlayerStatus) --> " + e.getMessage());
 		}
 	}
 

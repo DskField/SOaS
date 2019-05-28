@@ -77,10 +77,6 @@ public class GameScene extends Scene {
 	private Button nextButton;
 	private GameController gameController;
 	public Stage stage;
-	
-	//TODO might wanna change this, 
-	private GameScene gS;
-
 
 	/**
 	 * Creates the GameScene
@@ -94,10 +90,8 @@ public class GameScene extends Scene {
 		setRoot(rootPane);
 		rootPane.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
 
-		gS = this;
 		stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
 
-		
 		// creates and sets everything in the right place
 		createCenter();
 		createLeft();
@@ -139,7 +133,7 @@ public class GameScene extends Scene {
 	public void removeHighlight() {
 		mainGlassWindow.removeHighlightSpaces();
 	}
-	
+
 	public DiePane getSelectedDie() {
 		try {
 			return (DiePane) focusOwnerProperty().get();
@@ -277,7 +271,6 @@ public class GameScene extends Scene {
 			toolCardBox.getChildren().add(toolCardPane);
 		}
 
-
 		// handles the makeup of the various boxes
 		goalCardsBox.setSpacing(10);
 		goalCardsBox.setAlignment(Pos.CENTER);
@@ -286,6 +279,7 @@ public class GameScene extends Scene {
 		PublicCardsBox.getChildren().addAll(goalCardsBox, toolCardBox);
 		PublicCardsBox.setSpacing(10);
 		cardBox.getChildren().addAll(personalInfo, PublicCardsBox);
+		cardBox.setSpacing(10);
 		cardBox.setAlignment(Pos.CENTER_LEFT);
 		cardBox.setPrefHeight(480);
 
@@ -359,7 +353,7 @@ public class GameScene extends Scene {
 		// adds the rightBox to the rootPane
 		rootPane.setRight(rightBox);
 	}
-	
+
 	public void switchGlassWindows(int source) {
 		mainGlassWindow.removeHighlightSpaces();
 		leftBox.getChildren().remove(mainGlassWindow);
@@ -424,17 +418,17 @@ public class GameScene extends Scene {
 				ArrayList<CurrencyStonePane> stonePanes = new ArrayList<>();
 				stonePanes.clear();
 				Player thisPlayer = null;
-				if(!toolCard.getCurrencyStones().isEmpty()) {//if toolcard has currencystones
-					for(CurrencyStone stone: toolCard.getCurrencyStones()) {//for every stone that card has make a StonePane and add to ArrayList of stonepanes				
-						for(Player player:gameController.getPlayers()) {//Check whose currencystone it is						
-							if(stone.getPlayerID() == player.getPlayerID()) {//if playerid's match use that player to get the color
+				if (!toolCard.getCurrencyStones().isEmpty()) {//if toolcard has currencystones
+					for (CurrencyStone stone : toolCard.getCurrencyStones()) {//for every stone that card has make a StonePane and add to ArrayList of stonepanes				
+						for (Player player : gameController.getPlayers()) {//Check whose currencystone it is						
+							if (stone.getPlayerID() == player.getPlayerID()) {//if playerid's match use that player to get the color
 								thisPlayer = player;
 							}
 						}
 						CurrencyStonePane stonePane = new CurrencyStonePane(thisPlayer.getColor());
 						stonePanes.add(stonePane);
 					}
-					if(toolCard.getSeqnr() == toolCardPane.getSeqNr()) {
+					if (toolCard.getSeqnr() == toolCardPane.getSeqNr()) {
 						toolCardPane.updateStones(stonePanes);
 					}
 				}

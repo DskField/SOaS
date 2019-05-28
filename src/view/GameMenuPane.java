@@ -1,8 +1,5 @@
 package view;
 
-
-import java.io.IOException;
-
 import controllers.GameController;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -26,11 +23,11 @@ class GameMenuPane extends VBox {
 	private Button btn_toMenu;
 	private Button btn_exit;
 	private Stage stage;
-	
+
 	private GameController gC;
 
 	GameMenuPane(GameController gC) {
-		this.gC=gC;
+		this.gC = gC;
 		// get the main stage
 		this.stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
 		// Do some Styling
@@ -41,6 +38,7 @@ class GameMenuPane extends VBox {
 		setMinSize(stage.getWidth(), stage.getHeight());
 		showButtons();
 	}
+
 	private void showButtons() {
 		// Give buttons text and style
 		btn_resume = new Button("Hervatten");
@@ -73,11 +71,11 @@ class GameMenuPane extends VBox {
 		// give actions to buttons
 		btn_resume.setOnAction(e -> resume());
 		btn_rules.setOnAction(e -> showRules());
-		btn_Cheat.setOnAction(e -> cycleCheatFunction() );
+		btn_Cheat.setOnAction(e -> cycleCheatFunction());
 		btn_toMenu.setOnAction(e -> toMenu());
 		btn_exit.setOnAction(e -> exit());
 		// add button to pane
-		getChildren().addAll(btn_resume, btn_rules,btn_Cheat, btn_toMenu, btn_exit);
+		getChildren().addAll(btn_resume, btn_rules, btn_Cheat, btn_toMenu, btn_exit);
 
 		// If escape key is pressed it registers it as if btn_resume is clicked
 		btn_resume.setCancelButton(true);
@@ -99,16 +97,8 @@ class GameMenuPane extends VBox {
 		rulePopup.setY(stage.getHeight() / 2);
 		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
 	}
+
 	private void cycleCheatFunction() {
-		stage.hide();
-		Runtime rt = Runtime.getRuntime();
-		String url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-		try {
-			rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		gC.cycleCheat();
 		switch (gC.getCheatMode()) {
 		case 0:
@@ -123,9 +113,8 @@ class GameMenuPane extends VBox {
 		default:
 			break;
 		}
-		
 	}
-	//TODO Back to client
+
 	private void toMenu() {
 		gC.returnToClient();
 		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();

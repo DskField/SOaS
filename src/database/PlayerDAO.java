@@ -27,11 +27,11 @@ class PlayerDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("PlayerDAO " + e.getMessage());
+			System.err.println("PlayerDAO (insertPlayerPatterncard #1) --> " + e.getMessage());
 			try {
 				con.rollback();
 			} catch (SQLException e1) {
-				System.err.println("The rollback failed: Please check the Database!");
+				System.err.println("PlayerDAO (insertPlayerPatterncard #2) --> The rollback failed: Please check the Database!");
 			}
 		}
 	}
@@ -56,12 +56,12 @@ class PlayerDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("PlayerDAO " + e.getMessage());
+			System.err.println("PlayerDAO (selectPlayer) --> " + e.getMessage());
 		}
 		return results;
 	}
 
-	private ArrayList<String> getColors() {
+	private ArrayList<String> selectColors() {
 		ArrayList<String> results = new ArrayList<String>();
 		try {
 			PreparedStatement stmt = con.prepareStatement("SELECT * FROM color");
@@ -73,7 +73,7 @@ class PlayerDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("PlayerDAO (Colors) " + e.getMessage());
+			System.err.println("PlayerDAO (selectColors) --> " + e.getMessage());
 		}
 		return results;
 	}
@@ -95,7 +95,12 @@ class PlayerDAO {
 			stmtNewPlayer.close();
 			stmtOldPlayer2.close();
 		} catch (SQLException e) {
-			System.err.println("PlayerDAO " + e.getMessage());
+			System.err.println("PlayerDAO (updatePlayer #1) --> " + e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e2) {
+				System.err.println("DieDAO (updatePlayer #2) --> The rollback failed: Please check the Database!");
+			}
 		}
 	}
 
@@ -103,7 +108,6 @@ class PlayerDAO {
 		updatePlayer(oldPlayer, newPlayer);
 	}
 
-	//kevin stuff
 	void setPlayerPaternCard(int idPatternCard, int idPlayer) {
 		insertPlayerPaterncard(idPatternCard, idPlayer);
 	}
@@ -130,7 +134,7 @@ class PlayerDAO {
 	}
 
 	void insertPlayers(int idGame, ArrayList<User> users) {
-		ArrayList<String> colors = getColors();
+		ArrayList<String> colors = selectColors();
 		Collections.shuffle(colors);
 		try {
 			for (int i = 0; i < users.size(); i++) {
@@ -149,11 +153,11 @@ class PlayerDAO {
 			}
 			con.commit();
 		} catch (SQLException e) {
-			System.err.println("PlayerDAO (Insert): " + e.getMessage());
+			System.err.println("PlayerDAO (insertPlayer) --> " + e.getMessage());
 			try {
 				con.rollback();
 			} catch (SQLException e1) {
-				System.err.println("The rollback failed: Please check the Database!");
+				System.err.println("PlayerDAO (insertPlayer) --> The rollback failed: Please check the Database!");
 			}
 		}
 	}

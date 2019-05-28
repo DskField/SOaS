@@ -46,7 +46,7 @@ class MessageDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("MessageDAO " + e.getMessage());
+			System.err.println("MessageDAO (selectMessage) --> " + e.getMessage());
 
 		}
 		return results;
@@ -67,11 +67,11 @@ class MessageDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("MessageDAO " + e.getMessage());
+			System.err.println("MessageDAO (insertMessage #1) --> " + e.getMessage());
 			try {
 				con.rollback();
 			} catch (SQLException e1) {
-				System.err.println("The rollback failed: Please check the Database!");
+				System.err.println("MessageDAO (insertMessage #2) --> The rollback failed: Please check the Database!");
 			}
 		}
 	}

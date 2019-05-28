@@ -99,15 +99,11 @@ public class GameController {
 	 * 
 	 * @return ArrayList<Die> - new dice
 	 */
-
-	// kevin stuff
 	public ArrayList<PatternCard> getPatternChoices() {
 		return game.patternChoices(game.getClientPlayer().getPlayerID());
 	}
 
-	// kevin stuff
-	// FIXME spelling Pattern
-	public void setClientPlayerPaternCard(int idPatternCard) {
+	public void setClientPlayerPatternCard(int idPatternCard) {
 		game.setClientPlayerPaternCard(idPatternCard);
 
 		// gameScene = new GameScene(this);

@@ -17,6 +17,7 @@ public class GlassWindow {
 	}
 
 	public void placeDie(int x, int y, Die die) {
+		//hoi
 		getSpace(x, y).setDie(die);
 	}
 
