@@ -138,8 +138,8 @@ public class ClientController {
 		Collections.reverse(comparator);
 
 		for (int c = 0; c < players.size(); c++) {
-			result.add(new ArrayList<String>(Arrays.asList(players.get(comparator.get(c).get(0)).getUsername(),
-					String.valueOf(comparator.get(c).get(1)))));
+			result.add(new ArrayList<String>(
+					Arrays.asList(players.get(comparator.get(c).get(0)).getUsername(), String.valueOf(comparator.get(c).get(1)))));
 		}
 		return result;
 	}
@@ -197,11 +197,10 @@ public class ClientController {
 				if (clientscene.isShownUserList()) {
 					clientscene.handleUserListButton();
 				}
-				
+
 				ArrayList<Integer> idGame = persistencefacade.checkCreatedChallanges(client.getUser().getUsername());
 				for (Integer id : idGame) {
-					persistencefacade.insertRandomGameToolCards(id);
-					persistencefacade.insertRandomSharedCollectiveGoalCards(id);					
+					persistencefacade.setCardsGame(id);
 				}
 			}
 		};

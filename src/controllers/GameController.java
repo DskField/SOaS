@@ -58,6 +58,7 @@ public class GameController {
 
 	public void returnToClient() {
 		timer.stop();
+		gameScene = null;
 		clientcontroller.returnToClient();
 	}
 	

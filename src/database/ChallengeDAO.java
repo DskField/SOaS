@@ -120,7 +120,6 @@ class ChallengeDAO {
 				int rowcount = dbResultSet.getRow();
 
 				// Check if everyone answered
-				System.out.println(rowcount + " + " + allStatus.size());
 				if (rowcount == allStatus.size()) {
 					if (allStatus.contains("geweigerd")) {
 						PreparedStatement stmtUpdate = con
@@ -131,12 +130,14 @@ class ChallengeDAO {
 					} else if (!allStatus.contains("uitgespeeld")) {
 						// check if game already started
 						PreparedStatement stmtCheckGameStats = con
-								.prepareStatement("SELECT COUNT(*) AS count FROM player WHERE game_idgame = ? AND seqnr != null");
+								.prepareStatement("SELECT (SELECT COUNT(*) FROM gametoolcard WHERE idgame = ?) AS countgametoolcard, "
+										+ "(SELECT COUNT(*) FROM sharedpublic_objectivecard WHERE idgame = ?) AS countsharedpublicobjectivecard");
 						stmtCheckGameStats.setInt(1, id);
+						stmtCheckGameStats.setInt(2, id);
 						ResultSet dbResultSetCheckGameStats = stmtCheckGameStats.executeQuery();
 						dbResultSetCheckGameStats.next();
-						if (dbResultSetCheckGameStats.getInt("count") == 0)
-							// return idGame to start game if game didnt start
+						if (dbResultSetCheckGameStats.getInt("countgametoolcard") == 0 || dbResultSetCheckGameStats.getInt("countsharedpublicobjectivecard") == 0)
+							// return idGame to give game toolcards and objective cards
 							results.add(id);
 						dbResultSetCheckGameStats.close();
 					}
