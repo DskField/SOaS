@@ -21,14 +21,9 @@ public class Client {
 	public Client(String username, PersistenceFacade persistencefacade) {
 		this.username = username;
 		this.persistencefacade = persistencefacade;
-		this.user = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username) : new User(username, 0, 0, GameColor.EMPTY, 0);
+		this.user = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username) : new User(username, 0, 0, GameColor.EMPTY, 0, 0, 0, 0);
 		this.challenges = persistencefacade.getChallenges(username);
 		this.lobbiesGameID = persistencefacade.getAllLobbies(user.getUsername());
-		
-		//TODO TOM won, lost, opponents
-//		user.setGamesWon(calcWon());
-//		user.setGamesLost(calcLost());
-//		user.setTotalOpponents(calcOpponents());
 	}
 
 	// Update
@@ -42,41 +37,8 @@ public class Client {
 
 	public void updateUser() {
 		this.user = persistencefacade.getUser(user.getUsername()) != null ? persistencefacade.getUser(user.getUsername())
-				: new User(user.getUsername(), 0, 0, GameColor.EMPTY, 0);
+				: new User(user.getUsername(), 0, 0, GameColor.EMPTY, 0, 0, 0, 0);
 	}
-
-	// calculaters
-//	private int calcWon() {
-//		int won = 0;
-//		for (Lobby lob : lobbies) {
-//			if (lob.isWon())
-//				won++;
-//		}
-//		return won;
-//	}
-//
-//	private int calcLost() {
-//		int lost = 0;
-//		for (Lobby lob : lobbies) {
-//			if (!lob.isWon() && lob.getGameState().equals("uitgespeeld"))
-//				lost++;
-//		}
-//		return lost;
-//	}
-//
-//	private int calcOpponents() {
-//		int opponents = 0;
-//		for (Lobby lob : lobbies) {
-//			if (lob.getGameState().equals("uitgespeeld") || lob.getGameState().equals("aan de gang"))
-//				opponents += lob.getLobbyResponse() - 1;
-//		}
-//		return opponents;
-//	}
-//
-//	// GETTERS
-//	public ArrayList<Lobby> getLobbies() {
-//		return lobbies;
-//	}
 
 	public User getUser() {
 		return user;
@@ -96,7 +58,7 @@ public class Client {
 
 	public User getOpponent(String username) {
 		this.opponent = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username)
-				: new User(username, 0, 0, GameColor.EMPTY, 0);
+				: new User(username, 0, 0, GameColor.EMPTY, 0, 0, 0, 0);
 //		opponent.setGamesWon(calcWon());
 //		opponent.setGamesLost(calcLost());
 //		opponent.setTotalOpponents(calcOpponents());

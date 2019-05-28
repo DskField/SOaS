@@ -14,24 +14,14 @@ public class User {
 	private int totalOpponents;
 	private String username;
 
-	public User(String username, int gamesPlayed, int maxScore, GameColor mostPlacedColor, int mostPlacedValue) {
+	public User(String username, int gamesPlayed, int maxScore, GameColor mostPlacedColor, int mostPlacedValue, int wins, int loses, int totalOpponents) {
 		this.gamesPlayed = gamesPlayed;
 		this.maxScore = maxScore;
 		this.mostPlacedColor = mostPlacedColor;
 		this.mostPlacedValue = mostPlacedValue;
 		this.username = username;
-	}
-
-	// SETTERS
-	public void setGamesWon(int gamesWon) {
-		this.gamesWon = gamesWon;
-	}
-
-	public void setGamesLost(int gamesLost) {
-		this.gamesLost = gamesLost;
-	}
-
-	public void setTotalOpponents(int totalOpponents) {
+		this.gamesWon = wins;
+		this.gamesLost = loses;
 		this.totalOpponents = totalOpponents;
 	}
 
