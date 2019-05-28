@@ -190,17 +190,19 @@ public class ClientController {
 			public void doAction() {
 				if (clientscene.isShownChallengeList()) {
 					clientscene.handleChallengeListButton();
-					System.out.println("Challenge Updated");
 				}
 				if (clientscene.isShownLobbyList()) {
 					clientscene.handleLobbyListButton();
-					System.out.println("Lobby Updated");
 				}
 				if (clientscene.isShownUserList()) {
 					clientscene.handleUserListButton();
-					System.out.println("User Updated");
 				}
-
+				
+				ArrayList<Integer> idGame = persistencefacade.checkCreatedChallanges(client.getUser().getUsername());
+				for (Integer id : idGame) {
+					persistencefacade.insertRandomGameToolCards(id);
+					persistencefacade.insertRandomSharedCollectiveGoalCards(id);					
+				}
 			}
 		};
 

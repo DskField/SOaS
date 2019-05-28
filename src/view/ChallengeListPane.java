@@ -52,11 +52,11 @@ public class ChallengeListPane extends BorderPane {
 		challenges = clientscene.getChallenges();
 
 		for (Integer chal : challenges) {
-				ToggleButton togglebutton = new ToggleButton("Uitdaging " + chal);
-				togglebutton.setAlignment(Pos.CENTER);
-				togglebutton.setOnMouseClicked(handleButton);
-				challengeList.getItems().add(togglebutton);
-				togglegroup.getToggles().add(togglebutton);
+			ToggleButton togglebutton = new ToggleButton("Uitdaging " + chal);
+			togglebutton.setAlignment(Pos.CENTER);
+			togglebutton.setOnMouseClicked(handleButton);
+			challengeList.getItems().add(togglebutton);
+			togglegroup.getToggles().add(togglebutton);
 		}
 
 		this.setLeft(challengeList);

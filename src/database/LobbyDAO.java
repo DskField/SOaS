@@ -64,6 +64,7 @@ class LobbyDAO {
 			String gameState;
 			while (dbResultSetGameState.next())
 				listResultSetGameState.add(dbResultSetGameState.getString("playstatus_playstatus"));
+			
 			if (listResultSetGameState.contains("afgebroken"))
 				gameState = "afgebroken";
 			else if (listResultSetGameState.contains("uitgedaagde"))

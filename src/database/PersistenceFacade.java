@@ -67,6 +67,10 @@ public class PersistenceFacade {
 	public boolean hasOpenInvite(String username, String opponentname) {
 		return challengeDAO.hasOpenInvite(username, opponentname);
 	}
+	
+	public ArrayList<Integer> checkCreatedChallanges(String username) {
+		return challengeDAO.checkCreatedChallenges(username);
+	}
 
 	// LobbyDAO
 	public ArrayList<Integer> getAllLobbies(String username) {
