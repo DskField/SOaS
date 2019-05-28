@@ -120,6 +120,10 @@ public class ClientScene extends Scene {
 	public void joinGame(int idGame) {
 		clientcontroller.joinGame(idGame);
 	}
+	
+	public boolean isGameReady(int idGame) {
+		return clientcontroller.isGameReady(idGame);
+	}
 
 	public void handleReaction(boolean accepted, int idGame) {
 		clientcontroller.handleReaction(accepted, idGame);

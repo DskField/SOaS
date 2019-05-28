@@ -32,6 +32,7 @@ public class UserListPane extends BorderPane {
 	private Button invitePlayers;
 	private String opponentUsername;
 	private boolean useRandomChecked = false;
+	private CheckBox useRandomPatternCards;
 
 	// Magic Numbers
 	final private static Color statsBackgroundColor = Color.AQUAMARINE;
@@ -113,7 +114,7 @@ public class UserListPane extends BorderPane {
 		invitePlayers.setOnAction(e -> handleInvitePlayers());
 		invitePlayers.setDisable(true);
 
-		CheckBox useRandomPatternCards = new CheckBox("Gebruik random patroonkaarten");
+		useRandomPatternCards = new CheckBox("Gebruik random patroonkaarten");
 		useRandomPatternCards.setAlignment(Pos.TOP_CENTER);
 		useRandomPatternCards.setSelected(useRandomChecked);
 
@@ -183,6 +184,8 @@ public class UserListPane extends BorderPane {
 		}
 		clientscene.updateClient();
 		if (clientscene.createGame(result))
+		// TODO use following method
+		// if (clientscene.createGame(result, useRandomPatternCards.isSelected())) 
 			errorMessage.setVisible(false);
 		else
 			errorMessage.setVisible(true);

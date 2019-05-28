@@ -211,4 +211,28 @@ public class ClientController {
 	public ArrayList<String> getAllUsernames() {
 		return persistencefacade.getAllUsername();
 	}
+
+	public boolean isGameReady(int idGame) {
+		// Check if game has toolcards
+		if (persistencefacade.getGameToolCards(idGame).size() == 0) {
+			System.err.println("no toolcards");
+			return false;
+		}
+		
+		// Check if game has public goalcards
+		if (persistencefacade.getSharedCollectiveGoalCards(idGame).size() == 0) {
+			System.err.println("no goalcards");
+			return false;
+		}
+		
+		// Check if all players have patterncard options
+		for (Player p : persistencefacade.getAllPlayersInGame(idGame)) {
+			if (persistencefacade.getPlayerOptions(p.getPlayerID()).size() == 0) {
+				System.err.println("no patterncard options player " + p.getPlayerID());
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }

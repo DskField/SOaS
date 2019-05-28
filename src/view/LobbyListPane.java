@@ -27,18 +27,27 @@ public class LobbyListPane extends BorderPane {
 	private Label errorMessage;
 	private ArrayList<Integer> lobbies;
 
+	// All stats labels
+	private Label titleLabel;
+	private Label gamestateLabel;
+	private Label gamestateTextLabel;
+	private Label scoreboardLabel;
+	private Label rondeLabel;
+	private Label wonLabel;
+
 	// Magic Numbers
-	final private static int labelSize = 30;
-	final private static int textSize = 25;
-	final private static int titleLabelSize = 50;
-	final private static Color statsBackgroundColor = Color.AQUAMARINE;
-	final private static int statsBoxWidth = 400;
-	final private static int statsBoxHeight = 400;
-	final private static int bottomLineSpacing = 50;
-	final private static int statsPaneSpacing = 10;
-	final private static int lobbyJoinPannelSpacing = 50;
-	final private static int joinGameButtonWidth = 400;
-	final private static int joinGameButtonHeight = 150;
+	final private int labelSize = 30;
+	final private int textSize = 25;
+	final private int titleLabelSize = 50;
+	final private Color statsBackgroundColor = Color.AQUAMARINE;
+	final private int statsBoxWidth = 400;
+	final private int statsBoxHeight = 400;
+	final private int bottomLineSpacing = 50;
+	final private int statsPaneSpacing = 10;
+	final private int lobbyJoinPannelSpacing = 50;
+	final private int joinGameButtonWidth = 400;
+	final private int joinGameButtonHeight = 150;
+	final private Color errorMessageColor = Color.RED;
 
 	public LobbyListPane(ClientScene clientscene) {
 		this.clientscene = clientscene;
@@ -54,12 +63,12 @@ public class LobbyListPane extends BorderPane {
 		togglegroup.getToggles().clear();
 		this.lobbies = clientscene.getLobbies();
 
-		for (Integer lob : lobbies) {			
-				ToggleButton togglebutton = new ToggleButton("Game " + lob);
-				togglebutton.setAlignment(Pos.CENTER);
-				togglebutton.setOnMouseClicked(handlebutton);
-				lobbyList.getItems().add(togglebutton);
-				togglegroup.getToggles().add(togglebutton);
+		for (Integer lob : lobbies) {
+			ToggleButton togglebutton = new ToggleButton("Game " + lob);
+			togglebutton.setAlignment(Pos.CENTER);
+			togglebutton.setOnMouseClicked(handlebutton);
+			lobbyList.getItems().add(togglebutton);
+			togglegroup.getToggles().add(togglebutton);
 		}
 
 		this.setLeft(lobbyList);
@@ -68,13 +77,24 @@ public class LobbyListPane extends BorderPane {
 	public void createStats(int idGame) {
 		BorderPane statsBox = new BorderPane();
 
-		Label titleLabel = new Label("Lobby " + idGame);
+		titleLabel = new Label("Lobby " + idGame);
 		titleLabel.setFont(Font.font(titleLabelSize));
 
-		Label gamestateLabel = new Label("Game Status:");
+		gamestateLabel = new Label("Game Status:");
 		gamestateLabel.setFont(Font.font(labelSize));
 
-		Label gamestateTextLabel = new Label(clientscene.getLobby(idGame).getGameState());
+		// check if gamestate is 'aan de gang'
+		if (clientscene.getLobby(idGame).getGameState().equals("aan de gang")) {
+			// check if cards are given to start the game else change gamestate label
+			if (clientscene.isGameReady(idGame)) {
+				gamestateTextLabel = new Label("aan de gang");
+			} else {
+				gamestateTextLabel = new Label("wachtende");
+			}
+		} else {
+			gamestateTextLabel = new Label(clientscene.getLobby(idGame).getGameState());
+		}
+
 		gamestateTextLabel.setFont(Font.font(textSize));
 
 		// Added an extra VBox to get a different spacing between the two labels
@@ -83,7 +103,7 @@ public class LobbyListPane extends BorderPane {
 		gamestateBox.setAlignment(Pos.CENTER);
 
 		// Scoreboard
-		Label scoreboardLabel = new Label("Scoreboard:");
+		scoreboardLabel = new Label("Scoreboard:");
 		scoreboardLabel.setFont(Font.font(labelSize));
 
 		VBox playerList = new VBox();
@@ -92,13 +112,12 @@ public class LobbyListPane extends BorderPane {
 
 		ArrayList<ArrayList<String>> scoreboardList = clientscene.getScore(idGame, clientscene.getPlayers(idGame));
 		for (int i = 0; i < scoreboardList.size(); i++) {
-			Label playername = new Label(
-					(i + 1) + ". " + scoreboardList.get(i).get(0) + ": " + scoreboardList.get(i).get(1));
+			Label playername = new Label((i + 1) + ". " + scoreboardList.get(i).get(0) + ": " + scoreboardList.get(i).get(1));
 			playername.setFont(Font.font(textSize));
 			playerList.getChildren().add(playername);
 		}
 
-		Label rondeLabel = new Label("Ronde: " + (clientscene.getLobby(idGame).getCurrentRound() - 1));
+		rondeLabel = new Label("Ronde: " + (clientscene.getLobby(idGame).getCurrentRound() - 1));
 		rondeLabel.setFont(Font.font(labelSize));
 
 		String won;
@@ -106,7 +125,7 @@ public class LobbyListPane extends BorderPane {
 			won = clientscene.getLobby(idGame).isWon() ? "Gewonnen" : "Verloren";
 		else
 			won = String.format("%0$-22s", "");
-		Label wonLabel = new Label(won);
+		wonLabel = new Label(won);
 		wonLabel.setFont(Font.font(labelSize));
 
 		VBox statsPane = new VBox();
@@ -133,9 +152,10 @@ public class LobbyListPane extends BorderPane {
 		joinGameButton.setMinSize(joinGameButtonWidth, joinGameButtonHeight);
 		joinGameButton.setMaxSize(joinGameButtonWidth, joinGameButtonHeight);
 
-		errorMessage = new Label("Deze game is afgebroken");
+		errorMessage = new Label();
 		errorMessage.setFont(Font.font(textSize));
 		errorMessage.setAlignment(Pos.CENTER);
+		errorMessage.setTextFill(errorMessageColor);
 		errorMessage.setVisible(false);
 
 		VBox lobbyJoinPannel = new VBox();
@@ -147,11 +167,11 @@ public class LobbyListPane extends BorderPane {
 	}
 
 	public void joinGameButton(int idGame) {
-		if (clientscene.getLobby(idGame).getCurrentRound() > 0
-				&& !clientscene.getLobby(idGame).getGameState().equals("afgebroken")) {
+		if (gamestateTextLabel.getText().equals("aan de gang") || gamestateTextLabel.getText().equals("uitgespeeld")) {
 			errorMessage.setVisible(false);
 			clientscene.joinGame(idGame);
 		} else {
+			errorMessage.setText(gamestateTextLabel.getText().equals("afgebroken") ? "het potje is afgebroken" : "Het potje is nog niet begonnen");
 			errorMessage.setVisible(true);
 		}
 	}
