@@ -96,13 +96,13 @@ public class LobbyListPane extends BorderPane {
 		playerList.setAlignment(Pos.CENTER);
 		playerList.getChildren().add(scoreboardLabel);
 
-		ArrayList<ArrayList<String>> scoreboardList = clientscene.getScore(idGame, clientscene.getPlayers(idGame));
-		for (int i = 0; i < scoreboardList.size(); i++) {
-			Label playername = new Label(
-					(i + 1) + ". " + scoreboardList.get(i).get(0) + ": " + scoreboardList.get(i).get(1));
-			playername.setFont(Font.font(textSize));
-			playerList.getChildren().add(playername);
-		}
+//		ArrayList<ArrayList<String>> scoreboardList = clientscene.getScore(idGame, clientscene.getPlayers(idGame));
+//		for (int i = 0; i < scoreboardList.size(); i++) {
+//			Label playername = new Label(
+//					(i + 1) + ". " + scoreboardList.get(i).get(0) + ": " + scoreboardList.get(i).get(1));
+//			playername.setFont(Font.font(textSize));
+//			playerList.getChildren().add(playername);
+//		}
 
 		Label rondeLabel = new Label("Ronde: " + (clientscene.getLobby(idGame).getCurrentRound() - 1));
 		rondeLabel.setFont(Font.font(labelSize));
