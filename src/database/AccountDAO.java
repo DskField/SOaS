@@ -31,7 +31,7 @@ public class AccountDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("AccountDAO selectUsername " + e.getMessage());
+			System.err.println("AccountDAO (selectUsername) --> " + e.getMessage());
 		}
 		return result;
 	}
@@ -47,7 +47,7 @@ public class AccountDAO {
 			stmt.close();
 			return true;
 		} catch (SQLException e) {
-			System.err.println("AccountDAO insertAccount " + e.getMessage());
+			System.err.println("AccountDAO (insertAccount) --> " + e.getMessage());
 			return false;
 		}
 	}
@@ -64,7 +64,7 @@ public class AccountDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("AccountDAO selectAllUsername " + e.getMessage());
+			System.err.println("AccountDAO (selectAllUsername) --> " + e.getMessage());
 		}
 		return result;
 	}

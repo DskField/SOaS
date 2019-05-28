@@ -94,7 +94,7 @@ class LobbyDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("LobbyDAO " + e.getMessage());
+			System.err.println("LobbyDAO (selectLobbies) --> " + e.getMessage());
 		}
 		return results;
 	}

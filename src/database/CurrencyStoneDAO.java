@@ -26,7 +26,7 @@ class CurrencyStoneDAO {
 			}
 			con.commit();
 		} catch (SQLException e) {
-			System.err.println("CurrencyStoneDAO: " + e.getMessage());
+			System.err.println("CurrencyStoneDAO (insertCurrencyStones) --> " + e.getMessage());
 			try {
 				con.rollback();
 			} catch (SQLException e1) {
@@ -53,7 +53,7 @@ class CurrencyStoneDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("CurrencyStoneDAO " + e.getMessage());
+			System.err.println("CurrencyStoneDAO (selectCurrencyStone) --> " + e.getMessage());
 		}
 		return results;
 	}
@@ -75,7 +75,7 @@ class CurrencyStoneDAO {
 	}
 
 	ArrayList<CurrencyStone> getCurrencyStonesOnCard(int idToolCard, int idGame) {
-		return selectCurrencyStone("SELECT * FROM gamefavortoken gf JOIN gametoolcard gt ON gf.gametoolcard = gt.gametoolcard WHERE gt.idtoolcard = "+ idToolCard + "  AND gf.idgame = "+ idGame);
+		return selectCurrencyStone("SELECT * FROM gamefavortoken gf JOIN gametoolcard gt ON gf.gametoolcard = gt.gametoolcard WHERE gt.idtoolcard = " + idToolCard + "  AND gf.idgame = " + idGame);
 	}
 
 	void updateGameFavorTokenUsed(int stoneID, int idGame, int gametoolcard) {
@@ -88,16 +88,16 @@ class CurrencyStoneDAO {
 				con.commit();
 				stmt.close();
 			} catch (SQLException e) {
-				System.err.println("CurrencyStoneDAO " + e.getMessage());
+				System.err.println("CurrencyStoneDAO (updateGameFavorTokenUsed #1) --> " + e.getMessage());
 				try {
 					con.rollback();
 				} catch (SQLException e1) {
-					System.err.println("The rollback failed: Please check the Database!");
+					System.err.println("CurrencyStoneDAO (updateGameFavorTokenUsed #2) --> The rollback failed: Please check the Database!");
 				}
 			}
 
 		} else {
-			System.err.println("CurrencyStoneDAO trying to use a stone that is already used");
+			System.err.println("CurrencyStoneDAO (updateGameFavorTokenUsed #3) --> trying to use a stone that is already used");
 		}
 	}
 
@@ -116,15 +116,15 @@ class CurrencyStoneDAO {
 				}
 				con.commit();
 			} catch (SQLException e) {
-				System.err.println("CurrencyStoneDAO " + e.getMessage());
+				System.err.println("CurrencyStoneDAO (updateGivePlayerCurrencyStones #1) --> " + e.getMessage());
 				try {
 					con.rollback();
 				} catch (SQLException e1) {
-					System.err.println("The rollback has failed: Please check the Database!");
+					System.err.println("CurrencyStoneDAO (updateGivePlayerCurrencyStones #2) -->The rollback has failed: Please check the Database!");
 				}
 			}
 		} else {
-			System.err.println("CurrencyStoneDAO the player already has currencystones");
+			System.err.println("CurrencyStoneDAO (updateGivePlayerCurrencyStones #3) --> the player already has currencystones");
 		}
 	}
 }

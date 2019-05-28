@@ -30,7 +30,7 @@ class ChallengeDAO {
 			}
 			stmtDistinctGameID.close();
 		} catch (SQLException e) {
-			System.err.println("ChallengeDAO " + e.getMessage());
+			System.err.println("ChallengeDAO (selectChallenges #1) --> " + e.getMessage());
 		}
 
 		// for every challenge gameID make object for results
@@ -53,12 +53,12 @@ class ChallengeDAO {
 				con.commit();
 				stmt.close();
 			} catch (SQLException e1) {
-				System.err.println("ChallengeDAO " + e1.getMessage());
+				System.err.println("ChallengeDAO (slectChallenges #2) --> " + e1.getMessage());
 			}
 		}
 		return results;
 	}
-	
+
 	private void updatePlayerStatus(String query, String username, boolean accepted, int idGame) {
 		try {
 			PreparedStatement stmt = con.prepareStatement(query);
@@ -69,14 +69,14 @@ class ChallengeDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("ChallengeDAO: " + e.getMessage());
+			System.err.println("ChallengeDAO (updatePlayerStatus) --> " + e.getMessage());
 		}
 	}
 
 	public ArrayList<Challenge> getChallenges(String username) {
 		return selectChallenges("SELECT DISTINCT(game_idgame)\r\n" + "FROM player\r\n" + "WHERE playstatus_playstatus IN (\"uitdager\", \"uitgedaagde\", \"geaccepteerd\", \"geweigerd\") AND username = ?", username);
 	}
-	
+
 	public void updateStatus(String username, boolean accepted, int idGame) {
 		updatePlayerStatus("UPDATE player SET playstatus_playstatus = ? WHERE username = ? AND game_idgame = ?", username, accepted, idGame);
 	}

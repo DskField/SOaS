@@ -14,7 +14,6 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -51,7 +50,7 @@ public class ChoiceScene extends Scene {
 					pc.setBorder(new Border(new BorderStroke(Color.WHITE, null, null, null)));
 					for (PatternCard patternCard : gameController.getPatternChoices()) {
 						if (patternCard.getPatternCardId() == pc.getPatternCardID()) {
-							gameController.setClientPlayerPaternCard(patternCard.getPatternCardId());
+							gameController.setClientPlayerPatternCard(patternCard.getPatternCardId());
 						}
 					}
 

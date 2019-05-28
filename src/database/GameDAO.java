@@ -18,8 +18,7 @@ class GameDAO {
 		int last = 0;
 
 		try {
-			PreparedStatement stmt = con.prepareStatement(
-					"INSERT INTO game (idgame, turn_idplayer, creationdate) VALUES(null, null, now());");
+			PreparedStatement stmt = con.prepareStatement("INSERT INTO game (idgame, turn_idplayer, creationdate) VALUES(null, null, now());");
 			stmt.executeUpdate();
 			stmt.close();
 
@@ -32,7 +31,12 @@ class GameDAO {
 			con.commit();
 			stmt2.close();
 		} catch (SQLException e) {
-			System.err.println("GameDAO: " + e.getMessage());
+			System.err.println("GameDAO (createGame #1) --> " + e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e2) {
+				System.err.println("GameDAO (createGame #2) --> The rollback failed: Please check the Database!");
+			}
 		}
 		return last;
 	}
@@ -46,25 +50,33 @@ class GameDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("GameDAO: " + e.getMessage());
+			System.err.println("GameDAO (updateCurrentPlayer #1) --> " + e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e2) {
+				System.err.println("GameDAO (updateCurrentPlayer #2) --> The rollback failed: Please check the Database!");
+			}
 		}
 	}
 
 	int getCurrentRound(int idgame) {
+		return selectCurrentRound("SELECT MAX(roundtrack) AS currentround FROM gamedie WHERE idgame = " + idgame);
+	}
+
+	private int selectCurrentRound(String query) {
 		int currentRound = 0;
 		try {
 
-			PreparedStatement stmtCurrentRound = con
-					.prepareStatement("SELECT MAX(roundtrack) AS currentround FROM gamedie WHERE idgame = " + idgame);
-			ResultSet dbResultSet = stmtCurrentRound.executeQuery();
+			PreparedStatement stmt = con.prepareStatement(query);
+			ResultSet dbResultSet = stmt.executeQuery();
 			con.commit();
 			while (dbResultSet.next()) {
 				currentRound = dbResultSet.getInt("currentround") + 1;
 			}
 			con.commit();
-			stmtCurrentRound.close();
+			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("DieDAO " + e.getMessage());
+			System.err.println("GameDAO (selectCurrentRound) --> " + e.getMessage());
 		}
 		return currentRound;
 	}
