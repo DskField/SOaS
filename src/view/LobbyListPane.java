@@ -2,7 +2,6 @@ package view;
 
 import java.util.ArrayList;
 
-import client.Lobby;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
