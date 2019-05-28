@@ -95,12 +95,12 @@ public class ClientController {
 		return client.getOpponent(username);
 	}
 
-	public boolean createGame(ArrayList<User> users) {
+	public boolean createGame(ArrayList<User> users, boolean useRandomPatternCards) {
 		for (User u : users) {
 			if (persistencefacade.hasOpenInvite(client.getUser().getUsername(), u.getUsername()))
 				return false;
 		}
-		persistencefacade.createGame(users);
+		persistencefacade.createGame(users, useRandomPatternCards);
 		return true;
 	}
 
@@ -119,6 +119,9 @@ public class ClientController {
 		ArrayList<String> playerToInt = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> comparator = new ArrayList<>();
 		ArrayList<ArrayList<String>> result = new ArrayList<>();
+		
+		// Change from String into Integer to be able to sort
+		// Keep the relation between score and player by using numbers
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).loadGlassWindow(persistencefacade.getGlassWindow(players.get(i).getPlayerID()));
 			ArrayList<Integer> combo = new ArrayList<>();
@@ -129,14 +132,17 @@ public class ClientController {
 			comparator.add(combo);
 		}
 
+		// Sorts list on the 2nd value of every ArrayList in ASC order
 		Collections.sort(comparator, new Comparator<ArrayList<Integer>>() {
 			@Override
 			public int compare(ArrayList<Integer> o1, ArrayList<Integer> o2) {
 				return o1.get(1).compareTo(o2.get(1));
 			}
 		});
+		// Reverse the list in DESC order
 		Collections.reverse(comparator);
 
+		// connect every score with the player
 		for (int c = 0; c < players.size(); c++) {
 			result.add(new ArrayList<String>(
 					Arrays.asList(players.get(comparator.get(c).get(0)).getUsername(), String.valueOf(comparator.get(c).get(1)))));
@@ -196,11 +202,6 @@ public class ClientController {
 				}
 				if (clientscene.isShownUserList()) {
 					clientscene.handleUserListButton();
-				}
-
-				ArrayList<Integer> idGame = persistencefacade.checkCreatedChallanges(client.getUser().getUsername());
-				for (Integer id : idGame) {
-					persistencefacade.setCardsGame(id);
 				}
 			}
 		};

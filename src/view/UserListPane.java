@@ -183,9 +183,7 @@ public class UserListPane extends BorderPane {
 			result.add(new User(box.getText(), 0, 0, GameColor.EMPTY, 0));
 		}
 		clientscene.updateClient();
-		if (clientscene.createGame(result))
-		// TODO use following method
-		// if (clientscene.createGame(result, useRandomPatternCards.isSelected())) 
+		if (clientscene.createGame(result, useRandomPatternCards.isSelected())) 
 			errorMessage.setVisible(false);
 		else
 			errorMessage.setVisible(true);

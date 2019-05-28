@@ -82,8 +82,8 @@ public class ClientScene extends Scene {
 		return clientcontroller.getOpponent(username);
 	}
 
-	public boolean createGame(ArrayList<User> users) {
-		return clientcontroller.createGame(users);
+	public boolean createGame(ArrayList<User> users, boolean useRandomPatternCards) {
+		return clientcontroller.createGame(users, useRandomPatternCards);
 	}
 
 	public ArrayList<Integer> getLobbies() {

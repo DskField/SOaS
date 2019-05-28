@@ -55,7 +55,7 @@ public class PersistenceFacade {
 	public ArrayList<Integer> getChallenges(String username) {
 		return challengeDAO.getChallenges(username);
 	}
-	
+
 	public Challenge getChallenge(int idGame) {
 		return challengeDAO.getChallenge(idGame);
 	}
@@ -63,11 +63,11 @@ public class PersistenceFacade {
 	public void updatePlayerStatus(String username, boolean accepted, int idGame) {
 		challengeDAO.updateStatus(username, accepted, idGame);
 	}
-	
+
 	public boolean hasOpenInvite(String username, String opponentname) {
 		return challengeDAO.hasOpenInvite(username, opponentname);
 	}
-	
+
 	public ArrayList<Integer> checkCreatedChallanges(String username) {
 		return challengeDAO.checkCreatedChallenges(username);
 	}
@@ -76,7 +76,7 @@ public class PersistenceFacade {
 	public ArrayList<Integer> getAllLobbies(String username) {
 		return lobbyDAO.getAllLobbyID(username);
 	}
-	
+
 	public Lobby getLobby(int idGame, String username) {
 		return lobbyDAO.getLobby(idGame, username);
 	}
@@ -94,24 +94,26 @@ public class PersistenceFacade {
 	/**
 	 * Creates a game in the database
 	 * 
-	 * @param users - List of users in the game, The first user NEEDS to be the
-	 *              creator
+	 * @param users
+	 *            - List of users in the game, The first user NEEDS to be the creator
 	 */
-	public void createGame(ArrayList<User> users) {
+	public void createGame(ArrayList<User> users, boolean useRandomPatternCards) {
 		int gameID = gameDAO.createGame();
 		dieDAO.insertDice(gameID);
 		currencyStoneDAO.insertCurrencyStones(gameID);
 		playerDAO.insertPlayers(gameID, users);
 		gameDAO.updateCurrentPlayer(gameID, playerDAO.getCurrentPlayer(gameID));
 		spaceGlassDAO.insertGlassWindows(playerDAO.getAllPlayersInGame(gameID));
+		setCardsGame(gameID, useRandomPatternCards);
 	}
 
-	public void setCardsGame(int idGame) {
+	public void setCardsGame(int idGame, boolean useRandomPatternCards) {
 		ArrayList<Player> players = playerDAO.getAllPlayersInGame(idGame);
 
 		ArrayList<PatternCard> patternCards = new ArrayList<>();
 
 		for (Player player : players) {
+			// TODO use boolean to get random generator patterncards
 			for (PatternCard pCard : patternCardDAO.getPlayerOptions(player.getPlayerID())) {
 				patternCards.add(pCard);
 			}

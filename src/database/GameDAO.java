@@ -24,7 +24,7 @@ class GameDAO {
 
 			PreparedStatement stmt2 = con.prepareStatement("SELECT LAST_INSERT_ID() last;");
 			ResultSet dbResultSet = stmt2.executeQuery();
-
+			
 			while (dbResultSet.next()) {
 				last = dbResultSet.getInt("last");
 			}
