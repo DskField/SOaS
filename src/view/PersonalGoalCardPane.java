@@ -16,28 +16,28 @@ public class PersonalGoalCardPane extends StackPane {
 	public void loadPersonalGoalCardImage(GameColor gameColor) {
 		switch (gameColor) {
 		case RED:
-			imageView.setImage(new Image("file:Resources\\images\\Priavate GoalCards\\red.png"));
+			imageView.setImage(new Image("/images/GoalCards/Private/Red.png"));
 			break;
 		case GREEN:
-			imageView.setImage(new Image("file:Resources\\images\\Priavate GoalCards\\green.png"));
+			imageView.setImage(new Image("/images/GoalCards/Private/Green.png"));
 			break;
 		case BLUE:
-			imageView.setImage(new Image("file:Resources\\images\\Priavate GoalCards\\blue.png"));
+			imageView.setImage(new Image("/images/GoalCards/Private/Blue.png"));
 			break;
 		case YELLOW:
-			imageView.setImage(new Image("file:Resources\\images\\Priavate GoalCards\\yellow.png"));
+			imageView.setImage(new Image("/images/GoalCards/Private/Yellow.png"));
 			break;
 		case PURPLE:
-			imageView.setImage(new Image("file:Resources\\images\\Priavate GoalCards\\purple.png"));
+			imageView.setImage(new Image("/images/GoalCards/Private/Purple.png"));
 			break;
 		default:
-			imageView.setImage(new Image("file:Resources\\images\\Priavate GoalCards\\back.png"));
+			imageView.setImage(new Image("/images/GoalCards/Private/Back.png"));
 			break;
 		}
 	}
 
 	public void loadCardBack() {
-		imageView.setImage(new Image("file:Resources\\images\\Priavate GoalCards\\back.png"));
+		imageView.setImage(new Image("/images/GoalCards/Private/Back.png"));
 	}
 
 }
