@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-class BaseDAO {
+public class BaseDAO {
 
 	private Properties props = new Properties();
 	private Connection con;
@@ -33,7 +33,7 @@ class BaseDAO {
 		}
 	}
 
-	final Connection getConnection() {
+	public final Connection getConnection() {
 		return con;
 	}
 

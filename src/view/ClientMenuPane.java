@@ -1,15 +1,17 @@
 package view;
 
-import javafx.geometry.Pos;
+import javafx.application.Platform;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 
 public class ClientMenuPane extends VBox {
 
@@ -18,6 +20,7 @@ public class ClientMenuPane extends VBox {
 	private ToggleButton lobbyListButton;
 	private ToggleButton challengeListButton;
 	private ToggleButton logoutButton;
+	private ToggleButton quitButton;
 
 	// Magic Numbers
 	final private static int buttonWidth = 300;
@@ -25,9 +28,11 @@ public class ClientMenuPane extends VBox {
 
 	public ClientMenuPane(ClientScene clientscene) {
 		super();
+		this.setMinSize(buttonWidth + 2, Screen.getPrimary().getBounds().getMaxY());
+		this.setMaxSize(buttonWidth + 2, Screen.getPrimary().getBounds().getMaxY());
 		this.clientscene = clientscene;
-		this.setAlignment(Pos.TOP_CENTER);
-		this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+		this.setBorder(new Border(
+				new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
 		createButtons();
 	}
@@ -53,9 +58,25 @@ public class ClientMenuPane extends VBox {
 		logoutButton.setMaxSize(buttonWidth, buttonHeight);
 		logoutButton.setOnAction(e -> clientscene.logOut());
 
-		ToggleGroup togglegroup = new ToggleGroup();
-		togglegroup.getToggles().addAll(userListButton, lobbyListButton, challengeListButton, logoutButton);
+		quitButton = new ToggleButton("Afsluiten");
+		quitButton.setMinSize(buttonWidth, buttonHeight);
+		quitButton.setMaxSize(buttonWidth, buttonHeight);
+		quitButton.setOnAction(e -> Platform.exit());
 
-		this.getChildren().addAll(userListButton, lobbyListButton, challengeListButton, logoutButton);
+		VBox topbox = new VBox();
+		topbox.getChildren().addAll(userListButton, lobbyListButton, challengeListButton);
+		VBox bottombox = new VBox();
+		bottombox.getChildren().addAll(logoutButton, quitButton);
+
+		BorderPane bp = new BorderPane();
+		bp.setTop(topbox);
+		bp.setBottom(bottombox);
+		bp.setMinSize(buttonWidth + 2, Screen.getPrimary().getBounds().getMaxY());
+		bp.setMaxSize(buttonWidth + 2, Screen.getPrimary().getBounds().getMaxY());
+
+		ToggleGroup togglegroup = new ToggleGroup();
+		togglegroup.getToggles().addAll(userListButton, lobbyListButton, challengeListButton, logoutButton, quitButton);
+
+		this.getChildren().addAll(bp);
 	}
 }

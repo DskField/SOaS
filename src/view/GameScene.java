@@ -433,13 +433,10 @@ public class GameScene extends Scene {
 				ArrayList<CurrencyStonePane> stonePanes = new ArrayList<>();
 				stonePanes.clear();
 				Player thisPlayer = null;
-				if (!toolCard.getCurrencyStones().isEmpty()) {// if toolcard has currencystones
-					for (CurrencyStone stone : toolCard.getCurrencyStones()) {// for every stone that card has make a
-																				// StonePane and add to ArrayList of
-																				// stonepanes
-						for (Player player : gameController.getPlayers()) {// Check whose currencystone it is
-							if (stone.getPlayerID() == player.getPlayerID()) {// if playerid's match use that player to
-																				// get the color
+				if (!toolCard.getCurrencyStones().isEmpty()) {//if toolcard has currencystones
+					for (CurrencyStone stone : toolCard.getCurrencyStones()) {//for every stone that card has make a StonePane and add to ArrayList of stonepanes				
+						for (Player player : gameController.getPlayers()) {//Check whose currencystone it is						
+							if (stone.getPlayerID() == player.getPlayerID()) {//if playerid's match use that player to get the color
 								thisPlayer = player;
 							}
 						}

@@ -18,8 +18,6 @@ import view.LoginPane;
 
 public class ClientController {
 
-	private boolean checkUpdateClient = false;
-
 	private Client client;
 	private GameController gamecontroller;
 	private MainApplication mainapplication;
@@ -31,8 +29,7 @@ public class ClientController {
 	public ClientController(MainApplication mainapplication) {
 		this.persistencefacade = new PersistenceFacade();
 		this.mainapplication = mainapplication;
-		this.gamecontroller = new GameController(mainapplication, persistencefacade);
-		// handleLogin("speler1", "speler1");
+		this.gamecontroller = new GameController(mainapplication, persistencefacade, this);
 		mainapplication.setScene(new Scene(new LoginPane(this)));
 	}
 
@@ -43,24 +40,34 @@ public class ClientController {
 			this.clientscene = new ClientScene(this);
 			mainapplication.setScene(clientscene);
 
-			// TODO TOM fix timer/update
-			//createTimer();
+			createTimer();
 		}
 
 		return persistencefacade.loginCorrect(username, password);
 	}
 
+	public void returnToClient() {
+		timer.start();
+		mainapplication.setScene(clientscene);
+	}
+
 	public boolean handleRegister(String username, String password) {
+		if (username.length() < 3 || username.length() > 25 || password.length() < 3 || password.length() > 25) {
+			return false;
+		}
+		if (!username.matches("[a-zA-Z0-9]*") && !password.matches("[a-zA-Z0-9]*")) {
+			return false;
+		}
 		return persistencefacade.insertCorrect(username, password);
 	}
 
 	// Getters
-	public ArrayList<Challenge> getChallenges() {
+	public ArrayList<Integer> getChallenges() {
 		return client.getChallenges();
 	}
 
-	public ArrayList<Lobby> getLobbies() {
-		return client.getLobbies();
+	public ArrayList<Integer> getLobbies() {
+		return client.getAllLobbies();
 	}
 
 	public Challenge getSpecificChallenge(int gameID) {
@@ -72,6 +79,7 @@ public class ClientController {
 	}
 
 	public void joinGame(int idGame) {
+		timer.stop();
 		gamecontroller.joinGame(idGame, client.getUser());
 	}
 
@@ -87,11 +95,15 @@ public class ClientController {
 		return client.getOpponent(username);
 	}
 
-	public void createGame(ArrayList<User> users) {
-		persistencefacade.createGame(users);
+	public boolean createGame(ArrayList<String> users, boolean useRandomPatternCards) {
+		for (String u : users) {
+			if (persistencefacade.hasOpenInvite(client.getUser().getUsername(), u))
+				return false;
+		}
+		persistencefacade.createGame(users, useRandomPatternCards);
+		return true;
 	}
 
-	// use getUser method
 	public String getUsername() {
 		return client.getUser().getUsername();
 	}
@@ -107,6 +119,9 @@ public class ClientController {
 		ArrayList<String> playerToInt = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> comparator = new ArrayList<>();
 		ArrayList<ArrayList<String>> result = new ArrayList<>();
+		
+		// Change from String into Integer to be able to sort
+		// Keep the relation between score and player by using numbers
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).loadGlassWindow(persistencefacade.getGlassWindow(players.get(i).getPlayerID()));
 			ArrayList<Integer> combo = new ArrayList<>();
@@ -117,14 +132,17 @@ public class ClientController {
 			comparator.add(combo);
 		}
 
+		// Sorts list on the 2nd value of every ArrayList in ASC order
 		Collections.sort(comparator, new Comparator<ArrayList<Integer>>() {
 			@Override
 			public int compare(ArrayList<Integer> o1, ArrayList<Integer> o2) {
 				return o1.get(1).compareTo(o2.get(1));
 			}
 		});
+		// Reverse the list in DESC order
 		Collections.reverse(comparator);
 
+		// connect every score with the player
 		for (int c = 0; c < players.size(); c++) {
 			result.add(new ArrayList<String>(
 					Arrays.asList(players.get(comparator.get(c).get(0)).getUsername(), String.valueOf(comparator.get(c).get(1)))));
@@ -133,6 +151,7 @@ public class ClientController {
 	}
 
 	public void logOut() {
+		timer.stop();
 		mainapplication.setScene(new Scene(new LoginPane(this)));
 	}
 
@@ -141,18 +160,13 @@ public class ClientController {
 		// 3 to 6 seconds
 		if (clientscene.isShownChallengeList()) {
 			client.updateChallenge();
-			clientscene.handleChallengeListButton();
 		}
-		
 		if (clientscene.isShownLobbyList()) {
 			client.updateLobby();
-			clientscene.handleLobbyListButton();
 		}
-		
 		if (clientscene.isShownUserList()) {
 			client.updateUser();
-			clientscene.handleUserListButton();
-		}			
+		}
 	}
 
 	public abstract class AnimationTimerExt extends AnimationTimer {
@@ -180,7 +194,15 @@ public class ClientController {
 		timer = new AnimationTimerExt(3000) {
 			@Override
 			public void doAction() {
-				updateClient();
+				if (clientscene.isShownChallengeList()) {
+					clientscene.handleChallengeListButton();
+				}
+				if (clientscene.isShownLobbyList()) {
+					clientscene.handleLobbyListButton();
+				}
+				if (clientscene.isShownUserList()) {
+					clientscene.handleUserListButton();
+				}
 			}
 		};
 
@@ -189,5 +211,29 @@ public class ClientController {
 
 	public ArrayList<String> getAllUsernames() {
 		return persistencefacade.getAllUsername();
+	}
+
+	public boolean isGameReady(int idGame) {
+		// Check if game has toolcards
+		if (persistencefacade.getGameToolCards(idGame).size() == 0) {
+			System.err.println("no toolcards");
+			return false;
+		}
+		
+		// Check if game has public goalcards
+		if (persistencefacade.getSharedCollectiveGoalCards(idGame).size() == 0) {
+			System.err.println("no goalcards");
+			return false;
+		}
+		
+		// Check if all players have patterncard options
+		for (Player p : persistencefacade.getAllPlayersInGame(idGame)) {
+			if (persistencefacade.getPlayerOptions(p.getPlayerID()).size() == 0) {
+				System.err.println("no patterncard options player " + p.getPlayerID());
+				return false;
+			}
+		}
+		
+		return true;
 	}
 }

@@ -52,25 +52,33 @@ public class PersistenceFacade {
 	}
 
 	// ChallengeDAO
-	public ArrayList<Challenge> getChallenges(String username) {
+	public ArrayList<Integer> getChallenges(String username) {
 		return challengeDAO.getChallenges(username);
 	}
 
-	public boolean updateChallenge(String username, ArrayList<Challenge> oldList) {
-		return challengeDAO.checkUpdate(username, oldList);
+	public Challenge getChallenge(int idGame) {
+		return challengeDAO.getChallenge(idGame);
 	}
 
 	public void updatePlayerStatus(String username, boolean accepted, int idGame) {
 		challengeDAO.updateStatus(username, accepted, idGame);
 	}
 
-	// LobbyDAO
-	public ArrayList<Lobby> getLobbies(String username) {
-		return lobbyDAO.getLobbies(username);
+	public boolean hasOpenInvite(String username, String opponentname) {
+		return challengeDAO.hasOpenInvite(username, opponentname);
 	}
 
-	public boolean updateLobby(String username, ArrayList<Lobby> oldList) {
-		return lobbyDAO.checkUpdate(username, oldList);
+	public ArrayList<Integer> checkCreatedChallanges(String username) {
+		return challengeDAO.checkCreatedChallenges(username);
+	}
+
+	// LobbyDAO
+	public ArrayList<Integer> getAllLobbies(String username) {
+		return lobbyDAO.getAllLobbyID(username);
+	}
+
+	public Lobby getLobby(int idGame, String username) {
+		return lobbyDAO.getLobby(idGame, username);
 	}
 
 	// UserDAO
@@ -86,24 +94,26 @@ public class PersistenceFacade {
 	/**
 	 * Creates a game in the database
 	 * 
-	 * @param users - List of users in the game, The first user NEEDS to be the
-	 *              creator
+	 * @param users
+	 *            - List of users in the game, The first user NEEDS to be the creator
 	 */
-	public void createGame(ArrayList<User> users) {
+	public void createGame(ArrayList<String> users, boolean useRandomPatternCards) {
 		int gameID = gameDAO.createGame();
 		dieDAO.insertDice(gameID);
 		currencyStoneDAO.insertCurrencyStones(gameID);
 		playerDAO.insertPlayers(gameID, users);
 		gameDAO.updateCurrentPlayer(gameID, playerDAO.getCurrentPlayer(gameID));
 		spaceGlassDAO.insertGlassWindows(playerDAO.getAllPlayersInGame(gameID));
+		setCardsGame(gameID, useRandomPatternCards);
 	}
 
-	public void setCardsGame(int idGame) {
+	public void setCardsGame(int idGame, boolean useRandomPatternCards) {
 		ArrayList<Player> players = playerDAO.getAllPlayersInGame(idGame);
 
 		ArrayList<PatternCard> patternCards = new ArrayList<>();
 
 		for (Player player : players) {
+			// TODO use boolean to get random generator patterncards
 			for (PatternCard pCard : patternCardDAO.getPlayerOptions(player.getPlayerID())) {
 				patternCards.add(pCard);
 			}

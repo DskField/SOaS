@@ -56,7 +56,7 @@ class SpaceGlassDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("SpaceGlassDAO Select: " + e.getMessage());
+			System.err.println("SpaceGlassDAO (selectSpaceGlass) --> " + e.getMessage());
 		}
 		playerFrame.loadSpaces(result);
 		return playerFrame;
@@ -77,12 +77,12 @@ class SpaceGlassDAO {
 				}
 				con.commit();
 			}
-		} catch (SQLException e1) {
-			System.err.println("SpaceGlassDAO Insert:" + e1.getMessage());
+		} catch (SQLException e) {
+			System.err.println("SpaceGlassDAO (insertGlassWindow #1) -->" + e.getMessage());
 			try {
 				con.rollback();
 			} catch (SQLException e2) {
-				System.err.println("SpaceGlassDAO Insert: the rollback failed: Please check the Database!");
+				System.err.println("SpaceGlassDAO (insertGlassWindow #2) --> the rollback failed: Please check the Database!");
 			}
 		}
 	}
@@ -106,12 +106,12 @@ class SpaceGlassDAO {
 				}
 			}
 			con.commit();
-		} catch (SQLException e1) {
-			System.err.println("SpaceGlassDAO Insert:" + e1.getMessage());
+		} catch (SQLException e) {
+			System.err.println("SpaceGlassDAO (updateSpaceGlass #1) --> " + e.getMessage());
 			try {
 				con.rollback();
 			} catch (SQLException e2) {
-				System.err.println("SpaceGlassDAO Insert: the rollback failed: Please check the Database!");
+				System.err.println("SpaceGlassDAO (updateSpaceGlass #2) the rollback failed: Please check the Database!");
 			}
 		}
 	}

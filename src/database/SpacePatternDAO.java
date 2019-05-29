@@ -41,7 +41,7 @@ class SpacePatternDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("SpacePatternDAO Select: " + e.getMessage());
+			System.err.println("SpacePatternDAO (selectSpacePattern) --> " + e.getMessage());
 		}
 		return result;
 	}
@@ -62,11 +62,11 @@ class SpacePatternDAO {
 			}
 			con.commit();
 		} catch (SQLException e1) {
-			System.err.println("SpacePatternDAO Insert:" + e1.getMessage());
+			System.err.println("SpacePatternDAO (insertPattern #1) --> " + e1.getMessage());
 			try {
 				con.rollback();
 			} catch (SQLException e2) {
-				System.err.println("SpacePatternDAO Insert: the rollback failed: Please check the Database!");
+				System.err.println("SpacePatternDAO (insertPattern) --> the rollback failed: Please check the Database!");
 			}
 		}
 	}

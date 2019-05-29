@@ -36,7 +36,7 @@ class CollectiveGoalCardDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("CollectiveGoalCardDAO " + e.getMessage());
+			System.err.println("CollectiveGoalCardDAO (select) --> " + e.getMessage());
 		}
 		return results;
 	}
@@ -82,15 +82,15 @@ class CollectiveGoalCardDAO {
 				con.commit();
 				stmt.close();
 			} catch (SQLException e) {
-				System.err.println("CollectiveGoalCardDAO " + e.getMessage());
+				System.err.println("CollectiveGoalCardDAO (insert) --> " + e.getMessage());
 				try {
 					con.rollback();
 				} catch (SQLException e1) {
-					System.err.println("The rollback failed: Please check the Database!");
+					System.err.println("CollectiveGoalCardDAO (insert) --> The rollback failed: Please check the Database!");
 				}
 			}
 		} else {
-			System.err.println("CollectiveGoalCardDAO trying to select 3 random cards for a game that already has 3 cards");
+			System.err.println("CollectiveGoalCardDAO (insert) --> trying to select 3 random cards for a game that already has 3 cards");
 		}
 	}
 }

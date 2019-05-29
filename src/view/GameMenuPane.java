@@ -1,7 +1,5 @@
 package view;
 
-import java.io.IOException;
-
 import controllers.GameController;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -118,12 +116,11 @@ class GameMenuPane extends VBox {
 		default:
 			break;
 		}
-
 	}
 
-	// TODO Back to client
 	private void toMenu() {
-
+		gC.returnToClient();
+		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
 	}
 
 	// exit game to windows

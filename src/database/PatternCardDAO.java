@@ -44,10 +44,10 @@ class PatternCardDAO {
 	void addPatternCard(PatternCard patternCard) {
 		insertPatternCard(patternCard);
 	}
- 
+
 	void insertPatternCardOptions(int idPlayer, ArrayList<PatternCard> patternCards) {
 		ArrayList<PatternCard> list = getStandardPatternCards();
-		for(PatternCard pattern: patternCards) {
+		for (PatternCard pattern : patternCards) {
 			list.remove(pattern);
 		}
 		Collections.shuffle(list);
@@ -74,11 +74,11 @@ class PatternCardDAO {
 			stmt.close();
 			con.commit();
 		} catch (SQLException e1) {
-			System.err.println("PatternCardDAO " + e1.getMessage());
+			System.err.println("PatternCardDAO (insertPatternCardOptions #1) --> " + e1.getMessage());
 			try {
 				con.rollback();
 			} catch (SQLException e2) {
-				System.err.println("PatternCardDAO: the rollback failed: Please check the Database!");
+				System.err.println("PatternCardDAO (insertPatternCardOptions #2) --> the rollback failed: Please check the Database!");
 			}
 		}
 	}
@@ -102,7 +102,7 @@ class PatternCardDAO {
 			}
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("PatternCardDAO --> selectPatternCard: " + e.getMessage());
+			System.err.println("PatternCardDAO (selectPatternCard) --> " + e.getMessage());
 		}
 		return results;
 	}
@@ -126,7 +126,7 @@ class PatternCardDAO {
 			}
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("PatternCardDAO --> selectSpacePatterns: " + e.getMessage());
+			System.err.println("PatternCardDAO (selectSpacePatterns) --> " + e.getMessage());
 		}
 		return result;
 	}
@@ -142,11 +142,11 @@ class PatternCardDAO {
 			con.commit();
 			stmt.close();
 		} catch (SQLException e1) {
-			System.err.println("PatternCardDAO " + e1.getMessage());
+			System.err.println("PatternCardDAO (insertPatternCard #1) --> " + e1.getMessage());
 			try {
 				con.rollback();
 			} catch (SQLException e2) {
-				System.err.println("PatternCardDAO: the rollback failed: Please check the Database!");
+				System.err.println("PatternCardDAO (insertPatternCard #2) --> the rollback failed: Please check the Database!");
 			}
 		}
 	}

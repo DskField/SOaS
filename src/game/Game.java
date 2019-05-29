@@ -73,9 +73,7 @@ public class Game {
 		for (int i = 0; i < roundTrack.length; i++) {
 			roundTrack[i] = new Round();
 		}
-		
-		
-		
+
 	}
 
 	public void loadGame() {
@@ -162,8 +160,8 @@ public class Game {
 				}
 			}
 		}
-		for(ToolCard toolCard: toolCards) {
-			for(CurrencyStone currencyStone :persistenceFacade.getCurrencyStonesOnCard(toolCard.getCardID(), gameID)) {
+		for (ToolCard toolCard : toolCards) {
+			for (CurrencyStone currencyStone : persistenceFacade.getCurrencyStonesOnCard(toolCard.getCardID(), gameID)) {
 				toolCard.addCurrencyStone(currencyStone);
 			}
 
@@ -375,11 +373,6 @@ public class Game {
 
 	public int getCurrentRound() {
 		return currentRound;
-	}
-
-	// TODO rewrite method
-	public void setPlayers(ArrayList<Player> players) {
-		this.players = players;
 	}
 
 	public ArrayList<CurrencyStone> getCurrencyStones() {
