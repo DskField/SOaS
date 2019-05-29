@@ -23,7 +23,7 @@ public class ClientScene extends Scene {
 	private LobbyListPane lobbyListPane;
 	private UserListPane userListPane;
 	private ChallengeListPane challengeListPane;
-	
+
 	// booleans for update
 	private boolean isVisibleLobbyList;
 	private boolean isVisibleChallengeList = false;
@@ -36,7 +36,7 @@ public class ClientScene extends Scene {
 		super(new BorderPane());
 		isVisibleUserList = true;
 		isVisibleLobbyList = false;
-	//	isVisibleChallengeList = false;
+		// isVisibleChallengeList = false;
 		this.clientcontroller = controller;
 		this.lobbyListPane = new LobbyListPane(this);
 		this.userListPane = new UserListPane(this);
@@ -47,7 +47,7 @@ public class ClientScene extends Scene {
 		rootPane = new BorderPane();
 		rootPane.setLeft(clientmenupane);
 		rootPane.setCenter(lobbyListPane);
-		
+
 		// sets the rootPane and handles makeup
 		setRoot(rootPane);
 		rootPane.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
@@ -104,8 +104,10 @@ public class ClientScene extends Scene {
 		isVisibleLobbyList = true;
 		isVisibleChallengeList = false;
 		clientcontroller.updateClient();
+		if (lobbyListPane.getIDGame() != 0)
+			lobbyListPane.createStats(lobbyListPane.getIDGame());
 		lobbyListPane.createLeft();
-		rootPane.setCenter(lobbyListPane);	
+		rootPane.setCenter(lobbyListPane);
 	}
 
 	public void handleChallengeListButton() {
@@ -120,7 +122,7 @@ public class ClientScene extends Scene {
 	public void joinGame(int idGame) {
 		clientcontroller.joinGame(idGame);
 	}
-	
+
 	public boolean isGameReady(int idGame) {
 		return clientcontroller.isGameReady(idGame);
 	}

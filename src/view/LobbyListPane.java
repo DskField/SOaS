@@ -26,6 +26,7 @@ public class LobbyListPane extends BorderPane {
 	private ClientScene clientscene;
 	private Label errorMessage;
 	private ArrayList<Integer> lobbies;
+	private int idGame;
 
 	// All stats labels
 	private Label titleLabel;
@@ -54,7 +55,7 @@ public class LobbyListPane extends BorderPane {
 		lobbyList = new ListView<ToggleButton>();
 		togglegroup = new ToggleGroup();
 		this.handlebutton = new HandleButton();
-
+		idGame = 0;
 		createLeft();
 	}
 
@@ -165,6 +166,10 @@ public class LobbyListPane extends BorderPane {
 
 		this.setCenter(lobbyJoinPannel);
 	}
+	
+	public int getIDGame() {
+		return idGame;
+	}
 
 	public void joinGameButton(int idGame) {
 		if (gamestateTextLabel.getText().equals("aan de gang") || gamestateTextLabel.getText().equals("uitgespeeld")) {
@@ -180,7 +185,7 @@ public class LobbyListPane extends BorderPane {
 		@Override
 		public void handle(MouseEvent e) {
 			String[] lobby = ((ToggleButton) e.getSource()).getText().split(" ");
-			int idGame = Integer.parseInt(lobby[1]);
+			idGame = Integer.parseInt(lobby[1]);
 			// TODO TOM only update the variables and set errormessage visible to false
 			createStats(idGame);
 		}
