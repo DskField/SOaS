@@ -107,11 +107,11 @@ class UserDAO {
 		return result;
 	}
 
-	public User getUser(String username) {
+	User getUser(String username) {
 		return selectUser(username);
 	}
 
-	public boolean checkUpdate(String username, User oldUser) {
+	boolean checkUpdate(String username, User oldUser) {
 		if (oldUser.equals(getUser(username)))
 			return true;
 		else

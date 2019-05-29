@@ -182,8 +182,8 @@ public class Game {
 		for (Player player : players) {
 			int score = scoreHandler.getScore(player, true);
 			player.setScore(score);
-			if(clientPlayer.getSeqnr() == players.size() * 2) {
-				persistenceFacade.updateScore(scoreHandler.getScore(clientPlayer, false), clientPlayer.getPlayerID());
+			if(clientPlayer.getSeqnr() == getPlayers().size()) {
+				persistenceFacade.updateScore(scoreHandler.getScore(player, false), player.getPlayerID());
 			}
 		}
 	}

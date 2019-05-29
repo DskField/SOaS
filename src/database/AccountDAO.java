@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AccountDAO {
-	Connection con;
+	private Connection con;
 
 	public AccountDAO(Connection con) {
 		this.con = con;
@@ -69,16 +69,16 @@ public class AccountDAO {
 		return result;
 	}
 
-	public ArrayList<String> getAllUsernames() {
+	 ArrayList<String> getAllUsernames() {
 		return selectAllUsername();
 	}
 
-	public boolean loginCorrect(String username, String password) {
+	boolean loginCorrect(String username, String password) {
 		String[] dbResult = selectUsername(username);
 		return username.equals(dbResult[0]) && password.equals(dbResult[1]);
 	}
 
-	public boolean insertCorrect(String username, String password) {
+	boolean insertCorrect(String username, String password) {
 		return selectUsername(username)[0].equals(username) ? false : insertAccount(username, password);
 	}
 }

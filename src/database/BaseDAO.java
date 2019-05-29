@@ -33,7 +33,7 @@ public class BaseDAO {
 		}
 	}
 
-	public final Connection getConnection() {
+	final Connection getConnection() {
 		return con;
 	}
 

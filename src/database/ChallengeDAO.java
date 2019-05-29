@@ -10,7 +10,7 @@ import java.util.HashMap;
 import client.Challenge;
 
 class ChallengeDAO {
-	Connection con;
+	private Connection con;
 
 	public ChallengeDAO(Connection con) {
 		this.con = con;
@@ -59,7 +59,7 @@ class ChallengeDAO {
 		return challenge;
 	}
 
-	public Challenge getChallenge(int idGame) {
+	Challenge getChallenge(int idGame) {
 		return selectChallenge("SELECT * FROM player WHERE game_idgame = ?", idGame);
 	}
 
@@ -122,21 +122,22 @@ class ChallengeDAO {
 				// Check if everyone answered
 				if (rowcount == allStatus.size()) {
 					if (allStatus.contains("geweigerd")) {
-						PreparedStatement stmtUpdate = con
-								.prepareStatement("UPDATE player SET playstatus_playstatus = \"afgebroken\" WHERE game_idgame = ?");
+						PreparedStatement stmtUpdate = con.prepareStatement(
+								"UPDATE player SET playstatus_playstatus = \"afgebroken\" WHERE game_idgame = ?");
 						stmtUpdate.setInt(1, id);
 						stmtUpdate.executeUpdate();
 						stmtUpdate.close();
 					} else if (!allStatus.contains("uitgespeeld")) {
 						// check if game already started
-						PreparedStatement stmtCheckGameStats = con
-								.prepareStatement("SELECT (SELECT COUNT(*) FROM gametoolcard WHERE idgame = ?) AS countgametoolcard, "
+						PreparedStatement stmtCheckGameStats = con.prepareStatement(
+								"SELECT (SELECT COUNT(*) FROM gametoolcard WHERE idgame = ?) AS countgametoolcard, "
 										+ "(SELECT COUNT(*) FROM sharedpublic_objectivecard WHERE idgame = ?) AS countsharedpublicobjectivecard");
 						stmtCheckGameStats.setInt(1, id);
 						stmtCheckGameStats.setInt(2, id);
 						ResultSet dbResultSetCheckGameStats = stmtCheckGameStats.executeQuery();
 						dbResultSetCheckGameStats.next();
-						if (dbResultSetCheckGameStats.getInt("countgametoolcard") == 0 || dbResultSetCheckGameStats.getInt("countsharedpublicobjectivecard") == 0)
+						if (dbResultSetCheckGameStats.getInt("countgametoolcard") == 0
+								|| dbResultSetCheckGameStats.getInt("countsharedpublicobjectivecard") == 0)
 							// return idGame to give game toolcards and objective cards
 							results.add(id);
 						dbResultSetCheckGameStats.close();
@@ -152,21 +153,25 @@ class ChallengeDAO {
 		return results;
 	}
 
-	public ArrayList<Integer> checkCreatedChallenges(String username) {
+	ArrayList<Integer> checkCreatedChallenges(String username) {
 		return updateGame("SELECT playstatus_playstatus FROM player WHERE game_idgame = ?", username);
 	}
 
-	public boolean hasOpenInvite(String username, String opponentname) {
-		return openInvite("SELECT COUNT(*) AS openinvites\r\n FROM player AS p1\r\n" + "JOIN player AS p2 ON p1.game_idgame = p2.game_idgame\r\n"
+	boolean hasOpenInvite(String username, String opponentname) {
+		return openInvite("SELECT COUNT(*) AS openinvites\r\n FROM player AS p1\r\n"
+				+ "JOIN player AS p2 ON p1.game_idgame = p2.game_idgame\r\n"
 				+ "WHERE p1.username = ? AND p1.playstatus_playstatus = \"uitdager\" AND p2.username = ? AND p2.playstatus_playstatus = \"uitgedaagde\"",
 				username, opponentname);
 	}
 
-	public ArrayList<Integer> getChallenges(String username) {
-		return selectAllChallenges("SELECT game_idgame FROM player WHERE playstatus_playstatus = \"uitgedaagde\" AND username = ?", username);
+	ArrayList<Integer> getChallenges(String username) {
+		return selectAllChallenges(
+				"SELECT game_idgame FROM player WHERE playstatus_playstatus = \"uitgedaagde\" AND username = ?",
+				username);
 	}
 
-	public void updateStatus(String username, boolean accepted, int idGame) {
-		updatePlayerStatus("UPDATE player SET playstatus_playstatus = ? WHERE username = ? AND game_idgame = ?", username, accepted, idGame);
+	void updateStatus(String username, boolean accepted, int idGame) {
+		updatePlayerStatus("UPDATE player SET playstatus_playstatus = ? WHERE username = ? AND game_idgame = ?",
+				username, accepted, idGame);
 	}
 }

@@ -12,7 +12,7 @@ public class CurrencyStonePane extends Pane {
 	final int CENTERY = 18;
 
 	// Might change it so that it gets a currency stone
-	CurrencyStonePane(GameColor color) {
+	public CurrencyStonePane(GameColor color) {
 		Shape stone = new Circle(CENTERX, CENTERY, RADIUS, color.getColor());
 		stone.setStroke(Color.BLACK);
 		getChildren().add(stone);

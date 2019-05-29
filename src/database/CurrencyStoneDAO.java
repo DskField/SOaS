@@ -15,7 +15,7 @@ class CurrencyStoneDAO {
 		con = connection;
 	}
 
-	public void insertCurrencyStones(int idGame) {
+	void insertCurrencyStones(int idGame) {
 		try {
 			for (int i = 0; i < 24; i++) {
 				PreparedStatement stmt = con.prepareStatement("INSERT INTO gamefavortoken VALUES (?, ?, null, null, null, null);");

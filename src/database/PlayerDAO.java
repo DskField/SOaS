@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import client.User;
 import game.GameColor;
 import game.Player;
 

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import client.Lobby;
 
 class LobbyDAO {
-	Connection con;
+	private Connection con;
 
 	public LobbyDAO(Connection con) {
 		this.con = con;
