@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import controllers.GameController;
 import game.CurrencyStone;
 import game.Die;
+import game.GameColor;
 import game.Message;
 import game.Player;
 import game.Round;
@@ -77,10 +78,7 @@ public class GameScene extends Scene {
 	private Button nextButton;
 	private GameController gameController;
 	public Stage stage;
-	
-	//TODO might wanna change this, 
-	private GameScene gS;
-
+	private Label currentPlayerLabel;
 
 	/**
 	 * Creates the GameScene
@@ -94,10 +92,8 @@ public class GameScene extends Scene {
 		setRoot(rootPane);
 		rootPane.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
 
-		gS = this;
 		stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
 
-		
 		// creates and sets everything in the right place
 		createCenter();
 		createLeft();
@@ -127,9 +123,11 @@ public class GameScene extends Scene {
 	public void selectDie(ArrayList<SpaceGlass> available) {
 		if (smallGlassWindow1 != null && gameController.getClientPlayer().getColor() == smallGlassWindow1.getColor()) {
 			switchGlassWindows(1);
-		} else if (smallGlassWindow2 != null && gameController.getClientPlayer().getColor() == smallGlassWindow2.getColor()) {
+		} else if (smallGlassWindow2 != null
+				&& gameController.getClientPlayer().getColor() == smallGlassWindow2.getColor()) {
 			switchGlassWindows(2);
-		} else if (smallGlassWindow3 != null && gameController.getClientPlayer().getColor() == smallGlassWindow3.getColor()) {
+		} else if (smallGlassWindow3 != null
+				&& gameController.getClientPlayer().getColor() == smallGlassWindow3.getColor()) {
 			switchGlassWindows(3);
 		}
 		removeHighlight();
@@ -139,7 +137,7 @@ public class GameScene extends Scene {
 	public void removeHighlight() {
 		mainGlassWindow.removeHighlightSpaces();
 	}
-	
+
 	public DiePane getSelectedDie() {
 		try {
 			return (DiePane) focusOwnerProperty().get();
@@ -151,7 +149,9 @@ public class GameScene extends Scene {
 	/**
 	 * gives a list of messages to the ChatPane
 	 * 
-	 * @param messages ArrayList<Message> list of messages that will be added to the chat.
+	 * @param messages
+	 *            ArrayList<Message> list of messages that will be added to the
+	 *            chat.
 	 */
 	public void updateChat(ArrayList<Message> messages) {
 		chatPane.updateChat(messages);
@@ -222,8 +222,9 @@ public class GameScene extends Scene {
 	}
 
 	/**
-	 * Creates the center of the screen containing the following aspects: PersonalGoalCard,
-	 * Currencystones, Roundtrack, PublicGoalCards, ToolCards, Dice offer and the necessary buttons.
+	 * Creates the center of the screen containing the following aspects:
+	 * PersonalGoalCard, Currencystones, Roundtrack, PublicGoalCards, ToolCards,
+	 * Dice offer and the necessary buttons.
 	 */
 
 	private void createCenter() {
@@ -259,7 +260,7 @@ public class GameScene extends Scene {
 		personalInfo.setSpacing(10);
 
 		// handles everything regarding the cardBox
-		//adds goaldCards to the goalCardPanes array
+		// adds goaldCards to the goalCardPanes array
 		for (int i = 0; i < 3; i++) {
 			goalCardPanes[i] = new GoalCardPane(gameController.getCollectiveGoalCard(i));
 		}
@@ -277,7 +278,6 @@ public class GameScene extends Scene {
 			toolCardBox.getChildren().add(toolCardPane);
 		}
 
-
 		// handles the makeup of the various boxes
 		goalCardsBox.setSpacing(10);
 		goalCardsBox.setAlignment(Pos.CENTER);
@@ -290,24 +290,29 @@ public class GameScene extends Scene {
 		cardBox.setAlignment(Pos.CENTER_LEFT);
 		cardBox.setPrefHeight(480);
 
+		// adds current Player label
+		currentPlayerLabel = new Label();
+
 		// adds everything to the centerBox and handles makeup
-		centerBox.getChildren().addAll(roundPane, cardBox, dieOfferPane, nextButton);
+		centerBox.getChildren().addAll(currentPlayerLabel, roundPane, cardBox, dieOfferPane, nextButton);
 		centerBox.setAlignment(Pos.CENTER);
 		centerBox.setSpacing(personalInfoSpacing);
-		centerBox.setPadding(new Insets(centerBoxPaddingTop, centerBoxPaddingRight, centerBoxPaddingBottom, centerBoxPaddingLeft));
+		centerBox.setPadding(
+				new Insets(centerBoxPaddingTop, centerBoxPaddingRight, centerBoxPaddingBottom, centerBoxPaddingLeft));
 
 		// adds the centerBox to the rootPane
 		rootPane.setCenter(centerBox);
 	}
 
-	//Handles button
+	// Handles button
 	private void handleNextButton() {
 		nextButton.setDisable(true);
 		gameController.nextTurn();
 	}
 
 	/**
-	 * Creates the left column of the screen containing the following aspects: Glaswindow(large), Chat
+	 * Creates the left column of the screen containing the following aspects:
+	 * Glaswindow(large), Chat
 	 */
 	private void createLeft() {
 		// Initialize everything for the leftBox
@@ -320,14 +325,16 @@ public class GameScene extends Scene {
 		leftBox.getChildren().addAll(mainGlassWindow, chatPane);
 		leftBox.setAlignment(Pos.BOTTOM_CENTER);
 		leftBox.setSpacing(leftBoxSpacing);
-		leftBox.setPadding(new Insets(leftBoxPaddingTop, leftBoxPaddingRight, leftBoxPaddingBottom, leftBoxPaddingLeft));
+		leftBox.setPadding(
+				new Insets(leftBoxPaddingTop, leftBoxPaddingRight, leftBoxPaddingBottom, leftBoxPaddingLeft));
 
 		// adds the leftBox to the rootPane
 		rootPane.setLeft(leftBox);
 	}
 
 	/**
-	 * Creates the right column on the screen containing the following aspects: 3 Glaswindows(small)
+	 * Creates the right column on the screen containing the following aspects: 3
+	 * Glaswindows(small)
 	 */
 	private void createRight() {
 		// Initialize everything for the rightBox
@@ -355,12 +362,13 @@ public class GameScene extends Scene {
 		// adds everything to the rightBox and handles makeup
 		rightBox.setSpacing(rightBoxSpacing);
 		rightBox.setAlignment(Pos.BOTTOM_CENTER);
-		rightBox.setPadding(new Insets(rightBoxPaddingTop, rightBoxPaddingRight, rightBoxPaddingBottom, rightBoxPaddingLeft));
+		rightBox.setPadding(
+				new Insets(rightBoxPaddingTop, rightBoxPaddingRight, rightBoxPaddingBottom, rightBoxPaddingLeft));
 
 		// adds the rightBox to the rootPane
 		rootPane.setRight(rightBox);
 	}
-	
+
 	public void switchGlassWindows(int source) {
 		mainGlassWindow.removeHighlightSpaces();
 		leftBox.getChildren().remove(mainGlassWindow);
@@ -425,21 +433,52 @@ public class GameScene extends Scene {
 				ArrayList<CurrencyStonePane> stonePanes = new ArrayList<>();
 				stonePanes.clear();
 				Player thisPlayer = null;
-				if(!toolCard.getCurrencyStones().isEmpty()) {//if toolcard has currencystones
-					for(CurrencyStone stone: toolCard.getCurrencyStones()) {//for every stone that card has make a StonePane and add to ArrayList of stonepanes				
-						for(Player player:gameController.getPlayers()) {//Check whose currencystone it is						
-							if(stone.getPlayerID() == player.getPlayerID()) {//if playerid's match use that player to get the color
+				if (!toolCard.getCurrencyStones().isEmpty()) {// if toolcard has currencystones
+					for (CurrencyStone stone : toolCard.getCurrencyStones()) {// for every stone that card has make a
+																				// StonePane and add to ArrayList of
+																				// stonepanes
+						for (Player player : gameController.getPlayers()) {// Check whose currencystone it is
+							if (stone.getPlayerID() == player.getPlayerID()) {// if playerid's match use that player to
+																				// get the color
 								thisPlayer = player;
 							}
 						}
 						CurrencyStonePane stonePane = new CurrencyStonePane(thisPlayer.getColor());
 						stonePanes.add(stonePane);
 					}
-					if(toolCard.getSeqnr() == toolCardPane.getSeqNr()) {
+					if (toolCard.getSeqnr() == toolCardPane.getSeqNr()) {
 						toolCardPane.updateStones(stonePanes);
 					}
 				}
 			}
 		}
+	}
+
+	public void updateCurrentPlayerBorder(GameColor color) {
+		if (mainGlassWindow.getColor() == color) {
+			mainGlassWindow.setActiveBorder();
+			smallGlassWindow1.setInactiveBorder();
+			smallGlassWindow2.setInactiveBorder();
+			smallGlassWindow3.setInactiveBorder();
+		} else if (smallGlassWindow1.getColor() == color) {
+			smallGlassWindow1.setActiveBorder();
+			mainGlassWindow.setInactiveBorder();
+			smallGlassWindow2.setInactiveBorder();
+			smallGlassWindow3.setInactiveBorder();
+		} else if (smallGlassWindow2.getColor() == color) {
+			smallGlassWindow2.setActiveBorder();
+			mainGlassWindow.setInactiveBorder();
+			smallGlassWindow1.setInactiveBorder();
+			smallGlassWindow3.setInactiveBorder();
+		} else if (smallGlassWindow3.getColor() == color) {
+			smallGlassWindow3.setActiveBorder();
+			mainGlassWindow.setInactiveBorder();
+			smallGlassWindow1.setInactiveBorder();
+			smallGlassWindow2.setInactiveBorder();
+		}
+	}
+	
+	public void updateCurrentPlayerLabel(String userName) {
+		currentPlayerLabel.setText(userName + " is momenteel aan de beurt");
 	}
 }

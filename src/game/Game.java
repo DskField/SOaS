@@ -182,7 +182,11 @@ public class Game {
 	// kevin stuff
 	public void setFinalScore() {
 		for (Player player : players) {
-			player.setScore(scoreHandler.getScore(player, true));
+			int score = scoreHandler.getScore(player, true);
+			player.setScore(score);
+			if(clientPlayer.getSeqnr() == players.size() * 2) {
+				persistenceFacade.updateScore(scoreHandler.getScore(clientPlayer, false), clientPlayer.getPlayerID());
+			}
 		}
 	}
 
@@ -199,6 +203,10 @@ public class Game {
 	}
 
 	// kevin stuff
+	public void updateClientPlayerScore() {
+		persistenceFacade.updateScore(scoreHandler.getScore(clientPlayer, false), clientPlayer.getPlayerID());
+	}
+	
 	public void setClientPlayerPaternCard(int idPatternCard) {
 
 		persistenceFacade.setPlayerPaternCard(idPatternCard, clientPlayer.getPlayerID());

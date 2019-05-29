@@ -152,6 +152,10 @@ public class PersistenceFacade {
 	}
 
 	// PlayerDAO
+	public void updateScore(int score, int idPlayer) {
+		playerDAO.updateScore(score, idPlayer);
+	}
+	
 	public ArrayList<Player> getAllPlayers() {
 		return playerDAO.getAllPlayers();
 	}

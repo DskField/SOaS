@@ -1,6 +1,7 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import controllers.GameController;
 import game.PatternCard;
@@ -14,25 +15,34 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class ChoiceScene extends Scene {
 	private BorderPane root;
-	private HBox cards;
+	private HBox patternCardBox;
 	private GameController gameController;
+	private VBox cardBox;
 
 	public ChoiceScene(GameController gameController, ArrayList<PatternCard> patternCards) {
 		super(new Pane());
 		this.gameController = gameController;
 		root = new BorderPane();
-		cards = new HBox();
-		cards.setAlignment(Pos.CENTER);
-		cards.setSpacing(10);
-		root.setCenter(cards);
+		cardBox = new VBox();
+		cardBox.setSpacing(10);
+		cardBox.setAlignment(Pos.CENTER);
+		PersonalGoalCardPane personalGoalCardPane = new PersonalGoalCardPane();
+		personalGoalCardPane.loadPersonalGoalCardImage(gameController.getClientPlayer().getPersonalGoalCard());
+		patternCardBox = new HBox();
+		patternCardBox.setAlignment(Pos.CENTER);
+		patternCardBox.setSpacing(10);
+		cardBox.getChildren().addAll(patternCardBox, personalGoalCardPane);
+		root.setCenter(cardBox);
 		root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
 		createPatternCards(patternCards);
 		setRoot(root);
@@ -48,7 +58,12 @@ public class ChoiceScene extends Scene {
 			pc.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					pc.setBorder(new Border(new BorderStroke(Color.WHITE, null, null, null)));
+					pc.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, null, new BorderWidths(5))));
+					Label selectedLabel = new Label("u heeft uw kaart geselecteerd. wachten op andere spelers.");
+					selectedLabel.setTextFill(Color.RED);
+					selectedLabel.setFont(new Font("Arial", 20));
+					cardBox.getChildren().add(selectedLabel);
+					root.setDisable(true);
 					for (PatternCard patternCard : gameController.getPatternChoices()) {
 						if (patternCard.getPatternCardId() == pc.getPatternCardID()) {
 							gameController.setClientPlayerPaternCard(patternCard.getPatternCardId());
@@ -59,7 +74,7 @@ public class ChoiceScene extends Scene {
 			});
 			vBox.getChildren().addAll(name, pc, difficulity);
 			vBox.setAlignment(Pos.CENTER);
-			cards.getChildren().add(vBox);
+			patternCardBox.getChildren().add(vBox);
 
 		}
 	}
