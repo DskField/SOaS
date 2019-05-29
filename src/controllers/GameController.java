@@ -176,11 +176,13 @@ public class GameController {
 		game.loadCurrentRound();
 		game.updatePlayers();
 		game.loadCurrentPlayer();
-
+		game.loadCurrencyStones();
+		
 		gameScene.updateRoundTrack(game.getRoundTrack());
 		gameScene.updateGlassWindow(game.updateGlassWindow());
 		gameScene.updateTable(game.getTable());
 		gameScene.updateToolCards(game.getToolCards());
+		gameScene.updateCurrencyStone();
 
 		if (dieNotPlaced && checkMyTurn()) {
 			gameScene.disableDieOfferPane(false);
@@ -536,14 +538,14 @@ public class GameController {
 						|| pC.getSpaceValue(sG.getXCor() - 1, sG.getYCor()) == newDie.getEyes();
 
 			} else {
-				rightSame = false;
+				leftSame = false;
 			}
 			if (currentX < maxX) {// RIGHT
 				rightSame = pC.getSpaceColor(sG.getXCor() + 1, sG.getYCor()).equals(newDie.getColor())
 						|| pC.getSpaceValue(sG.getXCor() + 1, sG.getYCor()) == newDie.getEyes();
 
 			} else {
-				leftSame = false;
+				rightSame = false;
 			}
 			if (currentY > minY) {// ABOVE
 				aboveSame = pC.getSpaceColor(sG.getXCor(), sG.getYCor() - 1).equals(newDie.getColor())

@@ -8,7 +8,6 @@ public class CurrencyStonesPane extends FlowPane {
 
 	private static final int SIZE = 100;
 
-
 	public CurrencyStonesPane(Player player) {
 		setPrefSize(SIZE, SIZE);
 		showStones(player);
@@ -19,6 +18,7 @@ public class CurrencyStonesPane extends FlowPane {
 	public void showStones(Player player) {
 		getChildren().clear();
 		for (CurrencyStone cs : player.getCurrencyStones()) {
+			getChildren().clear();
 			getChildren().add(new CurrencyStonePane(player.getGlassWindow().getColor()));
 		}
 	}

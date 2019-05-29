@@ -151,7 +151,7 @@ public class Game {
 
 	}
 
-	private void loadCurrencyStones() {
+	public void loadCurrencyStones() {
 		currencyStones = persistenceFacade.getAllStonesInGame(gameID);
 		for (CurrencyStone cs : currencyStones) {
 			for (Player player : players) {

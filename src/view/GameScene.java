@@ -214,7 +214,10 @@ public class GameScene extends Scene {
 			nextButton.setDisable(true);
 		}
 	}
-
+	public void updateCurrencyStone() {
+		currencyStonesPane.showStones(gameController.getClientPlayer());
+	}
+		
 	/**
 	 * Creates the center of the screen containing the following aspects: PersonalGoalCard,
 	 * Currencystones, Roundtrack, PublicGoalCards, ToolCards, Dice offer and the necessary buttons.
