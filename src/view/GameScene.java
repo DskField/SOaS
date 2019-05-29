@@ -502,7 +502,6 @@ public class GameScene extends Scene {
 
 	public void updateShakeButton(boolean checkStartPlayer) {
 		if (checkStartPlayer) {
-			System.out.println("GAMESCENE: " + checkStartPlayer);
 			shakeButton.setDisable(false);
 		}
 	}

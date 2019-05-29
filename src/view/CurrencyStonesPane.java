@@ -16,9 +16,7 @@ public class CurrencyStonesPane extends FlowPane {
 
 	public void showStones(Player player) {
 		getChildren().clear();
-		System.out.println(getChildren().size());
 		for (CurrencyStone cs : player.getCurrencyStones()) {
-			System.out.println("asdf  "+ player.getCurrencyStones().size());
 			getChildren().add(new CurrencyStonePane(player.getGlassWindow().getColor()));
 		}
 	}
