@@ -17,37 +17,37 @@ public class GoalCardPane extends AnchorPane {
 	private void lookForImage(int id) {
 		switch (id) {
 		case 1:
-			imageView.setImage(new Image("file:Resources\\images\\Public GoalCards/card1.png"));
+			imageView.setImage(new Image("/images/GoalCards/Public/Card1.png"));
 			break;
 		case 2:
-			imageView.setImage(new Image("file:Resources\\images\\Public GoalCards/card2.png"));
+			imageView.setImage(new Image("/images/GoalCards/Public/Card2.png"));
 			break;
 		case 3:
-			imageView.setImage(new Image("file:Resources\\images\\Public GoalCards/card3.png"));
+			imageView.setImage(new Image("/images/GoalCards/Public/Card3.png"));
 			break;
 		case 4:
-			imageView.setImage(new Image("file:Resources\\images\\Public GoalCards\\card4.png"));
+			imageView.setImage(new Image("/images/GoalCards/Public/Card4.png"));
 			break;
 		case 5:
-			imageView.setImage(new Image("file:Resources\\images\\Public GoalCards\\card5.png"));
+			imageView.setImage(new Image("/images/GoalCards/Public/Card5.png"));
 			break;
 		case 6:
-			imageView.setImage(new Image("file:Resources\\images\\Public GoalCards\\card6.png"));
+			imageView.setImage(new Image("/images/GoalCards/Public/Card6.png"));
 			break;
 		case 7:
-			imageView.setImage(new Image("file:Resources\\images\\Public GoalCards\\card7.png"));
+			imageView.setImage(new Image("/images/GoalCards/Public/Card7.png"));
 			break;
 		case 8:
-			imageView.setImage(new Image("file:Resources\\images\\Public GoalCards\\card8.png"));
+			imageView.setImage(new Image("/images/GoalCards/Public/Card8.png"));
 			break;
 		case 9:
-			imageView.setImage(new Image("file:Resources\\images\\Public GoalCards\\card9.png"));
+			imageView.setImage(new Image("/images/GoalCards/Public/Card9.png"));
 			break;
 		case 10:
-			imageView.setImage(new Image("file:Resources\\images\\Public GoalCards\\card10.png"));
+			imageView.setImage(new Image("/images/GoalCards/Public/Card10.png"));
 			break;
 		default:
-			imageView.setImage(new Image("file:Resources\\images\\Priavate GoalCards\\back.png"));
+			imageView.setImage(new Image("/images/GoalCards/Private/Back.png"));
 
 		}
 	}
