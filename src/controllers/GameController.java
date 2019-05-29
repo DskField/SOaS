@@ -179,7 +179,7 @@ public class GameController {
 		game.loadCurrencyStones();
 		
 		
-		gameScene.updateCurrentPlayerBorder(game.getCurrentPlayer().getColor());
+		//gameScene.updateCurrentPlayerBorder(game.getCurrentPlayer().getColor());
 		gameScene.updateRoundTrack(game.getRoundTrack());
 		gameScene.updateGlassWindow(game.updateGlassWindow());
 		gameScene.updateTable(game.getTable());
@@ -187,6 +187,8 @@ public class GameController {
 		gameScene.updateCurrencyStone();
 
 		if (dieNotPlaced && checkMyTurn()) {
+			gameScene.updateShakeButton(checkStartPlayer());
+
 			gameScene.disableDieOfferPane(false);
 		} else {
 			gameScene.disableDieOfferPane(true);
@@ -572,5 +574,19 @@ public class GameController {
 		}
 		return best;
 
+	}
+
+	public void shakeSack() {
+		game.shakeSack();
+		
+	}
+	public boolean checkStartPlayer() {
+		
+		System.out.println("GC: "+ game.getClientPlayer().getSeqnr());
+		if(getClientPlayer().getSeqnr() == 1 && getClientPlayer().equals(game.getCurrentPlayer()) && game.getTable().isEmpty()) {
+			return true;
+		}else {
+			return false;
+		}		
 	}
 }

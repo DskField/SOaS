@@ -100,8 +100,6 @@ public class Game {
 		table = persistenceFacade.getTableDice(gameID, currentRound);
 		if (currentRound <= 10) {
 			if (table.isEmpty() && roundTrack[currentRound - 1].getDice().isEmpty() && currentPlayer.getPlayerID() == clientPlayer.getPlayerID()) {
-				//if its my turn when I join the game it shakes the sack
-				shakeSack();
 			}
 		}
 	}
@@ -283,10 +281,6 @@ public class Game {
 			persistenceFacade.updateDiceRound(gameID, currentRound, table);
 			table.clear();
 			currentRound++;
-		}
-
-		if (currentRound <= 10) {
-			shakeSack();
 		}
 	}
 
