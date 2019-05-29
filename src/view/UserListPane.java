@@ -176,11 +176,11 @@ public class UserListPane extends BorderPane {
 	}
 
 	private void handleInvitePlayers() {
-		ArrayList<User> result = new ArrayList<>();
+		ArrayList<String> result = new ArrayList<>();
 
-		result.add(clientscene.getUser());
+		result.add(clientscene.getUser().getUsername());
 		for (CheckBox box : inviteCheckBoxGroup) {
-			result.add(new User(box.getText(), 0, 0, GameColor.EMPTY, 0, 0, 0, 0));
+			result.add(box.getText());
 		}
 		clientscene.updateClient();
 		if (clientscene.createGame(result, useRandomPatternCards.isSelected())) 
