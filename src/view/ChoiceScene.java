@@ -1,7 +1,6 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import controllers.GameController;
 import game.PatternCard;
@@ -15,6 +14,8 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
