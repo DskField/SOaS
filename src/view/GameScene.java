@@ -237,7 +237,7 @@ public class GameScene extends Scene {
 	private void createCenter() {
 		// initialize everything for personalInfo
 		personalInfo = new VBox();
-		currencyStonesPane = new CurrencyStonesPane(gameController.getClientPlayer());
+		currencyStonesPane = new CurrencyStonesPane();
 		personalGoalCardPane = new PersonalGoalCardPane();
 		personalGoalCardPane.loadPersonalGoalCardImage(gameController.getClientPlayer().getPersonalGoalCard());
 

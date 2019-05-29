@@ -8,17 +8,17 @@ public class CurrencyStonesPane extends FlowPane {
 
 	private static final int SIZE = 100;
 
-	public CurrencyStonesPane(Player player) {
+	public CurrencyStonesPane() {
 		setPrefSize(SIZE, SIZE);
-		showStones(player);
 	}
 
 	// Draws a stone for each currencystone from player
 
 	public void showStones(Player player) {
 		getChildren().clear();
+		System.out.println(getChildren().size());
 		for (CurrencyStone cs : player.getCurrencyStones()) {
-			getChildren().clear();
+			System.out.println("asdf  "+ player.getCurrencyStones().size());
 			getChildren().add(new CurrencyStonePane(player.getGlassWindow().getColor()));
 		}
 	}
