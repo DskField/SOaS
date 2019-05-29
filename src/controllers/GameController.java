@@ -176,7 +176,7 @@ public class GameController {
 		game.loadCurrentRound();
 		game.updatePlayers();
 		game.loadCurrentPlayer();
-		game.updateCurrencyStones();
+		game.loadCurrencyStones();
 		
 		
 		//gameScene.updateCurrentPlayerBorder(game.getCurrentPlayer().getColor());

@@ -149,40 +149,28 @@ public class Game {
 		}
 
 	}
-
+	/*
+	 * used for loading and updating currencystones
+	 */
 	public void loadCurrencyStones() {
-		currencyStones = persistenceFacade.getAllStonesInGame(gameID);
-		for (CurrencyStone cs : currencyStones) {
-			for (Player player : players) {
-				if (cs.getPlayerID() == player.getPlayerID()) {
-					player.addCurrencyStone(cs);
-				}
-			}
-		}
-		for (ToolCard toolCard : toolCards) {
-			for (CurrencyStone currencyStone : persistenceFacade.getCurrencyStonesOnCard(toolCard.getCardID(),
-					gameID)) {
-				toolCard.addCurrencyStone(currencyStone);
-			}
-
-		}
-	}
-
-	public void updateCurrencyStones() {
 		currencyStones = persistenceFacade.getAllStonesInGame(gameID);
 		for (Player player : players) {
 			player.clearCurrencyStones();
-			System.out.println(player.getPlayerID() + " " + player.getCurrencyStones().size());
 
 			for (CurrencyStone cs : currencyStones) {
 
 				if (cs.getPlayerID() == player.getPlayerID()) {
 					player.addCurrencyStone(cs);
 				}
-				System.out.println(player.getPlayerID() + " " + player.getCurrencyStones().size());
 
 			}
-			System.out.println(player.getPlayerID() + " " + player.getCurrencyStones().size());
+
+		}
+		for (ToolCard toolCard : toolCards) {
+			for (CurrencyStone currencyStone : persistenceFacade.getCurrencyStonesOnCard(toolCard.getCardID(),
+					gameID)) {
+				toolCard.addCurrencyStone(currencyStone);
+			}
 
 		}
 
