@@ -155,4 +155,12 @@ public class GlassWindowPane extends BorderPane {
 	public boolean isClientPlayer() {
 		return clientPlayer;
 	}
+	
+	public void setActiveBorder() {
+		setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, windowCurve, new BorderWidths(5))));
+	}
+	
+	public void setInactiveBorder() {
+		setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, windowCurve, new BorderWidths(5))));
+	}
 }

@@ -21,7 +21,8 @@ class PlayerDAO {
 	// kevin stuff
 	private void insertPlayerPaterncard(int idPatternCard, int idPlayer) {
 		try {
-			PreparedStatement stmt = con.prepareStatement("UPDATE player SET patterncard_idpatterncard = " + idPatternCard + " WHERE idPlayer = " + idPlayer);
+			PreparedStatement stmt = con.prepareStatement(
+					"UPDATE player SET patterncard_idpatterncard = " + idPatternCard + " WHERE idPlayer = " + idPlayer);
 			stmt.executeUpdate();
 
 			con.commit();
@@ -32,6 +33,27 @@ class PlayerDAO {
 				con.rollback();
 			} catch (SQLException e1) {
 				System.err.println("PlayerDAO (insertPlayerPatterncard #2) --> The rollback failed: Please check the Database!");
+			}
+		}
+	}
+
+	void updateScore(int score, int idPlayer) {
+		try {
+
+			PreparedStatement stmt = con.prepareStatement("Update player set score = ? WHERE idplayer = ?");
+			stmt.setInt(1, score);
+			stmt.setInt(2, idPlayer);
+
+			stmt.executeUpdate();
+			stmt.close();
+
+			con.commit();
+		} catch (SQLException e) {
+			System.err.println("PlayerDAO (updateScore) --> " + e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				System.err.println("The rollback failed: Please check the Database!");
 			}
 		}
 	}
@@ -80,11 +102,14 @@ class PlayerDAO {
 
 	private void updatePlayer(Player oldPlayer, Player newPlayer) {
 		try {
-			PreparedStatement stmtOldPlayer = con.prepareStatement("UPDATE player SET seqnr = ?, isCurrentPlayer = FALSE WHERE idPlayer = ?;");
+			PreparedStatement stmtOldPlayer = con
+					.prepareStatement("UPDATE player SET seqnr = ?, isCurrentPlayer = FALSE WHERE idPlayer = ?;");
 			stmtOldPlayer.setInt(1, oldPlayer.getSeqnr());
 			stmtOldPlayer.setInt(2, oldPlayer.getPlayerID());
-			PreparedStatement stmtOldPlayer2 = con.prepareStatement("UPDATE player SET isCurrentPlayer = FALSE WHERE idPlayer = ?;");
-			PreparedStatement stmtNewPlayer = con.prepareStatement("UPDATE player SET isCurrentPlayer = TRUE WHERE idPlayer = ?;");
+			PreparedStatement stmtOldPlayer2 = con
+					.prepareStatement("UPDATE player SET isCurrentPlayer = FALSE WHERE idPlayer = ?;");
+			PreparedStatement stmtNewPlayer = con
+					.prepareStatement("UPDATE player SET isCurrentPlayer = TRUE WHERE idPlayer = ?;");
 			stmtOldPlayer2.setInt(1, oldPlayer.getPlayerID());
 			stmtNewPlayer.setInt(1, newPlayer.getPlayerID());
 			stmtOldPlayer.executeUpdate();
@@ -113,12 +138,13 @@ class PlayerDAO {
 	}
 
 	ArrayList<Player> getPlayerWithPatternCardButWithoutCurrencyStones(int idGame) {
-		return selectPlayer(
-				"SELECT * FROM player p WHERE game_idgame = " + idGame + " AND patterncard_idpatterncard IS NOT NULL AND (select idfavortoken from gamefavortoken g WHERE g.idplayer = p.idplayer LIMIT 1) IS NULL");
+		return selectPlayer("SELECT * FROM player p WHERE game_idgame = " + idGame
+				+ " AND patterncard_idpatterncard IS NOT NULL AND (select idfavortoken from gamefavortoken g WHERE g.idplayer = p.idplayer LIMIT 1) IS NULL");
 	}
 
 	ArrayList<Player> getPlayersWithoutPatternCard(int idGame) {
-		return selectPlayer("SELECT * FROM player WHERE game_idgame = " + idGame + " AND patterncard_idpatterncard IS NULL");
+		return selectPlayer(
+				"SELECT * FROM player WHERE game_idgame = " + idGame + " AND patterncard_idpatterncard IS NULL");
 	}
 
 	ArrayList<Player> getAllPlayers() {
@@ -133,7 +159,7 @@ class PlayerDAO {
 		return selectPlayer("SELECT * FROM player WHERE game_idgame = " + idGame + " ORDER BY idplayer ASC");
 	}
 
-	void insertPlayers(int idGame, ArrayList<User> users) {
+	void insertPlayers(int idGame, ArrayList<String> users) {
 		ArrayList<String> colors = selectColors();
 		Collections.shuffle(colors);
 		try {
@@ -141,7 +167,7 @@ class PlayerDAO {
 				String status = i == 0 ? "uitdager" : "uitgedaagde";
 
 				PreparedStatement stmt = con.prepareStatement("INSERT INTO player VALUES (null, ?, ?, ?, ?, ?, ?, null, null);");
-				stmt.setString(1, users.get(i).getUsername());
+				stmt.setString(1, users.get(i));
 				stmt.setInt(2, idGame);
 				stmt.setString(3, status);
 				stmt.setInt(4, i + 1);

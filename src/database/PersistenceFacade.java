@@ -97,7 +97,7 @@ public class PersistenceFacade {
 	 * @param users
 	 *            - List of users in the game, The first user NEEDS to be the creator
 	 */
-	public void createGame(ArrayList<User> users, boolean useRandomPatternCards) {
+	public void createGame(ArrayList<String> users, boolean useRandomPatternCards) {
 		int gameID = gameDAO.createGame();
 		dieDAO.insertDice(gameID);
 		currencyStoneDAO.insertCurrencyStones(gameID);
@@ -162,6 +162,10 @@ public class PersistenceFacade {
 	}
 
 	// PlayerDAO
+	public void updateScore(int score, int idPlayer) {
+		playerDAO.updateScore(score, idPlayer);
+	}
+	
 	public ArrayList<Player> getAllPlayers() {
 		return playerDAO.getAllPlayers();
 	}

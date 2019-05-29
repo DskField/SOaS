@@ -42,16 +42,16 @@ public class GameController {
 		this.clientcontroller = clientcontroller;
 		// Temporary call, when the game will be created the ClientController needs
 		// to give the information to the GameController
-		// PersistenceFacade pf = new PersistenceFacade();
+//		 PersistenceFacade pf = new PersistenceFacade();
 		// ArrayList<User> users = new ArrayList<User>();
 		// users.add(new User("speler1", 0, 0, GameColor.RED, 0));
 		// users.add(new User("speler2", 0, 0, GameColor.RED, 0));
 		// users.add(new User("speler3", 0, 0, GameColor.RED, 0));
 		// users.add(new User("speler4", 0, 0, GameColor.RED, 0));
 		// pf.createGame(users);
-		// pf.setCardsGame(13);
+//		 persistencefacade.setCardsGame(34);
 		// System.out.println("Created game");
-		// joinGame(13, new User("speler1", 0, 0, GameColor.RED, 0));
+//		 joinGame(34, new User("Lavyra", 0, 0, GameColor.RED, 0));
 
 		cheatMode = 0;
 	}
@@ -178,6 +178,8 @@ public class GameController {
 		game.loadCurrentPlayer();
 		game.loadCurrencyStones();
 		
+		
+		gameScene.updateCurrentPlayerBorder(game.getCurrentPlayer().getColor());
 		gameScene.updateRoundTrack(game.getRoundTrack());
 		gameScene.updateGlassWindow(game.updateGlassWindow());
 		gameScene.updateTable(game.getTable());
@@ -198,7 +200,7 @@ public class GameController {
 	public void nextTurn() {
 		dieNotPlaced = true;
 		game.updatePlayers();
-
+		game.updateClientPlayerScore();
 		int totalPlayers = game.getPlayers().size();
 		int maxSeqnr = totalPlayers * 2;
 		int nextSeqnr = 0;
@@ -274,7 +276,6 @@ public class GameController {
 					game.nextRound();
 					gameScene.updateTable(game.getTable());
 				}
-
 				return;
 			}
 		}
@@ -496,6 +497,7 @@ public class GameController {
 		}
 		String winText = winner.getUsername() + " heeft het spel gewonnen met een score van:  " + maxScore;
 		gameScene.gameFinish(winText);
+		
 	}
 
 	/*

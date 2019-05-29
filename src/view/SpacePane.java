@@ -4,8 +4,10 @@ import controllers.GameController;
 import game.GameColor;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
@@ -69,10 +71,10 @@ public class SpacePane extends Pane {
 	}
 
 	public void highlight() {
-		space.setBackground(new Background(new BackgroundFill(Color.TURQUOISE, null, null)));
+		space.setBorder(new Border(new BorderStroke(Color.TURQUOISE, BorderStrokeStyle.SOLID, null, new BorderWidths(5))));
 	}
 
 	public void removeHighlight() {
-		space.setBackground(new Background(new BackgroundFill(space.getColor().getColor(), null, null)));
+		space.setBorder(null);
 	}
 }
