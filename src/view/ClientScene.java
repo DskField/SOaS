@@ -82,7 +82,7 @@ public class ClientScene extends Scene {
 		return clientcontroller.getOpponent(username);
 	}
 
-	public boolean createGame(ArrayList<User> users, boolean useRandomPatternCards) {
+	public boolean createGame(ArrayList<String> users, boolean useRandomPatternCards) {
 		return clientcontroller.createGame(users, useRandomPatternCards);
 	}
 

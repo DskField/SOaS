@@ -133,7 +133,7 @@ class PlayerDAO {
 		return selectPlayer("SELECT * FROM player WHERE game_idgame = " + idGame + " ORDER BY idplayer ASC");
 	}
 
-	void insertPlayers(int idGame, ArrayList<User> users) {
+	void insertPlayers(int idGame, ArrayList<String> users) {
 		ArrayList<String> colors = selectColors();
 		Collections.shuffle(colors);
 		try {
@@ -141,7 +141,7 @@ class PlayerDAO {
 				String status = i == 0 ? "uitdager" : "uitgedaagde";
 
 				PreparedStatement stmt = con.prepareStatement("INSERT INTO player VALUES (null, ?, ?, ?, ?, ?, ?, null, null);");
-				stmt.setString(1, users.get(i).getUsername());
+				stmt.setString(1, users.get(i));
 				stmt.setInt(2, idGame);
 				stmt.setString(3, status);
 				stmt.setInt(4, i + 1);

@@ -95,9 +95,9 @@ public class ClientController {
 		return client.getOpponent(username);
 	}
 
-	public boolean createGame(ArrayList<User> users, boolean useRandomPatternCards) {
-		for (User u : users) {
-			if (persistencefacade.hasOpenInvite(client.getUser().getUsername(), u.getUsername()))
+	public boolean createGame(ArrayList<String> users, boolean useRandomPatternCards) {
+		for (String u : users) {
+			if (persistencefacade.hasOpenInvite(client.getUser().getUsername(), u))
 				return false;
 		}
 		persistencefacade.createGame(users, useRandomPatternCards);
