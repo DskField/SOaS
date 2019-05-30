@@ -182,7 +182,7 @@ public class GameController {
 		gameScene.updateGlassWindow(game.updateGlassWindow());
 		gameScene.updateTable(game.getTable());
 		gameScene.updateToolCards(game.getToolCards());
-		gameScene.updateCurrencyStone();
+		gameScene.updateCurrencyStone(game.getCurrencyStones());
 		gameScene.updateCurrentPlayerLabel(game.getCurrentPlayer().getUsername());
 
 		if (dieNotPlaced && checkMyTurn()) {

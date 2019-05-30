@@ -150,7 +150,8 @@ public class GameScene extends Scene {
 	/**
 	 * gives a list of messages to the ChatPane
 	 * 
-	 * @param messages ArrayList<Message> list of messages that will be added to the chat.
+	 * @param messages ArrayList<Message> list of messages that will be added to the
+	 *                 chat.
 	 */
 	public void updateChat(ArrayList<Message> messages) {
 		chatPane.updateChat(messages);
@@ -188,7 +189,7 @@ public class GameScene extends Scene {
 	}
 
 	public void disableOffer(boolean b) {
-		
+
 		dieOfferPane.setDisable(b);
 	}
 
@@ -200,13 +201,25 @@ public class GameScene extends Scene {
 		}
 	}
 
-	public void updateCurrencyStone() {
-		currencyStonesPane.showStones(gameController.getClientPlayer());
+	public void updateCurrencyStone(ArrayList<CurrencyStone> currencyStones) {
+		ArrayList<CurrencyStonePane> currencyStonePanes = new ArrayList<>();
+		for (CurrencyStone currencyStone : currencyStones) {
+			for (Player player : gameController.getPlayers()) {
+				if (player.getColor() == glassWindowPanes.get(MAIN).getColor()) {
+					if (currencyStone.getPlayerID() == player.getPlayerID()) {
+						currencyStonePanes.add(new CurrencyStonePane(player.getColor()));
+	
+					}
+				}
+			}
+		}
+		currencyStonesPane.showStones(currencyStonePanes);
 	}
 
 	/**
-	 * Creates the center of the screen containing the following aspects: PersonalGoalCard,
-	 * Currencystones, Roundtrack, PublicGoalCards, ToolCards, Dice offer and the necessary buttons.
+	 * Creates the center of the screen containing the following aspects:
+	 * PersonalGoalCard, Currencystones, Roundtrack, PublicGoalCards, ToolCards,
+	 * Dice offer and the necessary buttons.
 	 */
 
 	private void createCenter() {
@@ -215,7 +228,7 @@ public class GameScene extends Scene {
 		currencyStonesPane = new CurrencyStonesPane();
 		personalGoalCardPane = new PersonalGoalCardPane();
 		personalGoalCardPane.loadPersonalGoalCardImage(gameController.getClientPlayer().getPersonalGoalCard());
-		
+
 		// initialize everything for the cardBox
 		cardBox = new HBox();
 		PublicCardsBox = new VBox();
@@ -289,7 +302,8 @@ public class GameScene extends Scene {
 		centerBox.getChildren().addAll(currentPlayerLabel, roundPane, cardBox, dieOfferPane, buttonBox);
 		centerBox.setAlignment(Pos.CENTER);
 		centerBox.setSpacing(personalInfoSpacing);
-		centerBox.setPadding(new Insets(centerBoxPaddingTop, centerBoxPaddingRight, centerBoxPaddingBottom, centerBoxPaddingLeft));
+		centerBox.setPadding(
+				new Insets(centerBoxPaddingTop, centerBoxPaddingRight, centerBoxPaddingBottom, centerBoxPaddingLeft));
 
 		// adds the centerBox to the rootPane
 		rootPane.setCenter(centerBox);
@@ -308,7 +322,8 @@ public class GameScene extends Scene {
 	}
 
 	/**
-	 * Creates the left column of the screen containing the following aspects: Glaswindow(large), Chat
+	 * Creates the left column of the screen containing the following aspects:
+	 * Glaswindow(large), Chat
 	 */
 	private void createLeft() {
 		// Initialize everything for the leftBox
@@ -321,14 +336,16 @@ public class GameScene extends Scene {
 		leftBox.getChildren().addAll(glassWindowPanes.get(0), chatPane);
 		leftBox.setAlignment(Pos.BOTTOM_CENTER);
 		leftBox.setSpacing(leftBoxSpacing);
-		leftBox.setPadding(new Insets(leftBoxPaddingTop, leftBoxPaddingRight, leftBoxPaddingBottom, leftBoxPaddingLeft));
+		leftBox.setPadding(
+				new Insets(leftBoxPaddingTop, leftBoxPaddingRight, leftBoxPaddingBottom, leftBoxPaddingLeft));
 
 		// adds the leftBox to the rootPane
 		rootPane.setLeft(leftBox);
 	}
 
 	/**
-	 * Creates the right column on the screen containing the following aspects: 3 Glaswindows(small)
+	 * Creates the right column on the screen containing the following aspects: 3
+	 * Glaswindows(small)
 	 */
 	private void createRight() {
 		// Initialize everything for the rightBox
@@ -354,7 +371,8 @@ public class GameScene extends Scene {
 		// adds everything to the rightBox and handles makeup
 		rightBox.setSpacing(rightBoxSpacing);
 		rightBox.setAlignment(Pos.BOTTOM_CENTER);
-		rightBox.setPadding(new Insets(rightBoxPaddingTop, rightBoxPaddingRight, rightBoxPaddingBottom, rightBoxPaddingLeft));
+		rightBox.setPadding(
+				new Insets(rightBoxPaddingTop, rightBoxPaddingRight, rightBoxPaddingBottom, rightBoxPaddingLeft));
 
 		// adds the rightBox to the rootPane
 		rootPane.setRight(rightBox);
@@ -382,13 +400,6 @@ public class GameScene extends Scene {
 		} else {
 			personalGoalCardPane.loadCardBack();
 		}
-
-		for (Player player : gameController.getPlayers()) {
-			if (player.getColor() == glassWindowPanes.get(MAIN).getColor()) {
-				currencyStonesPane.showStones(player);
-				break;
-			}
-		}
 	}
 
 	public void gameFinish(String winText) {
@@ -404,10 +415,13 @@ public class GameScene extends Scene {
 				ArrayList<CurrencyStonePane> stonePanes = new ArrayList<>();
 				stonePanes.clear();
 				Player thisPlayer = null;
-				if (!toolCard.getCurrencyStones().isEmpty()) {//if toolcard has currencystones
-					for (CurrencyStone stone : toolCard.getCurrencyStones()) {//for every stone that card has make a StonePane and add to ArrayList of stonepanes				
-						for (Player player : gameController.getPlayers()) {//Check whose currencystone it is						
-							if (stone.getPlayerID() == player.getPlayerID()) {//if playerid's match use that player to get the color
+				if (!toolCard.getCurrencyStones().isEmpty()) {// if toolcard has currencystones
+					for (CurrencyStone stone : toolCard.getCurrencyStones()) {// for every stone that card has make a
+																				// StonePane and add to ArrayList of
+																				// stonepanes
+						for (Player player : gameController.getPlayers()) {// Check whose currencystone it is
+							if (stone.getPlayerID() == player.getPlayerID()) {// if playerid's match use that player to
+																				// get the color
 								thisPlayer = player;
 							}
 						}
@@ -441,6 +455,6 @@ public class GameScene extends Scene {
 		if (checkStartPlayer) {
 			shakeButton.setDisable(false);
 		}
-		
+
 	}
 }

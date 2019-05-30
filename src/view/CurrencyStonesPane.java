@@ -1,7 +1,7 @@
 package view;
 
-import game.CurrencyStone;
-import game.Player;
+import java.util.ArrayList;
+
 import javafx.scene.layout.FlowPane;
 
 public class CurrencyStonesPane extends FlowPane {
@@ -13,11 +13,9 @@ public class CurrencyStonesPane extends FlowPane {
 	}
 
 	// Draws a stone for each currencystone from player
-//FIXME remove enhanced for loop
-	public void showStones(Player player) {
+	// FIXME remove enhanced for loop
+	public void showStones(ArrayList<CurrencyStonePane> currencyStonePanes) {
 		getChildren().clear();
-		for (CurrencyStone cs : player.getCurrencyStones()) {
-			getChildren().add(new CurrencyStonePane(player.getGlassWindow().getColor()));
-		}
+		getChildren().addAll(currencyStonePanes);
 	}
 }
