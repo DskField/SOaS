@@ -15,7 +15,7 @@ public class CurrencyStonesPane extends FlowPane {
 	}
 
 	// Draws a stone for each currencystone from player
-
+//FIXME remove enhanced for loop
 	public void showStones(Player player) {
 		getChildren().clear();
 		for (CurrencyStone cs : player.getCurrencyStones()) {
