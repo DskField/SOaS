@@ -177,7 +177,7 @@ public class GameController {
 		game.loadCurrentPlayer();
 		game.loadCurrencyStones();
 
-		//gameScene.updateCurrentPlayerBorder(game.getCurrentPlayer().getColor());
+		gameScene.updateCurrentPlayerBorder(game.getCurrentPlayer().getColor());
 		gameScene.updateRoundTrack(game.getRoundTrack());
 		gameScene.updateGlassWindow(game.updateGlassWindow());
 		gameScene.updateTable(game.getTable());
@@ -474,7 +474,7 @@ public class GameController {
 		int maxScore = -99;
 		Player winner = game.getPlayers().get(0);
 		game.setGameFinal();
-		gameScene.updateScore(game.getPlayers());
+		gameScene.updateGlassWindow(game.getPlayers());
 		for (Player player : game.getPlayers()) {
 			if (maxScore < player.getScore()) {
 				maxScore = player.getScore();
