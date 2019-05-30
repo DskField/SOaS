@@ -47,9 +47,17 @@ class PatternCardDAO {
 
 	void insertPatternCardOptions(int idPlayer, ArrayList<PatternCard> patternCards) {
 		ArrayList<PatternCard> list = getStandardPatternCards();
-		for (PatternCard pattern : patternCards) {
-			list.remove(pattern);
+		for (int i = 0; i < list.size(); i++) {
+			for (PatternCard patternCard : patternCards) {
+				if(list.get(i).getPatternCardId() == patternCard.getPatternCardId()) {
+					list.remove(i);
+					i--;
+				}
+			}
 		}
+		
+		
+		
 		Collections.shuffle(list);
 
 		try {

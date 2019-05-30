@@ -112,11 +112,11 @@ public class PersistenceFacade {
 		ArrayList<PatternCard> patternCards = new ArrayList<>();
 
 		for (Player player : players) {
-			// TODO use boolean to get random generator patterncards
-			for (PatternCard pCard : patternCardDAO.getPlayerOptions(player.getPlayerID())) {
-				patternCards.add(pCard);
-			}
 			patternCardDAO.insertPatternCardOptions(player.getPlayerID(), patternCards);
+
+			// TODO use boolean to get random generator patterncards
+			patternCards.addAll(patternCardDAO.getPlayerOptions(player.getPlayerID()));
+
 		}
 		collectiveGoalCardDAO.insertRandomSharedCollectiveGoalCards(idGame);
 		toolCardDAO.insertRandomGameToolCards(idGame);
