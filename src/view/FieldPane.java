@@ -120,6 +120,8 @@ public class FieldPane extends FlowPane {
 	}
 
 	public void highlightSpaces(ArrayList<SpaceGlass> toHiglight) {
+		if (toHiglight == null)
+			return;
 		for (SpacePane spacePane : spaces) {
 			for (SpaceGlass spaceGlass : toHiglight) {
 				if (spacePane.getX() == spaceGlass.getXCor() && spacePane.getY() == spaceGlass.getYCor()) {

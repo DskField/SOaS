@@ -436,8 +436,9 @@ public class GameController {
 	}
 
 	public void selectDie(DiePane diePane) {
-		gameScene.removeHighlight();
-		if (cheatMode == 1) {
+		if (cheatMode == 0) {
+			gameScene.selectDie(null);
+		} else if (cheatMode == 1) {
 			gameScene.selectDie(getAvailableSpaces(diePane));
 
 		} else if (cheatMode == 2) {

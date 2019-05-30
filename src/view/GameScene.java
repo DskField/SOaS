@@ -373,7 +373,7 @@ public class GameScene extends Scene {
 		glassWindowPanes.get(MAIN).setSwitchingNumber(MAIN);
 		glassWindowPanes.get(source).setSwitchingNumber(source);
 
-		rightBox.getChildren().add(source - 1, glassWindowPanes.get(source));
+		rightBox.getChildren().add((source - 1 >= 0) ? source - 1 : 0, glassWindowPanes.get(source));
 		leftBox.getChildren().add(MAIN, glassWindowPanes.get(MAIN));
 
 		if (glassWindowPanes.get(MAIN).isClientPlayer()) {
