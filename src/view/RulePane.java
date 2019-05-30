@@ -1,33 +1,35 @@
 package view;
 
-import javafx.geometry.Pos;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-class RulePane extends VBox {
+class RulePane extends StackPane {
+	private static final int WIDTH = 800, HEIGHT = 900;
+
 	// instance variables
 	private RuleDrawPane drawPane;
-	private ButtonPane buttonPane;
+	private RuleButtonPane buttonPane;
 	private Stage stage;
 
 	// constructor
-	RulePane() {
+	public RulePane(double width, double height) {
 		this.stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
 
 		setMinWidth(stage.getWidth());
 		setMinHeight(stage.getHeight());
 
-		setAlignment(Pos.CENTER);
-		drawPane = new RuleDrawPane();
-		buttonPane = new ButtonPane(drawPane);
-
 		setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.7), null, null)));
 
-		// make the draw and buttonpane and add them to this panes
-		getChildren().add(drawPane);
-		getChildren().add(buttonPane);
+		drawPane = new RuleDrawPane();
+		buttonPane = new RuleButtonPane(drawPane);
+
+		VBox container = new VBox();
+		container.getChildren().addAll(drawPane, buttonPane);
+		container.setMaxSize(WIDTH, HEIGHT);
+		getChildren().add(container);
 	}
 }

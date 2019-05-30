@@ -9,8 +9,7 @@ import javafx.scene.paint.Color;
 
 class RuleDrawPane extends StackPane {
 	// constants
-	private static final int PANEWIDTH = 800;
-	private static final int PANEHEIGHT = 750;
+	private static final int PANEWIDTH = 800, PANEHEIGHT = 750;
 
 	// instance variables
 	private ImageView imageView;
@@ -19,12 +18,10 @@ class RuleDrawPane extends StackPane {
 	RuleDrawPane() {
 		setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.7), null, null)));
 		imageView = new ImageView();
-		setPrefHeight(PANEHEIGHT);
-		setMinHeight(PANEHEIGHT);
-		setMaxHeight(PANEHEIGHT);
-		setPrefWidth(PANEWIDTH);
-		setMinWidth(PANEWIDTH);
-		setMaxWidth(PANEWIDTH);
+
+		setMaxSize(PANEWIDTH, PANEHEIGHT);
+		setMinSize(PANEWIDTH, PANEHEIGHT);
+
 		// this make the images look good on the pane
 		imageView.fitWidthProperty().bind(widthProperty());
 		imageView.fitHeightProperty().bind(heightProperty());

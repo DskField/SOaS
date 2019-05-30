@@ -1,15 +1,17 @@
 package view;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
-class ButtonPane extends BorderPane {
+class RuleButtonPane extends HBox {
 	// constants
-	private static final int PANEHEIGHT = 50;
-	private static final int PANEWIDTH = 800;
+	private static final int PANEHEIGHT = 100;
 
 	// instance variables
 	private Button btn_GameProgress;
@@ -17,23 +19,30 @@ class ButtonPane extends BorderPane {
 	private Button btn_ToolCards;
 
 	// constructor
-	ButtonPane(RuleDrawPane drawPane) {
-		// set the size
+	public RuleButtonPane(RuleDrawPane drawPane) {
 		setPrefHeight(PANEHEIGHT);
-		setMinHeight(PANEHEIGHT);
-		setMaxHeight(PANEHEIGHT);
-		setPrefWidth(PANEWIDTH);
-		setMinWidth(PANEWIDTH);
-		setMaxWidth(PANEWIDTH);
-		// set background and make the button
-		setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
+
+		setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.7), null, null)));
+
+		//setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
+
 		btn_GameProgress = new Button("Spel verloop");
+		btn_GameProgress.setBackground(new Background(new BackgroundFill(Color.DARKSLATEBLUE, null, null)));
+		btn_GameProgress.setFont(Font.font("serif", FontWeight.BOLD, 25));
+		btn_GameProgress.setTextFill(Color.WHITE);
 		btn_PlaceDie = new Button("Dobbelsteen plaatsen");
+		btn_PlaceDie.setBackground(new Background(new BackgroundFill(Color.DARKSLATEBLUE, null, null)));
+		btn_PlaceDie.setFont(Font.font("serif", FontWeight.BOLD, 25));
+		btn_PlaceDie.setTextFill(Color.WHITE);
 		btn_ToolCards = new Button("Gereedschapskaarten");
+		btn_ToolCards.setBackground(new Background(new BackgroundFill(Color.DARKSLATEBLUE, null, null)));
+		btn_ToolCards.setFont(Font.font("serif", FontWeight.BOLD, 25));
+		btn_ToolCards.setTextFill(Color.WHITE);
+
 		// place the buttons
-		setLeft(btn_GameProgress);
-		setCenter(btn_PlaceDie);
-		setRight(btn_ToolCards);
+		setAlignment(Pos.CENTER);
+		setSpacing(20);
+		getChildren().addAll(btn_GameProgress, btn_PlaceDie, btn_ToolCards);
 		// give the buttons actions
 		btn_GameProgress.setOnMouseClicked(e -> drawPane.showProgression());
 		btn_PlaceDie.setOnMouseClicked(e -> drawPane.showDiePlacing());
