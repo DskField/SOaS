@@ -25,6 +25,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
@@ -307,6 +308,8 @@ public class GameScene extends Scene {
 
 		// adds current Player label
 		currentPlayerLabel = new Label();
+		currentPlayerLabel.setTextFill(Color.RED);
+		currentPlayerLabel.setFont(new Font("Arial", 20));
 
 		// adds everything to the centerBox and handles makeup
 		centerBox.getChildren().addAll(currentPlayerLabel, roundPane, cardBox, dieOfferPane, buttonBox);
@@ -472,29 +475,29 @@ public class GameScene extends Scene {
 		}
 	}
 
-	public void updateCurrentPlayerBorder(GameColor color) {
-		if (mainGlassWindow.getColor() == color) {
-			mainGlassWindow.setActiveBorder();
-			smallGlassWindow1.setInactiveBorder();
-			smallGlassWindow2.setInactiveBorder();
-			smallGlassWindow3.setInactiveBorder();
-		} else if (smallGlassWindow1.getColor() == color) {
-			smallGlassWindow1.setActiveBorder();
-			mainGlassWindow.setInactiveBorder();
-			smallGlassWindow2.setInactiveBorder();
-			smallGlassWindow3.setInactiveBorder();
-		} else if (smallGlassWindow2.getColor() == color) {
-			smallGlassWindow2.setActiveBorder();
-			mainGlassWindow.setInactiveBorder();
-			smallGlassWindow1.setInactiveBorder();
-			smallGlassWindow3.setInactiveBorder();
-		} else if (smallGlassWindow3.getColor() == color) {
-			smallGlassWindow3.setActiveBorder();
-			mainGlassWindow.setInactiveBorder();
-			smallGlassWindow1.setInactiveBorder();
-			smallGlassWindow2.setInactiveBorder();
-		}
-	}
+//	public void updateCurrentPlayerBorder(GameColor color) {
+//		if (mainGlassWindow.getColor() == color) {
+//			mainGlassWindow.setActiveBorder();
+//			smallGlassWindow1.setInactiveBorder();
+//			smallGlassWindow2.setInactiveBorder();
+//			smallGlassWindow3.setInactiveBorder();
+//		} else if (smallGlassWindow1.getColor() == color) {
+//			smallGlassWindow1.setActiveBorder();
+//			mainGlassWindow.setInactiveBorder();
+//			smallGlassWindow2.setInactiveBorder();
+//			smallGlassWindow3.setInactiveBorder();
+//		} else if (smallGlassWindow2.getColor() == color) {
+//			smallGlassWindow2.setActiveBorder();
+//			mainGlassWindow.setInactiveBorder();
+//			smallGlassWindow1.setInactiveBorder();
+//			smallGlassWindow3.setInactiveBorder();
+//		} else if (smallGlassWindow3.getColor() == color) {
+//			smallGlassWindow3.setActiveBorder();
+//			mainGlassWindow.setInactiveBorder();
+//			smallGlassWindow1.setInactiveBorder();
+//			smallGlassWindow2.setInactiveBorder();
+//		}
+//	}
 	
 	public void updateCurrentPlayerLabel(String userName) {
 		currentPlayerLabel.setText(userName + " is momenteel aan de beurt");

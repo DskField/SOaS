@@ -56,6 +56,26 @@ class PlayerDAO {
 			}
 		}
 	}
+	
+	void updateStatusUitgespeeld(int idPlayer) {
+		try {
+			PreparedStatement stmt = con.prepareStatement("Update player set playstatus_playstatus = uitgespeeld WHERE idplayer = ?");
+			stmt.setInt(1, idPlayer);
+
+			stmt.executeUpdate();
+			stmt.close();
+
+			con.commit();
+		} catch (SQLException e) {
+			System.err.println("PlayerDAO (updateStatus) --> " + e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				System.err.println("The rollback failed: Please check the Database!");
+			}
+		}
+	}
+
 
 	private ArrayList<Player> selectPlayer(String query) {
 		ArrayList<Player> results = new ArrayList<Player>();

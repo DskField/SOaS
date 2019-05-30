@@ -185,6 +185,7 @@ public class GameController {
 		gameScene.updateTable(game.getTable());
 		gameScene.updateToolCards(game.getToolCards());
 		gameScene.updateCurrencyStone();
+		gameScene.updateCurrentPlayerLabel(game.getCurrentPlayer().getUsername());
 
 		if (dieNotPlaced && checkMyTurn()) {
 			gameScene.updateShakeButton(checkStartPlayer());
@@ -202,7 +203,6 @@ public class GameController {
 	public void nextTurn() {
 		dieNotPlaced = true;
 		game.updatePlayers();
-		game.updateClientPlayerScore();
 		int totalPlayers = game.getPlayers().size();
 		int maxSeqnr = totalPlayers * 2;
 		int nextSeqnr = 0;
@@ -489,7 +489,7 @@ public class GameController {
 	private void gameFinish() {
 		int maxScore = -99;
 		Player winner = game.getPlayers().get(0);
-		game.setFinalScore();
+		game.setGameFinal();
 		gameScene.updateScore(game.getPlayers());
 		for (Player player : game.getPlayers()) {
 			if (maxScore < player.getScore()) {

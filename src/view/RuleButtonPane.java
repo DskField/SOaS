@@ -6,7 +6,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
-class ButtonPane extends BorderPane {
+class RuleButtonPane extends BorderPane {
 	// constants
 	private static final int PANEHEIGHT = 50;
 	private static final int PANEWIDTH = 800;
@@ -17,7 +17,7 @@ class ButtonPane extends BorderPane {
 	private Button btn_ToolCards;
 
 	// constructor
-	ButtonPane(RuleDrawPane drawPane) {
+	RuleButtonPane(RuleDrawPane drawPane) {
 		// set the size
 		setPrefHeight(PANEHEIGHT);
 		setMinHeight(PANEHEIGHT);
@@ -28,8 +28,14 @@ class ButtonPane extends BorderPane {
 		// set background and make the button
 		setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
 		btn_GameProgress = new Button("Spel verloop");
+		btn_GameProgress.setStyle(
+				"-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
 		btn_PlaceDie = new Button("Dobbelsteen plaatsen");
+		btn_PlaceDie.setStyle(
+				"-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
 		btn_ToolCards = new Button("Gereedschapskaarten");
+		btn_ToolCards.setStyle(
+				"-fx-background-color: darkslateblue; -fx-text-fill: white;-fx-font: normal bold 25px 'serif';");
 		// place the buttons
 		setLeft(btn_GameProgress);
 		setCenter(btn_PlaceDie);

@@ -162,6 +162,10 @@ public class PersistenceFacade {
 	}
 
 	// PlayerDAO
+	public void updateStatusUitgespeeld(int idPlayer) {
+		playerDAO.updateStatusUitgespeeld(idPlayer);
+	}
+	
 	public void updateScore(int score, int idPlayer) {
 		playerDAO.updateScore(score, idPlayer);
 	}

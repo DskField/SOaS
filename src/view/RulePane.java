@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 class RulePane extends VBox {
 	// instance variables
 	private RuleDrawPane drawPane;
-	private ButtonPane buttonPane;
+	private RuleButtonPane buttonPane;
 	private Stage stage;
 
 	// constructor
@@ -22,7 +22,7 @@ class RulePane extends VBox {
 
 		setAlignment(Pos.CENTER);
 		drawPane = new RuleDrawPane();
-		buttonPane = new ButtonPane(drawPane);
+		buttonPane = new RuleButtonPane(drawPane);
 
 		setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.7), null, null)));
 
