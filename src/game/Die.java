@@ -56,14 +56,6 @@ public class Die {
 		dieValue = random.nextInt(6) + 1;
 	}
 
-	public void rollDieAgain(int value) {
-		dieValue = value;
-	}
-
-	public void clearRound() {
-		round = 0;
-	}
-
 	// GETTERS AND SETTERS
 	public int getDieId() {
 		return dieId;

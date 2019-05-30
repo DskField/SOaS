@@ -5,7 +5,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class GoalCardPane extends AnchorPane {
-	ImageView imageView;
+	private ImageView imageView;
 
 	public GoalCardPane(int id) {
 		imageView = new ImageView();

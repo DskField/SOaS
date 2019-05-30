@@ -15,7 +15,7 @@ class RuleDrawPane extends StackPane {
 	private ImageView imageView;
 
 	// constructor
-	RuleDrawPane() {
+	public RuleDrawPane() {
 		setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.7), null, null)));
 		imageView = new ImageView();
 
@@ -32,17 +32,17 @@ class RuleDrawPane extends StackPane {
 	}
 
 	//show rules about progression
-	void showProgression() {
+	public void showProgression() {
 		imageView.setImage(new Image("file:Resources/images/Rules/Spelverloop.png"));
 	}
 
 	// show rules about die placing
-	void showDiePlacing() {
+	public void showDiePlacing() {
 		imageView.setImage(new Image("file:Resources/images/Rules/Dobbelsteenplaatsen.png"));
 	}
 
 	//show rules about toolcards
-	void showToolCard() {
+	public void showToolCard() {
 		imageView.setImage(new Image("file:Resources/images/Rules/Gereedschapskaarten.png"));
 	}
 }

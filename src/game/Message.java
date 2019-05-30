@@ -7,7 +7,7 @@ public class Message {
 	//variables
 	private Player player;
 	private String message;
-	public Timestamp timestamp;
+	private Timestamp timestamp;
 
 	/**
 	 * Constructor used to create a Message object

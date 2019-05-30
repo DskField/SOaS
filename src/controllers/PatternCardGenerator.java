@@ -1,6 +1,10 @@
-package game;
+package controllers;
 
 import java.util.Random;
+
+import game.GameColor;
+import game.PatternCard;
+import game.SpacePattern;
 
 public class PatternCardGenerator {
 	private Random rng;
