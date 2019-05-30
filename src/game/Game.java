@@ -48,7 +48,8 @@ public class Game {
 	/**
 	 * Initialize the game
 	 * 
-	 * @param gameID - The id of the game
+	 * @param gameID
+	 *            - The id of the game
 	 */
 
 	public Game(int gameID, User clientUser, PersistenceFacade persistencefacade) {
@@ -149,6 +150,7 @@ public class Game {
 		}
 
 	}
+
 	/*
 	 * used for loading and updating currencystones
 	 */
@@ -188,12 +190,14 @@ public class Game {
 	// kevin stuff
 	public void setGameFinal() {
 		for (Player player : players) {
-			int score = scoreHandler.getScore(player, true);
-			player.setScore(score);
-			if(clientPlayer.getSeqnr() == getPlayers().size()) {
-				persistenceFacade.updateScore(scoreHandler.getScore(player, false), player.getPlayerID());
+			if (clientPlayer.getSeqnr() == 1) {
+				persistenceFacade.updateScore(scoreHandler.getScore(player, true), player.getPlayerID());
 				persistenceFacade.updateStatusUitgespeeld(player.getPlayerID());
+				player.setScore(persistenceFacade.getPlayerScore(player.getPlayerID()));
+			} else {
+				player.setScore(persistenceFacade.getPlayerScore(player.getPlayerID()));
 			}
+
 		}
 	}
 
@@ -344,7 +348,8 @@ public class Game {
 	 * insertion. After insertion this method will call upon the updateChat function
 	 * to update the chat from the database.
 	 * 
-	 * @param message - the Message that needs to be send to the database
+	 * @param message
+	 *            - the Message that needs to be send to the database
 	 * @return ArrayList<Message> list of messages that need to be added to the
 	 *         ChatPane
 	 */

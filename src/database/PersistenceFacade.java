@@ -16,8 +16,7 @@ import game.Player;
 import game.Round;
 import game.ToolCard;
 
-//A nice facade so to hide the complexity and ugly shit behind this, you can also call this 
-//the gate to hell. It's pretty much like at a Chinese restaurant
+
 public class PersistenceFacade {
 	private BaseDAO baseDAO = new BaseDAO();
 	private GameDAO gameDAO = new GameDAO(baseDAO.getConnection());
@@ -162,6 +161,10 @@ public class PersistenceFacade {
 	}
 
 	// PlayerDAO
+	public int getPlayerScore(int idPlayer) {
+		return playerDAO.getScore(idPlayer);
+	}
+	
 	public void updateStatusUitgespeeld(int idPlayer) {
 		playerDAO.updateStatusUitgespeeld(idPlayer);
 	}

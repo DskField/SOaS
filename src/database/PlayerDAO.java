@@ -18,6 +18,23 @@ class PlayerDAO {
 	}
 
 	// kevin stuff
+	int getScore(int idPlayer) {
+		int result = 0;
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT score FROM player WHERE idplayer = ?");
+			stmt.setInt(1, idPlayer);
+			ResultSet dbResultSet = stmt.executeQuery();
+
+			result = dbResultSet.getInt("score");
+
+			con.commit();
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("PlayerDAO (getScore) --> " + e.getMessage());
+		}
+		return result;
+	}
+
 	private void insertPlayerPaterncard(int idPatternCard, int idPlayer) {
 		try {
 			PreparedStatement stmt = con.prepareStatement(
@@ -31,7 +48,8 @@ class PlayerDAO {
 			try {
 				con.rollback();
 			} catch (SQLException e1) {
-				System.err.println("PlayerDAO (insertPlayerPatterncard #2) --> The rollback failed: Please check the Database!");
+				System.err.println(
+						"PlayerDAO (insertPlayerPatterncard #2) --> The rollback failed: Please check the Database!");
 			}
 		}
 	}
@@ -56,10 +74,11 @@ class PlayerDAO {
 			}
 		}
 	}
-	
+
 	void updateStatusUitgespeeld(int idPlayer) {
 		try {
-			PreparedStatement stmt = con.prepareStatement("Update player set playstatus_playstatus = uitgespeeld WHERE idplayer = ?");
+			PreparedStatement stmt = con
+					.prepareStatement("Update player set playstatus_playstatus = 'uitgespeeld' WHERE idplayer = ?");
 			stmt.setInt(1, idPlayer);
 
 			stmt.executeUpdate();
@@ -75,7 +94,6 @@ class PlayerDAO {
 			}
 		}
 	}
-
 
 	private ArrayList<Player> selectPlayer(String query) {
 		ArrayList<Player> results = new ArrayList<Player>();
@@ -185,7 +203,8 @@ class PlayerDAO {
 			for (int i = 0; i < users.size(); i++) {
 				String status = i == 0 ? "uitdager" : "uitgedaagde";
 
-				PreparedStatement stmt = con.prepareStatement("INSERT INTO player VALUES (null, ?, ?, ?, ?, ?, ?, null, null);");
+				PreparedStatement stmt = con
+						.prepareStatement("INSERT INTO player VALUES (null, ?, ?, ?, ?, ?, ?, null, null);");
 				stmt.setString(1, users.get(i));
 				stmt.setInt(2, idGame);
 				stmt.setString(3, status);
