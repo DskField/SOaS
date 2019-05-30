@@ -62,6 +62,7 @@ public class GameScene extends Scene {
 	private VBox rightBox;
 	private VBox leftBox;
 	private VBox PublicCardsBox;
+	private HBox buttonBox;
 	private CurrencyStonesPane currencyStonesPane;
 	private ChatPane chatPane;
 
@@ -75,10 +76,13 @@ public class GameScene extends Scene {
 	private PersonalGoalCardPane personalGoalCardPane;
 	private RoundPane roundPane;
 	private DieOfferPane dieOfferPane;
+	private Button shakeButton;
 	private Button nextButton;
 	private GameController gameController;
 	public Stage stage;
 	private Label currentPlayerLabel;
+
+	
 
 	/**
 	 * Creates the GameScene
@@ -220,7 +224,10 @@ public class GameScene extends Scene {
 			nextButton.setDisable(true);
 		}
 	}
-
+	public void updateCurrencyStone() {
+		currencyStonesPane.showStones(gameController.getClientPlayer());
+	}
+		
 	/**
 	 * Creates the center of the screen containing the following aspects:
 	 * PersonalGoalCard, Currencystones, Roundtrack, PublicGoalCards, ToolCards,
@@ -230,7 +237,7 @@ public class GameScene extends Scene {
 	private void createCenter() {
 		// initialize everything for personalInfo
 		personalInfo = new VBox();
-		currencyStonesPane = new CurrencyStonesPane(gameController.getClientPlayer());
+		currencyStonesPane = new CurrencyStonesPane();
 		personalGoalCardPane = new PersonalGoalCardPane();
 		personalGoalCardPane.loadPersonalGoalCardImage(gameController.getClientPlayer().getPersonalGoalCard());
 
@@ -241,18 +248,23 @@ public class GameScene extends Scene {
 		toolCardBox = new HBox();
 		goalCardPanes = new GoalCardPane[3];
 		toolCardPanes = new ToolCardPane[3];
+		buttonBox = new HBox();
 		// initialize everything for the center box
 		centerBox = new VBox();
 		centerBox.setMaxWidth(800);
 		roundPane = new RoundPane(0, 0);
 		dieOfferPane = new DieOfferPane(gameController);
 
+		shakeButton = new Button("Schudden");
 		nextButton = new Button("Beurt klaar");
 
 		// handles everything regarding the button
+		shakeButton.setPrefSize(buttonWidth, buttonheigt);
 		nextButton.setPrefSize(buttonWidth, buttonheigt);
 		dieOfferPane.setDisable(false);
+		shakeButton.setDisable(true);
 		nextButton.setDisable(false);
+		shakeButton.setOnAction(e -> handleShakeButton());
 		nextButton.setOnAction(e -> handleNextButton());
 		// adds everything to personal info and handles makeup
 		personalInfo.getChildren().addAll(personalGoalCardPane, currencyStonesPane);
@@ -285,6 +297,9 @@ public class GameScene extends Scene {
 		goalCardsBox.setAlignment(Pos.CENTER);
 		PublicCardsBox.getChildren().addAll(goalCardsBox, toolCardBox);
 		PublicCardsBox.setSpacing(10);
+		buttonBox.getChildren().addAll(shakeButton, nextButton);
+		buttonBox.setSpacing(10);
+		buttonBox.setAlignment(Pos.CENTER);
 		cardBox.getChildren().addAll(personalInfo, PublicCardsBox);
 		cardBox.setSpacing(10);
 		cardBox.setAlignment(Pos.CENTER_LEFT);
@@ -294,7 +309,7 @@ public class GameScene extends Scene {
 		currentPlayerLabel = new Label();
 
 		// adds everything to the centerBox and handles makeup
-		centerBox.getChildren().addAll(currentPlayerLabel, roundPane, cardBox, dieOfferPane, nextButton);
+		centerBox.getChildren().addAll(currentPlayerLabel, roundPane, cardBox, dieOfferPane, buttonBox);
 		centerBox.setAlignment(Pos.CENTER);
 		centerBox.setSpacing(personalInfoSpacing);
 		centerBox.setPadding(
@@ -302,6 +317,12 @@ public class GameScene extends Scene {
 
 		// adds the centerBox to the rootPane
 		rootPane.setCenter(centerBox);
+	}
+
+	private void handleShakeButton() {
+		shakeButton.setDisable(true);
+		gameController.shakeSack();
+	
 	}
 
 	// Handles button
@@ -477,5 +498,11 @@ public class GameScene extends Scene {
 	
 	public void updateCurrentPlayerLabel(String userName) {
 		currentPlayerLabel.setText(userName + " is momenteel aan de beurt");
+	}
+
+	public void updateShakeButton(boolean checkStartPlayer) {
+		if (checkStartPlayer) {
+			shakeButton.setDisable(false);
+		}
 	}
 }

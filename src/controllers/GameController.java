@@ -176,14 +176,19 @@ public class GameController {
 		game.loadCurrentRound();
 		game.updatePlayers();
 		game.loadCurrentPlayer();
+		game.loadCurrencyStones();
 		
-		gameScene.updateCurrentPlayerBorder(game.getCurrentPlayer().getColor());
+		
+		//gameScene.updateCurrentPlayerBorder(game.getCurrentPlayer().getColor());
 		gameScene.updateRoundTrack(game.getRoundTrack());
 		gameScene.updateGlassWindow(game.updateGlassWindow());
 		gameScene.updateTable(game.getTable());
 		gameScene.updateToolCards(game.getToolCards());
+		gameScene.updateCurrencyStone();
 
 		if (dieNotPlaced && checkMyTurn()) {
+			gameScene.updateShakeButton(checkStartPlayer());
+
 			gameScene.disableDieOfferPane(false);
 		} else {
 			gameScene.disableDieOfferPane(true);
@@ -537,14 +542,14 @@ public class GameController {
 						|| pC.getSpaceValue(sG.getXCor() - 1, sG.getYCor()) == newDie.getEyes();
 
 			} else {
-				rightSame = false;
+				leftSame = false;
 			}
 			if (currentX < maxX) {// RIGHT
 				rightSame = pC.getSpaceColor(sG.getXCor() + 1, sG.getYCor()).equals(newDie.getColor())
 						|| pC.getSpaceValue(sG.getXCor() + 1, sG.getYCor()) == newDie.getEyes();
 
 			} else {
-				leftSame = false;
+				rightSame = false;
 			}
 			if (currentY > minY) {// ABOVE
 				aboveSame = pC.getSpaceColor(sG.getXCor(), sG.getYCor() - 1).equals(newDie.getColor())
@@ -569,5 +574,17 @@ public class GameController {
 		}
 		return best;
 
+	}
+
+	public void shakeSack() {
+		game.shakeSack();
+		
+	}
+	public boolean checkStartPlayer() {
+		if(getClientPlayer().getSeqnr() == 1 && getClientPlayer().equals(game.getCurrentPlayer()) && game.getTable().isEmpty()) {
+			return true;
+		}else {
+			return false;
+		}		
 	}
 }

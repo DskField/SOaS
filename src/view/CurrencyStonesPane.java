@@ -8,10 +8,8 @@ public class CurrencyStonesPane extends FlowPane {
 
 	private static final int SIZE = 100;
 
-
-	public CurrencyStonesPane(Player player) {
+	public CurrencyStonesPane() {
 		setPrefSize(SIZE, SIZE);
-		showStones(player);
 	}
 
 	// Draws a stone for each currencystone from player
