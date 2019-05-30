@@ -188,11 +188,12 @@ public class GameScene extends Scene {
 	}
 
 	public void disableOffer(boolean b) {
+		
 		dieOfferPane.setDisable(b);
 	}
 
 	public void updateTurn(boolean myTurn) {
-		if (myTurn) {
+		if (myTurn && !dieOfferPane.getChildren().isEmpty()) {
 			nextButton.setDisable(false);
 		} else {
 			nextButton.setDisable(true);
@@ -237,7 +238,7 @@ public class GameScene extends Scene {
 		nextButton.setPrefSize(buttonWidth, buttonheigt);
 		dieOfferPane.setDisable(false);
 		shakeButton.setDisable(true);
-		nextButton.setDisable(false);
+		nextButton.setDisable(true);
 		shakeButton.setOnAction(e -> handleShakeButton());
 		nextButton.setOnAction(e -> handleNextButton());
 		// adds everything to personal info and handles makeup
@@ -391,9 +392,10 @@ public class GameScene extends Scene {
 	}
 
 	public void gameFinish(String winText) {
+		rootPane.setDisable(true);
+
 		Label winner = new Label(winText);
 		rootPane.setCenter(winner);
-		rootPane.setDisable(true);
 	}
 
 	public void updateToolCards(ArrayList<ToolCard> toolCards) {
