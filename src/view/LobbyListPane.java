@@ -166,7 +166,7 @@ public class LobbyListPane extends BorderPane {
 
 		this.setCenter(lobbyJoinPannel);
 	}
-	
+
 	public int getIDGame() {
 		return idGame;
 	}
