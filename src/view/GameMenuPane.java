@@ -26,7 +26,7 @@ class GameMenuPane extends VBox {
 
 	private GameController gC;
 
-	GameMenuPane(GameController gC) {
+	public GameMenuPane(GameController gC) {
 		this.gC = gC;
 		// get the main stage
 		this.stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);

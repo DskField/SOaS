@@ -33,13 +33,13 @@ public class GameController {
 
 	private int cheatMode;
 
-	// TODO: write query for this
-	private boolean dieNotPlaced = true;
+	private boolean dieNotPlaced;
 
 	public GameController(MainApplication mainApplication, PersistenceFacade persistencefacade, ClientController clientcontroller) {
 		this.mainApplication = mainApplication;
 		this.persistencefacade = persistencefacade;
 		this.clientcontroller = clientcontroller;
+		dieNotPlaced = true;
 		// Temporary call, when the game will be created the ClientController needs
 		// to give the information to the GameController
 		//		 PersistenceFacade pf = new PersistenceFacade();
@@ -281,7 +281,6 @@ public class GameController {
 		}
 	}
 
-	// kevin stuff
 
 	public int getCollectiveGoalCard(int arrayNumber) {
 		return game.getCollectiveGoalCards().get(arrayNumber).getCardID();

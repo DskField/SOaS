@@ -70,16 +70,16 @@ public class RoundPane extends Pane {
 		}
 	}
 
-	void update() {
+	public void update() {
 		addTrack();
 		addDice();
 	}
 
-	void addDie(Integer round, DiePane diePane) {
+	public void addDie(Integer round, DiePane diePane) {
 		roundTrack.get(round).add(diePane);
 	}
 
-	void clear(Integer round) {
+	public void clear(Integer round) {
 		roundTrack.get(round).clear();
 	}
 }

@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 public class PersonalGoalCardPane extends StackPane {
-	ImageView imageView;
+	private ImageView imageView;
 
 	public PersonalGoalCardPane() {
 		imageView = new ImageView();
