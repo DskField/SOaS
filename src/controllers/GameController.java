@@ -563,8 +563,7 @@ public class GameController {
 	}
 
 	public boolean checkStartPlayer() {
-		
-		if (getClientPlayer().getSeqnr() == 1 && getClientPlayer().equals(game.getCurrentPlayer()) && game.getTable().isEmpty()) {
+		if (getClientPlayer().getSeqnr() == 1 && getClientPlayer().equals(game.getCurrentPlayer()) && game.getTable().isEmpty() && game.getCurrentRound() <= 10) {
 			return true;
 		} else {
 			return false;

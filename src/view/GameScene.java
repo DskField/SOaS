@@ -215,7 +215,7 @@ public class GameScene extends Scene {
 		currencyStonesPane = new CurrencyStonesPane();
 		personalGoalCardPane = new PersonalGoalCardPane();
 		personalGoalCardPane.loadPersonalGoalCardImage(gameController.getClientPlayer().getPersonalGoalCard());
-
+		
 		// initialize everything for the cardBox
 		cardBox = new HBox();
 		PublicCardsBox = new VBox();
@@ -441,5 +441,6 @@ public class GameScene extends Scene {
 		if (checkStartPlayer) {
 			shakeButton.setDisable(false);
 		}
+		
 	}
 }
