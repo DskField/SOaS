@@ -217,7 +217,7 @@ public class GoalCardHandler {
 				else
 					colors.add(die.getDieColor());
 			}
-			if (colors.size() == 4)
+			if (colors.size() == 5)
 				row++;
 		}
 		return row;
@@ -262,7 +262,7 @@ public class GoalCardHandler {
 					values.add(die.getDieValue());
 			}
 
-			if (values.size() == 4)
+			if (values.size() == 5)
 				row++;
 		}
 		return row;
