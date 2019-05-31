@@ -4,7 +4,7 @@ import game.GameColor;
 
 public class User {
 
-	// User stats
+	// variables
 	private int gamesPlayed;
 	private int gamesWon;
 	private int gamesLost;
@@ -14,7 +14,28 @@ public class User {
 	private int totalOpponents;
 	private String username;
 
-	public User(String username, int gamesPlayed, int maxScore, GameColor mostPlacedColor, int mostPlacedValue, int wins, int loses, int totalOpponents) {
+	/**
+	 * Constrctor used to create a User object
+	 * 
+	 * @param username
+	 *            - String containing the username
+	 * @param gamesPlayed
+	 *            - int containing the total amount of games played
+	 * @param maxScore
+	 *            - int containing the maximum score in the database
+	 * @param mostPlacedColor
+	 *            - GameColor containing the most placed Color in the database
+	 * @param mostPlacedValue
+	 *            - int containing the most placed eyes in the database
+	 * @param wins
+	 *            - int containing the amount of won games
+	 * @param loses
+	 *            - int containing the amount of lost games
+	 * @param totalOpponents
+	 *            - int containing the total amount of unique opponents
+	 */
+	public User(String username, int gamesPlayed, int maxScore, GameColor mostPlacedColor, int mostPlacedValue, int wins, int loses,
+			int totalOpponents) {
 		this.gamesPlayed = gamesPlayed;
 		this.maxScore = maxScore;
 		this.mostPlacedColor = mostPlacedColor;

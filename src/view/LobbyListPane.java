@@ -73,7 +73,7 @@ public class LobbyListPane extends BorderPane {
 		this.lobbies = clientscene.getLobbies();
 		this.playerLobbies = clientscene.getPlayerLobbies();
 		
-		orderButton = new Button(orderASC ? "gesorteerd nieuwste" : "gesorteerd oudste");
+		orderButton = new Button(orderASC ? "gesorteerd op oudste" : "gesorteerd op nieuwste");
 		orderButton.setOnAction(e -> handleOrderButton());
 		orderButton.setMinHeight(45);
 		orderButton.setMaxHeight(45);
