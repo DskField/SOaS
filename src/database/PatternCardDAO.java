@@ -17,6 +17,24 @@ class PatternCardDAO {
 	public PatternCardDAO(Connection connection) {
 		this.con = connection;
 	}
+	
+	int getMaxID() {
+		int maxID = 0;
+		try {
+
+			PreparedStatement stmt = con.prepareStatement("SELECT MAX(idpatterncard) AS maxid FROM patterncard");
+			ResultSet dbResultSet = stmt.executeQuery();
+			con.commit();
+			while (dbResultSet.next()) {
+				maxID = dbResultSet.getInt("maxid");
+			}
+			con.commit();
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("PatternCardDAO (getMaxID) --> " + e.getMessage());
+		}
+		return maxID;
+	}
 
 	ArrayList<PatternCard> getStandardPatternCards() {
 		return selectPatternCard("SELECT * FROM patterncard WHERE standard IS TRUE");
@@ -26,9 +44,11 @@ class PatternCardDAO {
 		return selectPatternCard("SELECT * FROM patterncard WHERE standard IS FALSE");
 	}
 
-	//Is used to obtain a player's chosen patterncard
+	// Is used to obtain a player's chosen patterncard
 	PatternCard getplayerPatternCard(int idPlayer) {
-		ArrayList<PatternCard> cards = selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard = (SELECT patterncard_idpatterncard FROM player WHERE idplayer = " + idPlayer + ")");
+		ArrayList<PatternCard> cards = selectPatternCard(
+				"SELECT * FROM patterncard WHERE idpatterncard = (SELECT patterncard_idpatterncard FROM player WHERE idplayer = "
+						+ idPlayer + ")");
 		if (cards.isEmpty()) {
 			return null;
 		} else {
@@ -36,32 +56,39 @@ class PatternCardDAO {
 		}
 	}
 
-	//Is used to obtain the options given to a player at the start of a game
+	// Is used to obtain the options given to a player at the start of a game
 	ArrayList<PatternCard> getPlayerOptions(int idPlayer) {
-		return selectPatternCard("SELECT * FROM patterncard WHERE idpatterncard IN (SELECT patterncard_idpatterncard FROM patterncardoption WHERE player_idplayer = " + idPlayer + ")");
+		return selectPatternCard(
+				"SELECT * FROM patterncard WHERE idpatterncard IN (SELECT patterncard_idpatterncard FROM patterncardoption WHERE player_idplayer = "
+						+ idPlayer + ")");
 	}
 
 	void addPatternCard(PatternCard patternCard) {
 		insertPatternCard(patternCard);
 	}
 
-	void insertPatternCardOptions(int idPlayer, ArrayList<PatternCard> patternCards) {
-		ArrayList<PatternCard> list = getStandardPatternCards();
-		for (int i = 0; i < list.size(); i++) {
-			for (PatternCard patternCard : patternCards) {
-				if(list.get(i).getPatternCardId() == patternCard.getPatternCardId()) {
-					list.remove(i);
-					i--;
+	void insertPatternCardOptions(int idPlayer, ArrayList<PatternCard> patternCards, boolean generatedCards) {
+		ArrayList<PatternCard>list = new ArrayList<>();
+		if(generatedCards) {
+			list = patternCards;
+		}else {
+			list = getStandardPatternCards();
+			for (int i = 0; i < list.size(); i++) {// checks if that patterncard is already used and removes that one from 
+				for (PatternCard patternCard : patternCards) {
+					if (list.get(i).getPatternCardId() == patternCard.getPatternCardId()) {
+						list.remove(i);
+						i--;
+					}
 				}
 			}
+
+			Collections.shuffle(list);
 		}
-		
-		
-		
-		Collections.shuffle(list);
+
 
 		try {
-			PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncardoption VALUES (?,?), (?,?), (?,?), (?,?)");
+			PreparedStatement stmt = con
+					.prepareStatement("INSERT INTO patterncardoption VALUES (?,?), (?,?), (?,?), (?,?)");
 			// Option 1
 			stmt.setInt(1, list.get(0).getPatternCardId());
 			stmt.setInt(2, idPlayer);
@@ -86,12 +113,14 @@ class PatternCardDAO {
 			try {
 				con.rollback();
 			} catch (SQLException e2) {
-				System.err.println("PatternCardDAO (insertPatternCardOptions #2) --> the rollback failed: Please check the Database!");
+				System.err.println(
+						"PatternCardDAO (insertPatternCardOptions #2) --> the rollback failed: Please check the Database!");
 			}
 		}
 	}
 
-	//Is used to obtain a PatternCard Object from the database, altough it doesn't contain SpacePattern Objects yet
+	// Is used to obtain a PatternCard Object from the database, altough it doesn't
+	// contain SpacePattern Objects yet
 	private ArrayList<PatternCard> selectPatternCard(String query) {
 		ArrayList<PatternCard> results = new ArrayList<PatternCard>();
 		try {
@@ -118,7 +147,8 @@ class PatternCardDAO {
 	private SpacePattern[][] selectSpacePatterns(int cardID) {
 		SpacePattern[][] result = new SpacePattern[5][4];
 		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT * FROM patterncardfield WHERE patterncard_idpatterncard = ?;");
+			PreparedStatement stmt = con
+					.prepareStatement("SELECT * FROM patterncardfield WHERE patterncard_idpatterncard = ?;");
 			stmt.setInt(1, cardID);
 			ResultSet dbResultSet = stmt.executeQuery();
 			con.commit();
@@ -126,7 +156,8 @@ class PatternCardDAO {
 			while (dbResultSet.next()) {
 				int x = dbResultSet.getInt("position_x");
 				int y = dbResultSet.getInt("position_y");
-				GameColor color = GameColor.getEnum((dbResultSet.getString("color") == null) ? " " : dbResultSet.getString("color"));
+				GameColor color = GameColor
+						.getEnum((dbResultSet.getString("color") == null) ? " " : dbResultSet.getString("color"));
 				int value = dbResultSet.getInt("value");
 
 				SpacePattern spacePattern = new SpacePattern(x - 1, y - 1, color, value);
@@ -139,7 +170,8 @@ class PatternCardDAO {
 		return result;
 	}
 
-	//Is used to add a custom PatternCard Object to the database, but only to the patterncard table
+	// Is used to add a custom PatternCard Object to the database, but only to the
+	// patterncard table
 	private void insertPatternCard(PatternCard patternCard) {
 		try {
 			PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncard VALUES (?,?,?,FALSE)");
@@ -154,7 +186,8 @@ class PatternCardDAO {
 			try {
 				con.rollback();
 			} catch (SQLException e2) {
-				System.err.println("PatternCardDAO (insertPatternCard #2) --> the rollback failed: Please check the Database!");
+				System.err.println(
+						"PatternCardDAO (insertPatternCard #2) --> the rollback failed: Please check the Database!");
 			}
 		}
 	}

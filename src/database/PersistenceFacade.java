@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import client.Challenge;
 import client.Lobby;
 import client.User;
+import controllers.PatternCardGenerator;
 import game.CollectiveGoalCard;
 import game.CurrencyStone;
 import game.Die;
@@ -15,7 +16,6 @@ import game.PatternCard;
 import game.Player;
 import game.Round;
 import game.ToolCard;
-
 
 public class PersistenceFacade {
 	private BaseDAO baseDAO = new BaseDAO();
@@ -28,7 +28,7 @@ public class PersistenceFacade {
 	private CollectiveGoalCardDAO collectiveGoalCardDAO = new CollectiveGoalCardDAO(baseDAO.getConnection());
 	private CurrencyStoneDAO currencyStoneDAO = new CurrencyStoneDAO(baseDAO.getConnection());
 	private SpaceGlassDAO spaceGlassDAO = new SpaceGlassDAO(baseDAO.getConnection());
-
+	private SpacePatternDAO spacePatternDAO = new SpacePatternDAO(baseDAO.getConnection());
 	// Client
 	private ChallengeDAO challengeDAO = new ChallengeDAO(baseDAO.getConnection());
 	private LobbyDAO lobbyDAO = new LobbyDAO(baseDAO.getConnection());
@@ -101,28 +101,44 @@ public class PersistenceFacade {
 	/**
 	 * Creates a game in the database
 	 * 
-	 * @param users
-	 *            - List of users in the game, The first user NEEDS to be the creator
+	 * @param users                - List of users in the game, The first user NEEDS
+	 *                             to be the creator
+	 * @param patternCardGenerator
 	 */
-	public void createGame(ArrayList<String> users, boolean useRandomPatternCards) {
+	public void createGame(ArrayList<String> users, boolean useRandomPatternCards,
+			PatternCardGenerator patternCardGenerator) {
 		int gameID = gameDAO.createGame();
 		dieDAO.insertDice(gameID);
 		currencyStoneDAO.insertCurrencyStones(gameID);
 		playerDAO.insertPlayers(gameID, users);
 		gameDAO.updateCurrentPlayer(gameID, playerDAO.getCurrentPlayer(gameID));
 		spaceGlassDAO.insertGlassWindows(playerDAO.getAllPlayersInGame(gameID));
-		setCardsGame(gameID, useRandomPatternCards);
+		setCardsGame(gameID, useRandomPatternCards, patternCardGenerator);
 	}
-
-	public void setCardsGame(int idGame, boolean useRandomPatternCards) {
+/*
+ * sets the card options for players
+ */
+	public void setCardsGame(int idGame, boolean useRandomPatternCards, PatternCardGenerator patternCardGenerator) {
 		ArrayList<Player> players = playerDAO.getAllPlayersInGame(idGame);
 
 		ArrayList<PatternCard> patternCards = new ArrayList<>();
 
-		for (Player player : players) {
-			patternCardDAO.insertPatternCardOptions(player.getPlayerID(), patternCards);
+		for (Player player : players) {// for every player do one of those 2 actions
+			if (useRandomPatternCards) {
+				patternCards.clear();
+				int amount = 0;
+				while (amount <= 4) {//generate 4 Pattercards
+					PatternCard generated = patternCardGenerator.createCard(patternCardDAO.getMaxID() + 1);
+					patternCardDAO.addPatternCard(generated);
+					spacePatternDAO.addPattern(generated);
+					patternCards.add(generated);
+					amount++;
+				}
+				patternCardDAO.insertPatternCardOptions(player.getPlayerID(), patternCards, useRandomPatternCards);
 
-			// TODO use boolean to get random generator patterncards
+			} else {
+				patternCardDAO.insertPatternCardOptions(player.getPlayerID(), patternCards, useRandomPatternCards);
+			}
 			patternCards.addAll(patternCardDAO.getPlayerOptions(player.getPlayerID()));
 
 		}
@@ -172,15 +188,15 @@ public class PersistenceFacade {
 	public int getPlayerScore(int idPlayer) {
 		return playerDAO.getScore(idPlayer);
 	}
-	
+
 	public void updateStatusUitgespeeld(int idPlayer) {
 		playerDAO.updateStatusUitgespeeld(idPlayer);
 	}
-	
+
 	public void updateScore(int score, int idPlayer) {
 		playerDAO.updateScore(score, idPlayer);
 	}
-	
+
 	public ArrayList<Player> getAllPlayers() {
 		return playerDAO.getAllPlayers();
 	}

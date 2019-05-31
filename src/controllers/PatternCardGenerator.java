@@ -10,11 +10,11 @@ public class PatternCardGenerator {
 	private Random rng;
 
 
-	public PatternCard getCard() {
-		return generateCard();
+	public PatternCard createCard(int id) {
+		return generateCard(id);
 	}
 
-	private PatternCard generateCard() {
+	private PatternCard generateCard(int id) {
 		SpacePattern[][] pattern = new SpacePattern[5][4];
 		for (int x = 0; x < 5; x++) {
 			for (int y = 0; y < 4; y++) {
@@ -55,7 +55,7 @@ public class PatternCardGenerator {
 			}
 		}
 
-		PatternCard generatedCard = new PatternCard(0, "Generated_Card", generateDifficulty(pattern));
+		PatternCard generatedCard = new PatternCard(id, "Generated_Card", generateDifficulty(pattern));
 		generatedCard.addPattern(pattern);
 		return generatedCard;
 	}
