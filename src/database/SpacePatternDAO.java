@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 import game.GameColor;
 import game.PatternCard;
@@ -23,7 +24,6 @@ class SpacePatternDAO {
 	void addPattern(PatternCard patternCard) {
 		insertPattern(patternCard);
 	}
-
 	//Is used to obtain a single PatternCard from the database
 	private SpacePattern[][] selectSpacePattern(String query) {
 		SpacePattern[][] result = new SpacePattern[5][4];
@@ -52,10 +52,19 @@ class SpacePatternDAO {
 			for (int x = 0; x < 5; x++) {
 				for (int y = 0; y < 4; y++) {
 					PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncardfield VALUES (" + patternCard.getPatternCardId() + ",?,?,?,?)");
-					stmt.setInt(2, patternCard.getSpace(x, y).getXCor());
-					stmt.setInt(3, patternCard.getSpace(x, y).getYCor());
-					stmt.setString(4, patternCard.getSpace(x, y).getColor().getDatabaseName());
-					stmt.setInt(5, patternCard.getSpace(x, y).getValue());
+					stmt.setInt(1, patternCard.getSpace(x, y).getXCor());
+					stmt.setInt(2, patternCard.getSpace(x, y).getYCor());
+					if( patternCard.getSpace(x, y).getColor().getDatabaseName().equals("")) {//Database wants null, this is to insert null if there is no color
+						stmt.setNull(3, Types.VARCHAR);
+					}else {
+						stmt.setString(3, patternCard.getSpace(x, y).getColor().getDatabaseName());
+
+					}
+					if( patternCard.getSpace(x, y).getValue() ==0) {//Database wants null, this is to insert null if value == 0
+						stmt.setNull(4,Types.INTEGER);
+					}else {
+						stmt.setInt(4,patternCard.getSpace(x, y).getValue());
+					}
 					stmt.executeUpdate();
 					stmt.close();
 				}

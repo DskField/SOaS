@@ -100,7 +100,7 @@ public class ClientController {
 			if (persistencefacade.hasOpenInvite(client.getUser().getUsername(), u))
 				return false;
 		}
-		persistencefacade.createGame(users, useRandomPatternCards);
+		persistencefacade.createGame(users, useRandomPatternCards, new PatternCardGenerator());
 		return true;
 	}
 
