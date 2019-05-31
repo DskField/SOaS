@@ -107,17 +107,19 @@ public class PersistenceFacade {
 		spaceGlassDAO.insertGlassWindows(playerDAO.getAllPlayersInGame(gameID));
 		setCardsGame(gameID, useRandomPatternCards, patternCardGenerator);
 	}
-
+/*
+ * sets the card options for players
+ */
 	public void setCardsGame(int idGame, boolean useRandomPatternCards, PatternCardGenerator patternCardGenerator) {
 		ArrayList<Player> players = playerDAO.getAllPlayersInGame(idGame);
 
 		ArrayList<PatternCard> patternCards = new ArrayList<>();
 
-		for (Player player : players) {
+		for (Player player : players) {// for every player do one of those 2 actions
 			if (useRandomPatternCards) {
 				patternCards.clear();
 				int amount = 0;
-				while (amount <= 4) {//generate Pattercards
+				while (amount <= 4) {//generate 4 Pattercards
 					PatternCard generated = patternCardGenerator.createCard(patternCardDAO.getMaxID() + 1);
 					patternCardDAO.addPatternCard(generated);
 					spacePatternDAO.addPattern(generated);
