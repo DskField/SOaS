@@ -9,22 +9,15 @@ public class Lobby {
 	private int lobbyResponse;
 	private int lobbySize;
 	private int finalScore;
-	private boolean won;
 
-	public Lobby(int gameID, String gameState, boolean isCurrentPlayer, int lobbyResponse, int lobbySize, int finalScore, boolean won, int currentRound) {
+	public Lobby(int gameID, String gameState, boolean isCurrentPlayer, int lobbyResponse, int lobbySize, int finalScore, int currentRound) {
 		this.gameID = gameID;
 		this.gameState = gameState;
 		this.isCurrentPlayer = isCurrentPlayer;
 		this.lobbyResponse = lobbyResponse;
 		this.lobbySize = lobbySize;
 		this.finalScore = finalScore;
-		this.won = won;
 		this.currentRound = currentRound;
-	}
-
-	// SETTERS
-	public void setWon(boolean won) {
-		this.won = won;
 	}
 
 	// GETTERS
@@ -54,9 +47,5 @@ public class Lobby {
 
 	public int getFinalScore() {
 		return finalScore;
-	}
-
-	public boolean isWon() {
-		return won;
 	}
 }

@@ -14,9 +14,11 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Screen;
 
 public class LobbyListPane extends BorderPane {
 
@@ -26,7 +28,10 @@ public class LobbyListPane extends BorderPane {
 	private ClientScene clientscene;
 	private Label errorMessage;
 	private ArrayList<Integer> lobbies;
+	private ArrayList<Integer> playerLobbies;
 	private int idGame;
+	private boolean orderASC;
+	private Button orderButton;
 
 	// All stats labels
 	private Label titleLabel;
@@ -49,13 +54,16 @@ public class LobbyListPane extends BorderPane {
 	final private int joinGameButtonWidth = 400;
 	final private int joinGameButtonHeight = 150;
 	final private Color errorMessageColor = Color.RED;
-
+	final private Background togglebuttonBackground = new Background(new BackgroundFill(Color.BLUE, null, null));
+	final private Color togglebuttonColor = Color.WHITE;
+	
 	public LobbyListPane(ClientScene clientscene) {
 		this.clientscene = clientscene;
 		lobbyList = new ListView<ToggleButton>();
 		togglegroup = new ToggleGroup();
 		this.handlebutton = new HandleButton();
 		idGame = 0;
+		orderASC = true;
 		createLeft();
 	}
 
@@ -63,18 +71,37 @@ public class LobbyListPane extends BorderPane {
 		lobbyList.getItems().clear();
 		togglegroup.getToggles().clear();
 		this.lobbies = clientscene.getLobbies();
-
+		this.playerLobbies = clientscene.getPlayerLobbies();
+		
+		orderButton = new Button(orderASC ? "gesorteerd nieuwste" : "gesorteerd oudste");
+		orderButton.setOnAction(e -> handleOrderButton());
+		orderButton.setMinHeight(45);
+		orderButton.setMaxHeight(45);
+		
 		for (Integer lob : lobbies) {
 			ToggleButton togglebutton = new ToggleButton("Game " + lob);
 			togglebutton.setAlignment(Pos.CENTER);
 			togglebutton.setOnMouseClicked(handlebutton);
+			if (playerLobbies.contains(lob)) {
+				togglebutton.setBackground(togglebuttonBackground);
+				togglebutton.setTextFill(togglebuttonColor);
+			}
 			lobbyList.getItems().add(togglebutton);
 			togglegroup.getToggles().add(togglebutton);
 		}
+		
+		lobbyList.setMinHeight(Screen.getPrimary().getVisualBounds().getMaxY() - orderButton.getHeight() - 5);
+		lobbyList.setMaxHeight(Screen.getPrimary().getVisualBounds().getMaxY() - orderButton.getHeight() - 5);
+		orderButton.setMinWidth(lobbyList.getWidth());
+		orderButton.setMaxWidth(lobbyList.getWidth());
 
-		this.setLeft(lobbyList);
+		VBox leftBox = new VBox();
+		leftBox.getChildren().addAll(orderButton, lobbyList);
+		leftBox.setAlignment(Pos.CENTER);
+
+		this.setLeft(leftBox);
 	}
-
+	
 	public void createStats(int idGame) {
 		BorderPane statsBox = new BorderPane();
 
@@ -111,7 +138,9 @@ public class LobbyListPane extends BorderPane {
 		playerList.setAlignment(Pos.CENTER);
 		playerList.getChildren().add(scoreboardLabel);
 
-		ArrayList<ArrayList<String>> scoreboardList = clientscene.getScore(idGame, clientscene.getPlayers(idGame));
+		// Makes scoreboard when game isn't finished and has no score in database
+		ArrayList<ArrayList<String>> scoreboardList = gamestateTextLabel.getText().equals("uitgespeeld") ? clientscene.getScoreboard(idGame)
+				: clientscene.getScore(idGame, clientscene.getPlayers(idGame));
 		for (int i = 0; i < scoreboardList.size(); i++) {
 			Label playername = new Label((i + 1) + ". " + scoreboardList.get(i).get(0) + ": " + scoreboardList.get(i).get(1));
 			playername.setFont(Font.font(textSize));
@@ -123,7 +152,7 @@ public class LobbyListPane extends BorderPane {
 
 		String won;
 		if (clientscene.getLobby(idGame).getGameState().equals("uitgespeeld"))
-			won = clientscene.getLobby(idGame).isWon() ? "Gewonnen" : "Verloren";
+			won = scoreboardList.get(0).get(0).equals(clientscene.getUser().getUsername()) ? "Gewonnen" : "Verloren";
 		else
 			won = String.format("%0$-22s", "");
 		wonLabel = new Label(won);
@@ -169,6 +198,12 @@ public class LobbyListPane extends BorderPane {
 
 	public int getIDGame() {
 		return idGame;
+	}
+	
+	private void handleOrderButton() {
+		orderASC = orderASC ? false : true;
+		clientscene.changeLobbyOrder(orderASC);
+		createLeft();
 	}
 
 	public void joinGameButton(int idGame) {

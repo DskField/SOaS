@@ -7,9 +7,12 @@ import game.GameColor;
 
 public class Client {
 
-	private String username;
-
-	private ArrayList<Integer> lobbiesGameID;
+	private ArrayList<Integer> allLobbies;
+	private ArrayList<Integer> allPlayerLobbies;
+	private boolean orderLobbyASC;
+	
+	private ArrayList<String> allUsers;
+	private boolean orderUserASC;
 	
 	private Lobby lobby;
 	private Challenge challenge;
@@ -19,11 +22,14 @@ public class Client {
 	private PersistenceFacade persistencefacade;
 
 	public Client(String username, PersistenceFacade persistencefacade) {
-		this.username = username;
+		orderLobbyASC = true;
+		orderUserASC = true;
 		this.persistencefacade = persistencefacade;
 		this.user = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username) : new User(username, 0, 0, GameColor.EMPTY, 0, 0, 0, 0);
 		this.challenges = persistencefacade.getChallenges(username);
-		this.lobbiesGameID = persistencefacade.getAllLobbies(user.getUsername());
+		this.allLobbies = persistencefacade.getAllLobbies(orderLobbyASC);
+		this.allPlayerLobbies = persistencefacade.getAllPlayerLobbies(username);
+		this.allUsers = persistencefacade.getAllUsername(orderUserASC);
 	}
 
 	// Update
@@ -32,7 +38,8 @@ public class Client {
 	}
 
 	public void updateLobby() {
-		this.lobbiesGameID = persistencefacade.getAllLobbies(user.getUsername());
+		this.allLobbies = persistencefacade.getAllLobbies(orderLobbyASC);
+		this.allPlayerLobbies = persistencefacade.getAllPlayerLobbies(user.getUsername());
 	}
 
 	public void updateUser() {
@@ -45,28 +52,25 @@ public class Client {
 	}
 	
 	public ArrayList<Integer> getAllLobbies() {
-		return lobbiesGameID;
+		return allLobbies;
+	}
+	
+	public ArrayList<Integer> getAllPlayerLobbies() {
+		return allPlayerLobbies;
 	}
 
 	public ArrayList<Integer> getChallenges() {
 		return challenges;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
 	public User getOpponent(String username) {
 		this.opponent = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username)
 				: new User(username, 0, 0, GameColor.EMPTY, 0, 0, 0, 0);
-//		opponent.setGamesWon(calcWon());
-//		opponent.setGamesLost(calcLost());
-//		opponent.setTotalOpponents(calcOpponents());
 		return opponent;
 	}
 
 	public Lobby getLobby(int gameID) {
-		this.lobby = persistencefacade.getLobby(gameID, user.getUsername());
+		this.lobby = persistencefacade.getLobby(gameID);
 		return lobby;
 	}
 
@@ -74,4 +78,17 @@ public class Client {
 		this.challenge = persistencefacade.getChallenge(gameID);
 		return challenge;
 	}
+
+	public void changeLobbyOrder(boolean orderASC) {
+		this.orderLobbyASC = orderASC;
+	}
+
+	public ArrayList<String> getAllUsernames() {
+		return allUsers;
+	}
+
+	public void changeUserOrder(boolean orderASC) {
+		this.allUsers = persistencefacade.getAllUsername(orderASC);
+	}
+	
 }

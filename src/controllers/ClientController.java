@@ -69,6 +69,10 @@ public class ClientController {
 	public ArrayList<Integer> getLobbies() {
 		return client.getAllLobbies();
 	}
+	
+	public ArrayList<Integer> getPlayerLobbies() {
+		return client.getAllPlayerLobbies();
+	}
 
 	public Challenge getSpecificChallenge(int gameID) {
 		return client.getChallenge(gameID);
@@ -116,7 +120,6 @@ public class ClientController {
 	// TODO TOM MOVE FACADE - TEMPORARY FIX
 	public ArrayList<ArrayList<String>> getScore(int gameID, ArrayList<Player> players) {
 		ScoreHandler scorehandler = new ScoreHandler(persistencefacade.getSharedCollectiveGoalCards(gameID));
-		ArrayList<String> playerToInt = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> comparator = new ArrayList<>();
 		ArrayList<ArrayList<String>> result = new ArrayList<>();
 		
@@ -125,7 +128,6 @@ public class ClientController {
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).loadGlassWindow(persistencefacade.getGlassWindow(players.get(i).getPlayerID()));
 			ArrayList<Integer> combo = new ArrayList<>();
-			playerToInt.add(players.get(i).getUsername());
 
 			combo.add(i);
 			combo.add(scorehandler.getScore(players.get(i), false));
@@ -210,7 +212,7 @@ public class ClientController {
 	}
 
 	public ArrayList<String> getAllUsernames() {
-		return persistencefacade.getAllUsername();
+		return client.getAllUsernames();
 	}
 
 	public boolean isGameReady(int idGame) {
@@ -235,5 +237,17 @@ public class ClientController {
 		}
 		
 		return true;
+	}
+	
+	public ArrayList<ArrayList<String>> getScoreboard(int idGame) {
+		return persistencefacade.getScoreboard(idGame);
+	}
+
+	public void changeLobbyOrder(boolean orderASC) {
+		client.changeLobbyOrder(orderASC);
+	}
+
+	public void changeUserOrder(boolean orderASC) {
+		client.changeUserOrder(orderASC);
 	}
 }
