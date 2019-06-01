@@ -118,6 +118,12 @@ public class PersistenceFacade {
 /*
  * sets the card options for players
  */
+	/**
+	 * sets the cards and patterncardoptions for all players in that game
+	 * @param idGame
+	 * @param useRandomPatternCards
+	 * @param patternCardGenerator
+	 */
 	public void setCardsGame(int idGame, boolean useRandomPatternCards, PatternCardGenerator patternCardGenerator) {
 		ArrayList<Player> players = playerDAO.getAllPlayersInGame(idGame);
 
@@ -128,9 +134,9 @@ public class PersistenceFacade {
 				patternCards.clear();
 				int amount = 0;
 				while (amount <= 4) {//generate 4 Pattercards
-					PatternCard generated = patternCardGenerator.createCard(patternCardDAO.getMaxID() + 1);
-					patternCardDAO.addPatternCard(generated);
-					spacePatternDAO.addPattern(generated);
+					PatternCard generated = patternCardGenerator.generateCard();
+					generated.setID(patternCardDAO.insertPatternCard(generated));
+					spacePatternDAO.insertPattern(generated);
 					patternCards.add(generated);
 					amount++;
 				}

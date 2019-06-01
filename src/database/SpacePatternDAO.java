@@ -21,9 +21,6 @@ class SpacePatternDAO {
 		return selectSpacePattern("SELECT * FROM patterncardfield WHERE patterncard_idpatterncard = " + idPatternCard);
 	}
 
-	void addPattern(PatternCard patternCard) {
-		insertPattern(patternCard);
-	}
 	//Is used to obtain a single PatternCard from the database
 	private SpacePattern[][] selectSpacePattern(String query) {
 		SpacePattern[][] result = new SpacePattern[5][4];
@@ -47,7 +44,7 @@ class SpacePatternDAO {
 	}
 
 	//Inserts a pattern into the database
-	private void insertPattern(PatternCard patternCard) {
+	void insertPattern(PatternCard patternCard) {
 		try {
 			for (int x = 0; x < 5; x++) {
 				for (int y = 0; y < 4; y++) {

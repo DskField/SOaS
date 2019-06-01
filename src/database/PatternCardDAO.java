@@ -17,24 +17,6 @@ class PatternCardDAO {
 	public PatternCardDAO(Connection connection) {
 		this.con = connection;
 	}
-	
-	int getMaxID() {
-		int maxID = 0;
-		try {
-
-			PreparedStatement stmt = con.prepareStatement("SELECT MAX(idpatterncard) AS maxid FROM patterncard");
-			ResultSet dbResultSet = stmt.executeQuery();
-			con.commit();
-			while (dbResultSet.next()) {
-				maxID = dbResultSet.getInt("maxid");
-			}
-			con.commit();
-			stmt.close();
-		} catch (SQLException e) {
-			System.err.println("PatternCardDAO (getMaxID) --> " + e.getMessage());
-		}
-		return maxID;
-	}
 
 	ArrayList<PatternCard> getStandardPatternCards() {
 		return selectPatternCard("SELECT * FROM patterncard WHERE standard IS TRUE");
@@ -63,10 +45,12 @@ class PatternCardDAO {
 						+ idPlayer + ")");
 	}
 
-	void addPatternCard(PatternCard patternCard) {
-		insertPatternCard(patternCard);
-	}
-
+	/**
+	 * add the pattencard option for players
+	 * @param idPlayer the player for who this card is
+	 * @param patternCards the already used patterncards or if you use generated patterncards the cards to be used in the game
+	 * @param generatedCards true if using generated cards
+	 */
 	void insertPatternCardOptions(int idPlayer, ArrayList<PatternCard> patternCards, boolean generatedCards) {
 		ArrayList<PatternCard>list = new ArrayList<>();
 		if(generatedCards) {
@@ -170,17 +154,29 @@ class PatternCardDAO {
 		return result;
 	}
 
-	// Is used to add a custom PatternCard Object to the database, but only to the
-	// patterncard table
-	private void insertPatternCard(PatternCard patternCard) {
+
+	/**
+	 * THis method adds the information to the database a generated patterncard to the database
+	 * @param patternCard the generated patterncard
+	 * @return the ID of the patterncard
+	 */
+	int insertPatternCard(PatternCard patternCard) {
+		int last = 0;
 		try {
-			PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncard VALUES (?,?,?,FALSE)");
-			stmt.setInt(1, patternCard.getPatternCardId());
-			stmt.setString(2, patternCard.getName());
-			stmt.setInt(3, patternCard.getDifficulty());
+			PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncard(name, difficulty, standard) VALUES (?,?,FALSE)");
+			stmt.setString(1, patternCard.getName());
+			stmt.setInt(2, patternCard.getDifficulty());
 			stmt.executeUpdate();
 			con.commit();
 			stmt.close();
+			PreparedStatement stmt2 = con.prepareStatement("SELECT LAST_INSERT_ID() last;");
+			ResultSet dbResultSet = stmt2.executeQuery();
+			
+			while (dbResultSet.next()) {
+				last = dbResultSet.getInt("last");
+			}
+			con.commit();
+			stmt2.close();
 		} catch (SQLException e1) {
 			System.err.println("PatternCardDAO (insertPatternCard #1) --> " + e1.getMessage());
 			try {
@@ -190,5 +186,6 @@ class PatternCardDAO {
 						"PatternCardDAO (insertPatternCard #2) --> the rollback failed: Please check the Database!");
 			}
 		}
+		return last;
 	}
 }

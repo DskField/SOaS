@@ -46,4 +46,8 @@ public class PatternCard {
 	public int getSpaceValue(int x, int y) {
 		return pattern[x][y].getValue();
 	}
+
+	public void setID(int id) {
+		this.patternCardId = id;
+	}
 }

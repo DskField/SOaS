@@ -10,11 +10,11 @@ public class PatternCardGenerator {
 	private Random rng;
 
 
-	public PatternCard createCard(int id) {
-		return generateCard(id);
-	}
-
-	private PatternCard generateCard(int id) {
+	/**
+	 * generates the card
+	 * @return a new fresh from the press patterncard
+	 */
+	public PatternCard generateCard() {
 		SpacePattern[][] pattern = new SpacePattern[5][4];
 		for (int x = 0; x < 5; x++) {
 			for (int y = 0; y < 4; y++) {
@@ -55,11 +55,16 @@ public class PatternCardGenerator {
 			}
 		}
 
-		PatternCard generatedCard = new PatternCard(id, "Generated_Card", generateDifficulty(pattern));
+		PatternCard generatedCard = new PatternCard(0, "Generated_Card", generateDifficulty(pattern));
 		generatedCard.addPattern(pattern);
 		return generatedCard;
 	}
-
+/**
+ * Very scientific way to determine to the difficulty of the card
+ * It counts all the spaces that have a requirement and then devides it by 3.33 to get a value between 1 and 6
+ * @param the generated pattern
+ * @return difficulty
+ */
 	private int generateDifficulty(SpacePattern[][] pattern) {
 		int notEmpty = 0;
 		for(SpacePattern[] pRow: pattern) {
@@ -69,14 +74,26 @@ public class PatternCardGenerator {
 				}
 			}
 		}
-		double difficulty = notEmpty / 3.33;
+		double difficulty = notEmpty / 2.5;
 
 		int intDifficulty = (int)difficulty;
+		if(intDifficulty >= 7) {
+			intDifficulty = 6;
+		}
+		if (intDifficulty <= 2) {
+			intDifficulty = 3;
+		}
 		
 		return intDifficulty;
 	}
 
-	//Creates a new SpacePattern that is either blank or has a random value/color
+	
+	/**
+	 * Creates a new SpacePattern that is either blank or has a random value/color
+	 * @param x
+	 * @param y
+	 * @return one space
+	 */
 	private SpacePattern generateSpacePattern(int x, int y) {
 		rng = new Random();
 		int random = rng.nextInt(7);
