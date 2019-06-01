@@ -7,6 +7,7 @@ import game.PatternCard;
 import game.SpacePattern;
 
 public class PatternCardGenerator {
+	private static final double DIFFICULTY_FACTOR = 2.5;
 	private Random rng;
 
 
@@ -61,7 +62,7 @@ public class PatternCardGenerator {
 	}
 /**
  * Very scientific way to determine to the difficulty of the card
- * It counts all the spaces that have a requirement and then devides it by 3.33 to get a value between 1 and 6
+ * It counts all the spaces that have a requirement and then divides it by 2.5 to get a value between 1 and 6
  * @param the generated pattern
  * @return difficulty
  */
@@ -74,14 +75,11 @@ public class PatternCardGenerator {
 				}
 			}
 		}
-		double difficulty = notEmpty / 2.5;
+		double difficulty = notEmpty / DIFFICULTY_FACTOR;
 
 		int intDifficulty = (int)difficulty;
 		if(intDifficulty >= 7) {
 			intDifficulty = 6;
-		}
-		if (intDifficulty <= 2) {
-			intDifficulty = 3;
 		}
 		
 		return intDifficulty;
