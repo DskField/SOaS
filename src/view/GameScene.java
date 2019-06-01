@@ -355,7 +355,6 @@ public class GameScene extends Scene {
 		int counter = 1;
 		for (Player player : players) {
 			if (player.getPlayerID() != clientPlayer.getPlayerID()) {
-				System.out.println(counter);
 				glassWindowPanes.add(counter, new GlassWindowPane(counter, player, this, gameController));
 				glassWindowPanes.get(counter).toggleIsSmall();
 				counter++;
