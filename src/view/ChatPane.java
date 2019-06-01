@@ -60,7 +60,6 @@ public class ChatPane extends BorderPane {
 		scrollPane = new ScrollPane();
 		bottom = new HBox();
 		center = new VBox();
-		scrollPane = new ScrollPane();
 
 		// Handles makeup
 		sendMessage.setPrefSize(sendButtonWidth, sendButtonHeight);
@@ -69,10 +68,15 @@ public class ChatPane extends BorderPane {
 		scrollPane.setFitToWidth(true);
 		scrollPane.setContent(center);
 
+		//scrolls scrollbar to bottom
+		scrollPane.setVvalue(1d);
+
+		
 		// sets everything to the ChatPane
 		bottom.getChildren().addAll(playerMessage, sendMessage);
 		setCenter(scrollPane);
 		setBottom(bottom);
+		
 
 		// handlers
 
@@ -115,11 +119,15 @@ public class ChatPane extends BorderPane {
 	 *            chat
 	 */
 	public void updateChat(ArrayList<Message> messages) {
+		double scrollPos = 	scrollPane.getVvalue();
+
 		scrollPane.setVvalue(1d);
 		for (Message message : messages) {
 			center.getChildren()
 					.add(new MessagePane(message.getUserName(), message.getMessage(), message.getChatTime()));
 		}
+		scrollPane.setVvalue(scrollPos);
+
 	}
 
 	/**
