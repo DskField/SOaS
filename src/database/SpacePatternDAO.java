@@ -43,7 +43,10 @@ class SpacePatternDAO {
 		return result;
 	}
 
-	//Inserts a pattern into the database
+	/**
+	 * inserts the pattern of the patterncard into the database
+	 * @param patternCard the patterncard that has to be added
+	 */
 	void insertPattern(PatternCard patternCard) {
 		try {
 			for (int x = 0; x < 5; x++) {

@@ -10,7 +10,6 @@ import javafx.scene.paint.Color;
 class RuleDrawPane extends StackPane {
 	// constants
 	private static final int PANEWIDTH = 800, PANEHEIGHT = 750;
-
 	// instance variables
 	private ImageView imageView;
 
@@ -28,20 +27,26 @@ class RuleDrawPane extends StackPane {
 		imageView.setPreserveRatio(true);
 
 		getChildren().add(imageView);
-		showProgression();
 	}
 
-	//show rules about progression
+	
+	/**
+	 * how rules about progression
+	 */
 	public void showProgression() {
 		imageView.setImage(new Image("file:Resources/images/Rules/Spelverloop.png"));
 	}
 
-	// show rules about die placing
+	/**
+	 * show rules about die placing
+	 */
 	public void showDiePlacing() {
 		imageView.setImage(new Image("file:Resources/images/Rules/Dobbelsteenplaatsen.png"));
 	}
 
-	//show rules about toolcards
+	/**
+	 * show rules about toolcards
+	 */
 	public void showToolCard() {
 		imageView.setImage(new Image("file:Resources/images/Rules/Gereedschapskaarten.png"));
 	}

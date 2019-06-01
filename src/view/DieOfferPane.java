@@ -33,13 +33,17 @@ public class DieOfferPane extends HBox {
 		setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
 	}
 
-	public void addDice(ArrayList<Die> roundDies) {
-		if (!checkDice(roundDies)) {
+	/**
+	 * adds dice to the pane
+	 * @param roundDice the dice that have to be added
+	 */
+	public void addDice(ArrayList<Die> roundDice) {
+		if (!checkDice(roundDice)) {
 			dice.clear();
 
-			for (Die die : roundDies) {
+			for (Die die : roundDice) {
 				DiePane diePane = new DiePane(die.getDieId(), die.getDieValue(), die.getDieColor());
-				setPadding(new Insets(5));
+				setPadding(new Insets(5));//TODO magic numbers
 				setSpacing(15);
 				diePane.resize(squareSize);
 				dice.add(diePane);
@@ -81,12 +85,19 @@ public class DieOfferPane extends HBox {
 		}
 	}
 
+	/**
+	 * refresh this pane
+	 */
 	private void updateDice() {
 		getChildren().clear();
 
 		getChildren().addAll(dice);
 	}
 
+	/**
+	 * remove a die from this pane
+	 * @param diePane the die to be removed
+	 */
 	public void removeDie(DiePane diePane) {
 		getChildren().remove(diePane);
 		dice.remove(dice.indexOf(diePane));

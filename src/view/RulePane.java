@@ -11,7 +11,7 @@ class RulePane extends StackPane {
 	private static final int WIDTH = 800, HEIGHT = 900;
 
 	// instance variables
-	private RuleDrawPane drawPane;
+	private RuleDrawPane ruleDrawPane;
 	private RuleButtonPane buttonPane;
 	private Stage stage;
 
@@ -24,11 +24,11 @@ class RulePane extends StackPane {
 
 		setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.7), null, null)));
 
-		drawPane = new RuleDrawPane();
-		buttonPane = new RuleButtonPane(drawPane);
+		ruleDrawPane = new RuleDrawPane();
+		buttonPane = new RuleButtonPane(ruleDrawPane);
 
 		VBox container = new VBox();
-		container.getChildren().addAll(drawPane, buttonPane);
+		container.getChildren().addAll(ruleDrawPane, buttonPane);
 		container.setMaxSize(WIDTH, HEIGHT);
 		getChildren().add(container);
 	}

@@ -68,6 +68,9 @@ public class Player {
 	public int getScore() {
 		return score;
 	}
+	/**
+	 * remove all the currencystones this player has
+	 */
 	public void clearCurrencyStones() {
 		currencyStones.clear();
 	}
