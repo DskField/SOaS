@@ -137,5 +137,6 @@ public class ChatPane extends BorderPane {
 	private void sendMessage() {
 		gameController.sendMessage(playerMessage.getText());
 		playerMessage.clear();
+		scrollPane.setVvalue(1d);
 	}
 }
