@@ -31,6 +31,7 @@ public class LobbyListPane extends BorderPane {
 	private int idGame;
 	private boolean orderASC;
 	private Button orderButton;
+	private ArrayList<ArrayList<String>> scoreboardList;
 
 	// All stats labels
 	private Label titleLabel;
@@ -55,7 +56,7 @@ public class LobbyListPane extends BorderPane {
 	final private Color errorMessageColor = Color.RED;
 	final private Background togglebuttonBackground = new Background(new BackgroundFill(Color.BLUE, null, null));
 	final private Color togglebuttonColor = Color.WHITE;
-	
+
 	public LobbyListPane(ClientScene clientscene) {
 		this.clientscene = clientscene;
 		lobbyList = new ListView<ToggleButton>();
@@ -71,12 +72,12 @@ public class LobbyListPane extends BorderPane {
 		togglegroup.getToggles().clear();
 		this.lobbies = clientscene.getLobbies();
 		this.playerLobbies = clientscene.getPlayerLobbies();
-		
+
 		orderButton = new Button(orderASC ? "gesorteerd op oudste" : "gesorteerd op nieuwste");
 		orderButton.setOnAction(e -> handleOrderButton());
 		orderButton.setMinHeight(45);
 		orderButton.setMaxHeight(45);
-		
+
 		for (Integer lob : lobbies) {
 			ToggleButton togglebutton = new ToggleButton("Game " + lob);
 			togglebutton.setAlignment(Pos.CENTER);
@@ -88,7 +89,7 @@ public class LobbyListPane extends BorderPane {
 			lobbyList.getItems().add(togglebutton);
 			togglegroup.getToggles().add(togglebutton);
 		}
-		
+
 		lobbyList.setMinHeight(Screen.getPrimary().getVisualBounds().getMaxY() - orderButton.getHeight() - 5);
 		lobbyList.setMaxHeight(Screen.getPrimary().getVisualBounds().getMaxY() - orderButton.getHeight() - 5);
 		orderButton.setMinWidth(lobbyList.getWidth());
@@ -100,7 +101,7 @@ public class LobbyListPane extends BorderPane {
 
 		this.setLeft(leftBox);
 	}
-	
+
 	public void createStats(int idGame) {
 		BorderPane statsBox = new BorderPane();
 
@@ -138,7 +139,7 @@ public class LobbyListPane extends BorderPane {
 		playerList.getChildren().add(scoreboardLabel);
 
 		// Makes scoreboard when game isn't finished and has no score in database
-		ArrayList<ArrayList<String>> scoreboardList = gamestateTextLabel.getText().equals("uitgespeeld") ? clientscene.getScoreboard(idGame)
+		scoreboardList = gamestateTextLabel.getText().equals("uitgespeeld") ? clientscene.getScoreboard(idGame)
 				: clientscene.getScore(idGame, clientscene.getPlayers(idGame));
 		for (int i = 0; i < scoreboardList.size(); i++) {
 			Label playername = new Label((i + 1) + ". " + scoreboardList.get(i).get(0) + ": " + scoreboardList.get(i).get(1));
@@ -198,7 +199,7 @@ public class LobbyListPane extends BorderPane {
 	public int getIDGame() {
 		return idGame;
 	}
-	
+
 	private void handleOrderButton() {
 		orderASC = orderASC ? false : true;
 		clientscene.changeLobbyOrder(orderASC);
@@ -206,12 +207,25 @@ public class LobbyListPane extends BorderPane {
 	}
 
 	public void joinGameButton(int idGame) {
-		if (gamestateTextLabel.getText().equals("aan de gang") || gamestateTextLabel.getText().equals("uitgespeeld")) {
-			errorMessage.setVisible(false);
-			clientscene.joinGame(idGame);
-		} else {
-			errorMessage.setText(gamestateTextLabel.getText().equals("afgebroken") ? "het potje is afgebroken" : "Het potje is nog niet begonnen");
+		boolean playerInGame = false;
+		for (ArrayList<String> list : scoreboardList) {
+			if (list.get(0).equals(clientscene.getUser().getUsername())) {
+				playerInGame = true;
+			}
+		}
+
+		if (!playerInGame) {
+			errorMessage.setText("Jij neemt niet deel aan dit potje");
 			errorMessage.setVisible(true);
+		} else {
+			if ((gamestateTextLabel.getText().equals("aan de gang") || gamestateTextLabel.getText().equals("uitgespeeld"))) {
+				errorMessage.setVisible(false);
+				clientscene.joinGame(idGame);
+			} else {
+				errorMessage
+						.setText(gamestateTextLabel.getText().equals("afgebroken") ? "het potje is afgebroken" : "Het potje is nog niet begonnen");
+				errorMessage.setVisible(true);
+			}
 		}
 	}
 
