@@ -36,21 +36,21 @@ public class UserListPane extends BorderPane {
 	private boolean orderASC;
 
 	// Magic Numbers
-	final private static Color statsBackgroundColor = Color.AQUAMARINE;
-	final private static int statsBoxWidth = 400;
-	final private static int statsBoxHeight = 340;
-	final private static int usernameLabelSize = 50;
-	final private static int textSize = 25;
-	final private static int inviteButtonSize = 40;
-	final private static int errorMessageSize = 23;
-	final private static Color errorMessageColorRed = Color.RED;
+	final private Color statsBackgroundColor = Color.AQUAMARINE;
+	final private int statsBoxWidth = 400;
+	final private int statsBoxHeight = 340;
+	final private int usernameLabelSize = 50;
+	final private int textSize = 25;
+	final private int inviteButtonSize = 40;
+	final private int errorMessageSize = 23;
+	final private Color errorMessageColorRed = Color.RED;
 	final private Color errorMessageColorGreen = Color.LIMEGREEN;
-	final private static int viewStatsWidth = 70;
-	final private static int viewStatsHeight = 30;
-	final private static int inviteRadioButtonWidth = 100;
-	final private static int inviteRadioButtonHeight = 30;
-	final private static int listWidth = 250;
-	final private static int listHeight = (int) Screen.getPrimary().getBounds().getMaxY();
+	final private int viewStatsWidth = 70;
+	final private int viewStatsHeight = 30;
+	final private int inviteRadioButtonWidth = 100;
+	final private int inviteRadioButtonHeight = 30;
+	final private int listWidth = 250;
+	final private int listHeight = (int) Screen.getPrimary().getBounds().getMaxY();
 	final private int buttonAndLabelSpacing = 10;
 
 	public UserListPane(ClientScene clientscene) {

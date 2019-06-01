@@ -13,7 +13,6 @@ public class CurrencyStonesPane extends FlowPane {
 	}
 
 	// Draws a stone for each currencystone from player
-	// FIXME remove enhanced for loop
 	public void showStones(ArrayList<CurrencyStonePane> currencyStonePanes) {
 		getChildren().clear();
 		getChildren().addAll(currencyStonePanes);

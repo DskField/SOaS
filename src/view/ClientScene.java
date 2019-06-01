@@ -3,7 +3,6 @@ package view;
 import java.util.ArrayList;
 import java.util.Map;
 
-import client.Challenge;
 import client.Lobby;
 import client.User;
 import controllers.ClientController;
@@ -131,7 +130,6 @@ public class ClientScene extends Scene {
 		clientcontroller.handleReaction(accepted, idGame);
 	}
 
-	// TODO TOM FIND SOLUTION - TEMPORARY FIX
 	public ArrayList<Player> getPlayers(int gameID) {
 		return clientcontroller.getPlayers(gameID);
 	}
@@ -159,10 +157,6 @@ public class ClientScene extends Scene {
 
 	public ArrayList<Integer> getChallenges() {
 		return clientcontroller.getChallenges();
-	}
-
-	public Challenge getSpecificChallenge(int idGame) {
-		return clientcontroller.getSpecificChallenge(idGame);
 	}
 
 	public ArrayList<String> getUsers() {

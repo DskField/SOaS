@@ -24,7 +24,6 @@ public class DiePane extends Pane {
 	private int eyes;
 	private GameColor color;
 
-	//TODO misschien extra constructor misschien om een onderscheid te maken tussen spaces en dies, waarbij dice ronde hoeken hebben
 	public DiePane(int number, int eyes, GameColor color) {
 		this.number = number;
 		this.eyes = eyes;

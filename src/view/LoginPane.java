@@ -139,9 +139,5 @@ public class LoginPane extends BorderPane {
 		textfields.getChildren().addAll(sagrada, butAndfields, quit, errorMessage);
 		textfields.setAlignment(Pos.CENTER);
 		setCenter(textfields);
-
-		// TODO DELETE
-		username.setText("speler1");
-		password.setText("speler1");
 	}
 }

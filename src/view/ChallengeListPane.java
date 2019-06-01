@@ -27,14 +27,14 @@ public class ChallengeListPane extends BorderPane {
 	private ArrayList<Integer> challenges;
 
 	// Magic Numbers
-	final private static int reactionButtonWidth = 180;
-	final private static int reactionButtonHeight = 150;
-	final private static int buttonBoxSpacing = 40;
-	final private static int boxSpacing = 50;
-	final private static int statsWidth = 400;
-	final private static int statsHeight = 75;
-	final private static Color statsBackgroundColor = Color.AQUAMARINE;
-	final private static int labelSize = 30;
+	final private int reactionButtonWidth = 180;
+	final private int reactionButtonHeight = 150;
+	final private int buttonBoxSpacing = 40;
+	final private int boxSpacing = 50;
+	final private int statsWidth = 400;
+	final private int statsHeight = 75;
+	final private Color statsBackgroundColor = Color.AQUAMARINE;
+	final private int labelSize = 30;
 
 	public ChallengeListPane(ClientScene clientscene) {
 		this.clientscene = clientscene;
@@ -122,7 +122,6 @@ public class ChallengeListPane extends BorderPane {
 		public void handle(MouseEvent e) {
 			String[] challenge = ((ToggleButton) e.getSource()).getText().split(" ");
 			createCenter(Integer.parseInt(challenge[1]));
-			// TODO TOM only update the variables and set errormessage visible to false
 		}
 	}
 }

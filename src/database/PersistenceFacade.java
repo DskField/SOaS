@@ -290,4 +290,29 @@ public class PersistenceFacade {
 	public ArrayList<PatternCard> getPlayerOptions(int idPlayer) {
 		return patternCardDAO.getPlayerOptions(idPlayer);
 	}
+	
+	// Check if the player can join a game
+	public boolean isGameReady(int idGame) {
+		// Check if game has toolcards
+		if (getGameToolCards(idGame).size() == 0) {
+			System.err.println("no toolcards");
+			return false;
+		}
+		
+		// Check if game has public goalcards
+		if (getSharedCollectiveGoalCards(idGame).size() == 0) {
+			System.err.println("no goalcards");
+			return false;
+		}
+		
+		// Check if all players have patterncard options
+		for (Player p : getAllPlayersInGame(idGame)) {
+			if (getPlayerOptions(p.getPlayerID()).size() == 0) {
+				System.err.println("no patterncard options player " + p.getPlayerID());
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }

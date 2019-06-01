@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import controllers.PatternCardGenerator;
 import database.PersistenceFacade;
+import game.CollectiveGoalCard;
 import game.GameColor;
+import game.GlassWindow;
 import game.Player;
 
 public class Client {
@@ -51,15 +53,22 @@ public class Client {
 	/**
 	 * Constructor used to create a Client object
 	 * 
-	 * @param username
-	 *            - String containing the username which is giving at login
 	 * @param persistencefacade
 	 *            - Object containing all the methods to get data from the database
 	 */
-	public Client(String username, PersistenceFacade persistencefacade) {
+	public Client(PersistenceFacade persistencefacade) {
 		orderLobbyASC = true;
 		orderUserASC = true;
 		this.persistencefacade = persistencefacade;
+		
+	}
+
+	/**
+	 * Insert all data after succesful login
+	 * 
+	 * @param username - String containing the username which is giving at login
+	 */
+	public void insertUserInClient(String username) {
 		this.user = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username)
 				: new User(username, 0, 0, GameColor.EMPTY, 0, 0, 0, 0);
 		this.challenges = persistencefacade.getChallenges(username);
@@ -67,7 +76,7 @@ public class Client {
 		this.allPlayerLobbies = persistencefacade.getAllPlayerLobbies(username);
 		this.allUsers = persistencefacade.getAllUsername(orderUserASC);
 	}
-
+	
 	/**
 	 * Methods to update the data
 	 */
@@ -172,5 +181,25 @@ public class Client {
 
 	public ArrayList<String> getAllUsernames() {
 		return allUsers;
+	}
+
+	public boolean isGameReady(int idGame) {
+		return persistencefacade.isGameReady(idGame);
+	}
+	
+	public boolean loginCorrect(String username, String password) {
+		return persistencefacade.loginCorrect(username, password);
+	}
+	
+	public boolean insertCorrect(String username, String password) {
+		return persistencefacade.insertCorrect(username, password);
+	}
+	
+	public GlassWindow getPlayerGlasswindow(int idPlayer) {
+		return persistencefacade.getGlassWindow(idPlayer);
+	}
+	
+	public ArrayList<CollectiveGoalCard> getSharedCollectiveGoalCards(int gameID) {
+		return persistencefacade.getSharedCollectiveGoalCards(gameID);
 	}
 }
