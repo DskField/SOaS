@@ -46,8 +46,8 @@ public class PersistenceFacade {
 		return accountDAO.insertCorrect(username, password);
 	}
 
-	public ArrayList<String> getAllUsername() {
-		return accountDAO.getAllUsernames();
+	public ArrayList<String> getAllUsername(boolean orderASC) {
+		return accountDAO.getAllUsernames(orderASC);
 	}
 
 	// ChallengeDAO
@@ -72,14 +72,22 @@ public class PersistenceFacade {
 	}
 
 	// LobbyDAO
-	public ArrayList<Integer> getAllLobbies(String username) {
-		return lobbyDAO.getAllLobbyID(username);
+	public ArrayList<Integer> getAllLobbies(boolean orderASC) {
+		return lobbyDAO.getAllLobbyID(orderASC);
+	}
+	
+	public ArrayList<Integer> getAllPlayerLobbies(String username) {
+		return lobbyDAO.getAllPlayerLobbyID(username);
 	}
 
-	public Lobby getLobby(int idGame, String username) {
-		return lobbyDAO.getLobby(idGame, username);
+	public Lobby getLobby(int idGame) {
+		return lobbyDAO.getLobby(idGame);
 	}
 
+	public ArrayList<ArrayList<String>> getScoreboard(int idGame) {
+		return lobbyDAO.getScoreboard(idGame);
+	}
+	
 	// UserDAO
 	public User getUser(String username) {
 		return userDAO.getUser(username);

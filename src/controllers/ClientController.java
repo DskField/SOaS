@@ -42,7 +42,7 @@ public class ClientController {
 
 			createTimer();
 		}
-
+		// TODO does this also have to be in client
 		return persistencefacade.loginCorrect(username, password);
 	}
 
@@ -58,6 +58,7 @@ public class ClientController {
 		if (!username.matches("[a-zA-Z0-9]*") && !password.matches("[a-zA-Z0-9]*")) {
 			return false;
 		}
+		// TODO does this also have to be in client
 		return persistencefacade.insertCorrect(username, password);
 	}
 
@@ -68,6 +69,10 @@ public class ClientController {
 
 	public ArrayList<Integer> getLobbies() {
 		return client.getAllLobbies();
+	}
+	
+	public ArrayList<Integer> getPlayerLobbies() {
+		return client.getAllPlayerLobbies();
 	}
 
 	public Challenge getSpecificChallenge(int gameID) {
@@ -84,7 +89,7 @@ public class ClientController {
 	}
 
 	public void handleReaction(boolean accepted, int idGame) {
-		persistencefacade.updatePlayerStatus(client.getUser().getUsername(), accepted, idGame);
+		client.handleReaction(accepted, idGame);
 	}
 
 	public User getUser() {
@@ -96,36 +101,29 @@ public class ClientController {
 	}
 
 	public boolean createGame(ArrayList<String> users, boolean useRandomPatternCards) {
-		for (String u : users) {
-			if (persistencefacade.hasOpenInvite(client.getUser().getUsername(), u))
-				return false;
-		}
-		persistencefacade.createGame(users, useRandomPatternCards, new PatternCardGenerator());
-		return true;
+		return client.createGame(users, useRandomPatternCards);
 	}
 
 	public String getUsername() {
 		return client.getUser().getUsername();
 	}
 
-	// TODO TOM MOVE FACADE - TEMPORARY FIX
-	public ArrayList<Player> getPlayers(int gameID) {
-		return persistencefacade.getAllPlayersInGame(gameID);
+	public ArrayList<Player> getPlayers(int idGame) {
+		return client.getPlayers(idGame);
 	}
 
-	// TODO TOM MOVE FACADE - TEMPORARY FIX
 	public ArrayList<ArrayList<String>> getScore(int gameID, ArrayList<Player> players) {
+		// TODO should be part of game controller?
 		ScoreHandler scorehandler = new ScoreHandler(persistencefacade.getSharedCollectiveGoalCards(gameID));
-		ArrayList<String> playerToInt = new ArrayList<>();
 		ArrayList<ArrayList<Integer>> comparator = new ArrayList<>();
 		ArrayList<ArrayList<String>> result = new ArrayList<>();
 		
 		// Change from String into Integer to be able to sort
 		// Keep the relation between score and player by using numbers
 		for (int i = 0; i < players.size(); i++) {
+			// TODO should be part of gamecontroller?
 			players.get(i).loadGlassWindow(persistencefacade.getGlassWindow(players.get(i).getPlayerID()));
 			ArrayList<Integer> combo = new ArrayList<>();
-			playerToInt.add(players.get(i).getUsername());
 
 			combo.add(i);
 			combo.add(scorehandler.getScore(players.get(i), false));
@@ -155,7 +153,7 @@ public class ClientController {
 		mainapplication.setScene(new Scene(new LoginPane(this)));
 	}
 
-	// Updat with Timer
+	// Update with Timer
 	public void updateClient() {
 		// 3 to 6 seconds
 		if (clientscene.isShownChallengeList()) {
@@ -210,9 +208,10 @@ public class ClientController {
 	}
 
 	public ArrayList<String> getAllUsernames() {
-		return persistencefacade.getAllUsername();
+		return client.getAllUsernames();
 	}
 
+	// TODO possible move to gamecontroller
 	public boolean isGameReady(int idGame) {
 		// Check if game has toolcards
 		if (persistencefacade.getGameToolCards(idGame).size() == 0) {
@@ -235,5 +234,17 @@ public class ClientController {
 		}
 		
 		return true;
+	}
+	
+	public ArrayList<ArrayList<String>> getScoreboard(int idGame) {
+		return client.getScoreboard(idGame);
+	}
+
+	public void changeLobbyOrder(boolean orderASC) {
+		client.changeLobbyOrder(orderASC);
+	}
+
+	public void changeUserOrder(boolean orderASC) {
+		client.changeUserOrder(orderASC);
 	}
 }

@@ -32,6 +32,8 @@ public class UserListPane extends BorderPane {
 	private String opponentUsername;
 	private boolean useRandomChecked = false;
 	private CheckBox useRandomPatternCards;
+	private Button orderButton;
+	private boolean orderASC;
 
 	// Magic Numbers
 	final private static Color statsBackgroundColor = Color.AQUAMARINE;
@@ -41,13 +43,15 @@ public class UserListPane extends BorderPane {
 	final private static int textSize = 25;
 	final private static int inviteButtonSize = 40;
 	final private static int errorMessageSize = 23;
-	final private static Color errorMessageColor = Color.RED;
+	final private static Color errorMessageColorRed = Color.RED;
+	final private Color errorMessageColorGreen = Color.LIMEGREEN;
 	final private static int viewStatsWidth = 70;
 	final private static int viewStatsHeight = 30;
 	final private static int inviteRadioButtonWidth = 100;
 	final private static int inviteRadioButtonHeight = 30;
 	final private static int listWidth = 250;
 	final private static int listHeight = (int) Screen.getPrimary().getBounds().getMaxY();
+	final private int buttonAndLabelSpacing = 10;
 
 	public UserListPane(ClientScene clientscene) {
 		this.clientscene = clientscene;
@@ -56,6 +60,7 @@ public class UserListPane extends BorderPane {
 		this.handleradiobutton = new HandleRadioButton();
 		this.inviteCheckBoxGroup = new ArrayList<CheckBox>();
 		this.opponentUsername = "";
+		this.orderASC = true;
 
 		createLeft();
 		createCenter(opponentUsername);
@@ -71,6 +76,11 @@ public class UserListPane extends BorderPane {
 
 		// Remove yourself from selectable list
 		users.remove(clientscene.getUsername());
+
+		orderButton = new Button(orderASC ? "gesorteerd op meeste wins" : "gesorteerd op minste wins");
+		orderButton.setOnAction(e -> handleOrderButton());
+		orderButton.setMinHeight(45);
+		orderButton.setMaxHeight(45);
 
 		for (String username : users) {
 			CheckBox inviteRadioButton = new CheckBox();
@@ -94,17 +104,26 @@ public class UserListPane extends BorderPane {
 			playerLine.setRight(viewStats);
 			userList.getItems().add(playerLine);
 		}
-		this.setLeft(userList);
+		userList.setMinHeight(Screen.getPrimary().getVisualBounds().getMaxY() - orderButton.getHeight() - 5);
+		userList.setMaxHeight(Screen.getPrimary().getVisualBounds().getMaxY() - orderButton.getHeight() - 5);
+		orderButton.setMinWidth(userList.getWidth());
+		orderButton.setMaxWidth(userList.getMaxWidth());
+
+		VBox leftBox = new VBox();
+		leftBox.getChildren().addAll(orderButton, userList);
+		leftBox.setAlignment(Pos.CENTER);
+		this.setLeft(leftBox);
 	}
 
 	public void createCenter(String opponentUsername) {
 		this.opponentUsername = opponentUsername;
 		VBox centerpane = new VBox();
 
-		errorMessage = new Label("Je hebt een speler als recent uitgenodigd");
+		errorMessage = new Label("Je hebt een speler al recent uitgenodigd");
 		errorMessage.setFont(Font.font(errorMessageSize));
-		errorMessage.setTextFill(errorMessageColor);
+		errorMessage.setTextFill(errorMessageColorRed);
 		errorMessage.setAlignment(Pos.CENTER);
+		errorMessage.setVisible(false);
 
 		invitePlayers = new Button("Spelers uitnodigen");
 		invitePlayers.setMinWidth(statsBoxWidth);
@@ -120,9 +139,10 @@ public class UserListPane extends BorderPane {
 		VBox buttonAndLabel = new VBox();
 		buttonAndLabel.getChildren().addAll(errorMessage, invitePlayers, useRandomPatternCards);
 		buttonAndLabel.setAlignment(Pos.CENTER);
+		buttonAndLabel.setSpacing(buttonAndLabelSpacing);
 
-		centerpane.getChildren().addAll(createStatsPane(clientscene.getUser()),
-				createStatsPane(clientscene.getOpponent(opponentUsername)), buttonAndLabel);
+		centerpane.getChildren().addAll(createStatsPane(clientscene.getUser()), createStatsPane(clientscene.getOpponent(opponentUsername)),
+				buttonAndLabel);
 		centerpane.setAlignment(Pos.CENTER);
 		centerpane.setSpacing(50);
 
@@ -164,14 +184,19 @@ public class UserListPane extends BorderPane {
 		totalOpponents.setFont(Font.font(textSize));
 
 		VBox labelBox = new VBox();
-		labelBox.getChildren().addAll(username, gamesPlayed, gamesWon, gamesLost, maxScore, mostPlacedColor,
-				mostPlacedValue, totalOpponents);
+		labelBox.getChildren().addAll(username, gamesPlayed, gamesWon, gamesLost, maxScore, mostPlacedColor, mostPlacedValue, totalOpponents);
 		labelBox.setAlignment(Pos.CENTER);
 		bp.setCenter(labelBox);
 		bp.setMinSize(statsBoxWidth, statsBoxHeight);
 		bp.setMaxSize(statsBoxWidth, statsBoxHeight);
 
 		return bp;
+	}
+
+	private void handleOrderButton() {
+		orderASC = orderASC ? false : true;
+		clientscene.changeUserOrder(orderASC);
+		createLeft();
 	}
 
 	private void handleInvitePlayers() {
@@ -182,16 +207,22 @@ public class UserListPane extends BorderPane {
 			result.add(box.getText());
 		}
 		clientscene.updateClient();
-		if (clientscene.createGame(result, useRandomPatternCards.isSelected())) 
-			errorMessage.setVisible(false);
-		else
+		if (clientscene.createGame(result, useRandomPatternCards.isSelected())) {
+			errorMessage.setText("Spelers succesvol uitgenodigd");
+			errorMessage.setTextFill(errorMessageColorGreen);
 			errorMessage.setVisible(true);
+		} else {
+			errorMessage.setText("Je hebt een speler al recent uitgenodigd");
+			errorMessage.setTextFill(errorMessageColorRed);
+			errorMessage.setVisible(true);
+		}
 	}
 
 	private class HandleRadioButton implements EventHandler<MouseEvent> {
 		@Override
 		public void handle(MouseEvent e) {
-			// handle deselect
+			errorMessage.setVisible(false);
+			// handle deselect			
 			if (!((CheckBox) e.getSource()).isSelected()) {
 				for (int i = 0; i < inviteCheckBoxGroup.size(); i++) {
 					if (inviteCheckBoxGroup.get(i).getText().equals(((CheckBox) e.getSource()).getText()))

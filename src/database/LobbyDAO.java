@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import client.Lobby;
 
@@ -15,13 +16,12 @@ class LobbyDAO {
 		this.con = con;
 	}
 
-	private Lobby selectLobby(String query, int idGame, String username) {
+	private Lobby selectLobby(String query, int idGame) {
 		Lobby lobby = null;
 
 		try {
 			PreparedStatement stmt = con.prepareStatement(query);
-			stmt.setString(1, username);
-			stmt.setInt(2, idGame);
+			stmt.setInt(1, idGame);
 			ResultSet dbResultSet = stmt.executeQuery();
 			dbResultSet.next();
 
@@ -30,7 +30,8 @@ class LobbyDAO {
 			int finalScore = dbResultSet.getInt("score");
 
 			// lobbyResponse
-			PreparedStatement stmtLobbyResponse = con.prepareStatement("SELECT COUNT(idplayer) AS responsesize FROM player WHERE playstatus_playstatus != \"uitgedaagde\" AND game_idgame = " + idGame);
+			PreparedStatement stmtLobbyResponse = con.prepareStatement(
+					"SELECT COUNT(idplayer) AS responsesize FROM player WHERE playstatus_playstatus != \"uitgedaagde\" AND game_idgame = " + idGame);
 			ResultSet dbResultSetLobbyResponse = stmtLobbyResponse.executeQuery();
 			dbResultSetLobbyResponse.next();
 			int lobbyResponse = dbResultSetLobbyResponse.getInt("responsesize");
@@ -42,14 +43,6 @@ class LobbyDAO {
 			dbResultSetLobbySize.next();
 			int lobbySize = dbResultSetLobbySize.getInt("lobbysize");
 			stmtLobbySize.close();
-
-			// isWon
-			PreparedStatement stmtIsWon = con.prepareStatement("SELECT username, playstatus_playstatus FROM player WHERE game_idgame = ? ORDER BY score DESC LIMIT 1");
-			stmtIsWon.setInt(1, idGame);
-			ResultSet dbResultSetIsWon = stmtIsWon.executeQuery();
-			dbResultSetIsWon.next();
-			boolean won = dbResultSetIsWon.getString("playstatus_playstatus").equals("uitgespeeld") && dbResultSetIsWon.getString("username").equals(username) ? true : false;
-			stmtIsWon.close();
 
 			// currentRound
 			PreparedStatement stmtCurrentRound = con.prepareStatement("SELECT MAX(roundtrack) AS currentround FROM gamedie WHERE idgame = ?");
@@ -65,7 +58,7 @@ class LobbyDAO {
 			while (dbResultSetGameState.next())
 				listResultSetGameState.add(dbResultSetGameState.getString("playstatus_playstatus"));
 
-			if (listResultSetGameState.contains("afgebroken"))
+			if (listResultSetGameState.contains("afgebroken") || listResultSetGameState.contains("geweigerd"))
 				gameState = "afgebroken";
 			else if (listResultSetGameState.contains("uitgedaagde"))
 				gameState = "wachtende";
@@ -75,7 +68,7 @@ class LobbyDAO {
 				gameState = "aan de gang";
 			stmtGameState.close();
 
-			lobby = new Lobby(idGame, gameState, isCurrentPlayer, lobbyResponse, lobbySize, finalScore, won, currentRound);
+			lobby = new Lobby(idGame, gameState, isCurrentPlayer, lobbyResponse, lobbySize, finalScore, currentRound);
 
 			con.commit();
 			stmt.close();
@@ -86,16 +79,18 @@ class LobbyDAO {
 		return lobby;
 	}
 
-	private ArrayList<Integer> selectAllLobbies(String query, String username) {
+	private ArrayList<Integer> selectAllLobbies(String query, boolean allLobbies) {
 		ArrayList<Integer> results = new ArrayList<Integer>();
 
 		try {
 			PreparedStatement stmt = con.prepareStatement(query);
-			stmt.setString(1, username);
 			ResultSet dbResultSet = stmt.executeQuery();
 
-			while(dbResultSet.next()) {
-				results.add(dbResultSet.getInt("game_idgame"));
+			while (dbResultSet.next()) {
+				if (allLobbies)
+					results.add(dbResultSet.getInt("idgame"));
+				else
+					results.add(dbResultSet.getInt("game_idgame"));
 			}
 			con.commit();
 			stmt.close();
@@ -105,11 +100,40 @@ class LobbyDAO {
 		return results;
 	}
 
-	Lobby getLobby(int idGame, String username) {
-		return selectLobby("SELECT * FROM player WHERE username = ? AND game_idgame = ?", idGame, username);
+	private ArrayList<ArrayList<String>> selectScoreboard(String query, int idGame) {
+		ArrayList<ArrayList<String>> results = new ArrayList<ArrayList<String>>();
+
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			stmt.setInt(1, idGame);
+			ResultSet dbResultSet = stmt.executeQuery();
+
+			while (dbResultSet.next()) {
+				results.add(new ArrayList<String>(Arrays.asList(dbResultSet.getString("username"), dbResultSet.getString("score"))));
+			}
+
+			con.commit();
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("LobbyDAO: " + e.getMessage());
+		}
+		return results;
 	}
 
-	ArrayList<Integer> getAllLobbyID(String username) {
-		return selectAllLobbies("SELECT * FROM player WHERE playstatus_playstatus != \"uitgedaagde\" AND username = ?", username);
+	ArrayList<ArrayList<String>> getScoreboard(int idGame) {
+		return selectScoreboard("SELECT username, score FROM player WHERE game_idgame = ? ORDER BY score DESC", idGame);
+	}
+
+	Lobby getLobby(int idGame) {
+		return selectLobby("SELECT * FROM player WHERE game_idgame = ?", idGame);
+	}
+
+	ArrayList<Integer> getAllLobbyID(boolean orderASC) {
+		return selectAllLobbies(orderASC ? "SELECT idgame FROM game ORDER BY creationdate ASC" : "SELECT idgame FROM game ORDER BY creationdate DESC",
+				true);
+	}
+
+	ArrayList<Integer> getAllPlayerLobbyID(String username) {
+		return selectAllLobbies("SELECT * FROM player WHERE playstatus_playstatus != \"uitgedaagde\" AND username = \"" + username + "\"", false);
 	}
 }

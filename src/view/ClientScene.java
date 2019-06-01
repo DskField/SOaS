@@ -26,7 +26,7 @@ public class ClientScene extends Scene {
 
 	// booleans for update
 	private boolean isVisibleLobbyList;
-	private boolean isVisibleChallengeList = false;
+	private boolean isVisibleChallengeList;
 	private boolean isVisibleUserList;
 
 	// Magic Numbers
@@ -36,7 +36,7 @@ public class ClientScene extends Scene {
 		super(new BorderPane());
 		isVisibleUserList = true;
 		isVisibleLobbyList = false;
-		// isVisibleChallengeList = false;
+		isVisibleChallengeList = false;
 		this.clientcontroller = controller;
 		this.lobbyListPane = new LobbyListPane(this);
 		this.userListPane = new UserListPane(this);
@@ -46,7 +46,7 @@ public class ClientScene extends Scene {
 		clientmenupane = new ClientMenuPane(this);
 		rootPane = new BorderPane();
 		rootPane.setLeft(clientmenupane);
-		rootPane.setCenter(lobbyListPane);
+		rootPane.setCenter(userListPane);
 
 		// sets the rootPane and handles makeup
 		setRoot(rootPane);
@@ -171,5 +171,21 @@ public class ClientScene extends Scene {
 
 	public void logOut() {
 		clientcontroller.logOut();
+	}
+
+	public ArrayList<Integer> getPlayerLobbies() {
+		return clientcontroller.getPlayerLobbies();
+	}
+	
+	public ArrayList<ArrayList<String>> getScoreboard(int idGame) {
+		return clientcontroller.getScoreboard(idGame);
+	}
+
+	public void changeLobbyOrder(boolean orderASC) {
+		clientcontroller.changeLobbyOrder(orderASC);
+	}
+
+	public void changeUserOrder(boolean orderASC) {
+		clientcontroller.changeUserOrder(orderASC);
 	}
 }
