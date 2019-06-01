@@ -36,6 +36,13 @@ public class ClientController {
 
 	// Only after a succesfull login everything will be created
 	public boolean handleLogin(String username, String password) {
+		if (username.length() < 3 || username.length() > 25 || password.length() < 3 || password.length() > 25) {
+			return false;
+		}
+		if (!username.matches("[a-zA-Z0-9]*") && !password.matches("[a-zA-Z0-9]*")) {
+			return false;
+		}
+		
 		if (client.loginCorrect(username, password)) {
 			client.insertUserInClient(username);
 			this.clientscene = new ClientScene(this);
