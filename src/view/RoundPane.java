@@ -29,6 +29,10 @@ public class RoundPane extends Pane {
 		addTrack();
 	}
 
+	
+	/**
+	 * adds the squares in which the dice will be placed
+	 */
 	private void addTrack() {
 		for (int i = 0; i < trackSize; i++) {
 			Rectangle rectangle = new Rectangle(x + i * squareSize, y, squareSize, squareSize);
@@ -37,7 +41,9 @@ public class RoundPane extends Pane {
 			getChildren().add(rectangle);
 		}
 	}
-
+	/**
+	 * adds dice to the track in the correct position and size
+	 */
 	private void addDice() {
 		for (int i = 1; i <= trackSize; i++) {
 			ArrayList<DiePane> currentRound = roundTrack.get(i);
@@ -69,16 +75,25 @@ public class RoundPane extends Pane {
 			}
 		}
 	}
-
+	/**
+	 * updates the roundtrack
+	 */
 	public void update() {
 		addTrack();
 		addDice();
 	}
-
+	/**
+	 * 
+	 * @param round to what round to add the dice
+	 * @param diePane the diepanes to add
+	 */
 	public void addDie(Integer round, DiePane diePane) {
 		roundTrack.get(round).add(diePane);
 	}
-
+	/**
+	 * clear a round on the roundpane
+	 * @param round the round that has to be cleared
+	 */
 	public void clear(Integer round) {
 		roundTrack.get(round).clear();
 	}

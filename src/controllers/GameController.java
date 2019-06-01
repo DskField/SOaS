@@ -295,7 +295,7 @@ public class GameController {
 	}
 
 	/**
-	 * @return boolean - true if its your turn
+	 * @return boolean - true if its clientplayer's turn
 	 */
 	private boolean checkMyTurn() {
 		if (game.getCurrentPlayer().getPlayerID() == getClientPlayer().getPlayerID()) {
@@ -305,9 +305,10 @@ public class GameController {
 		}
 	}
 
-	/*
-	 * Checks if there are already dice on the window.
-	 */
+/**
+ * Checks if its the first die on the board
+ * @return true if it is the first die
+ */
 	private boolean checkFirstDie() {
 		// checks if its the firstDie
 		for (SpaceGlass[] spaceRow : getClientPlayer().getGlassWindow().getSpaces()) {
@@ -373,7 +374,7 @@ public class GameController {
 	 * @param die - the die you want to place
 	 * @return boolean - true if compatible, false if not
 	 */
-	private boolean checkCompatibility(SpacePattern sPattern, DiePane diePane) {
+	private boolean checkCompatibility(SpacePattern sPattern, DiePane diePane) {//TODO REMOVE DIEPANE, VIEW SHOULDNT BE IN CONTROLLER
 		if (sPattern.getColor().equals(diePane.getColor()) || sPattern.getValue() == diePane.getEyes() || (sPattern.getColor().equals(GameColor.EMPTY) && sPattern.getValue() == 0)) {
 			return true;
 		}
@@ -387,7 +388,7 @@ public class GameController {
 	 * @param space - the space where its going to be placed
 	 * @return boolean - true if possible to place, false if not
 	 */
-	private boolean checkSurrounding(DiePane diePane, SpaceGlass space) {
+	private boolean checkSurrounding(DiePane diePane, SpaceGlass space) {//TODO REMOVE DIEPANE, VIEW SHOULDNT BE IN CONTROLLER
 		boolean succes = true;
 		ArrayList<Die> orthogonalDice = getOrthogonalDice(space);
 		ArrayList<Die> diagonalDice = getDiagonalDice(space);
@@ -415,7 +416,7 @@ public class GameController {
 	 * @param die - the to be placed die
 	 * @return ArrayList<SpaceGlass> - All available spaces
 	 */
-	private ArrayList<SpaceGlass> getAvailableSpaces(DiePane diePane) {
+	private ArrayList<SpaceGlass> getAvailableSpaces(DiePane diePane) {//TODO REMOVE DIEPANE, VIEW SHOULDNT BE IN CONTROLLER
 		ArrayList<SpaceGlass> available = new ArrayList<>();
 		GlassWindow window = getClientPlayer().getGlassWindow();
 
@@ -434,7 +435,7 @@ public class GameController {
 		return available;
 	}
 
-	public void selectDie(DiePane diePane) {
+	public void selectDie(DiePane diePane) {//TODO REMOVE DIEPANE, VIEW SHOULDNT BE IN CONTROLLER
 		if (cheatMode == 0) {
 			gameScene.selectDie(null);
 		} else if (cheatMode == 1) {
@@ -450,9 +451,8 @@ public class GameController {
 	 * 
 	 * @param Die - the to be placed die
 	 * @param paceGlass newSpace- the space where its going to be placed
-	 * @return boolean - true if succeeded
 	 */
-	public void placeDie(SpacePane spacePane) {
+	public void placeDie(SpacePane spacePane) {//TODO REMOVE SpacePane, VIEW SHOULDNT BE IN CONTROLLER
 		DiePane diePane = gameScene.getSelectedDie();
 		if (diePane != null) {
 			ArrayList<SpaceGlass> available = getAvailableSpaces(diePane);
@@ -486,7 +486,7 @@ public class GameController {
 
 	}
 
-	/*
+	/**
 	 * cycles through cheatmodes
 	 *
 	 */
@@ -497,13 +497,20 @@ public class GameController {
 			cheatMode++;
 	}
 
-	/*
+	/**
 	 * @return cheatMode - 0 = nocheats 1 = basic cheat 2 = advanced cheat
 	 */
 	public int getCheatMode() {
 		return cheatMode;
 	}
 
+	/**
+	 * Returns best places based on whats next to the available spaces and the die you want to place 
+	 * if a space next to the availble space requires the same value or color it wont be added to best places
+	 * @param available all availabe places
+	 * @param newDie the to be placed die
+	 * @return ArrayList<SpaceGlass> the best places to place the die
+	 */
 	private ArrayList<SpaceGlass> getBestPlaces(ArrayList<SpaceGlass> available, DiePane newDie) {
 		ArrayList<SpaceGlass> best = new ArrayList<>();
 		PatternCard pC = getClientPlayer().getGlassWindow().getPatternCard();
@@ -556,11 +563,18 @@ public class GameController {
 
 	}
 
+	/**
+	 * shakes the sack
+	 */
 	public void shakeSack() {
 		game.shakeSack();
 
 	}
-
+	
+	/**
+	 * Used to check if you're allowed to throw the dice
+	 * @return true if your the startplayer
+	 */
 	public boolean checkStartPlayer() {
 		if (getClientPlayer().getSeqnr() == 1 && getClientPlayer().equals(game.getCurrentPlayer()) && game.getTable().isEmpty() && game.getCurrentRound() <= 10) {
 			return true;

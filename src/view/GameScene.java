@@ -119,9 +119,12 @@ public class GameScene extends Scene {
 			}
 		});
 	}
-
-	public void disableDieOfferPane(boolean b) {
-		dieOfferPane.setDisable(b);
+	/**
+	 * 
+	 * @param if the dieOfferPane should be disabled
+	 */
+	public void disableDieOfferPane(boolean disable) {
+		dieOfferPane.setDisable(disable);
 	}
 
 	public void selectDie(ArrayList<SpaceGlass> available) {
@@ -167,16 +170,26 @@ public class GameScene extends Scene {
 			}
 		}
 	}
-
+	
+	/**
+	 * @param dice to be added to the OfferPane
+	 */
 	public void updateTable(ArrayList<Die> dice) {
 		dieOfferPane.addDice(dice);
 	}
-
+	
+	/**
+	 * empties the offerpane
+	 */
 	public void removeDieTable() {
 		dieOfferPane.removeDie(getSelectedDie());
 	}
 
-	public void updateRoundTrack(Round[] rounds) {
+	/**
+	 * updates the roundtrack
+	 * @param rounds rounds on the roundtrack
+	 */
+	public void updateRoundTrack(Round[] rounds) {//TODO Double useless code in here I think, roundPane.getchildren.clear and roundPane.clear
 		roundPane.getChildren().clear();
 		for (int i = 0; i < rounds.length; i++) {
 			roundPane.clear(i + 1);
@@ -188,11 +201,15 @@ public class GameScene extends Scene {
 		roundPane.update();
 	}
 
-	public void disableOffer(boolean b) {
+	public void disableOffer(boolean b) {//TODO double code with disableOfferPane? at line 126
 
 		dieOfferPane.setDisable(b);
 	}
 
+	/**
+	 * if myTurn is true and dieofferpane isnt empty, disable nextButton
+	 * @param if its your turn
+	 */
 	public void updateTurn(boolean myTurn) {
 		if (myTurn && !dieOfferPane.getChildren().isEmpty()) {
 			nextButton.setDisable(false);
@@ -201,11 +218,15 @@ public class GameScene extends Scene {
 		}
 	}
 
+	/**
+	 * updates currencystones on screen
+	 * @param currencyStones all the currencystones
+	 */
 	public void updateCurrencyStone(ArrayList<CurrencyStone> currencyStones) {
 		ArrayList<CurrencyStonePane> currencyStonePanes = new ArrayList<>();
-		for (CurrencyStone currencyStone : currencyStones) {
+		for (CurrencyStone currencyStone : currencyStones) { 
 			for (Player player : gameController.getPlayers()) {
-				if (player.getColor() == glassWindowPanes.get(MAIN).getColor()) {
+				if (player.getColor() == glassWindowPanes.get(MAIN).getColor()) {//Checks what glassWindow is selected and updates currencystones accordingly
 					if (currencyStone.getPlayerID() == player.getPlayerID()) {
 						currencyStonePanes.add(new CurrencyStonePane(player.getColor()));
 	
@@ -246,7 +267,7 @@ public class GameScene extends Scene {
 		shakeButton = new Button("Schudden");
 		nextButton = new Button("Beurt klaar");
 
-		// handles everything regarding the button
+		// handles everything regarding buttons
 		shakeButton.setPrefSize(buttonWidth, buttonheigt);
 		nextButton.setPrefSize(buttonWidth, buttonheigt);
 		dieOfferPane.setDisable(false);
@@ -309,13 +330,18 @@ public class GameScene extends Scene {
 		rootPane.setCenter(centerBox);
 	}
 
+	/**if the shake button is pressed the button gets disabled and the sack gets shaken
+	 * 
+	 */
 	private void handleShakeButton() {
 		shakeButton.setDisable(true);
 		gameController.shakeSack();
 
 	}
 
-	// Handles button
+	/**
+	 * if the nextButton is pressed it disables the button and does all the stuff needed to go to the next turn
+	 */
 	private void handleNextButton() {
 		nextButton.setDisable(true);
 		gameController.nextTurn();
@@ -407,7 +433,11 @@ public class GameScene extends Scene {
 		Label winner = new Label(winText);
 		rootPane.setCenter(winner);
 	}
-
+	
+	/**
+	 * Updates the currencystones on the toolcards
+	 * @param toolCards the toolcards used in the game
+	 */
 	public void updateToolCards(ArrayList<ToolCard> toolCards) {
 		for (ToolCardPane toolCardPane : toolCardPanes) {
 			for (ToolCard toolCard : toolCards) {// for toolcard make an arralist with currencyStonepaness

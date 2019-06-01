@@ -11,7 +11,10 @@ public class CurrencyStonePane extends Pane {
 	final int CENTERX = 18;
 	final int CENTERY = 18;
 
-	// Might change it so that it gets a currency stone
+	/**
+	 * Makes circle with a stroke to represent the stone
+	 * @param color of the stone
+	 */
 	public CurrencyStonePane(GameColor color) {
 		Shape stone = new Circle(CENTERX, CENTERY, RADIUS, color.getColor());
 		stone.setStroke(Color.BLACK);

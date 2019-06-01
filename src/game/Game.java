@@ -273,7 +273,9 @@ public class Game {
 	public void updatePlayerTurn(Player oldPlayer) {
 		persistenceFacade.updatePlayerTurn(oldPlayer, currentPlayer, gameID);
 	}
-
+/**
+ * adds the dice that are on offer to the dicetrack, clears the offering, updates database and updates roundcounter
+ */
 	public void nextRound() {
 		if (!table.isEmpty()) {
 			roundTrack[currentRound - 1].addDice(table);
