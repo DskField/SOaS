@@ -13,12 +13,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 
 public class ChatPane extends BorderPane {
@@ -42,7 +39,7 @@ public class ChatPane extends BorderPane {
 		this.gameController = gameController;
 
 		// handles the makeup of the ChatPane
-		setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
+//		setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
 		setPrefSize(chatPaneWidth, chatPaneheight);
 
 		// creates the Chat

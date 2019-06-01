@@ -17,10 +17,14 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -94,7 +98,10 @@ public class GameScene extends Scene {
 
 		// sets the rootPane and handles makeup
 		setRoot(rootPane);
-		rootPane.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
+		
+		
+		BackgroundImage bgImage = new BackgroundImage(new Image("/images/Backgrounds/ChurchTexture.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+		rootPane.setBackground(new Background(bgImage));
 
 		stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
 
@@ -316,8 +323,8 @@ public class GameScene extends Scene {
 
 		// adds current Player label
 		currentPlayerLabel = new Label();
-		currentPlayerLabel.setTextFill(Color.RED);
-		currentPlayerLabel.setFont(new Font("Arial", 20));
+		currentPlayerLabel.setTextFill(Color.WHITESMOKE);
+		currentPlayerLabel.setFont(new Font("Arial", 25));//TODO magic number?
 
 		// adds everything to the centerBox and handles makeup
 		centerBox.getChildren().addAll(currentPlayerLabel, roundPane, cardBox, dieOfferPane, buttonBox);

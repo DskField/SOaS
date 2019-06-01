@@ -9,8 +9,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -19,8 +17,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
 public class DieOfferPane extends HBox {
-	private final int squareSize = 55;
-
+	private static final int squareSize = 55;
+	private static final int WIDTH = 625 , HEIGHT = 65;
+	
 	private GameController gameController;
 	private ArrayList<DiePane> dice;
 
@@ -28,9 +27,9 @@ public class DieOfferPane extends HBox {
 		this.gameController = gameController;
 		dice = new ArrayList<DiePane>();
 
-		setMaxSize(625, 65);
-		setMinSize(625, 65);
-		setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
+		setMaxSize(WIDTH, HEIGHT);
+		setMinSize(WIDTH, HEIGHT);
+
 	}
 
 	/**

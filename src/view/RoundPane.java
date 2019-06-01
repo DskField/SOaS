@@ -37,7 +37,7 @@ public class RoundPane extends Pane {
 		for (int i = 0; i < trackSize; i++) {
 			Rectangle rectangle = new Rectangle(x + i * squareSize, y, squareSize, squareSize);
 			rectangle.setStroke(Color.BLACK);
-			rectangle.setFill(Color.ALICEBLUE);
+			rectangle.setFill(Color.hsb(27, 0.0, 0.8, 0.5));
 			getChildren().add(rectangle);
 		}
 	}
