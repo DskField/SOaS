@@ -220,7 +220,6 @@ public class LobbyListPane extends BorderPane {
 		public void handle(MouseEvent e) {
 			String[] lobby = ((ToggleButton) e.getSource()).getText().split(" ");
 			idGame = Integer.parseInt(lobby[1]);
-			// TODO TOM only update the variables and set errormessage visible to false
 			createStats(idGame);
 		}
 	}

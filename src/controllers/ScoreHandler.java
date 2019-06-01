@@ -22,7 +22,6 @@ public class ScoreHandler {
 			score = 0;
 			score += handlePrivateGoalCard(p);
 			score -= handleEmptySpaces(p);
-			//TODO substact used currencystones
 			score += p.getCurrencyStones().size();
 			score += goalCardHandler.getGoalCardHandler(p.getGlassWindow(), collectiveGoalCards);
 			p.setScore(score);

@@ -30,20 +30,20 @@ public class ClientController {
 		this.persistencefacade = new PersistenceFacade();
 		this.mainapplication = mainapplication;
 		this.gamecontroller = new GameController(mainapplication, persistencefacade, this);
+		client = new Client(persistencefacade);
 		mainapplication.setScene(new Scene(new LoginPane(this)));
 	}
 
 	// Only after a succesfull login everything will be created
 	public boolean handleLogin(String username, String password) {
-		if (persistencefacade.loginCorrect(username, password)) {
-			client = new Client(username, persistencefacade);
+		if (client.loginCorrect(username, password)) {
+			client.insertUserInClient(username);
 			this.clientscene = new ClientScene(this);
 			mainapplication.setScene(clientscene);
 
 			createTimer();
 		}
-		// TODO does this also have to be in client
-		return persistencefacade.loginCorrect(username, password);
+		return client.loginCorrect(username, password);
 	}
 
 	public void returnToClient() {
@@ -58,8 +58,7 @@ public class ClientController {
 		if (!username.matches("[a-zA-Z0-9]*") && !password.matches("[a-zA-Z0-9]*")) {
 			return false;
 		}
-		// TODO does this also have to be in client
-		return persistencefacade.insertCorrect(username, password);
+		return client.insertCorrect(username, password);
 	}
 
 	// Getters
@@ -113,16 +112,14 @@ public class ClientController {
 	}
 
 	public ArrayList<ArrayList<String>> getScore(int gameID, ArrayList<Player> players) {
-		// TODO should be part of game controller?
-		ScoreHandler scorehandler = new ScoreHandler(persistencefacade.getSharedCollectiveGoalCards(gameID));
+		ScoreHandler scorehandler = new ScoreHandler(client.getSharedCollectiveGoalCards(gameID));
 		ArrayList<ArrayList<Integer>> comparator = new ArrayList<>();
 		ArrayList<ArrayList<String>> result = new ArrayList<>();
 		
 		// Change from String into Integer to be able to sort
 		// Keep the relation between score and player by using numbers
 		for (int i = 0; i < players.size(); i++) {
-			// TODO should be part of gamecontroller?
-			players.get(i).loadGlassWindow(persistencefacade.getGlassWindow(players.get(i).getPlayerID()));
+			players.get(i).loadGlassWindow(client.getPlayerGlasswindow(players.get(i).getPlayerID()));
 			ArrayList<Integer> combo = new ArrayList<>();
 
 			combo.add(i);
@@ -211,29 +208,8 @@ public class ClientController {
 		return client.getAllUsernames();
 	}
 
-	// TODO possible move to gamecontroller
 	public boolean isGameReady(int idGame) {
-		// Check if game has toolcards
-		if (persistencefacade.getGameToolCards(idGame).size() == 0) {
-			System.err.println("no toolcards");
-			return false;
-		}
-		
-		// Check if game has public goalcards
-		if (persistencefacade.getSharedCollectiveGoalCards(idGame).size() == 0) {
-			System.err.println("no goalcards");
-			return false;
-		}
-		
-		// Check if all players have patterncard options
-		for (Player p : persistencefacade.getAllPlayersInGame(idGame)) {
-			if (persistencefacade.getPlayerOptions(p.getPlayerID()).size() == 0) {
-				System.err.println("no patterncard options player " + p.getPlayerID());
-				return false;
-			}
-		}
-		
-		return true;
+		return client.isGameReady(idGame);
 	}
 	
 	public ArrayList<ArrayList<String>> getScoreboard(int idGame) {
