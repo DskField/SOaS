@@ -209,7 +209,6 @@ public class LobbyListPane extends BorderPane {
 	public void joinGameButton(int idGame) {
 		boolean playerInGame = false;
 		for (ArrayList<String> list : scoreboardList) {
-			System.out.println(list.get(0));
 			if (list.get(0).equals(clientscene.getUser().getUsername())) {
 				playerInGame = true;
 			}
