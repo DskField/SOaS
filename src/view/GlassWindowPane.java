@@ -27,20 +27,20 @@ import javafx.scene.text.Font;
 
 public class GlassWindowPane extends BorderPane {
 	/* CONSTANTS */
-	private final double glassWindowWidth = 400*MainApplication.width;
-	private final double glassWindowHeight = 800*MainApplication.height;
-	private final double spacingAmount = 20*MainApplication.height;
-	private final double borderwidth = 5*MainApplication.width;
-	
-	private final double smalRadius = 60*MainApplication.height;
-	private final double bigRadius = 140*MainApplication.height;
-	private final double smallFont = 20*MainApplication.height;
-	private final double bigFont = 40*MainApplication.height;
-	private final double smallInset = 10*MainApplication.height;
-	private final Insets insets = new Insets(10*MainApplication.height, 20*MainApplication.height, 0*MainApplication.height, 20*MainApplication.height);
-	private final double scoreCircleX = 180*MainApplication.width;
-	private final double scoreCircleY = 180*MainApplication.height;
-	private final double scoreCircleRadius = 140*MainApplication.height;
+	private final double glassWindowWidth = 400 * MainApplication.width;
+	private final double glassWindowHeight = 800 * MainApplication.height;
+	private final double spacingAmount = 20 * MainApplication.height;
+	private final double borderwidth = 5 * MainApplication.width;
+
+	private final double smalRadius = 60 * MainApplication.height;
+	private final double bigRadius = 140 * MainApplication.height;
+	private final double smallFont = 20 * MainApplication.height;
+	private final double bigFont = 40 * MainApplication.height;
+	private final double smallInset = 10 * MainApplication.height;
+	private final Insets insets = new Insets(10 * MainApplication.height, 20 * MainApplication.height, 0 * MainApplication.height, 20 * MainApplication.height);
+	private final double scoreCircleX = 180 * MainApplication.width;
+	private final double scoreCircleY = 180 * MainApplication.height;
+	private final double scoreCircleRadius = 140 * MainApplication.height;
 
 	/* VARIABLES */
 	private FieldPane fieldPane;
