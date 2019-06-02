@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import controllers.GameController;
 import game.Message;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -91,6 +93,13 @@ public class ChatPane extends BorderPane {
 				sendMessage();
 			}
 		});
+
+		center.heightProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				scrollPane.setVvalue(maxScroll);
+			}
+		});
 	}
 
 	/**
@@ -102,7 +111,6 @@ public class ChatPane extends BorderPane {
 		if (messages.size() != 0) {
 			for (Message message : messages) {
 				center.getChildren().add(new MessagePane(message.getUserName(), message.getMessage(), message.getChatTime()));
-				scrollPane.setVvalue(maxScroll);
 			}
 		}
 	}

@@ -3,7 +3,7 @@ package view;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
-public class MessagePane extends HBox {
+public class MessagePane extends BorderPane {
 	/* CONSTANTS */
 	private final int messageWidth = 280;
 
