@@ -109,6 +109,7 @@ public class DieOfferPane extends HBox {
 			if (die.getNumber() == number && die.getColor() == color) {
 				getChildren().remove(die);
 				dice.remove(dice.indexOf(die));
+				return;
 			}
 		}
 	}
