@@ -21,26 +21,26 @@ import javafx.scene.text.Font;
 public class LoginPane extends BorderPane {
 	/* CONSTANTS */
 	// Label
-	private final int errorMessageSize = 23;
+	private final double errorMessageSize = 23;
 	private final Color errorMessageColor = Color.RED;
 	private final Color errorMessageConfirmColor = Color.LIMEGREEN;
 
 	// Constructor
-	private final int paneWidth = 500;
-	private final int paneHeight = 500;
+	private final double paneWidth = 500;
+	private final double paneHeight = 500;
 	private final Color backgroundColor = Color.GRAY;
 
 	// Buttons
-	private final int buttonWidth = 100;
-	private final int buttonHeight = 50;
-	private final int buttonSpacing = 30;
+	private final double buttonWidth = 100;
+	private final double buttonHeight = 50;
+	private final double buttonSpacing = 30;
 
 	// TextFields
-	private final int textfieldsSpacing = 20;
-	private final int fieldsSpacing = 10;
-	private final int butAndfieldsSpacing = 10;
-	private final int butAndfieldsWidth = 200;
-	private final int butAndfieldsHeight = 50;
+	private final double textfieldsSpacing = 20;
+	private final double fieldsSpacing = 10;
+	private final double butAndfieldsSpacing = 10;
+	private final double butAndfieldsWidth = 200;
+	private final double butAndfieldsHeight = 50;
 	private final double textfieldsScaling = 1.3;
 
 	/* VARIABLES */

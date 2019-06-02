@@ -2,6 +2,7 @@ package view;
 
 import java.util.ArrayList;
 
+import controllers.MainApplication;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -24,21 +25,21 @@ public class LobbyListPane extends BorderPane {
 	// Left
 	private final Background togglebuttonBackground = new Background(new BackgroundFill(Color.BLUE, null, null));
 	private final Color togglebuttonColor = Color.WHITE;
-	private final int orderButtonHeight = 45;
+	private final double orderButtonHeight = 45*MainApplication.height;;
 	private final double lobbyListHeight = Screen.getPrimary().getVisualBounds().getMaxY() - orderButtonHeight - 5;
 
 	// Stats
-	private final int labelSize = 30;
-	private final int textSize = 25;
-	private final int titleLabelSize = 50;
+	private final double labelSize = 30*MainApplication.height;;
+	private final double textSize = 25*MainApplication.height;;
+	private final double titleLabelSize = 50*MainApplication.height;;
 	private final Color statsBackgroundColor = Color.AQUAMARINE;
-	private final int statsBoxWidth = 400;
-	private final int statsBoxHeight = 400;
-	private final int bottomLineSpacing = 50;
-	private final int statsPaneSpacing = 10;
-	private final int lobbyJoinPannelSpacing = 50;
-	private final int joinGameButtonWidth = 400;
-	private final int joinGameButtonHeight = 150;
+	private final double statsBoxWidth = 400*MainApplication.width;
+	private final double statsBoxHeight = 400*MainApplication.height;;
+	private final double bottomLineSpacing = 50*MainApplication.height;;
+	private final double statsPaneSpacing = 10*MainApplication.height;;
+	private final double lobbyJoinPannelSpacing = 50*MainApplication.height;;
+	private final double joinGameButtonWidth = 400*MainApplication.width;
+	private final double joinGameButtonHeight = 150*MainApplication.height;;
 	private final Color errorMessageColor = Color.RED;
 
 	/* VARIABLES */

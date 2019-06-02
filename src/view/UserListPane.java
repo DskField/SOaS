@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 
 import client.User;
+import controllers.MainApplication;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -22,29 +23,29 @@ import javafx.stage.Screen;
 public class UserListPane extends BorderPane {
 	/* CONSTANTS */
 	// Left
-	private final int listWidth = 250;
-	private final int listHeight = (int) Screen.getPrimary().getBounds().getMaxY();
-	private final int viewStatsWidth = 70;
-	private final int viewStatsHeight = 30;
-	private final int inviteRadioButtonWidth = 100;
-	private final int inviteRadioButtonHeight = 30;
+	private final double listWidth = 250*MainApplication.width;
+	private final double listHeight = (int) Screen.getPrimary().getBounds().getMaxY();
+	private final double viewStatsWidth = 70*MainApplication.width;
+	private final double viewStatsHeight = 30*MainApplication.height;;
+	private final double inviteRadioButtonWidth = 100*MainApplication.width;
+	private final double inviteRadioButtonHeight = 30*MainApplication.height;;
 
-	private final int orderButtonHeight = 45;
+	private final double orderButtonHeight = 45*MainApplication.height;;
 	private final double userListHeight = Screen.getPrimary().getVisualBounds().getMaxY() - orderButtonHeight - 5;
 
 	// Center
-	private final int inviteButtonSize = 40;
-	private final int errorMessageSize = 23;
+	private final double inviteButtonSize = 40*MainApplication.height;;
+	private final double errorMessageSize = 23*MainApplication.height;;
 	private final Color errorMessageColorRed = Color.RED;
 	private final Color errorMessageColorGreen = Color.LIMEGREEN;
-	private final int buttonAndLabelSpacing = 10;
+	private final double buttonAndLabelSpacing = 10*MainApplication.height;;
 
 	// StatsPane
 	private final Color statsBackgroundColor = Color.AQUAMARINE;
-	private final int statsBoxWidth = 400;
-	private final int statsBoxHeight = 340;
-	private final int usernameLabelSize = 50;
-	private final int textSize = 25;
+	private final double statsBoxWidth = 400*MainApplication.width;
+	private final double statsBoxHeight = 340*MainApplication.height;
+	private final double usernameLabelSize = 50*MainApplication.height;;
+	private final double textSize = 25*MainApplication.height;;
 
 	/* VARIABLES */
 	private ClientScene clientscene;
@@ -95,9 +96,9 @@ public class UserListPane extends BorderPane {
 		users = clientscene.getUsers();
 
 		// Remove yourself from selectable list
-		users.remove(clientscene.getUsername());
-
-		orderButton = new Button(orderASC ? "gesorteerd op meeste wins" : "gesorteerd op minste wins");
+			users.remove(clientscene.getUsername());
+	
+			orderButton = new Button(orderASC ? "gesorteerd op meeste wins" : "gesorteerd op minste wins");
 		orderButton.setOnAction(e -> handleOrderButton());
 		orderButton.setMinHeight(orderButtonHeight);
 		orderButton.setMaxHeight(orderButtonHeight);
@@ -110,8 +111,8 @@ public class UserListPane extends BorderPane {
 			inviteRadioButton.setMaxSize(inviteRadioButtonWidth, inviteRadioButtonHeight);
 
 			Button viewStats = new Button("vergelijk");
-			viewStats.setMinSize(viewStatsWidth, viewStatsHeight);
-			viewStats.setMaxSize(viewStatsWidth, viewStatsHeight);
+//			viewStats.setMinSize(viewStatsWidth, viewStatsHeight);
+			viewStats.setMaxSize(300, 300);
 			viewStats.setOnAction(e -> createCenter(username));
 
 			for (CheckBox box : inviteCheckBoxGroup) {

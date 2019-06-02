@@ -1,6 +1,7 @@
 package view;
 
 import controllers.GameController;
+import controllers.MainApplication;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -16,10 +17,10 @@ import javafx.stage.Stage;
 
 public class GameMenuPane extends VBox {
 	/* CONSTANTS */
-	private final int BUTTONWIDTH = 300;
-	private final int BUTTONHEIGHT = 100;
-	private final int SPACING = 50;
-	private final int FONTSIZE = 25;
+	private final double BUTTONWIDTH = 300*MainApplication.width;
+	private final double BUTTONHEIGHT = 100*MainApplication.height;;
+	private final double SPACING = 50*MainApplication.height;;
+	private final double FONTSIZE = 25*MainApplication.height;;
 	private final String FONT = "serif";
 	private final Color DEFAULT_BUTTON_COLOR = Color.web("#483D8B");
 

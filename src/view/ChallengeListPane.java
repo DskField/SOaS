@@ -2,6 +2,7 @@ package view;
 
 import java.util.ArrayList;
 
+import controllers.MainApplication;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -20,14 +21,14 @@ import javafx.scene.text.Font;
 
 public class ChallengeListPane extends BorderPane {
 	/* CONSTANTS */
-	private final int reactionButtonWidth = 180;
-	private final int reactionButtonHeight = 150;
-	private final int buttonBoxSpacing = 40;
-	private final int boxSpacing = 50;
-	private final int statsWidth = 400;
-	private final int statsHeight = 75;
+	private final double reactionButtonWidth = 180*MainApplication.width;
+	private final double reactionButtonHeight = 150*MainApplication.height;
+	private final double buttonBoxSpacing = 40*MainApplication.height;
+	private final double boxSpacing = 50*MainApplication.height;
+	private final double statsWidth = 400*MainApplication.width;
+	private final double statsHeight = 75*MainApplication.height;;
 	private final Color statsBackgroundColor = Color.AQUAMARINE;
-	private final int labelSize = 30;
+	private final double labelSize = 30*MainApplication.height;;
 
 	/* VARIABLES */
 	private ClientScene clientscene;
