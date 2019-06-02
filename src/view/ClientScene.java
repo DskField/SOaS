@@ -26,10 +26,6 @@ public class ClientScene extends Scene {
 	private UserListPane userListPane;
 	private ChallengeListPane challengeListPane;
 
-	private boolean isVisibleLobbyList;
-	private boolean isVisibleChallengeList;
-	private boolean isVisibleUserList;
-
 	/**
 	 * Constructor to create a {@code ClientScene}
 	 * 
@@ -37,9 +33,6 @@ public class ClientScene extends Scene {
 	 */
 	public ClientScene(ClientController controller) {
 		super(new BorderPane());
-		isVisibleUserList = true;
-		isVisibleLobbyList = false;
-		isVisibleChallengeList = false;
 		this.clientcontroller = controller;
 		this.lobbyListPane = new LobbyListPane(this);
 		this.userListPane = new UserListPane(this);
@@ -54,18 +47,6 @@ public class ClientScene extends Scene {
 		// Sets the rootPane and handles makeup
 		setRoot(rootPane);
 		rootPane.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
-	}
-
-	public boolean isShownLobbyList() {
-		return isVisibleLobbyList;
-	}
-
-	public boolean isShownChallengeList() {
-		return isVisibleChallengeList;
-	}
-
-	public boolean isShownUserList() {
-		return isVisibleUserList;
 	}
 
 	// Update the Client data
@@ -89,19 +70,13 @@ public class ClientScene extends Scene {
 	 * Handles when the users switches between panes
 	 */
 	public void handleUserListButton() {
-		isVisibleUserList = true;
-		isVisibleLobbyList = false;
-		isVisibleChallengeList = false;
-		clientcontroller.updateClient();
+		clientcontroller.showUserLiest();
 		userListPane.createLeft();
 		rootPane.setCenter(userListPane);
 	}
 
 	public void handleLobbyListButton() {
-		isVisibleUserList = false;
-		isVisibleLobbyList = true;
-		isVisibleChallengeList = false;
-		clientcontroller.updateClient();
+		clientcontroller.showLobbyList();
 		if (lobbyListPane.getIDGame() != 0)
 			lobbyListPane.createStats(lobbyListPane.getIDGame());
 		lobbyListPane.createLeft();
@@ -109,10 +84,7 @@ public class ClientScene extends Scene {
 	}
 
 	public void handleChallengeListButton() {
-		isVisibleUserList = false;
-		isVisibleLobbyList = false;
-		isVisibleChallengeList = true;
-		clientcontroller.updateClient();
+		clientcontroller.showChallengeList();
 		challengeListPane.createLeft();
 		rootPane.setCenter(challengeListPane);
 	}

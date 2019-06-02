@@ -99,28 +99,15 @@ public class FieldPane extends GridPane {
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
 				if (glassSpaces[x][y].getColor() != GameColor.EMPTY) {
-					//	spaces.add(glassSpaces[x][y]);
 					add(glassSpaces[x][y], x, y);
 				} else {
-					//	 spaces.add(patternSpaces[x][y]);
 					add(patternSpaces[x][y], x, y);
 				}
 			}
 		}
-
-		//		getChildren().addAll(spaces);
 	}
 
 	public void resize(boolean isSmall) {
-
-		//		if (isSmall) {
-		//			setPrefSize(patternWidth / 2, patternHeight / 2);
-		//			setMaxSize(patternWidth / 2, patternHeight / 2);
-		//		} else {
-		//			setPrefSize(patternWidth, patternHeight);
-		//			setMaxSize(patternWidth, patternHeight);
-		//		}
-
 		for (int x = 0; x < 5; x++) {
 			for (int y = 0; y < 4; y++) {
 				glassSpaces[x][y].resize(isSmall);
