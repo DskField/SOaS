@@ -21,12 +21,13 @@ import javafx.stage.Stage;
  */
 class GameMenuPane extends VBox {
 
-	private static final int BUTTONWIDTH = 300; 
-	private static final int BUTTONHEIGHT = 100;
-	private static final int SPACING = 50;
-	private static final int FONTSIZE = 25;
-	private static final String FONT = "serif";
-	private static final String DEFAULT_BUTTON_COLOR = "#483D8B";
+	private final int BUTTONWIDTH = 300; 
+	private final int BUTTONHEIGHT = 100;
+	private final int SPACING = 50;
+	private final int FONTSIZE = 25;
+	private final String FONT = "serif";
+	private final Color DEFAULT_BUTTON_COLOR = Color.web("#483D8B");
+	
 
 	private Button btn_resume;
 	private Button btn_rules;
@@ -91,7 +92,7 @@ class GameMenuPane extends VBox {
 		//Sets default style thats the same for every button like size, and text stuff
 		for(Node item: getChildren()) {
 			if(item.getTypeSelector().toString().equals("Button")) {
-				((Button) item).setBackground(new Background(new BackgroundFill(Color.web(DEFAULT_BUTTON_COLOR), null, null)));
+				((Button) item).setBackground(new Background(new BackgroundFill(DEFAULT_BUTTON_COLOR, null, null)));
 				((Button) item).setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
 				((Button) item).setFont(Font.font(FONT, FontWeight.BOLD, FONTSIZE));
 				((Button) item).setTextFill(Color.WHITE);

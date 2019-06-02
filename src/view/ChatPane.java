@@ -23,6 +23,7 @@ public class ChatPane extends BorderPane {
 	private final int chatPaneheight = 200;
 	private final int sendButtonWidth = 100;
 	private final int sendButtonHeight = 20;
+	private final double maxScroll = 1.0;
 
 	// variables
 	private TextField playerMessage;
@@ -65,7 +66,7 @@ public class ChatPane extends BorderPane {
 		scrollPane.setContent(center);
 
 		// scrolls scrollbar to bottom
-		scrollPane.setVvalue(1d);
+		scrollPane.setVvalue(maxScroll);
 
 		// sets everything to the ChatPane
 		bottom.getChildren().addAll(playerMessage, sendMessage);
@@ -117,12 +118,7 @@ public class ChatPane extends BorderPane {
 				center.getChildren()
 						.add(new MessagePane(message.getUserName(), message.getMessage(), message.getChatTime()));
 			}
-			setScrollBottom();
 		}
-	}
-
-	public void setScrollBottom() {
-		scrollPane.setVvalue(1.5);
 	}
 
 	/**

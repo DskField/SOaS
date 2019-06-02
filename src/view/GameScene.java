@@ -35,29 +35,35 @@ import javafx.stage.Stage;
 
 public class GameScene extends Scene {
 	// constants
-	private static final int MAIN = 0;
+	private final int MAIN = 0;
+	private final int generalSpacing = 10;
 
-	private static final int personalInfoSpacing = 10;
+	private final int personalInfoSpacing = 10;
 
-	private static final int buttonWidth = 200;
-	private static final int buttonheigt = 50;
+	private final int buttonWidth = 200;
+	private final int buttonheigt = 50;
+	
+	private final int centerBoxMaxWidth = 800;
+	private final int centerBoxPaddingTop = 0;
+	private final int centerBoxPaddingRight = 100;
+	private final int centerBoxPaddingBottom = 0;
+	private final int centerBoxPaddingLeft = 100;
 
-	private static final int centerBoxPaddingTop = 0;
-	private static final int centerBoxPaddingRight = 100;
-	private static final int centerBoxPaddingBottom = 0;
-	private static final int centerBoxPaddingLeft = 100;
+	private final int leftBoxSpacing = 10;
+	private final int leftBoxPaddingTop = 0;
+	private final int leftBoxPaddingRight = 0;
+	private final int leftBoxPaddingBottom = 0;
+	private final int leftBoxPaddingLeft = 10;
 
-	private static final int leftBoxSpacing = 10;
-	private static final int leftBoxPaddingTop = 0;
-	private static final int leftBoxPaddingRight = 0;
-	private static final int leftBoxPaddingBottom = 0;
-	private static final int leftBoxPaddingLeft = 10;
-
-	private static final int rightBoxSpacing = 10;
-	private static final int rightBoxPaddingTop = 0;
-	private static final int rightBoxPaddingRight = 10;
-	private static final int rightBoxPaddingBottom = 60;
-	private static final int rightBoxPaddingLeft = 0;
+	private final int rightBoxSpacing = 10;
+	private final int rightBoxPaddingTop = 0;
+	private final int rightBoxPaddingRight = 10;
+	private final int rightBoxPaddingBottom = 60;
+	private final int rightBoxPaddingLeft = 0;
+	
+	private final int cardBoxHeight = 480;
+	
+	private final Font font = Font.font("arial", 25);
 
 	// variables
 	private BorderPane rootPane;
@@ -267,7 +273,7 @@ public class GameScene extends Scene {
 		buttonBox = new HBox();
 		// initialize everything for the center box
 		centerBox = new VBox();
-		centerBox.setMaxWidth(800);
+		centerBox.setMaxWidth(centerBoxMaxWidth);
 		roundPane = new RoundPane(0, 0);
 		dieOfferPane = new DieOfferPane(gameController);
 
@@ -285,7 +291,7 @@ public class GameScene extends Scene {
 		// adds everything to personal info and handles makeup
 		personalInfo.getChildren().addAll(personalGoalCardPane, currencyStonesPane);
 		personalInfo.setAlignment(Pos.CENTER);
-		personalInfo.setSpacing(10);
+		personalInfo.setSpacing(generalSpacing);
 
 		// handles everything regarding the cardBox
 		// adds goaldCards to the goalCardPanes array
@@ -307,24 +313,24 @@ public class GameScene extends Scene {
 		}
 
 		// handles the makeup of the various boxes
-		goalCardsBox.setSpacing(10);
+		goalCardsBox.setSpacing(generalSpacing);
 		goalCardsBox.setAlignment(Pos.CENTER);
-		toolCardBox.setSpacing(10);
+		toolCardBox.setSpacing(generalSpacing);
 		goalCardsBox.setAlignment(Pos.CENTER);
 		PublicCardsBox.getChildren().addAll(goalCardsBox, toolCardBox);
-		PublicCardsBox.setSpacing(10);
+		PublicCardsBox.setSpacing(generalSpacing);
 		buttonBox.getChildren().addAll(shakeButton, nextButton);
-		buttonBox.setSpacing(10);
+		buttonBox.setSpacing(generalSpacing);
 		buttonBox.setAlignment(Pos.CENTER);
 		cardBox.getChildren().addAll(personalInfo, PublicCardsBox);
-		cardBox.setSpacing(10);
+		cardBox.setSpacing(generalSpacing);
 		cardBox.setAlignment(Pos.CENTER_LEFT);
-		cardBox.setPrefHeight(480);
+		cardBox.setPrefHeight(cardBoxHeight);
 
 		// adds current Player label
 		currentPlayerLabel = new Label();
 		currentPlayerLabel.setTextFill(Color.WHITESMOKE);
-		currentPlayerLabel.setFont(new Font("Arial", 25));//TODO magic number?
+		currentPlayerLabel.setFont(font);//TODO magic number?
 
 		// adds everything to the centerBox and handles makeup
 		centerBox.getChildren().addAll(currentPlayerLabel, roundPane, cardBox, dieOfferPane, buttonBox);
@@ -371,7 +377,6 @@ public class GameScene extends Scene {
 		leftBox.setSpacing(leftBoxSpacing);
 		leftBox.setPadding(
 				new Insets(leftBoxPaddingTop, leftBoxPaddingRight, leftBoxPaddingBottom, leftBoxPaddingLeft));
-		chatPane.setScrollBottom();
 
 		// adds the leftBox to the rootPane
 		rootPane.setLeft(leftBox);
@@ -437,7 +442,7 @@ public class GameScene extends Scene {
 	
 	public void gameFinish(String winText) {
 		Label winner = new Label(winText);
-		winner.setFont(new Font("Arial", 20));
+		winner.setFont(font);
 		winner.setTextFill(Color.WHITE);
 		rootPane.setCenter(winner);
 	}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import client.User;
 import database.PersistenceFacade;
+import game.Chat;
 import game.CollectiveGoalCard;
 import game.Die;
 import game.Game;
@@ -194,7 +195,6 @@ public class GameController {
 		}
 
 		gameScene.updateTurn(checkMyTurn());
-
 		gameScene.updateChat(game.updateChat());
 	}
 

@@ -17,8 +17,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
 public class DieOfferPane extends HBox {
-	private static final int squareSize = 55;
-	private static final int WIDTH = 625 , HEIGHT = 65;
+	private final int squareSize = 55;
+	private final int WIDTH = 625 , HEIGHT = 65;
+	private final int dieSpacing = 15;
+	private final int inset = 5;
+	private final int borderWidth = 5;
 	
 	private GameController gameController;
 	private ArrayList<DiePane> dice;
@@ -42,8 +45,8 @@ public class DieOfferPane extends HBox {
 
 			for (Die die : roundDice) {
 				DiePane diePane = new DiePane(die.getDieId(), die.getDieValue(), die.getDieColor());
-				setPadding(new Insets(5));//TODO magic numbers
-				setSpacing(15);
+				setPadding(new Insets(inset));
+				setSpacing(dieSpacing);
 				diePane.resize(squareSize);
 				dice.add(diePane);
 
@@ -58,7 +61,7 @@ public class DieOfferPane extends HBox {
 					@Override
 					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 						if (newValue) {
-							diePane.setBorder(new Border(new BorderStroke(Color.TURQUOISE, BorderStrokeStyle.SOLID, null, new BorderWidths(5))));
+							diePane.setBorder(new Border(new BorderStroke(Color.TURQUOISE, BorderStrokeStyle.SOLID, null, new BorderWidths(borderWidth))));
 							gameController.selectDie(diePane);
 						} else {
 							diePane.setBorder(null);
