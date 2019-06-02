@@ -21,7 +21,7 @@ public class GameMenuPane extends VBox {
 	private final int SPACING = 50;
 	private final int FONTSIZE = 25;
 	private final String FONT = "serif";
-	private final String DEFAULT_BUTTON_COLOR = "#483D8B";
+	private final Color DEFAULT_BUTTON_COLOR = Color.web("#483D8B");
 
 	/* VARIABLES */
 	private Button btn_resume;
@@ -85,7 +85,7 @@ public class GameMenuPane extends VBox {
 		// Sets default style thats the same for every button like size, and text stuff
 		for (Node item : getChildren()) {
 			if (item.getTypeSelector().toString().equals("Button")) {
-				((Button) item).setBackground(new Background(new BackgroundFill(Color.web(DEFAULT_BUTTON_COLOR), null, null)));
+				((Button) item).setBackground(new Background(new BackgroundFill(DEFAULT_BUTTON_COLOR, null, null)));
 				((Button) item).setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
 				((Button) item).setFont(Font.font(FONT, FontWeight.BOLD, FONTSIZE));
 				((Button) item).setTextFill(Color.WHITE);

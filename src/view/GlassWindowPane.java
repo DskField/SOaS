@@ -29,6 +29,17 @@ public class GlassWindowPane extends BorderPane {
 	private final int glassWindowWidth = 400;
 	private final int glassWindowHeight = 800;
 	private final int spacingAmount = 20;
+	private final int borderwidth = 5;
+	
+	private final int smalRadius = 60;
+	private final int bigRadius = 140;
+	private final int smallFont = 20;
+	private final int bigFont = 40;
+	private final int smallInset = 10;
+	private final Insets insets = new Insets(10, 20, 0, 20);
+	private final int scoreCircleX = 180;
+	private final int scoreCircleY = 180;
+	private final int scoreCircleRadius = 140;
 
 	/* VARIABLES */
 	private FieldPane fieldPane;
@@ -87,17 +98,17 @@ public class GlassWindowPane extends BorderPane {
 		if (isSmall) {
 			setPrefSize(glassWindowWidth / 2, glassWindowHeight / 2.5);
 			setMaxSize(glassWindowWidth / 2, glassWindowHeight / 2.5);
-			setMargin(fieldPane, new Insets(10));
-			circle.setRadius(60);
-			labelScore.setFont(Font.font(20));
-			labelName.setFont(Font.font(20));
-			setMargin(scoreField, new Insets(10, 20, 0, 20));
+			setMargin(fieldPane, new Insets(smallInset));
+			circle.setRadius(smalRadius);
+			labelScore.setFont(Font.font(smallFont));
+			labelName.setFont(Font.font(smallFont));
+			setMargin(scoreField, insets);
 		} else {
 			setPrefSize(glassWindowWidth, glassWindowHeight);
 			setMaxSize(glassWindowWidth, glassWindowHeight);
-			circle.setRadius(140);
-			labelScore.setFont(Font.font(40));
-			labelName.setFont(Font.font(40));
+			circle.setRadius(bigRadius);
+			labelScore.setFont(Font.font(bigFont));
+			labelName.setFont(Font.font(bigFont));
 			setMargin(scoreField, new Insets(spacingAmount));
 			setMargin(fieldPane, new Insets(spacingAmount));
 		}
@@ -116,7 +127,7 @@ public class GlassWindowPane extends BorderPane {
 	private void setName(String name) {
 		labelName = new Label(name);
 		labelName.setTextFill(Color.WHITE);
-		labelName.setFont(Font.font(40));
+		labelName.setFont(Font.font(bigFont));
 
 		setCenter(labelName);
 	}
@@ -125,9 +136,9 @@ public class GlassWindowPane extends BorderPane {
 		scoreField = new StackPane();
 		labelScore = new Label();
 		labelScore.setTextFill(Color.BLACK);
-		labelScore.setFont(Font.font(40));
+		labelScore.setFont(Font.font(bigFont));
 
-		circle = new Circle(180, 180, 140);
+		circle = new Circle(scoreCircleX, scoreCircleY, scoreCircleRadius);
 		circle.setFill(color.getColor());
 		circle.setStroke(Color.BLACK);
 
@@ -162,10 +173,10 @@ public class GlassWindowPane extends BorderPane {
 	}
 
 	public void setActiveBorder() {
-		setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, windowCurve, new BorderWidths(5))));
+		setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, windowCurve, new BorderWidths(borderwidth))));
 	}
 
 	public void setInactiveBorder() {
-		setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, windowCurve, new BorderWidths(5))));
+		setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, windowCurve, new BorderWidths(borderwidth))));
 	}
 }

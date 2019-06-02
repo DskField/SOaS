@@ -29,18 +29,11 @@ public class DiePane extends Pane {
 		this.number = number;
 		this.eyes = eyes;
 		this.color = color;
-		size = 79;
-
-		circleSize = size * 0.2;
-		circleRadius = circleSize / 2;
-		spacing = (size - (circleSize * 3)) / 4;
-
-		addCircles();
+		
+		resize(79);
 
 		setBackground(new Background(new BackgroundFill(color.getColor(), null, null)));
 		setBorder(new Border(new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.SOLID, null, new BorderWidths(1))));
-		setMinSize(size, size);
-		setMaxSize(size, size);
 	}
 
 	public void resize(double size) {

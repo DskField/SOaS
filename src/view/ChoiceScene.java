@@ -23,6 +23,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class ChoiceScene extends Scene {
+	/* CONSTANTS */
+	private final int generalSpacing = 10;
+	private final Font font = Font.font("arial", 25);
+	
 	/* VARIABLES */
 	private BorderPane root;
 	private HBox patternCardBox;
@@ -34,13 +38,13 @@ public class ChoiceScene extends Scene {
 		this.gameController = gameController;
 		root = new BorderPane();
 		cardBox = new VBox();
-		cardBox.setSpacing(10);
+		cardBox.setSpacing(generalSpacing);
 		cardBox.setAlignment(Pos.CENTER);
 		PersonalGoalCardPane personalGoalCardPane = new PersonalGoalCardPane();
 		personalGoalCardPane.loadPersonalGoalCardImage(gameController.getClientPlayer().getPersonalGoalCard());
 		patternCardBox = new HBox();
 		patternCardBox.setAlignment(Pos.CENTER);
-		patternCardBox.setSpacing(10);
+		patternCardBox.setSpacing(generalSpacing);
 		cardBox.getChildren().addAll(patternCardBox, personalGoalCardPane);
 		root.setCenter(cardBox);
 		root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
@@ -61,7 +65,7 @@ public class ChoiceScene extends Scene {
 					pc.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, null, new BorderWidths(5))));
 					Label selectedLabel = new Label("u heeft uw kaart geselecteerd. wachten op andere spelers.");
 					selectedLabel.setTextFill(Color.RED);
-					selectedLabel.setFont(new Font("Arial", 20));
+					selectedLabel.setFont(font);
 					cardBox.getChildren().add(selectedLabel);
 					root.setDisable(true);
 					for (PatternCard patternCard : gameController.getPatternChoices()) {

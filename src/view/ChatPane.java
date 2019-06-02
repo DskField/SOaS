@@ -22,6 +22,7 @@ public class ChatPane extends BorderPane {
 	private final int chatPaneheight = 200;
 	private final int sendButtonWidth = 100;
 	private final int sendButtonHeight = 20;
+	private final double maxScroll = 1.0;
 
 	/* VARIABLES */
 	private TextField playerMessage;
@@ -98,14 +99,12 @@ public class ChatPane extends BorderPane {
 	 * @param messages - {@code ArrayList<Message>} that will be added to the chat
 	 */
 	public void updateChat(ArrayList<Message> messages) {
-		double scrollPos = scrollPane.getVvalue();
-
-		scrollPane.setVvalue(1d);
-		for (Message message : messages) {
-			center.getChildren().add(new MessagePane(message.getUserName(), message.getMessage(), message.getChatTime()));
+		if (messages.size() != 0) {
+			for (Message message : messages) {
+				center.getChildren().add(new MessagePane(message.getUserName(), message.getMessage(), message.getChatTime()));
+				scrollPane.setVvalue(maxScroll);
+			}
 		}
-		scrollPane.setVvalue(scrollPos);
-
 	}
 
 	/**
@@ -115,6 +114,5 @@ public class ChatPane extends BorderPane {
 	private void sendMessage() {
 		gameController.sendMessage(playerMessage.getText());
 		playerMessage.clear();
-		scrollPane.setVvalue(1d);
 	}
 }
