@@ -7,15 +7,27 @@ import game.Die;
 import game.Player;
 
 public class ScoreHandler {
-
+	// variables
 	private ArrayList<CollectiveGoalCard> collectiveGoalCards;
 	private GoalCardHandler goalCardHandler;
 
+	/**
+	 * Constructor used to create a ScoreHandler object
+	 * 
+	 * @param collectiveGoalCards
+	 *            - List containing all the goalcards in that specific game
+	 */
 	public ScoreHandler(ArrayList<CollectiveGoalCard> collectiveGoalCards) {
 		this.collectiveGoalCards = collectiveGoalCards;
 		goalCardHandler = new GoalCardHandler();
 	}
 
+	/**
+	 * Method used to update all the private score for every player
+	 * 
+	 * @param players
+	 *            - List containing all the players in the game
+	 */
 	public void updateAllPrivateScore(ArrayList<Player> players) {
 		int score;
 		for (Player p : players) {
@@ -28,6 +40,15 @@ public class ScoreHandler {
 		}
 	}
 
+	/**
+	 * Method used to get the current score of the player
+	 * 
+	 * @param p
+	 *            - Object containing the player
+	 * @param privateScore
+	 *            - boolean containing whether the score should be private or public
+	 * @return - int containing the score of the player
+	 */
 	public int getScore(Player p, boolean privateScore) {
 		int score = 0;
 		score += privateScore ? handlePrivateGoalCard(p) : 0;
@@ -37,6 +58,13 @@ public class ScoreHandler {
 		return score;
 	}
 
+	/**
+	 * Method used to get the points gained from the private goalcard
+	 * 
+	 * @param player
+	 *            - Object containing the player
+	 * @return - int containing the score of the player gained with the private goalcard
+	 */
 	private int handlePrivateGoalCard(Player player) {
 		int count = 0;
 		for (int y = 0; y < 4; y++) {
@@ -49,6 +77,13 @@ public class ScoreHandler {
 		return count;
 	}
 
+	/**
+	 * Method used to get the points lost from the empty spaces
+	 * 
+	 * @param player
+	 *            - Object containing the player
+	 * @return - int containing the score of the player lost by empty spaces
+	 */
 	private int handleEmptySpaces(Player player) {
 		int count = 0;
 		for (int y = 0; y < 4; y++) {

@@ -10,13 +10,23 @@ import game.GameColor;
 import game.GlassWindow;
 
 public class GoalCardHandler {
-
+	// variables
 	private GlassWindow glasswindow;
 
+	/**
+	 * Method used to calculated the score for a specific glasswindow according to the givin collective goalcards
+	 * 
+	 * @param glasswindow
+	 *            - Object containing the glasswindow that has to be checked
+	 * @param collectiveGoalCards
+	 *            - List of collectivegoalcards in the games that have to be used to calculated the score
+	 * @return - int containing the score for the glasswindow gained according to the collectivegoalcards
+	 */
 	public int getGoalCardHandler(GlassWindow glasswindow, ArrayList<CollectiveGoalCard> collectiveGoalCards) {
 		this.glasswindow = glasswindow;
 		int points = 0;
 		// database numbers + name
+		// depending on the cardID use the according method
 		for (CollectiveGoalCard c : collectiveGoalCards) {
 			switch (c.getCardID()) {
 			case 1:
@@ -57,6 +67,11 @@ public class GoalCardHandler {
 		return points;
 	}
 
+	/**
+	 * Method that will check the eyes on every die and add it on the equivalent index
+	 * 
+	 * @return - int containing the lowest number in the List
+	 */
 	private int handleShadesVariety() {
 		ArrayList<Integer> values = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 0));
 
@@ -95,6 +110,11 @@ public class GoalCardHandler {
 		return values.get(0);
 	}
 
+	/**
+	 * Method that will check every column and check if there's a duplicate die with the same eyes
+	 * 
+	 * @return - int that contains the amount of columns that are full and don't contain duplicate eyes
+	 */
 	private int handleColumnShadeVariety() {
 		ArrayList<Integer> values = new ArrayList<>();
 		int column = 0;
@@ -118,6 +138,11 @@ public class GoalCardHandler {
 		return column;
 	}
 
+	/**
+	 * Method that will check ever column and check if there's a duplicate die with the same color
+	 * 
+	 * @return - int that contains the amount of columns that are full and don't contain duplicate colors
+	 */
 	private int handleColumnColorVariety() {
 		ArrayList<GameColor> colors = new ArrayList<>();
 		int column = 0;
@@ -141,7 +166,15 @@ public class GoalCardHandler {
 		return column;
 	}
 
-	// handles Halfdonkere, Donkere en Lichte Tinten
+	/**
+	 * Method that will check 3 cards. It uses the 2 inputs to differentiate between the 3 cards.
+	 * 
+	 * @param dieA
+	 *            - int containing 1 specific eye that has to be checked
+	 * @param dieB
+	 *            - int containing 1 specific eye that has to be checked
+	 * @return - int that contains the lowest number of the two parameters
+	 */
 	private int handleShades(int dieA, int dieB) {
 		int countA = 0;
 		int countB = 0;
@@ -164,6 +197,11 @@ public class GoalCardHandler {
 		return countA < countB ? countA : countB;
 	}
 
+	/**
+	 * Method that will check the color on every die and add it on the equivalent index
+	 * 
+	 * @return - int containing the lowest number in the List
+	 */
 	private int handleColorVariety() {
 		ArrayList<Integer> colors = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0));
 
@@ -200,6 +238,11 @@ public class GoalCardHandler {
 		return colors.get(0);
 	}
 
+	/**
+	 * Method that will check ever row and check if there's a duplicate die with the same color
+	 * 
+	 * @return - int that contains the amount of rows that are full and don't contain duplicate colors
+	 */
 	private int handleRowColorVariety() {
 		ArrayList<GameColor> colors = new ArrayList<>();
 		int row = 0;
@@ -223,15 +266,29 @@ public class GoalCardHandler {
 		return row;
 	}
 
+	/**
+	 * Method that will check if a die has another die placed diagonally with the same color Everytime there is a color on one of the sport on the
+	 * topleft, topright, bottomleft or bottomrright
+	 * 
+	 * @return - int whcih everytime there is a color on one of the sport on the topleft, topright, bottomleft or bottomrright add 1 to the int
+	 */
 	private int handleColorDiagonals() {
 		int count = 0;
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
 				// first get all diagonal surrounding colors IF the coordinates exist
-				GameColor topleft = (x - 1 >= 0 && y - 1 >= 0) && glasswindow.getSpace(x - 1, y - 1).getDie() != null ? glasswindow.getSpace((x - 1), (y - 1)).getDieColor() : GameColor.EMPTY;
-				GameColor topright = (x + 1 < 5 && y - 1 >= 0) && glasswindow.getSpace(x + 1, y - 1).getDie() != null ? glasswindow.getSpace((x + 1), (y - 1)).getDieColor() : GameColor.EMPTY;
-				GameColor bottomleft = (x - 1 >= 0 && y + 1 < 4) && glasswindow.getSpace(x - 1, y + 1).getDie() != null ? glasswindow.getSpace((x - 1), (y + 1)).getDieColor() : GameColor.EMPTY;
-				GameColor bottomright = (x + 1 < 5 && y + 1 < 4) && glasswindow.getSpace(x + 1, y + 1).getDie() != null ? glasswindow.getSpace((x + 1), (y + 1)).getDieColor() : GameColor.EMPTY;
+				GameColor topleft = (x - 1 >= 0 && y - 1 >= 0) && glasswindow.getSpace(x - 1, y - 1).getDie() != null
+						? glasswindow.getSpace((x - 1), (y - 1)).getDieColor()
+						: GameColor.EMPTY;
+				GameColor topright = (x + 1 < 5 && y - 1 >= 0) && glasswindow.getSpace(x + 1, y - 1).getDie() != null
+						? glasswindow.getSpace((x + 1), (y - 1)).getDieColor()
+						: GameColor.EMPTY;
+				GameColor bottomleft = (x - 1 >= 0 && y + 1 < 4) && glasswindow.getSpace(x - 1, y + 1).getDie() != null
+						? glasswindow.getSpace((x - 1), (y + 1)).getDieColor()
+						: GameColor.EMPTY;
+				GameColor bottomright = (x + 1 < 5 && y + 1 < 4) && glasswindow.getSpace(x + 1, y + 1).getDie() != null
+						? glasswindow.getSpace((x + 1), (y + 1)).getDieColor()
+						: GameColor.EMPTY;
 				GameColor center = glasswindow.getSpace(x, y).getDie() != null ? glasswindow.getSpace(x, y).getDieColor() : GameColor.EMPTY;
 				// check if center space is not empty
 				if (center != GameColor.EMPTY) {
@@ -244,6 +301,11 @@ public class GoalCardHandler {
 		return count;
 	}
 
+	/**
+	 * Method that will check every row and check if there's a duplicate die with the same eyes
+	 * 
+	 * @return - int that contains the amount of rows that are full and don't contain duplicate eyes
+	 */
 	private int handleRowShadeVariety() {
 		ArrayList<Integer> values = new ArrayList<>();
 		int row = 0;

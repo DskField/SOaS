@@ -20,20 +20,22 @@ import javafx.scene.text.Font;
 import javafx.stage.Screen;
 
 public class LobbyListPane extends BorderPane {
+	// variables
+	private ClientScene clientscene;
+	private int idGame;
 
+	// variables for createLeft
 	private ListView<ToggleButton> lobbyList;
 	private ToggleGroup togglegroup;
 	private HandleButton handlebutton;
-	private ClientScene clientscene;
-	private Label errorMessage;
 	private ArrayList<Integer> lobbies;
 	private ArrayList<Integer> playerLobbies;
-	private int idGame;
 	private boolean orderASC;
 	private Button orderButton;
-	private ArrayList<ArrayList<String>> scoreboardList;
 
-	// All stats labels
+	// variables for createStats
+	private Label errorMessage;
+	private ArrayList<ArrayList<String>> scoreboardList;
 	private Label titleLabel;
 	private Label gamestateLabel;
 	private Label gamestateTextLabel;
@@ -41,7 +43,16 @@ public class LobbyListPane extends BorderPane {
 	private Label rondeLabel;
 	private Label wonLabel;
 
-	// Magic Numbers
+	/**
+	 * Magic Numbers
+	 */
+	// Numbers for createLeft
+	final private Background togglebuttonBackground = new Background(new BackgroundFill(Color.BLUE, null, null));
+	final private Color togglebuttonColor = Color.WHITE;
+	final private double lobbyListHeight = Screen.getPrimary().getVisualBounds().getMaxY() - orderButton.getHeight() - 5;
+	final private int orderButtonHeight = 45;
+
+	// Numbers for createStats
 	final private int labelSize = 30;
 	final private int textSize = 25;
 	final private int titleLabelSize = 50;
@@ -54,9 +65,13 @@ public class LobbyListPane extends BorderPane {
 	final private int joinGameButtonWidth = 400;
 	final private int joinGameButtonHeight = 150;
 	final private Color errorMessageColor = Color.RED;
-	final private Background togglebuttonBackground = new Background(new BackgroundFill(Color.BLUE, null, null));
-	final private Color togglebuttonColor = Color.WHITE;
 
+	/**
+	 * Constructor used to create a LobbyListPane Object
+	 * 
+	 * @param clientscene
+	 *            - Object containing the reference to clientscene
+	 */
 	public LobbyListPane(ClientScene clientscene) {
 		this.clientscene = clientscene;
 		lobbyList = new ListView<ToggleButton>();
@@ -67,6 +82,9 @@ public class LobbyListPane extends BorderPane {
 		createLeft();
 	}
 
+	/**
+	 * Method used to create the List of lobbies + sort button
+	 */
 	public void createLeft() {
 		lobbyList.getItems().clear();
 		togglegroup.getToggles().clear();
@@ -75,8 +93,8 @@ public class LobbyListPane extends BorderPane {
 
 		orderButton = new Button(orderASC ? "gesorteerd op oudste" : "gesorteerd op nieuwste");
 		orderButton.setOnAction(e -> handleOrderButton());
-		orderButton.setMinHeight(45);
-		orderButton.setMaxHeight(45);
+		orderButton.setMinHeight(orderButtonHeight);
+		orderButton.setMaxHeight(orderButtonHeight);
 
 		for (Integer lob : lobbies) {
 			ToggleButton togglebutton = new ToggleButton("Game " + lob);
@@ -90,8 +108,8 @@ public class LobbyListPane extends BorderPane {
 			togglegroup.getToggles().add(togglebutton);
 		}
 
-		lobbyList.setMinHeight(Screen.getPrimary().getVisualBounds().getMaxY() - orderButton.getHeight() - 5);
-		lobbyList.setMaxHeight(Screen.getPrimary().getVisualBounds().getMaxY() - orderButton.getHeight() - 5);
+		lobbyList.setMinHeight(lobbyListHeight);
+		lobbyList.setMaxHeight(lobbyListHeight);
 		orderButton.setMinWidth(lobbyList.getWidth());
 		orderButton.setMaxWidth(lobbyList.getWidth());
 
@@ -102,6 +120,12 @@ public class LobbyListPane extends BorderPane {
 		this.setLeft(leftBox);
 	}
 
+	/**
+	 * Method used to create the stats pane, the error message, the join button
+	 * 
+	 * @param idGame
+	 *            - int containing the idGame used to get the data for the stats and to join the game
+	 */
 	public void createStats(int idGame) {
 		BorderPane statsBox = new BorderPane();
 
@@ -196,16 +220,25 @@ public class LobbyListPane extends BorderPane {
 		this.setCenter(lobbyJoinPannel);
 	}
 
+	// getter
 	public int getIDGame() {
 		return idGame;
 	}
 
+	/**
+	 * Method used to sort the Usernames in the list
+	 */
 	private void handleOrderButton() {
 		orderASC = orderASC ? false : true;
 		clientscene.changeLobbyOrder(orderASC);
 		createLeft();
 	}
 
+	/**
+	 * Method used to join a game
+	 * 
+	 * @param idGame - int containing the idGame the user is trying to join
+	 */
 	public void joinGameButton(int idGame) {
 		boolean playerInGame = false;
 		for (ArrayList<String> list : scoreboardList) {
@@ -229,6 +262,9 @@ public class LobbyListPane extends BorderPane {
 		}
 	}
 
+	/**
+	 * Method used to create the statsPane based on the button
+	 */
 	private class HandleButton implements EventHandler<MouseEvent> {
 		@Override
 		public void handle(MouseEvent e) {

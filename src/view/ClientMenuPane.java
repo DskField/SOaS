@@ -14,7 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 
 public class ClientMenuPane extends VBox {
-
+	// variables
 	private ClientScene clientscene;
 	private ToggleButton userListButton;
 	private ToggleButton lobbyListButton;
@@ -23,13 +23,19 @@ public class ClientMenuPane extends VBox {
 	private ToggleButton quitButton;
 
 	// Magic Numbers
-	final private static int buttonWidth = 300;
-	final private static int buttonHeight = 100;
+	final private int buttonWidth = 300;
+	final private int buttonHeight = 100;
+	final private int paneHeight = (int) Screen.getPrimary().getBounds().getMaxY();
 
+	/**
+	 * Constructor used to create a ClientMenuPane Object
+	 * 
+	 * @param clientscene - contains the reference to clientscene
+	 */
 	public ClientMenuPane(ClientScene clientscene) {
 		super();
-		this.setMinSize(buttonWidth + 2, Screen.getPrimary().getBounds().getMaxY());
-		this.setMaxSize(buttonWidth + 2, Screen.getPrimary().getBounds().getMaxY());
+		this.setMinSize(buttonWidth + 2, paneHeight);
+		this.setMaxSize(buttonWidth + 2, paneHeight);
 		this.clientscene = clientscene;
 		this.setBorder(new Border(
 				new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
@@ -37,6 +43,9 @@ public class ClientMenuPane extends VBox {
 		createButtons();
 	}
 
+	/**
+	 * Method used to create the buttons
+	 */
 	private void createButtons() {
 		userListButton = new ToggleButton("Spelers");
 		userListButton.setMinSize(buttonWidth, buttonHeight);

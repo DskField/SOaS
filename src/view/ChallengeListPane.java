@@ -19,14 +19,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class ChallengeListPane extends BorderPane {
-
+	// variables
 	private ClientScene clientscene;
+	// variables for createLeft
 	private ListView<ToggleButton> challengeList;
 	private ToggleGroup togglegroup;
 	private HandleButton handleButton;
 	private ArrayList<Integer> challenges;
 
-	// Magic Numbers
+	/**
+	 * Magic Numbers
+	 */
+	// Numbers for createCenter
 	final private int reactionButtonWidth = 180;
 	final private int reactionButtonHeight = 150;
 	final private int buttonBoxSpacing = 40;
@@ -36,6 +40,12 @@ public class ChallengeListPane extends BorderPane {
 	final private Color statsBackgroundColor = Color.AQUAMARINE;
 	final private int labelSize = 30;
 
+	/**
+	 * Constructor used to create a ChallengeListPane Object
+	 * 
+	 * @param clientscene
+	 *            - Object containing the reference to clientscene
+	 */
 	public ChallengeListPane(ClientScene clientscene) {
 		this.clientscene = clientscene;
 		this.challengeList = new ListView<ToggleButton>();
@@ -45,6 +55,9 @@ public class ChallengeListPane extends BorderPane {
 		createLeft();
 	}
 
+	/**
+	 * Method used to create the List of Challenges
+	 */
 	public void createLeft() {
 		challengeList.getItems().clear();
 		togglegroup.getToggles().clear();
@@ -61,6 +74,12 @@ public class ChallengeListPane extends BorderPane {
 		this.setLeft(challengeList);
 	}
 
+	/**
+	 * Method used to create the stats pane containing the challengee information
+	 * 
+	 * @param idGame
+	 *            - int containing the idGame for which you didn't respond yet
+	 */
 	private void createCenter(int idGame) {
 		Label challengeInfo = new Label("Uitdaging: Game " + idGame);
 		challengeInfo.setMinSize(statsWidth, statsHeight);
@@ -110,6 +129,14 @@ public class ChallengeListPane extends BorderPane {
 		this.setCenter(centerBox);
 	}
 
+	/**
+	 * Method used to respond to the challenge based on the user input
+	 * 
+	 * @param accepted
+	 *            - boolean cointaing if the user accepted to declined
+	 * @param idGame
+	 *            - int containing the idGame to which the user responded too
+	 */
 	private void handleReactionButton(boolean accepted, int idGame) {
 		clientscene.handleReaction(accepted, idGame);
 		this.setCenter(null);
@@ -117,6 +144,9 @@ public class ChallengeListPane extends BorderPane {
 		createLeft();
 	}
 
+	/**
+	 * Method used to create the center when the user clicks on a challenge
+	 */
 	private class HandleButton implements EventHandler<MouseEvent> {
 		@Override
 		public void handle(MouseEvent e) {

@@ -17,7 +17,7 @@ import view.ClientScene;
 import view.LoginPane;
 
 public class ClientController {
-
+	// variables
 	private Client client;
 	private GameController gamecontroller;
 	private MainApplication mainapplication;
@@ -26,6 +26,12 @@ public class ClientController {
 
 	private AnimationTimerExt timer;
 
+	/**
+	 * Constructor used to create a ClientController object
+	 * 
+	 * @param mainapplication
+	 *            - used to change the scene in de mainapplication
+	 */
 	public ClientController(MainApplication mainapplication) {
 		this.persistencefacade = new PersistenceFacade();
 		this.mainapplication = mainapplication;
@@ -34,7 +40,16 @@ public class ClientController {
 		mainapplication.setScene(new Scene(new LoginPane(this)));
 	}
 
-	// Only after a succesfull login everything will be created
+	/**
+	 * Only after a succesfull login everything will be created
+	 * 
+	 * @param username
+	 *            - string containing the username input
+	 * @param password
+	 *            - string containing the password input
+	 * @return - boolean whether the login was succesful or not
+	 * 
+	 */
 	public boolean handleLogin(String username, String password) {
 		if (username.length() < 3 || username.length() > 25 || password.length() < 3 || password.length() > 25) {
 			return false;
@@ -42,7 +57,7 @@ public class ClientController {
 		if (!username.matches("[a-zA-Z0-9]*") && !password.matches("[a-zA-Z0-9]*")) {
 			return false;
 		}
-		
+
 		if (client.loginCorrect(username, password)) {
 			client.insertUserInClient(username);
 			this.clientscene = new ClientScene(this);
@@ -53,11 +68,15 @@ public class ClientController {
 		return client.loginCorrect(username, password);
 	}
 
-	public void returnToClient() {
-		timer.start();
-		mainapplication.setScene(clientscene);
-	}
-
+	/**
+	 * Register the new user only if the username hasn't been used and if the username and password pass the criteria
+	 * 
+	 * @param username
+	 *            - string containing the username input
+	 * @param password
+	 *            - string containing the password input
+	 * @return - boolean whether the register was succesful or not
+	 */
 	public boolean handleRegister(String username, String password) {
 		if (username.length() < 3 || username.length() > 25 || password.length() < 3 || password.length() > 25) {
 			return false;
@@ -68,6 +87,14 @@ public class ClientController {
 		return client.insertCorrect(username, password);
 	}
 
+	/**
+	 * Method that can be called from GameController to swap back to the clientscene
+	 */
+	public void returnToClient() {
+		timer.start();
+		mainapplication.setScene(clientscene);
+	}
+
 	// Getters
 	public ArrayList<Integer> getChallenges() {
 		return client.getChallenges();
@@ -76,7 +103,7 @@ public class ClientController {
 	public ArrayList<Integer> getLobbies() {
 		return client.getAllLobbies();
 	}
-	
+
 	public ArrayList<Integer> getPlayerLobbies() {
 		return client.getAllPlayerLobbies();
 	}
@@ -118,11 +145,19 @@ public class ClientController {
 		return client.getPlayers(idGame);
 	}
 
+	/**
+	 * 
+	 * @param gameID
+	 *            - int containing the gameID
+	 * @param players
+	 *            - List of all the players in the game
+	 * @return - return a two demensional array containing an array of the username and score for every index
+	 */
 	public ArrayList<ArrayList<String>> getScore(int gameID, ArrayList<Player> players) {
 		ScoreHandler scorehandler = new ScoreHandler(client.getSharedCollectiveGoalCards(gameID));
 		ArrayList<ArrayList<Integer>> comparator = new ArrayList<>();
 		ArrayList<ArrayList<String>> result = new ArrayList<>();
-		
+
 		// Change from String into Integer to be able to sort
 		// Keep the relation between score and player by using numbers
 		for (int i = 0; i < players.size(); i++) {
@@ -155,6 +190,26 @@ public class ClientController {
 	public void logOut() {
 		timer.stop();
 		mainapplication.setScene(new Scene(new LoginPane(this)));
+	}
+
+	public ArrayList<String> getAllUsernames() {
+		return client.getAllUsernames();
+	}
+
+	public boolean isGameReady(int idGame) {
+		return client.isGameReady(idGame);
+	}
+
+	public ArrayList<ArrayList<String>> getScoreboard(int idGame) {
+		return client.getScoreboard(idGame);
+	}
+
+	public void changeLobbyOrder(boolean orderASC) {
+		client.changeLobbyOrder(orderASC);
+	}
+
+	public void changeUserOrder(boolean orderASC) {
+		client.changeUserOrder(orderASC);
 	}
 
 	// Update with Timer
@@ -191,7 +246,7 @@ public class ClientController {
 
 		public abstract void doAction();
 	}
-
+	
 	private void createTimer() {
 		timer = new AnimationTimerExt(3000) {
 			@Override
@@ -209,25 +264,5 @@ public class ClientController {
 		};
 
 		timer.start();
-	}
-
-	public ArrayList<String> getAllUsernames() {
-		return client.getAllUsernames();
-	}
-
-	public boolean isGameReady(int idGame) {
-		return client.isGameReady(idGame);
-	}
-	
-	public ArrayList<ArrayList<String>> getScoreboard(int idGame) {
-		return client.getScoreboard(idGame);
-	}
-
-	public void changeLobbyOrder(boolean orderASC) {
-		client.changeLobbyOrder(orderASC);
-	}
-
-	public void changeUserOrder(boolean orderASC) {
-		client.changeUserOrder(orderASC);
 	}
 }

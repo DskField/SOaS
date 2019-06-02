@@ -19,29 +19,32 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class LoginPane extends BorderPane {
-
+	// variables
 	private HBox buttons;
 	private ClientController clientcontroller;
 	private TextField username;
 	private PasswordField password;
 	private Label errorMessage;
 
-	// Magic Numbers Label
+	/**
+	 * Magic Numbers
+	 */
+	// Numbers for Label
 	final private static int errorMessageSize = 23;
 	final private static Color errorMessageColor = Color.RED;
 	final private static Color errorMessageConfirmColor = Color.LIMEGREEN;
 
-	// Magic Numbers constructor
+	// Numbers for constructor
 	final private static int paneWidth = 500;
 	final private static int paneHeight = 500;
 	final private static Color backgroundColor = Color.GRAY;
 
-	// Magic Numbers buttons
+	// Numbers for buttons
 	final private static int buttonWidth = 100;
 	final private static int buttonHeight = 50;
 	final private static int buttonSpacing = 30;
 
-	// Magic Numbers textfields
+	// Numbers for textfields
 	final private static int textfieldsSpacing = 20;
 	final private static int fieldsSpacing = 10;
 	final private static int butAndfieldsSpacing = 10;
@@ -49,6 +52,12 @@ public class LoginPane extends BorderPane {
 	final private static int butAndfieldsHeight = 50;
 	final private static double textfieldsScaling = 1.3;
 
+	/**
+	 * Constructor used to create a LoginPane Object
+	 * 
+	 * @param clientcontroller
+	 *            - Object containing the reference to ClientController
+	 */
 	public LoginPane(ClientController clientcontroller) {
 		this.clientcontroller = clientcontroller;
 		setPrefSize(paneWidth, paneHeight);
@@ -67,6 +76,9 @@ public class LoginPane extends BorderPane {
 		});
 	}
 
+	/**
+	 * Method used to create all the buttons
+	 */
 	public void createButtons() {
 		buttons = new HBox();
 
@@ -84,23 +96,9 @@ public class LoginPane extends BorderPane {
 
 	}
 
-	private void handleLogin(String username, String password) {
-		if (!clientcontroller.handleLogin(username, password)) {
-			errorMessage.setText("Gebruikersnaam of Wachtwoord is incorrect");
-			errorMessage.setTextFill(errorMessageColor);
-		}
-	}
-
-	private void handleRegister(String username, String password) {
-		if (!clientcontroller.handleRegister(username, password)) {
-			errorMessage.setText("Mislukt, controleer de gebruikersnaam en wachtwoord");
-			errorMessage.setTextFill(errorMessageColor);
-		} else {
-			errorMessage.setText("Account geregistreerd");
-			errorMessage.setTextFill(errorMessageConfirmColor);
-		}
-	}
-
+	/**
+	 * Method used to create the input fields
+	 */
 	public void createTextFields() {
 		Label sagrada = new Label("Sagrada");
 		sagrada.setStyle(" -fx-font-size:60px;-fx-text-fill: white");
@@ -139,5 +137,38 @@ public class LoginPane extends BorderPane {
 		textfields.getChildren().addAll(sagrada, butAndfields, quit, errorMessage);
 		textfields.setAlignment(Pos.CENTER);
 		setCenter(textfields);
+	}
+
+	/**
+	 * Method used to handle the login button. If login failed show an error message
+	 *
+	 * @param username
+	 *            - string containing the username input
+	 * @param password
+	 *            - string containing the password input
+	 */
+	private void handleLogin(String username, String password) {
+		if (!clientcontroller.handleLogin(username, password)) {
+			errorMessage.setText("Gebruikersnaam of Wachtwoord is incorrect");
+			errorMessage.setTextFill(errorMessageColor);
+		}
+	}
+
+	/**
+	 * Method used to handle the register button. If register failed show an error message
+	 * 
+	 * @param username
+	 *            - string containing the username input
+	 * @param password
+	 *            - string containing the password input
+	 */
+	private void handleRegister(String username, String password) {
+		if (!clientcontroller.handleRegister(username, password)) {
+			errorMessage.setText("Mislukt, controleer de gebruikersnaam en wachtwoord");
+			errorMessage.setTextFill(errorMessageColor);
+		} else {
+			errorMessage.setText("Account geregistreerd");
+			errorMessage.setTextFill(errorMessageConfirmColor);
+		}
 	}
 }
