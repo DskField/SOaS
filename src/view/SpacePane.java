@@ -32,7 +32,8 @@ public class SpacePane extends Pane {
 		setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				controller.placeDie((SpacePane) event.getSource());
+				SpacePane space = (SpacePane) event.getSource();
+				controller.placeDie(space.getX(), space.getY());
 			}
 		});
 	}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import controllers.GameController;
 import game.Die;
+import game.GameColor;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -64,7 +65,7 @@ public class DieOfferPane extends HBox {
 					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 						if (newValue) {
 							diePane.setBorder(new Border(new BorderStroke(Color.TURQUOISE, BorderStrokeStyle.SOLID, null, new BorderWidths(borderWidth))));
-							gameController.selectDie(diePane);
+							gameController.selectDie(diePane.getColor(), diePane.getEyes());
 						} else {
 							diePane.setBorder(null);
 						}
@@ -103,9 +104,12 @@ public class DieOfferPane extends HBox {
 	 * 
 	 * @param diePane - The die to be removed
 	 */
-	public void removeDie(DiePane diePane) {
-		getChildren().remove(diePane);
-		dice.remove(dice.indexOf(diePane));
+	public void removeDie(int number, GameColor color) {
+		for (DiePane die : dice) {
+			if (die.getNumber() == number && die.getColor() == color) {
+				getChildren().remove(die);
+				dice.remove(dice.indexOf(die));
+			}
+		}
 	}
-
 }

@@ -42,7 +42,7 @@ public class GameScene extends Scene {
 
 	private final int buttonWidth = 200;
 	private final int buttonheigt = 50;
-	
+
 	private final int centerBoxMaxWidth = 800;
 	private final int centerBoxPaddingTop = 0;
 	private final int centerBoxPaddingRight = 100;
@@ -60,9 +60,9 @@ public class GameScene extends Scene {
 	private final int rightBoxPaddingRight = 10;
 	private final int rightBoxPaddingBottom = 60;
 	private final int rightBoxPaddingLeft = 0;
-	
+
 	private final int cardBoxHeight = 480;
-	
+
 	private final Font font = Font.font("arial", 25);
 
 	/* VARIABLES */
@@ -156,11 +156,27 @@ public class GameScene extends Scene {
 		glassWindowPanes.get(MAIN).removeHighlightSpaces();
 	}
 
-	public DiePane getSelectedDie() {
+	public GameColor getSelectedDieColor() {
 		try {
-			return (DiePane) focusOwnerProperty().get();
+			return ((DiePane) focusOwnerProperty().get()).getColor();
 		} catch (ClassCastException e) {
 			return null;
+		}
+	}
+
+	public int getSelectedDieEyes() {
+		try {
+			return ((DiePane) focusOwnerProperty().get()).getEyes();
+		} catch (ClassCastException e) {
+			return 0;
+		}
+	}
+
+	public int getSelectedDieId() {
+		try {
+			return ((DiePane) focusOwnerProperty().get()).getNumber();
+		} catch (ClassCastException e) {
+			return 0;
 		}
 	}
 
@@ -195,7 +211,7 @@ public class GameScene extends Scene {
 	 * Empties the {@code OfferPane}
 	 */
 	public void removeDieTable() {
-		dieOfferPane.removeDie(getSelectedDie());
+		dieOfferPane.removeDie(getSelectedDieId(), getSelectedDieColor());
 	}
 
 	/**
@@ -203,7 +219,7 @@ public class GameScene extends Scene {
 	 * 
 	 * @param rounds - rounds on the roundtrack
 	 */
-	public void updateRoundTrack(Round[] rounds) {//TODO Double useless code in here I think, roundPane.getchildren.clear and roundPane.clear
+	public void updateRoundTrack(Round[] rounds) {
 		roundPane.getChildren().clear();
 		for (int i = 0; i < rounds.length; i++) {
 			roundPane.clear(i + 1);
@@ -213,11 +229,6 @@ public class GameScene extends Scene {
 			}
 		}
 		roundPane.update();
-	}
-
-	public void disableOffer(boolean b) {//TODO double code with disableOfferPane? at line 126
-
-		dieOfferPane.setDisable(b);
 	}
 
 	/**
@@ -259,13 +270,13 @@ public class GameScene extends Scene {
 	 * {@code DieOfferPane} and the necessary {@code Buttons}.
 	 */
 	private void createCenter() {
-		// initialize everything for personalInfo
+		// Initialize everything for personalInfo
 		personalInfo = new VBox();
 		currencyStonesPane = new CurrencyStonesPane();
 		personalGoalCardPane = new PersonalGoalCardPane();
 		personalGoalCardPane.loadPersonalGoalCardImage(gameController.getClientPlayer().getPersonalGoalCard());
 
-		// initialize everything for the cardBox
+		// Initialize everything for the cardBox
 		cardBox = new HBox();
 		PublicCardsBox = new VBox();
 		goalCardsBox = new HBox();
@@ -273,7 +284,7 @@ public class GameScene extends Scene {
 		goalCardPanes = new GoalCardPane[3];
 		toolCardPanes = new ToolCardPane[3];
 		buttonBox = new HBox();
-		// initialize everything for the center box
+		// Initialize everything for the center box
 		centerBox = new VBox();
 		centerBox.setMaxWidth(centerBoxMaxWidth);
 		roundPane = new RoundPane(0, 0);
@@ -282,7 +293,7 @@ public class GameScene extends Scene {
 		shakeButton = new Button("Schudden");
 		nextButton = new Button("Beurt klaar");
 
-		// handles everything regarding buttons
+		// Handles everything regarding buttons
 		shakeButton.setPrefSize(buttonWidth, buttonheigt);
 		nextButton.setPrefSize(buttonWidth, buttonheigt);
 		dieOfferPane.setDisable(false);
@@ -290,31 +301,31 @@ public class GameScene extends Scene {
 		nextButton.setDisable(true);
 		shakeButton.setOnAction(e -> handleShakeButton());
 		nextButton.setOnAction(e -> handleNextButton());
-		// adds everything to personal info and handles makeup
+		// Adds everything to personal info and handles makeup
 		personalInfo.getChildren().addAll(personalGoalCardPane, currencyStonesPane);
 		personalInfo.setAlignment(Pos.CENTER);
 		personalInfo.setSpacing(generalSpacing);
 
-		// handles everything regarding the cardBox
+		// Handles everything regarding the cardBox
 		// adds goaldCards to the goalCardPanes array
 		for (int i = 0; i < 3; i++) {
 			goalCardPanes[i] = new GoalCardPane(gameController.getCollectiveGoalCard(i));
 		}
 
-		// adds the goalCardPanes to the goalCardBox
+		// Adds the goalCardPanes to the goalCardBox
 		for (GoalCardPane goalCardPane : goalCardPanes) {
 			goalCardsBox.getChildren().add(goalCardPane);
 		}
-		// adds toolCards to the toolCards Array
+		// Adds toolCards to the toolCards Array
 		for (int i = 0; i < 3; i++) {
 			toolCardPanes[i] = new ToolCardPane(gameController.getToolCard(i));
 		}
-		// adds the toolCardPanes to the toolCardBox
+		// Adds the toolCardPanes to the toolCardBox
 		for (ToolCardPane toolCardPane : toolCardPanes) {
 			toolCardBox.getChildren().add(toolCardPane);
 		}
 
-		// handles the makeup of the various boxes
+		// Handles the makeup of the various boxes
 		goalCardsBox.setSpacing(generalSpacing);
 		goalCardsBox.setAlignment(Pos.CENTER);
 		toolCardBox.setSpacing(generalSpacing);
@@ -329,18 +340,18 @@ public class GameScene extends Scene {
 		cardBox.setAlignment(Pos.CENTER_LEFT);
 		cardBox.setPrefHeight(cardBoxHeight);
 
-		// adds current Player label
+		// Adds current Player label
 		currentPlayerLabel = new Label();
 		currentPlayerLabel.setTextFill(Color.WHITESMOKE);
-		currentPlayerLabel.setFont(font);//TODO magic number?
+		currentPlayerLabel.setFont(font);
 
-		// adds everything to the centerBox and handles makeup
+		// Adds everything to the centerBox and handles makeup
 		centerBox.getChildren().addAll(currentPlayerLabel, roundPane, cardBox, dieOfferPane, buttonBox);
 		centerBox.setAlignment(Pos.CENTER);
 		centerBox.setSpacing(personalInfoSpacing);
 		centerBox.setPadding(new Insets(centerBoxPaddingTop, centerBoxPaddingRight, centerBoxPaddingBottom, centerBoxPaddingLeft));
 
-		// adds the centerBox to the rootPane
+		// Adds the centerBox to the rootPane
 		rootPane.setCenter(centerBox);
 	}
 
@@ -439,7 +450,7 @@ public class GameScene extends Scene {
 			personalGoalCardPane.loadCardBack();
 		}
 	}
-	
+
 	public void gameFinish(String winText) {
 		Label winner = new Label(winText);
 		winner.setFont(font);

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import client.User;
 import database.PersistenceFacade;
-import game.Chat;
 import game.CollectiveGoalCard;
 import game.Die;
 import game.Game;
@@ -18,9 +17,7 @@ import game.SpaceGlass;
 import game.SpacePattern;
 import javafx.animation.AnimationTimer;
 import view.ChoiceScene;
-import view.DiePane;
 import view.GameScene;
-import view.SpacePane;
 
 public class GameController {
 	/* VARIABLES */
@@ -353,8 +350,8 @@ public class GameController {
 	 * @param die - The {@code Die} you want to place
 	 * @return boolean - True if compatible, false if not
 	 */
-	private boolean checkCompatibility(SpacePattern sPattern, DiePane diePane) {//TODO REMOVE DIEPANE, VIEW SHOULDNT BE IN CONTROLLER
-		if (sPattern.getColor().equals(diePane.getColor()) || sPattern.getValue() == diePane.getEyes() || (sPattern.getColor().equals(GameColor.EMPTY) && sPattern.getValue() == 0)) {
+	private boolean checkCompatibility(SpacePattern sPattern, GameColor color, int eyes) {
+		if (sPattern.getColor().equals(color) || sPattern.getValue() == eyes || (sPattern.getColor().equals(GameColor.EMPTY) && sPattern.getValue() == 0)) {
 			return true;
 		}
 		return false;
@@ -367,15 +364,15 @@ public class GameController {
 	 * @param space - The {@code Space} where its going to be placed
 	 * @return boolean - True if possible to place, false if not
 	 */
-	private boolean checkSurrounding(DiePane diePane, SpaceGlass space) {//TODO REMOVE DIEPANE, VIEW SHOULDNT BE IN CONTROLLER
+	private boolean checkSurrounding(GameColor color, int eyes, SpaceGlass space) {
 		boolean succes = true;
 		ArrayList<Die> orthogonalDice = getOrthogonalDice(space);
 		ArrayList<Die> diagonalDice = getDiagonalDice(space);
 
 		for (Die die : orthogonalDice) {
-			boolean sameColor = die.getDieColor().equals(diePane.getColor());// I seperated them and moved them out of
-																				// the if for readability
-			boolean sameValue = die.getDieValue() == diePane.getEyes();
+			boolean sameColor = die.getDieColor().equals(color);
+			boolean sameValue = die.getDieValue() == eyes;
+
 			if (sameColor || sameValue) {
 				succes = false;
 				break;
@@ -395,14 +392,14 @@ public class GameController {
 	 * @param diePane - The to be placed die
 	 * @return ArrayList<SpaceGlass> - All available spaces
 	 */
-	private ArrayList<SpaceGlass> getAvailableSpaces(DiePane diePane) {//TODO REMOVE DIEPANE, VIEW SHOULDNT BE IN CONTROLLER
+	private ArrayList<SpaceGlass> getAvailableSpaces(GameColor color, int eyes) {
 		ArrayList<SpaceGlass> available = new ArrayList<>();
 		GlassWindow window = getClientPlayer().getGlassWindow();
 
 		for (SpacePattern[] spacePatternRow : window.getPatternCard().getSpaces()) {
 			for (SpacePattern space : spacePatternRow) {
-				boolean compatible = checkCompatibility(space, diePane);
-				boolean surrounding = checkSurrounding(diePane, window.getSpace(space.getXCor(), space.getYCor()));
+				boolean compatible = checkCompatibility(space, color, eyes);
+				boolean surrounding = checkSurrounding(color, eyes, window.getSpace(space.getXCor(), space.getYCor()));
 				boolean empty = window.getSpace(space.getXCor(), space.getYCor()).getDie() == null;
 				boolean edge = (space.getXCor() == 0 || space.getXCor() == 4 || space.getYCor() == 0 || space.getYCor() == 3);
 
@@ -414,24 +411,26 @@ public class GameController {
 		return available;
 	}
 
-	public void selectDie(DiePane diePane) {//TODO REMOVE DIEPANE, VIEW SHOULDNT BE IN CONTROLLER
+	public void selectDie(GameColor color, int eyes) {
 		if (cheatMode == 0) {
 			gameScene.selectDie(null);
 		} else if (cheatMode == 1) {
-			gameScene.selectDie(getAvailableSpaces(diePane));
+			gameScene.selectDie(getAvailableSpaces(color, eyes));
 
 		} else if (cheatMode == 2) {
-			gameScene.selectDie(getBestPlaces(getAvailableSpaces(diePane), diePane));
+			gameScene.selectDie(getBestPlaces(getAvailableSpaces(color, eyes), color, eyes));
 		}
 	}
 
-	public void placeDie(SpacePane spacePane) {//TODO REMOVE SpacePane, VIEW SHOULDNT BE IN CONTROLLER
-		DiePane diePane = gameScene.getSelectedDie();
-		if (diePane != null) {
-			ArrayList<SpaceGlass> available = getAvailableSpaces(diePane);
+	public void placeDie(int x, int y) {
+		GameColor color = gameScene.getSelectedDieColor();
+		int eyes = gameScene.getSelectedDieEyes();
+		int id = gameScene.getSelectedDieId();
+		if (color != null) {
+			ArrayList<SpaceGlass> available = getAvailableSpaces(color, eyes);
 			for (SpaceGlass spaceGlass : available) {
-				if (spaceGlass.getXCor() == spacePane.getX() && spaceGlass.getYCor() == spacePane.getY()) {
-					game.placeDie(diePane.getNumber(), diePane.getColor(), spacePane.getX(), spacePane.getY());
+				if (spaceGlass.getXCor() == x && spaceGlass.getYCor() == y) {
+					game.placeDie(id, color, x, y);
 					gameScene.removeDieTable();
 					gameScene.removeHighlight();
 					gameScene.disableDieOfferPane(true);
@@ -485,7 +484,7 @@ public class GameController {
 	 * @param newDie - The to be placed die
 	 * @return ArrayList<SpaceGlass> - The best places to place the die
 	 */
-	private ArrayList<SpaceGlass> getBestPlaces(ArrayList<SpaceGlass> available, DiePane newDie) {
+	private ArrayList<SpaceGlass> getBestPlaces(ArrayList<SpaceGlass> available, GameColor color, int eyes) {
 		ArrayList<SpaceGlass> best = new ArrayList<>();
 		PatternCard pC = getClientPlayer().getGlassWindow().getPatternCard();
 
@@ -504,30 +503,28 @@ public class GameController {
 
 			// Left
 			if (currentX > minX) {
-				leftSame = pC.getSpaceColor(sG.getXCor() - 1, sG.getYCor()).equals(newDie.getColor()) || pC.getSpaceValue(sG.getXCor() - 1, sG.getYCor()) == newDie.getEyes();
+				leftSame = pC.getSpaceColor(sG.getXCor() - 1, sG.getYCor()).equals(color) || pC.getSpaceValue(sG.getXCor() - 1, sG.getYCor()) == eyes;
 			}
 
 			// Right
 			if (currentX < maxX) {
-				rightSame = pC.getSpaceColor(sG.getXCor() + 1, sG.getYCor()).equals(newDie.getColor()) || pC.getSpaceValue(sG.getXCor() + 1, sG.getYCor()) == newDie.getEyes();
+				rightSame = pC.getSpaceColor(sG.getXCor() + 1, sG.getYCor()).equals(color) || pC.getSpaceValue(sG.getXCor() + 1, sG.getYCor()) == eyes;
 			}
 
 			// Above
 			if (currentY > minY) {// ABOVE
-				aboveSame = pC.getSpaceColor(sG.getXCor(), sG.getYCor() - 1).equals(newDie.getColor()) || pC.getSpaceValue(sG.getXCor(), sG.getYCor() - 1) == newDie.getEyes();
+				aboveSame = pC.getSpaceColor(sG.getXCor(), sG.getYCor() - 1).equals(color) || pC.getSpaceValue(sG.getXCor(), sG.getYCor() - 1) == eyes;
 			}
 
 			// Bellow
 			if (currentY < maxY) {// BELOW
-				belowSame = (pC.getSpaceColor(sG.getXCor(), sG.getYCor() + 1).equals(newDie.getColor()) || pC.getSpaceValue(sG.getXCor(), sG.getYCor() + 1) == newDie.getEyes());
+				belowSame = (pC.getSpaceColor(sG.getXCor(), sG.getYCor() + 1).equals(color) || pC.getSpaceValue(sG.getXCor(), sG.getYCor() + 1) == eyes);
 
 			}
 
 			if (!(leftSame || rightSame || aboveSame || belowSame)) {// if one of them is true its not ideal
 				best.add(sG);
-
 			}
-
 		}
 
 		return best;
