@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 
 import controllers.GameController;
+import controllers.MainApplication;
 import game.Message;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,10 +21,10 @@ import javafx.scene.layout.VBox;
 
 public class ChatPane extends BorderPane {
 	/* CONSTANTS */
-	private final int chatPaneWidth = 400;
-	private final int chatPaneheight = 200;
-	private final int sendButtonWidth = 100;
-	private final int sendButtonHeight = 20;
+	private final double chatPaneWidth = 400*MainApplication.width;
+	private final double chatPaneheight = 200*MainApplication.height;
+	private final double sendButtonWidth = 100*MainApplication.width;
+	private final double sendButtonHeight = 20*MainApplication.height;
 	private final double maxScroll = 1.0;
 
 	/* VARIABLES */

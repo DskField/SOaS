@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 
 import controllers.GameController;
+import controllers.MainApplication;
 import game.CurrencyStone;
 import game.Die;
 import game.GameColor;
@@ -36,34 +37,34 @@ import javafx.stage.Stage;
 public class GameScene extends Scene {
 	/* CONSTANTS */
 	private final int MAIN = 0;
-	private final int generalSpacing = 10;
+	private final double generalSpacing = 10 * MainApplication.height;
 
-	private final int personalInfoSpacing = 10;
+	private final double personalInfoSpacing = 10* MainApplication.height;
 
-	private final int buttonWidth = 200;
-	private final int buttonheigt = 50;
+	private final double buttonWidth = 200*MainApplication.width;
+	private final double buttonheigt = 50*MainApplication.height;
 
-	private final int centerBoxMaxWidth = 800;
-	private final int centerBoxPaddingTop = 0;
-	private final int centerBoxPaddingRight = 100;
-	private final int centerBoxPaddingBottom = 0;
-	private final int centerBoxPaddingLeft = 100;
+	private final double centerBoxMaxWidth = 800*MainApplication.width;
+	private final double centerBoxPaddingTop = 0*MainApplication.height;
+	private final double centerBoxPaddingRight = 100*MainApplication.width;
+	private final double centerBoxPaddingBottom = 0*MainApplication.height;
+	private final double centerBoxPaddingLeft = 100*MainApplication.width;
 
-	private final int leftBoxSpacing = 10;
-	private final int leftBoxPaddingTop = 0;
-	private final int leftBoxPaddingRight = 0;
-	private final int leftBoxPaddingBottom = 0;
-	private final int leftBoxPaddingLeft = 10;
+	private final double leftBoxSpacing = 10*MainApplication.height;
+	private final double leftBoxPaddingTop = 0*MainApplication.height;
+	private final double leftBoxPaddingRight = 0*MainApplication.width;
+	private final double leftBoxPaddingBottom = 0*MainApplication.height;
+	private final double leftBoxPaddingLeft = 10*MainApplication.width;
 
-	private final int rightBoxSpacing = 10;
-	private final int rightBoxPaddingTop = 0;
-	private final int rightBoxPaddingRight = 10;
-	private final int rightBoxPaddingBottom = 60;
-	private final int rightBoxPaddingLeft = 0;
+	private final double rightBoxSpacing = 10*MainApplication.height;
+	private final double rightBoxPaddingTop = 0*MainApplication.height;
+	private final double rightBoxPaddingRight = 10*MainApplication.width;
+	private final double rightBoxPaddingBottom = 60*MainApplication.height;
+	private final double rightBoxPaddingLeft = 0*MainApplication.width;
 
-	private final int cardBoxHeight = 480;
+	private final double cardBoxHeight = 480*MainApplication.height;
 
-	private final Font font = Font.font("arial", 25);
+	private final Font font = Font.font("arial", 25*MainApplication.height);
 
 	/* VARIABLES */
 	private BorderPane rootPane;

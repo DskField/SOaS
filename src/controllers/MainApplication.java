@@ -6,6 +6,9 @@ import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 public class MainApplication extends Application {
+	public static double width;
+	public static double height;
+	
 	private Stage stage;
 
 	public static void main(String[] args) {
@@ -23,6 +26,9 @@ public class MainApplication extends Application {
 		// This line is to disable the Esc key to make sure you can't exit full screen
 		stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 		stage.show();
+		
+		width = stage.getWidth()/1920;
+		height = stage.getHeight()/1080;
 	}
 
 	public void setScene(Scene scene) {

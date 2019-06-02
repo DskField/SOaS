@@ -2,11 +2,12 @@ package view;
 
 import java.util.ArrayList;
 
+import controllers.MainApplication;
 import javafx.scene.layout.FlowPane;
 
 public class CurrencyStonesPane extends FlowPane {
 
-	private static final int SIZE = 100;
+	private final double SIZE = 100*MainApplication.height;
 
 	public CurrencyStonesPane() {
 		setPrefSize(SIZE, SIZE);

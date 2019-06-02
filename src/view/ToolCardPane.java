@@ -2,13 +2,15 @@ package view;
 
 import java.util.ArrayList;
 
+import controllers.MainApplication;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 
 public class ToolCardPane extends FlowPane {
 	/* CONSTANTS */
-	private final int vBoxPrefWidth = 230;
+	private final double Width = 230*MainApplication.width;
+	private final double height = 330*MainApplication.height;
 
 	/* VARIABLES */
 	private FlowPane flowPane;
@@ -17,8 +19,10 @@ public class ToolCardPane extends FlowPane {
 
 	public ToolCardPane(int seqNr) {
 		flowPane = new FlowPane();
-		flowPane.setPrefWidth(vBoxPrefWidth);
+		flowPane.setPrefWidth(Width);
 		imageView = new ImageView();
+		imageView.setFitHeight(height);
+		imageView.setFitWidth(Width);
 		lookForImage(seqNr);
 		getChildren().addAll(imageView, flowPane);
 		this.seqNr = seqNr;
