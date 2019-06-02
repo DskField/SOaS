@@ -20,10 +20,10 @@ import javafx.scene.layout.VBox;
 
 public class ChatPane extends BorderPane {
 	/* CONSTANTS */
-	private final int chatPaneWidth = 400;
-	private final int chatPaneheight = 200;
-	private final int sendButtonWidth = 100;
-	private final int sendButtonHeight = 20;
+	private final double chatPaneWidth = Scaling.getWidthScaling(400);
+	private final double chatPaneheight = Scaling.getHeightScaling(200);
+	private final double sendButtonWidth = Scaling.getWidthScaling(100);
+	private final double sendButtonHeight = Scaling.getHeightScaling(20);
 	private final double maxScroll = 1.0;
 
 	/* VARIABLES */

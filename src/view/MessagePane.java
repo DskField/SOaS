@@ -5,7 +5,7 @@ import javafx.scene.layout.BorderPane;
 
 public class MessagePane extends BorderPane {
 	/* CONSTANTS */
-	private final int messageWidth = 280;
+	private final double messageWidth = Scaling.getWidthScaling(280);
 
 	/* VARIABLES */
 	private Label name;

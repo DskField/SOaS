@@ -8,7 +8,7 @@ import javafx.scene.layout.FlowPane;
 
 public class ToolCardPane extends FlowPane {
 	/* CONSTANTS */
-	private final int vBoxPrefWidth = 230;
+	private final double vBoxPrefWidth = Scaling.getWidthScaling(230);
 
 	/* VARIABLES */
 	private FlowPane flowPane;

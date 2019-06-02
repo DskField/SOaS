@@ -9,7 +9,7 @@ import javafx.scene.shape.Rectangle;
 
 public class RoundPane extends Pane {
 	/* CONSTANTS */
-	private final int squareSize = 80;
+	private final double squareSize = Scaling.getWidthScaling(80);
 	private final int trackSize = 10;
 
 	/* VARIABLES */
@@ -49,7 +49,7 @@ public class RoundPane extends Pane {
 	private void addDice() {
 		for (int i = 1; i <= trackSize; i++) {
 			ArrayList<DiePane> currentRound = roundTrack.get(i);
-			int offset1 = (i - 1) * squareSize;
+			int offset1 = (int) ((i - 1) * squareSize);
 			if (currentRound.size() == 1) {
 				DiePane diePane = currentRound.get(0);
 				diePane.setTranslateX(x + offset1);

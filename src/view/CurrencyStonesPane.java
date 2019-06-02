@@ -6,7 +6,7 @@ import javafx.scene.layout.FlowPane;
 
 public class CurrencyStonesPane extends FlowPane {
 
-	private static final int SIZE = 100;
+	private static final double SIZE = Scaling.getWidthScaling(100);
 
 	public CurrencyStonesPane() {
 		setPrefSize(SIZE, SIZE);

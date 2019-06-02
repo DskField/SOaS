@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
 
 public class SpacePane extends Pane {
 	/* CONSTANTS */
-	private final int squareSize = 64;
+	private final double squareSize = Scaling.getWidthScaling(64);
 	private final double resizeScale = 2.2;
 
 	/* VARIABLESS */

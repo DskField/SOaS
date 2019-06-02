@@ -26,20 +26,20 @@ import javafx.scene.text.Font;
 
 public class GlassWindowPane extends BorderPane {
 	/* CONSTANTS */
-	private final int glassWindowWidth = 400;
-	private final int glassWindowHeight = 800;
-	private final int spacingAmount = 20;
+	private final double glassWindowWidth = Scaling.getWidthScaling(400);
+	private final double glassWindowHeight = Scaling.getHeightScaling(800);
+	private final double spacingAmount = Scaling.getHeightScaling(20);
 	private final int borderwidth = 5;
 	
-	private final int smalRadius = 60;
-	private final int bigRadius = 140;
-	private final int smallFont = 20;
-	private final int bigFont = 40;
-	private final int smallInset = 10;
-	private final Insets insets = new Insets(10, 20, 0, 20);
-	private final int scoreCircleX = 180;
-	private final int scoreCircleY = 180;
-	private final int scoreCircleRadius = 140;
+	private final double smalRadius = Scaling.getWidthScaling(60);
+	private final double bigRadius = Scaling.getWidthScaling(140);
+	private final double smallFont = Scaling.getHeightScaling(20);
+	private final double bigFont = Scaling.getHeightScaling(40);
+	private final double smallInset = Scaling.getHeightScaling(10);
+	private final Insets insets = new Insets(Scaling.getHeightScaling(10), Scaling.getWidthScaling(20), 0, Scaling.getWidthScaling(20));
+	private final double scoreCircleX = Scaling.getWidthScaling(180);
+	private final double scoreCircleY = Scaling.getHeightScaling(180);
+	private final double scoreCircleRadius = Scaling.getHeightScaling(140);
 
 	/* VARIABLES */
 	private FieldPane fieldPane;

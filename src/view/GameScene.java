@@ -36,32 +36,32 @@ import javafx.stage.Stage;
 public class GameScene extends Scene {
 	/* CONSTANTS */
 	private final int MAIN = 0;
-	private final int generalSpacing = 10;
+	private final double generalSpacing = Scaling.getWidthScaling(10);
 
-	private final int personalInfoSpacing = 10;
+	private final double personalInfoSpacing = Scaling.getHeightScaling(10);
 
-	private final int buttonWidth = 200;
-	private final int buttonheigt = 50;
+	private final double buttonWidth = Scaling.getWidthScaling(200);
+	private final double buttonheigt = Scaling.getHeightScaling(50);
 
-	private final int centerBoxMaxWidth = 800;
+	private final double centerBoxMaxWidth = Scaling.getWidthScaling(800);
 	private final int centerBoxPaddingTop = 0;
-	private final int centerBoxPaddingRight = 100;
+	private final double centerBoxPaddingRight = Scaling.getWidthScaling(100);
 	private final int centerBoxPaddingBottom = 0;
-	private final int centerBoxPaddingLeft = 100;
+	private final double centerBoxPaddingLeft = Scaling.getWidthScaling(100);
 
-	private final int leftBoxSpacing = 10;
+	private final double leftBoxSpacing = Scaling.getHeightScaling(10);
 	private final int leftBoxPaddingTop = 0;
 	private final int leftBoxPaddingRight = 0;
 	private final int leftBoxPaddingBottom = 0;
-	private final int leftBoxPaddingLeft = 10;
+	private final double leftBoxPaddingLeft = Scaling.getWidthScaling(10);
 
-	private final int rightBoxSpacing = 10;
+	private final double rightBoxSpacing = Scaling.getHeightScaling(10);
 	private final int rightBoxPaddingTop = 0;
-	private final int rightBoxPaddingRight = 10;
-	private final int rightBoxPaddingBottom = 60;
+	private final double rightBoxPaddingRight = Scaling.getWidthScaling(10);
+	private final double rightBoxPaddingBottom = Scaling.getHeightScaling(60);
 	private final int rightBoxPaddingLeft = 0;
 
-	private final int cardBoxHeight = 480;
+	private final double cardBoxHeight = Scaling.getHeightScaling(480);
 
 	private final Font font = Font.font("arial", 25);
 

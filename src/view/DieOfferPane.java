@@ -19,11 +19,11 @@ import javafx.scene.paint.Color;
 
 public class DieOfferPane extends HBox {
 	/* CONTANTS */
-	private final int squareSize = 55;
-	private final int WIDTH = 625, HEIGHT = 65;
-	private final int dieSpacing = 15;
-	private final int inset = 5;
-	private final int borderWidth = 5;
+	private final double squareSize = Scaling.getWidthScaling(55);
+	private final double WIDTH = Scaling.getWidthScaling(625), HEIGHT = Scaling.getHeightScaling(65);
+	private final double dieSpacing = Scaling.getWidthScaling(15);
+	private final double inset = Scaling.getWidthScaling(5);
+	private final double borderWidth = Scaling.getWidthScaling(5);
 
 	/* VARIABLES */
 	private GameController gameController;
