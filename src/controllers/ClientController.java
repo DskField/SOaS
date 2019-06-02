@@ -48,10 +48,7 @@ public class ClientController {
 	 * 
 	 */
 	public boolean handleLogin(String username, String password) {
-		if (username.length() < 3 || username.length() > 25 || password.length() < 3 || password.length() > 25) {
-			return false;
-		}
-		if (!username.matches("[a-zA-Z0-9]*") && !password.matches("[a-zA-Z0-9]*")) {
+		if (!checkInformation(username, password)) {
 			return false;
 		}
 
@@ -74,13 +71,22 @@ public class ClientController {
 	 * @return - {@code boolean} whether the register was succesful or not
 	 */
 	public boolean handleRegister(String username, String password) {
+		if (!checkInformation(username, password)) {
+			return false;
+		}
+
+		return client.insertCorrect(username, password);
+	}
+
+	private boolean checkInformation(String username, String password) {
 		if (username.length() < 3 || username.length() > 25 || password.length() < 3 || password.length() > 25) {
 			return false;
 		}
 		if (!username.matches("[a-zA-Z0-9]*") && !password.matches("[a-zA-Z0-9]*")) {
 			return false;
 		}
-		return client.insertCorrect(username, password);
+
+		return true;
 	}
 
 	/**
