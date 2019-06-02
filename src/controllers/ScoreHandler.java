@@ -7,15 +7,15 @@ import game.Die;
 import game.Player;
 
 public class ScoreHandler {
-	// variables
+	/* VARIABLES */
 	private ArrayList<CollectiveGoalCard> collectiveGoalCards;
 	private GoalCardHandler goalCardHandler;
 
 	/**
 	 * Constructor used to create a ScoreHandler object
 	 * 
-	 * @param collectiveGoalCards
-	 *            - List containing all the goalcards in that specific game
+	 * @param collectiveGoalCards - {@code ArrayList} containing all the {@code GoalCards} in that
+	 * specific game
 	 */
 	public ScoreHandler(ArrayList<CollectiveGoalCard> collectiveGoalCards) {
 		this.collectiveGoalCards = collectiveGoalCards;
@@ -23,10 +23,9 @@ public class ScoreHandler {
 	}
 
 	/**
-	 * Method used to update all the private score for every player
+	 * Method used to update all the private score for every {@code Player}
 	 * 
-	 * @param players
-	 *            - List containing all the players in the game
+	 * @param players - {@code ArrayList} containing all the {@code Players} in the game
 	 */
 	public void updateAllPrivateScore(ArrayList<Player> players) {
 		int score;
@@ -41,13 +40,11 @@ public class ScoreHandler {
 	}
 
 	/**
-	 * Method used to get the current score of the player
+	 * Method used to get the current score of the {@code Player}
 	 * 
-	 * @param p
-	 *            - Object containing the player
-	 * @param privateScore
-	 *            - boolean containing whether the score should be private or public
-	 * @return - int containing the score of the player
+	 * @param p - The {@code Player}
+	 * @param privateScore - {@code boolean} containing whether the score should be private or public
+	 * @return - {@code int} containing the score of the {@code Player}
 	 */
 	public int getScore(Player p, boolean privateScore) {
 		int score = 0;
@@ -59,11 +56,10 @@ public class ScoreHandler {
 	}
 
 	/**
-	 * Method used to get the points gained from the private goalcard
+	 * Method used to get the points gained from the {@code PrivateGoalCard}
 	 * 
-	 * @param player
-	 *            - Object containing the player
-	 * @return - int containing the score of the player gained with the private goalcard
+	 * @param player - The {@code Player}
+	 * @return - {@code int} containing the score of the player gained with the {@code PrivateGoalCard}
 	 */
 	private int handlePrivateGoalCard(Player player) {
 		int count = 0;
@@ -78,11 +74,10 @@ public class ScoreHandler {
 	}
 
 	/**
-	 * Method used to get the points lost from the empty spaces
+	 * Method used to get the points lost from the empty {@code Spaces}
 	 * 
-	 * @param player
-	 *            - Object containing the player
-	 * @return - int containing the score of the player lost by empty spaces
+	 * @param player - The player
+	 * @return - {@code int} containing the score of the {@code Player} lost by empty spaces
 	 */
 	private int handleEmptySpaces(Player player) {
 		int count = 0;

@@ -10,14 +10,11 @@ public class MainApplication extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
-		//BaseDAO base = new BaseDAO();
-		
 	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
 		this.stage = stage;
-//		 new GameController(this, new PersistenceFacade());
 		new ClientController(this);
 		stage.setTitle("Sagrada");
 		stage.setFullScreen(true);
@@ -32,17 +29,4 @@ public class MainApplication extends Application {
 		stage.setScene(scene);
 		stage.setFullScreen(true);
 	}
-	
-	
-	//Some test code I use for testing cardgenerator
-//	PatternCardGenerator gen = new PatternCardGenerator();
-//	PatternCard patternCard = gen.getCard();
-//	System.out.println(patternCard.getDifficulty());
-//	for (SpacePattern[] row : patternCard.getSpaces()) {
-//		for (SpacePattern spacePattern : row) {
-//			System.out.println(spacePattern.getXCor() + " " + spacePattern.getYCor() +" value: "+ spacePattern.getValue() + " color: "+ spacePattern.getColor());
-//		}		
-//	}
-		
-
 }

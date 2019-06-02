@@ -3,18 +3,22 @@ package game;
 import java.util.Random;
 
 public class Die {
+	/* VARIABLES */
 	private int dieId;
 	private int dieValue;
-	private int round; // If round = 0 it means that the Die is not rolled yet
+	/**
+	 * If round = 0 it means that the {@code Die} is not rolled yet
+	 */
+	private int round;
 
 	private GameColor dieColor;
 
 	/**
-	 * This constructor creates a new Die without a round and a value. Round and Value will be asigned
-	 * after a Die is rolled.
+	 * This constructor creates a new {@code Die} without a {@code round} and a {@code value}. Round and
+	 * Value will be assigned after a {@code Die} is rolled.
 	 * 
-	 * @param dieId
-	 * @param color
+	 * @param dieId - The id of the {@code Die}
+	 * @param color - The color of the {@code Die}
 	 */
 	public Die(int dieId, String color) {
 		this.dieId = dieId;
@@ -28,13 +32,13 @@ public class Die {
 	}
 
 	/**
-	 * If a Die is already rolled you need to use this constructor with the right parameters to create.
-	 * the Die
+	 * If a {@code Die} is already rolled you need to use this constructor with the right parameters to
+	 * create the {@code Die}
 	 * 
-	 * @param dieId - The id of the die
-	 * @param color - The color of the die
-	 * @param round - The round the die is used
-	 * @param dieValue - The value of the die
+	 * @param dieId - The id of the {@code Die}
+	 * @param color - The color of the {@code Die}
+	 * @param round - The round the {@code Die} is used
+	 * @param dieValue - The value of the {@code Die}
 	 */
 	public Die(int dieId, String color, int round, int dieValue) {
 		this.dieId = dieId;
@@ -45,7 +49,7 @@ public class Die {
 
 	/**
 	 * 
-	 * @param round - the Round the die gets rolled
+	 * @param round - the {@code Round} the die gets rolled
 	 * 
 	 * This method gives a random value to a die and sets the round value
 	 */
@@ -56,7 +60,7 @@ public class Die {
 		dieValue = random.nextInt(6) + 1;
 	}
 
-	// GETTERS AND SETTERS
+	/* GETTERS AND SETTERS */
 	public int getDieId() {
 		return dieId;
 	}

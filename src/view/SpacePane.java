@@ -12,9 +12,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 public class SpacePane extends Pane {
+	/* CONSTANTS */
 	private final int squareSize = 64;
-	private double resizeScale = 2.2;
+	private final double resizeScale = 2.2;
 
+	/* VARIABLESS */
 	private DiePane space;
 	private int x;
 	private int y;

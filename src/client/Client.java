@@ -10,40 +10,37 @@ import game.GlassWindow;
 import game.Player;
 
 public class Client {
+	/* VARIABLES */
+	// LobbyList
 	/**
-	 * variables for lobbylist
-	 * 
-	 * @param allLobbies
-	 *            - List containing all the game_idgame of lobbies in the database
-	 * @param allPlayerLobbies
-	 *            - List containing all the game_idgame of lobbies the user is part of
-	 * @param orderLobbyASC
-	 *            - boolean containing how the List in the view has to be ordered
+	 * {@code ArrayList} containing all the game_idgame of lobbies in the database
 	 */
 	private ArrayList<Integer> allLobbies;
+	/**
+	 * {@code ArrayList} containing all the game_idgame of lobbies the user is part of
+	 */
 	private ArrayList<Integer> allPlayerLobbies;
+	/**
+	 * {@code boolean} containing how the List in the view has to be ordered
+	 */
 	private boolean orderLobbyASC;
 
+	//UserList
 	/**
-	 * variables for userslist
-	 * 
-	 * @param allUsers
-	 *            - List containing all the usersnames in the database
-	 * @param orderUserASC
-	 *            - boolean containing how the list in the view has to be ordered
+	 * {@code ArrayList} containing all the usersnames in the database
 	 */
 	private ArrayList<String> allUsers;
+	/**
+	 * {@code boolean} containing how the list in the view has to be ordered
+	 */
 	private boolean orderUserASC;
 
+	//ChallengeList
 	/**
-	 * variables for challengelist
-	 * 
-	 * @param challenges
-	 *            - List containing all the game_idgame of unanswered challenges of the user
+	 * {@code ArrayList} containing all the game_idgame of unanswered challenges of the user
 	 */
 	private ArrayList<Integer> challenges;
 
-	// variables
 	private Lobby lobby;
 	private Challenge challenge;
 	private User user;
@@ -51,16 +48,15 @@ public class Client {
 	private PersistenceFacade persistencefacade;
 
 	/**
-	 * Constructor used to create a Client object
+	 * Constructor used to create a {@code Client}
 	 * 
-	 * @param persistencefacade
-	 *            - Object containing all the methods to get data from the database
+	 * @param persistencefacade - Object containing all the methods to get data from the database
 	 */
 	public Client(PersistenceFacade persistencefacade) {
 		orderLobbyASC = true;
 		orderUserASC = true;
 		this.persistencefacade = persistencefacade;
-		
+
 	}
 
 	/**
@@ -69,43 +65,43 @@ public class Client {
 	 * @param username - String containing the username which is giving at login
 	 */
 	public void insertUserInClient(String username) {
-		this.user = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username)
-				: new User(username, 0, 0, GameColor.EMPTY, 0, 0, 0, 0);
+		this.user = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username) : new User(username, 0, 0, GameColor.EMPTY, 0, 0, 0, 0);
 		this.challenges = persistencefacade.getChallenges(username);
 		this.allLobbies = persistencefacade.getAllLobbies(orderLobbyASC);
 		this.allPlayerLobbies = persistencefacade.getAllPlayerLobbies(username);
 		this.allUsers = persistencefacade.getAllUsername(orderUserASC);
 	}
-	
+
 	/**
-	 * Methods to update the data
+	 * Method to update the challenges
 	 */
 	public void updateChallenge() {
 		this.challenges = persistencefacade.getChallenges(user.getUsername());
 	}
 
+	/**
+	 * Method to update the lobbies
+	 */
 	public void updateLobby() {
 		this.allLobbies = persistencefacade.getAllLobbies(orderLobbyASC);
 		this.allPlayerLobbies = persistencefacade.getAllPlayerLobbies(user.getUsername());
 	}
 
-	public void updateUser() {
-		this.user = persistencefacade.getUser(user.getUsername()) != null ? persistencefacade.getUser(user.getUsername())
-				: new User(user.getUsername(), 0, 0, GameColor.EMPTY, 0, 0, 0, 0);
-	}
-
 	/**
-	 * End update methods
+	 * Method to update the user
 	 */
+	public void updateUser() {
+		this.user = persistencefacade.getUser(user.getUsername()) != null ? persistencefacade.getUser(user.getUsername()) : new User(user.getUsername(), 0, 0, GameColor.EMPTY, 0, 0, 0, 0);
+	}
 
 	/**
 	 * Method used to create a new game in the database
 	 * 
-	 * @param users
-	 *            - List containing all the users for the new game
-	 * @param useRandomPatternCards
-	 *            - boolean containing whether to use random pattern cards or regular ones
-	 * @return - If one of the players still has an open invite from the user, it will not create a new game and return false
+	 * @param users - {@code ArrayList} containing all the users for the new game
+	 * @param useRandomPatternCards - {@code boolean} containing whether to use random patterncards or
+	 * regular ones
+	 * @return - If one of the players still has an open invite from the user, it will not create a new
+	 * game and return false
 	 */
 	public boolean createGame(ArrayList<String> users, boolean useRandomPatternCards) {
 		for (String u : users) {
@@ -119,16 +115,14 @@ public class Client {
 	/**
 	 * Method used to handle a reaction on an invite
 	 * 
-	 * @param accepted
-	 *            - boolean containing if the player accepted or declined the invite
-	 * @param idGame
-	 *            - int containing the game_idgame that the player reacted to
+	 * @param accepted - {@code boolean} containing if the player accepted or declined the invite
+	 * @param idGame - {@code int} containing the game id that the player reacted to
 	 */
 	public void handleReaction(boolean accepted, int idGame) {
 		persistencefacade.updatePlayerStatus(user.getUsername(), accepted, idGame);
 	}
 
-	// Setters
+	/* GETTERS AND SETTERS */
 	public void changeLobbyOrder(boolean orderASC) {
 		this.orderLobbyASC = orderASC;
 	}
@@ -137,10 +131,8 @@ public class Client {
 		this.allUsers = persistencefacade.getAllUsername(orderASC);
 	}
 
-	// Getters which will update the data before returning
 	public User getOpponent(String username) {
-		this.opponent = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username)
-				: new User(username, 0, 0, GameColor.EMPTY, 0, 0, 0, 0);
+		this.opponent = persistencefacade.getUser(username) != null ? persistencefacade.getUser(username) : new User(username, 0, 0, GameColor.EMPTY, 0, 0, 0, 0);
 		return opponent;
 	}
 
@@ -153,7 +145,7 @@ public class Client {
 		this.challenge = persistencefacade.getChallenge(gameID);
 		return challenge;
 	}
-	
+
 	public ArrayList<ArrayList<String>> getScoreboard(int idGame) {
 		return persistencefacade.getScoreboard(idGame);
 	}
@@ -161,8 +153,7 @@ public class Client {
 	public ArrayList<Player> getPlayers(int idGame) {
 		return persistencefacade.getAllPlayersInGame(idGame);
 	}
-	
-	// Regular Getters
+
 	public User getUser() {
 		return user;
 	}
@@ -186,19 +177,19 @@ public class Client {
 	public boolean isGameReady(int idGame) {
 		return persistencefacade.isGameReady(idGame);
 	}
-	
+
 	public boolean loginCorrect(String username, String password) {
 		return persistencefacade.loginCorrect(username, password);
 	}
-	
+
 	public boolean insertCorrect(String username, String password) {
 		return persistencefacade.insertCorrect(username, password);
 	}
-	
+
 	public GlassWindow getPlayerGlasswindow(int idPlayer) {
 		return persistencefacade.getGlassWindow(idPlayer);
 	}
-	
+
 	public ArrayList<CollectiveGoalCard> getSharedCollectiveGoalCards(int gameID) {
 		return persistencefacade.getSharedCollectiveGoalCards(gameID);
 	}

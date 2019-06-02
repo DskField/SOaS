@@ -20,11 +20,32 @@ import javafx.scene.text.Font;
 import javafx.stage.Screen;
 
 public class LobbyListPane extends BorderPane {
-	// variables
+	/* CONSTANTS */
+	// Left
+	private final Background togglebuttonBackground = new Background(new BackgroundFill(Color.BLUE, null, null));
+	private final Color togglebuttonColor = Color.WHITE;
+	private final int orderButtonHeight = 45;
+	private final double lobbyListHeight = Screen.getPrimary().getVisualBounds().getMaxY() - orderButtonHeight - 5;
+
+	// Stats
+	private final int labelSize = 30;
+	private final int textSize = 25;
+	private final int titleLabelSize = 50;
+	private final Color statsBackgroundColor = Color.AQUAMARINE;
+	private final int statsBoxWidth = 400;
+	private final int statsBoxHeight = 400;
+	private final int bottomLineSpacing = 50;
+	private final int statsPaneSpacing = 10;
+	private final int lobbyJoinPannelSpacing = 50;
+	private final int joinGameButtonWidth = 400;
+	private final int joinGameButtonHeight = 150;
+	private final Color errorMessageColor = Color.RED;
+
+	/* VARIABLES */
 	private ClientScene clientscene;
 	private int idGame;
 
-	// variables for createLeft
+	// Lefts
 	private ListView<ToggleButton> lobbyList;
 	private ToggleGroup togglegroup;
 	private HandleButton handlebutton;
@@ -33,7 +54,7 @@ public class LobbyListPane extends BorderPane {
 	private boolean orderASC;
 	private Button orderButton;
 
-	// variables for createStats
+	// Stats
 	private Label errorMessage;
 	private ArrayList<ArrayList<String>> scoreboardList;
 	private Label titleLabel;
@@ -44,33 +65,9 @@ public class LobbyListPane extends BorderPane {
 	private Label wonLabel;
 
 	/**
-	 * Magic Numbers
-	 */
-	// Numbers for createLeft
-	final private Background togglebuttonBackground = new Background(new BackgroundFill(Color.BLUE, null, null));
-	final private Color togglebuttonColor = Color.WHITE;
-	final private double lobbyListHeight = Screen.getPrimary().getVisualBounds().getMaxY() - orderButton.getHeight() - 5;
-	final private int orderButtonHeight = 45;
-
-	// Numbers for createStats
-	final private int labelSize = 30;
-	final private int textSize = 25;
-	final private int titleLabelSize = 50;
-	final private Color statsBackgroundColor = Color.AQUAMARINE;
-	final private int statsBoxWidth = 400;
-	final private int statsBoxHeight = 400;
-	final private int bottomLineSpacing = 50;
-	final private int statsPaneSpacing = 10;
-	final private int lobbyJoinPannelSpacing = 50;
-	final private int joinGameButtonWidth = 400;
-	final private int joinGameButtonHeight = 150;
-	final private Color errorMessageColor = Color.RED;
-
-	/**
-	 * Constructor used to create a LobbyListPane Object
+	 * Constructor used to create a {@code LobbyListPane}
 	 * 
-	 * @param clientscene
-	 *            - Object containing the reference to clientscene
+	 * @param clientscene - Contains the reference to {@code ClientScene}
 	 */
 	public LobbyListPane(ClientScene clientscene) {
 		this.clientscene = clientscene;
@@ -83,7 +80,7 @@ public class LobbyListPane extends BorderPane {
 	}
 
 	/**
-	 * Method used to create the List of lobbies + sort button
+	 * Method used to create the List of lobbies and sort button
 	 */
 	public void createLeft() {
 		lobbyList.getItems().clear();
@@ -123,8 +120,8 @@ public class LobbyListPane extends BorderPane {
 	/**
 	 * Method used to create the stats pane, the error message, the join button
 	 * 
-	 * @param idGame
-	 *            - int containing the idGame used to get the data for the stats and to join the game
+	 * @param idGame - {@code int} containing the idGame used to get the data for the stats and to join
+	 * the game
 	 */
 	public void createStats(int idGame) {
 		BorderPane statsBox = new BorderPane();
@@ -163,8 +160,7 @@ public class LobbyListPane extends BorderPane {
 		playerList.getChildren().add(scoreboardLabel);
 
 		// Makes scoreboard when game isn't finished and has no score in database
-		scoreboardList = gamestateTextLabel.getText().equals("uitgespeeld") ? clientscene.getScoreboard(idGame)
-				: clientscene.getScore(idGame, clientscene.getPlayers(idGame));
+		scoreboardList = gamestateTextLabel.getText().equals("uitgespeeld") ? clientscene.getScoreboard(idGame) : clientscene.getScore(idGame, clientscene.getPlayers(idGame));
 		for (int i = 0; i < scoreboardList.size(); i++) {
 			Label playername = new Label((i + 1) + ". " + scoreboardList.get(i).get(0) + ": " + scoreboardList.get(i).get(1));
 			playername.setFont(Font.font(textSize));
@@ -220,7 +216,7 @@ public class LobbyListPane extends BorderPane {
 		this.setCenter(lobbyJoinPannel);
 	}
 
-	// getter
+	/* GETTERS AND SETTERS */
 	public int getIDGame() {
 		return idGame;
 	}
@@ -255,8 +251,7 @@ public class LobbyListPane extends BorderPane {
 				errorMessage.setVisible(false);
 				clientscene.joinGame(idGame);
 			} else {
-				errorMessage
-						.setText(gamestateTextLabel.getText().equals("afgebroken") ? "het potje is afgebroken" : "Het potje is nog niet begonnen");
+				errorMessage.setText(gamestateTextLabel.getText().equals("afgebroken") ? "het potje is afgebroken" : "Het potje is nog niet begonnen");
 				errorMessage.setVisible(true);
 			}
 		}

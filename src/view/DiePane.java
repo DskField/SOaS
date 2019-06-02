@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class DiePane extends Pane {
+	/* VARIABLES */
 	private Circle[] circles;
 
 	private double circleSize;
@@ -91,6 +92,7 @@ public class DiePane extends Pane {
 		}
 	}
 
+	/* GETTERS AND SETTERS */
 	public int getNumber() {
 		return number;
 	}

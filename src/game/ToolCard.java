@@ -3,7 +3,7 @@ package game;
 import java.util.ArrayList;
 
 public class ToolCard extends Card {
-
+	/* VARIABLES */
 	private int seqnr;
 	private ArrayList<CurrencyStone> currencyStones;
 
@@ -21,7 +21,7 @@ public class ToolCard extends Card {
 		currencyStones.add(usedCurrencyStone);
 	}
 
-	// GETTERS
+	/* GETTERS AND SETTERS */
 	public int getSeqnr() {
 		return seqnr;
 	}

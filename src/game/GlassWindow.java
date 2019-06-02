@@ -10,18 +10,15 @@ public class GlassWindow {
 		spaces = new SpaceGlass[5][4];
 	}
 
-	// GETTERS AND SETTERS
-	//Is used to add a PatternCard Object to the GlassWindow
+	/* GETTERS AND SETTERS */
 	public void loadPatternCard(PatternCard patterncard) {
 		this.patterncard = patterncard;
 	}
 
 	public void placeDie(int x, int y, Die die) {
-		//hoi
 		getSpace(x, y).setDie(die);
 	}
 
-	//Is used to add SpaceGlass Objects to the GlassWindow
 	public void loadSpaces(SpaceGlass[][] spaces) {
 		this.spaces = spaces;
 	}

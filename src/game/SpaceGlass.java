@@ -1,7 +1,7 @@
 package game;
 
 public class SpaceGlass extends Space {
-
+	/* VARIABLES */
 	private Die die;
 
 	public SpaceGlass(int x, int y) {
@@ -25,7 +25,7 @@ public class SpaceGlass extends Space {
 		}
 	}
 
-	// GETTERS AND SETTERS
+	/* GETTERS AND SETTERS */
 	public void setDie(Die die) {
 		this.die = die;
 	}

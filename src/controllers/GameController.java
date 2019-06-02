@@ -22,7 +22,7 @@ import view.GameScene;
 import view.SpacePane;
 
 public class GameController {
-	// variables
+	/* VARIABLES */
 	private Game game;
 	private MainApplication mainApplication;
 	private GameScene gameScene;
@@ -40,18 +40,6 @@ public class GameController {
 		this.persistencefacade = persistencefacade;
 		this.clientcontroller = clientcontroller;
 		dieNotPlaced = true;
-		// Temporary call, when the game will be created the ClientController needs
-		// to give the information to the GameController
-		//		 PersistenceFacade pf = new PersistenceFacade();
-		// ArrayList<User> users = new ArrayList<User>();
-		// users.add(new User("speler1", 0, 0, GameColor.RED, 0));
-		// users.add(new User("speler2", 0, 0, GameColor.RED, 0));
-		// users.add(new User("speler3", 0, 0, GameColor.RED, 0));
-		// users.add(new User("speler4", 0, 0, GameColor.RED, 0));
-		// pf.createGame(users);
-		//		 persistencefacade.setCardsGame(34);
-		// System.out.println("Created game");
-		//		 joinGame(34, new User("Lavyra", 0, 0, GameColor.RED, 0));
 
 		cheatMode = 0;
 	}
@@ -76,10 +64,10 @@ public class GameController {
 	}
 
 	/**
-	 * Uses the player text to make a new Message Object. sends the Message to model for processing and
-	 * receives and Arraylist<Message> to update the chatPane with
+	 * Uses the player text to make a new {@code Message}. Sends the {@code Message} to the model for
+	 * processing and receives an {@code Arraylist<Message>} to update the {@code ChatPane} with.
 	 * 
-	 * @param text - the text that the player sends to the chat
+	 * @param text - The text that the player sends to the {@code Chat}
 	 */
 	public void sendMessage(String text) {
 		Message message = new Message(text, getClientPlayer(), new Timestamp(System.currentTimeMillis()));
@@ -94,20 +82,12 @@ public class GameController {
 		return game.getPlayers();
 	}
 
-	/**
-	 * Get new dies for the round if its your turn
-	 * 
-	 * @return ArrayList<Die> - new dice
-	 */
 	public ArrayList<PatternCard> getPatternChoices() {
 		return game.patternChoices(game.getClientPlayer().getPlayerID());
 	}
 
 	public void setClientPlayerPatternCard(int idPatternCard) {
 		game.setClientPlayerPaternCard(idPatternCard);
-
-		// gameScene = new GameScene(this);
-		// mainApplication.setScene(gameScene);
 	}
 
 	public abstract class AnimationTimerExt extends AnimationTimer {
@@ -143,7 +123,7 @@ public class GameController {
 	}
 
 	/**
-	 * updates the view by using information out of the game model.
+	 * Updates the view by using information out of the game model.
 	 */
 	public void check() {
 		if (gameScene == null) {
@@ -281,7 +261,6 @@ public class GameController {
 		}
 	}
 
-
 	public int getCollectiveGoalCard(int arrayNumber) {
 		return game.getCollectiveGoalCards().get(arrayNumber).getCardID();
 	}
@@ -295,7 +274,7 @@ public class GameController {
 	}
 
 	/**
-	 * @return boolean - true if its clientplayer's turn
+	 * @return boolean - True if its clientplayer's turn
 	 */
 	private boolean checkMyTurn() {
 		if (game.getCurrentPlayer().getPlayerID() == getClientPlayer().getPlayerID()) {
@@ -305,10 +284,11 @@ public class GameController {
 		}
 	}
 
-/**
- * Checks if its the first die on the board
- * @return true if it is the first die
- */
+	/**
+	 * Checks if its the first die on the board
+	 * 
+	 * @return - True if it is the first die
+	 */
 	private boolean checkFirstDie() {
 		// checks if its the firstDie
 		for (SpaceGlass[] spaceRow : getClientPlayer().getGlassWindow().getSpaces()) {
@@ -324,20 +304,19 @@ public class GameController {
 	/**
 	 * Gets all diagonal dice for a certain SpaceGlass
 	 * 
-	 * @param space - The space you want to get all the diagonal dice from
-	 * @return ArrayList<Die> - all diagonal dice from a certain space
+	 * @param space - The {@code Space} you want to get all the diagonal dice from
+	 * @return ArrayList<Die> - All diagonal dice from a certain space
 	 */
 	private ArrayList<Die> getDiagonalDice(SpaceGlass space) {
 		SpaceGlass[][] spaces = getClientPlayer().getGlassWindow().getSpaces();
 		ArrayList<Die> diagonal = new ArrayList<>();
 		for (SpaceGlass[] spaceGlassRow : spaces) {
 			for (SpaceGlass spaceGlass : spaceGlassRow) {
-				boolean above = spaceGlass.getYCor() == space.getYCor() - 1 && (spaceGlass.getXCor() == space.getXCor() - 1 || spaceGlass.getXCor() == space.getXCor() + 1); // two
-																																												// diagonally
-																																												// above
-				boolean below = spaceGlass.getYCor() == space.getYCor() + 1 && (spaceGlass.getXCor() == space.getXCor() - 1 || spaceGlass.getXCor() == space.getXCor() + 1);// two
-																																											// diagonally
-																																											// below
+				// Two diagonally above
+				boolean above = spaceGlass.getYCor() == space.getYCor() - 1 && (spaceGlass.getXCor() == space.getXCor() - 1 || spaceGlass.getXCor() == space.getXCor() + 1);
+				// Two diagonally below
+				boolean below = spaceGlass.getYCor() == space.getYCor() + 1 && (spaceGlass.getXCor() == space.getXCor() - 1 || spaceGlass.getXCor() == space.getXCor() + 1);
+
 				if ((above || below) && spaceGlass.getDie() != null) {// also see if the is a die there
 					diagonal.add(spaceGlass.getDie());
 				}
@@ -350,7 +329,7 @@ public class GameController {
 	 * Gets all Orthogonal dice for a certain SpaceGlass
 	 * 
 	 * @param space- Orthogonal from what space
-	 * @return ArrayList<Die> - all Orthogonal dice from a certain space
+	 * @return ArrayList<Die> - All Orthogonal dice from a certain space
 	 */
 	private ArrayList<Die> getOrthogonalDice(SpaceGlass space) {
 		SpaceGlass[][] spaces = getClientPlayer().getGlassWindow().getSpaces();
@@ -370,9 +349,9 @@ public class GameController {
 	/**
 	 * Checks if die is compatible with that space
 	 * 
-	 * @param sPattern - sPattern the space on the patterncard
-	 * @param die - the die you want to place
-	 * @return boolean - true if compatible, false if not
+	 * @param sPattern - The {@code Space} on the {@code PatternCard}
+	 * @param die - The {@code Die} you want to place
+	 * @return boolean - True if compatible, false if not
 	 */
 	private boolean checkCompatibility(SpacePattern sPattern, DiePane diePane) {//TODO REMOVE DIEPANE, VIEW SHOULDNT BE IN CONTROLLER
 		if (sPattern.getColor().equals(diePane.getColor()) || sPattern.getValue() == diePane.getEyes() || (sPattern.getColor().equals(GameColor.EMPTY) && sPattern.getValue() == 0)) {
@@ -384,9 +363,9 @@ public class GameController {
 	/**
 	 * Checks all surrounding spaces if the die can be placed there
 	 * 
-	 * @param newDie - the to be placed die
-	 * @param space - the space where its going to be placed
-	 * @return boolean - true if possible to place, false if not
+	 * @param newDie - The to be placed {@code Die}
+	 * @param space - The {@code Space} where its going to be placed
+	 * @return boolean - True if possible to place, false if not
 	 */
 	private boolean checkSurrounding(DiePane diePane, SpaceGlass space) {//TODO REMOVE DIEPANE, VIEW SHOULDNT BE IN CONTROLLER
 		boolean succes = true;
@@ -411,9 +390,9 @@ public class GameController {
 	}
 
 	/**
-	 * Puts all available places in an arraylist
+	 * Puts all available places in an {@code ArrayList}
 	 * 
-	 * @param die - the to be placed die
+	 * @param diePane - The to be placed die
 	 * @return ArrayList<SpaceGlass> - All available spaces
 	 */
 	private ArrayList<SpaceGlass> getAvailableSpaces(DiePane diePane) {//TODO REMOVE DIEPANE, VIEW SHOULDNT BE IN CONTROLLER
@@ -446,12 +425,6 @@ public class GameController {
 		}
 	}
 
-	/**
-	 * Finally place the die
-	 * 
-	 * @param Die - the to be placed die
-	 * @param paceGlass newSpace- the space where its going to be placed
-	 */
 	public void placeDie(SpacePane spacePane) {//TODO REMOVE SpacePane, VIEW SHOULDNT BE IN CONTROLLER
 		DiePane diePane = gameScene.getSelectedDie();
 		if (diePane != null) {
@@ -487,8 +460,7 @@ public class GameController {
 	}
 
 	/**
-	 * cycles through cheatmodes
-	 *
+	 * Cycles through {@code cheatmode}
 	 */
 	public void cycleCheat() {
 		if (cheatMode == 2)
@@ -498,18 +470,20 @@ public class GameController {
 	}
 
 	/**
-	 * @return cheatMode - 0 = nocheats 1 = basic cheat 2 = advanced cheat
+	 * @return cheatMode - 0 = no cheat, 1 = basic cheat, 2 = advanced cheat
 	 */
 	public int getCheatMode() {
 		return cheatMode;
 	}
 
 	/**
-	 * Returns best places based on whats next to the available spaces and the die you want to place 
-	 * if a space next to the availble space requires the same value or color it wont be added to best places
-	 * @param available all availabe places
-	 * @param newDie the to be placed die
-	 * @return ArrayList<SpaceGlass> the best places to place the die
+	 * Returns best places based on whats next to the available spaces and the die you want to place if
+	 * a space next to the availble space requires the same value or color it wont be added to best
+	 * places
+	 * 
+	 * @param available - All available places
+	 * @param newDie - The to be placed die
+	 * @return ArrayList<SpaceGlass> - The best places to place the die
 	 */
 	private ArrayList<SpaceGlass> getBestPlaces(ArrayList<SpaceGlass> available, DiePane newDie) {
 		ArrayList<SpaceGlass> best = new ArrayList<>();
@@ -528,29 +502,25 @@ public class GameController {
 			int currentX = sG.getXCor();
 			int currentY = sG.getYCor();
 
-			if (currentX > minX) {// LEFT
+			// Left
+			if (currentX > minX) {
 				leftSame = pC.getSpaceColor(sG.getXCor() - 1, sG.getYCor()).equals(newDie.getColor()) || pC.getSpaceValue(sG.getXCor() - 1, sG.getYCor()) == newDie.getEyes();
-
-			} else {
-				leftSame = false;
 			}
-			if (currentX < maxX) {// RIGHT
+
+			// Right
+			if (currentX < maxX) {
 				rightSame = pC.getSpaceColor(sG.getXCor() + 1, sG.getYCor()).equals(newDie.getColor()) || pC.getSpaceValue(sG.getXCor() + 1, sG.getYCor()) == newDie.getEyes();
-
-			} else {
-				rightSame = false;
 			}
+
+			// Above
 			if (currentY > minY) {// ABOVE
 				aboveSame = pC.getSpaceColor(sG.getXCor(), sG.getYCor() - 1).equals(newDie.getColor()) || pC.getSpaceValue(sG.getXCor(), sG.getYCor() - 1) == newDie.getEyes();
-
-			} else {
-				aboveSame = false;
 			}
+
+			// Bellow
 			if (currentY < maxY) {// BELOW
 				belowSame = (pC.getSpaceColor(sG.getXCor(), sG.getYCor() + 1).equals(newDie.getColor()) || pC.getSpaceValue(sG.getXCor(), sG.getYCor() + 1) == newDie.getEyes());
 
-			} else {
-				belowSame = false;
 			}
 
 			if (!(leftSame || rightSame || aboveSame || belowSame)) {// if one of them is true its not ideal
@@ -559,21 +529,22 @@ public class GameController {
 			}
 
 		}
-		return best;
 
+		return best;
 	}
 
 	/**
-	 * shakes the sack
+	 * Shakes the sack
 	 */
 	public void shakeSack() {
 		game.shakeSack();
 
 	}
-	
+
 	/**
-	 * Used to check if you're allowed to throw the dice
-	 * @return true if your the startplayer
+	 * Used to check if you are allowed to throw the dice
+	 * 
+	 * @return - True if you are the start player
 	 */
 	public boolean checkStartPlayer() {
 		if (getClientPlayer().getSeqnr() == 1 && getClientPlayer().equals(game.getCurrentPlayer()) && game.getTable().isEmpty() && game.getCurrentRound() <= 10) {

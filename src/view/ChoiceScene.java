@@ -23,6 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class ChoiceScene extends Scene {
+	/* VARIABLES */
 	private BorderPane root;
 	private HBox patternCardBox;
 	private GameController gameController;
@@ -68,14 +69,11 @@ public class ChoiceScene extends Scene {
 							gameController.setClientPlayerPatternCard(patternCard.getPatternCardId());
 						}
 					}
-
 				}
 			});
 			vBox.getChildren().addAll(name, pc, difficulity);
 			vBox.setAlignment(Pos.CENTER);
 			patternCardBox.getChildren().add(vBox);
-
 		}
 	}
-
 }

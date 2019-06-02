@@ -25,10 +25,12 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 
 public class GlassWindowPane extends BorderPane {
+	/* CONSTANTS */
 	private final int glassWindowWidth = 400;
 	private final int glassWindowHeight = 800;
 	private final int spacingAmount = 20;
 
+	/* VARIABLES */
 	private FieldPane fieldPane;
 
 	private StackPane scoreField;
@@ -49,7 +51,6 @@ public class GlassWindowPane extends BorderPane {
 		this.color = player.getColor();
 
 		fieldPane = new FieldPane(player.getGlassWindow().getPatternCard(), gameController);
-		//		fieldPane.loadGlassWindow(player.getGlassWindow());
 
 		if (!clientPlayer) {
 			fieldPane.setDisable(true);

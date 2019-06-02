@@ -14,29 +14,26 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
 public class ClientScene extends Scene {
-	// variables
+	/* CONSTANTS */
+	private final static Color backgroundColor = Color.ALICEBLUE;
+
+	/* VARIABLE */
 	private BorderPane rootPane;
 	private ClientMenuPane clientmenupane;
 	private ClientController clientcontroller;
 
-	// variables for the 3 panes
 	private LobbyListPane lobbyListPane;
 	private UserListPane userListPane;
 	private ChallengeListPane challengeListPane;
 
-	// booleans for update
 	private boolean isVisibleLobbyList;
 	private boolean isVisibleChallengeList;
 	private boolean isVisibleUserList;
 
-	// Magic Numbers
-	final private static Color backgroundColor = Color.ALICEBLUE;
-
 	/**
-	 * Constructor to create a ClientScene Object
+	 * Constructor to create a {@code ClientScene}
 	 * 
-	 * @param controller
-	 *            - Object containing the reference to ClientController
+	 * @param controller - Containing the reference to {@code ClientController}
 	 */
 	public ClientScene(ClientController controller) {
 		super(new BorderPane());
@@ -48,20 +45,17 @@ public class ClientScene extends Scene {
 		this.userListPane = new UserListPane(this);
 		this.challengeListPane = new ChallengeListPane(this);
 
-		// initialize
+		// Initialize
 		clientmenupane = new ClientMenuPane(this);
 		rootPane = new BorderPane();
 		rootPane.setLeft(clientmenupane);
 		rootPane.setCenter(userListPane);
 
-		// sets the rootPane and handles makeup
+		// Sets the rootPane and handles makeup
 		setRoot(rootPane);
 		rootPane.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
 	}
 
-	/**
-	 * check which pane is visible
-	 */
 	public boolean isShownLobbyList() {
 		return isVisibleLobbyList;
 	}
@@ -74,14 +68,6 @@ public class ClientScene extends Scene {
 		return isVisibleUserList;
 	}
 
-	/**
-	 * end checks
-	 */
-
-	/**
-	 * Handlers
-	 */
-
 	// Update the Client data
 	public void updateClient() {
 		clientcontroller.updateClient();
@@ -90,11 +76,10 @@ public class ClientScene extends Scene {
 	/**
 	 * Method used to pass the variables to create a game
 	 * 
-	 * @param users
-	 *            - List containing all the players
-	 * @param useRandomPatternCards
-	 *            - boolean containing if the user wants randompatterncards or not
-	 * @return - return if the game was created succesfully
+	 * @param users - {@code ArrayList} containing all the players
+	 * @param useRandomPatternCards - {@code boolean} containing if the user wants randompatterncards or
+	 * not
+	 * @return - if the game was created successfully
 	 */
 	public boolean createGame(ArrayList<String> users, boolean useRandomPatternCards) {
 		return clientcontroller.createGame(users, useRandomPatternCards);
@@ -131,26 +116,20 @@ public class ClientScene extends Scene {
 		challengeListPane.createLeft();
 		rootPane.setCenter(challengeListPane);
 	}
-	/**
-	 * end switches
-	 */
-	
-	// handles logOut
+
 	public void logOut() {
 		clientcontroller.logOut();
 	}
 
-	// let's the user join a game
 	public void joinGame(int idGame) {
 		clientcontroller.joinGame(idGame);
 	}
 
-	// passes the response of the user on a challeneg
 	public void handleReaction(boolean accepted, int idGame) {
 		clientcontroller.handleReaction(accepted, idGame);
 	}
 
-	// Setters
+	/* GETTETS AND SETTERS */
 	public void changeLobbyOrder(boolean orderASC) {
 		clientcontroller.changeLobbyOrder(orderASC);
 	}
@@ -159,7 +138,6 @@ public class ClientScene extends Scene {
 		clientcontroller.changeUserOrder(orderASC);
 	}
 
-	// getters
 	public Lobby getLobby(int gameID) {
 		return clientcontroller.getSpecificLobby(gameID);
 	}

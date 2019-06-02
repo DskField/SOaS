@@ -20,10 +20,36 @@ import javafx.scene.text.Font;
 import javafx.stage.Screen;
 
 public class UserListPane extends BorderPane {
-	// variables
+	/* CONSTANTS */
+	// Left
+	private final int listWidth = 250;
+	private final int listHeight = (int) Screen.getPrimary().getBounds().getMaxY();
+	private final int viewStatsWidth = 70;
+	private final int viewStatsHeight = 30;
+	private final int inviteRadioButtonWidth = 100;
+	private final int inviteRadioButtonHeight = 30;
+
+	private final int orderButtonHeight = 45;
+	private final double userListHeight = Screen.getPrimary().getVisualBounds().getMaxY() - orderButtonHeight - 5;
+
+	// Center
+	private final int inviteButtonSize = 40;
+	private final int errorMessageSize = 23;
+	private final Color errorMessageColorRed = Color.RED;
+	private final Color errorMessageColorGreen = Color.LIMEGREEN;
+	private final int buttonAndLabelSpacing = 10;
+
+	// StatsPane
+	private final Color statsBackgroundColor = Color.AQUAMARINE;
+	private final int statsBoxWidth = 400;
+	private final int statsBoxHeight = 340;
+	private final int usernameLabelSize = 50;
+	private final int textSize = 25;
+
+	/* VARIABLES */
 	private ClientScene clientscene;
-	
-	// variables for createLeft
+
+	// Left
 	private ListView<BorderPane> userList;
 	private ToggleGroup togglegroup;
 	private ArrayList<String> users;
@@ -31,46 +57,18 @@ public class UserListPane extends BorderPane {
 	private ArrayList<CheckBox> inviteCheckBoxGroup;
 	private Button orderButton;
 	private boolean orderASC;
-	
-	// variables for createCenter
+
+	// Center
 	private Label errorMessage;
 	private Button invitePlayers;
 	private String opponentUsername;
 	private boolean useRandomChecked = false;
 	private CheckBox useRandomPatternCards;
-	
-	/**
-	 * Magic Numbers
-	 */
-	// Numbers for createLeft
-	final private int listWidth = 250;
-	final private int listHeight = (int) Screen.getPrimary().getBounds().getMaxY();
-	final private int orderButtonHeight = 45;
-	final private int viewStatsWidth = 70;
-	final private int viewStatsHeight = 30;
-	final private int inviteRadioButtonWidth = 100;
-	final private int inviteRadioButtonHeight = 30;
-	final private double userListHeight = Screen.getPrimary().getVisualBounds().getMaxY() - orderButton.getHeight() - 5;
-	
-	// Numbers for createCenter
-	final private int inviteButtonSize = 40;
-	final private int errorMessageSize = 23;	
-	final private Color errorMessageColorRed = Color.RED;
-	final private Color errorMessageColorGreen = Color.LIMEGREEN;
-	final private int buttonAndLabelSpacing = 10;
-	
-	// Numbers for createStatsPane
-	final private Color statsBackgroundColor = Color.AQUAMARINE;
-	final private int statsBoxWidth = 400;
-	final private int statsBoxHeight = 340;
-	final private int usernameLabelSize = 50;
-	final private int textSize = 25;
 
 	/**
 	 * Constructor used to create a UserListPane Object
 	 * 
-	 * @param clientscene
-	 *            - Object containing the reference to clientscene
+	 * @param clientscene - Object containing the reference to clientscene
 	 */
 	public UserListPane(ClientScene clientscene) {
 		this.clientscene = clientscene;
@@ -87,7 +85,7 @@ public class UserListPane extends BorderPane {
 	}
 
 	/**
-	 * Method used to create the List of users + the sort button
+	 * Method used to create the List of users and the sort button.
 	 */
 	public void createLeft() {
 		userList.getItems().clear();
@@ -138,10 +136,11 @@ public class UserListPane extends BorderPane {
 	}
 
 	/**
-	 * Method used to create the two stats pane, the error message, invite button and randompatterncard toggle
+	 * Method used to create the two stats pane, the error message, invite button and randompatterncard
+	 * toggle.
 	 * 
-	 * @param opponentUsername
-	 *            - string containing the username of the opponent used to get the data for the opponent stats box
+	 * @param opponentUsername - String containing the username of the opponent used to get the data for
+	 * the opponent stats box
 	 */
 	public void createCenter(String opponentUsername) {
 		this.opponentUsername = opponentUsername;
@@ -169,12 +168,11 @@ public class UserListPane extends BorderPane {
 		buttonAndLabel.setAlignment(Pos.CENTER);
 		buttonAndLabel.setSpacing(buttonAndLabelSpacing);
 
-		centerpane.getChildren().addAll(createStatsPane(clientscene.getUser()), createStatsPane(clientscene.getOpponent(opponentUsername)),
-				buttonAndLabel);
+		centerpane.getChildren().addAll(createStatsPane(clientscene.getUser()), createStatsPane(clientscene.getOpponent(opponentUsername)), buttonAndLabel);
 		centerpane.setAlignment(Pos.CENTER);
 		centerpane.setSpacing(50);
 
-		// at first when no opponent is selected hide stats
+		// At first when no opponent is selected hide stats
 		if (opponentUsername.equals(""))
 			centerpane.getChildren().get(1).setVisible(false);
 		else
@@ -184,10 +182,9 @@ public class UserListPane extends BorderPane {
 	}
 
 	/**
-	 * Method used to create 1 square filled with stats
+	 * Method used to create 1 square filled with stats.
 	 * 
-	 * @param user
-	 *            - Object containing the user used to get the data for the stats
+	 * @param user - Object containing the user used to get the data for the stats
 	 * @return - Object containing a borderpane the square with all the stats
 	 */
 	private BorderPane createStatsPane(User user) {
@@ -229,7 +226,7 @@ public class UserListPane extends BorderPane {
 	}
 
 	/**
-	 * Method used to sort the Usernames in the list
+	 * Method used to sort the {@code Usernames} in the list.
 	 */
 	private void handleOrderButton() {
 		orderASC = orderASC ? false : true;
@@ -238,7 +235,7 @@ public class UserListPane extends BorderPane {
 	}
 
 	/**
-	 * Method used to gather all the usersnames needed to invite and create a game
+	 * Method used to gather all the usernames needed to invite and create a game.
 	 */
 	private void handleInvitePlayers() {
 		ArrayList<String> result = new ArrayList<>();
@@ -260,12 +257,8 @@ public class UserListPane extends BorderPane {
 	}
 
 	/**
-	 * Method used to handle the radio button
-	 * If selected add to the List
-	 * If deselected remove from the List
-	 * Check if only 3 checkboxes are checked
-	 * 
-	 * Disable the button if no checkbox is selected
+	 * Method used to handle the radio button If selected add to the List If deselected remove from the
+	 * List Check if only 3 checkboxes are checked. Disable the button if no checkbox is selected.
 	 */
 	private class HandleRadioButton implements EventHandler<MouseEvent> {
 		@Override

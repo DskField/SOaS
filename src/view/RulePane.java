@@ -8,14 +8,14 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 class RulePane extends StackPane {
-	private static final int WIDTH = 800, HEIGHT = 900;
+	/* CONSTANTS */
+	private final int WIDTH = 800, HEIGHT = 900;
 
-	// instance variables
+	/* VARIABLES */
 	private RuleDrawPane ruleDrawPane;
 	private RuleButtonPane buttonPane;
 	private Stage stage;
 
-	// constructor
 	public RulePane(double width, double height) {
 		this.stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
 

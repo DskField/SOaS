@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class Chat {
-	// variables
+	/* VARIABLES */
 	private ArrayList<Message> messages;
 
 	public Chat() {
@@ -12,18 +12,18 @@ public class Chat {
 	}
 
 	/**
-	 * add's a message to the chat
+	 * Add's a message to the chat
 	 * 
-	 * @param message - message that gets added to the chat
+	 * @param message - {@code Message} that gets added to the {@code Chat}
 	 */
 	public void addMessage(Message message) {
 		messages.add(message);
 	}
 
 	/**
-	 * add's multiple messages to the chat
+	 * Add's multiple messages to the chat
 	 * 
-	 * @param messages ArrayList of messages that get added to the chat
+	 * @param messages - {@code ArrayList<Message>} that gets added to the {@code Chat}
 	 */
 	public void addMessages(ArrayList<Message> messages) {
 		for (Message message : messages) {
@@ -32,9 +32,9 @@ public class Chat {
 	}
 
 	/**
-	 * looks for the last Message in the chat object and returns the timestamp
+	 * Looks for the last {@code Message} in the {@code Chat}
 	 * 
-	 * @return returns the Timestamp of the last message in the chat
+	 * @return returns -The {@code Timestamp} of the last {@code Message} in the {@code Chat}
 	 */
 	public Timestamp getLastTimestamp() {
 		if (!messages.isEmpty()) {
@@ -44,11 +44,11 @@ public class Chat {
 		}
 
 	}
-	
+
 	/**
-	 * looks for the last Message in the chat object and returns the chat time
+	 * Looks for the last {@code Message} in the {@code Chat}
 	 * 
-	 * @return returns the chat time of the last message in the chat
+	 * @return returns - The chat time of the last message in the chat
 	 */
 	public String getLastChatTime() {
 		if (!messages.isEmpty()) {
@@ -59,7 +59,7 @@ public class Chat {
 
 	}
 
-	//getters & setters
+	/* GETTERS AND SETTERS */
 	public ArrayList<Message> getChat() {
 		return messages;
 	}

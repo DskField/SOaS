@@ -6,7 +6,6 @@ public abstract class Card {
 	private String name;
 	private String cardDescription;
 
-	// constructor
 	public Card(int cardID, String name, String cardDescription) {
 		this.cardID = cardID;
 		this.name = name;

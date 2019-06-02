@@ -12,10 +12,10 @@ public class CurrencyStonesPane extends FlowPane {
 		setPrefSize(SIZE, SIZE);
 	}
 
-
 	/**
-	 * Draws a stone for each currencystone from player
-	 * @param currencyStonePanes
+	 * Draws a stone for each {@code CurrencyStone} from player
+	 * 
+	 * @param currencyStonePanes - A list of panes that needs to be drawn to the screen
 	 */
 	public void showStones(ArrayList<CurrencyStonePane> currencyStonePanes) {
 		getChildren().clear();

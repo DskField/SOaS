@@ -17,7 +17,7 @@ import view.ClientScene;
 import view.LoginPane;
 
 public class ClientController {
-	// variables
+	/* VARIABLES */
 	private Client client;
 	private GameController gamecontroller;
 	private MainApplication mainapplication;
@@ -27,10 +27,9 @@ public class ClientController {
 	private AnimationTimerExt timer;
 
 	/**
-	 * Constructor used to create a ClientController object
+	 * Constructor used to create a {@code ClientController}
 	 * 
-	 * @param mainapplication
-	 *            - used to change the scene in de mainapplication
+	 * @param mainapplication - used to change the scene in the {@code MainApplication}
 	 */
 	public ClientController(MainApplication mainapplication) {
 		this.persistencefacade = new PersistenceFacade();
@@ -41,13 +40,11 @@ public class ClientController {
 	}
 
 	/**
-	 * Only after a succesfull login everything will be created
+	 * Only after a successful login everything will be created
 	 * 
-	 * @param username
-	 *            - string containing the username input
-	 * @param password
-	 *            - string containing the password input
-	 * @return - boolean whether the login was succesful or not
+	 * @param username - {@code String} containing the username input
+	 * @param password - {@code String} containing the password input
+	 * @return - {@code boolean} whether the login was successful or not
 	 * 
 	 */
 	public boolean handleLogin(String username, String password) {
@@ -69,13 +66,12 @@ public class ClientController {
 	}
 
 	/**
-	 * Register the new user only if the username hasn't been used and if the username and password pass the criteria
+	 * Register the new user only if the username hasn't been used and if the username and password pass
+	 * the criteria
 	 * 
-	 * @param username
-	 *            - string containing the username input
-	 * @param password
-	 *            - string containing the password input
-	 * @return - boolean whether the register was succesful or not
+	 * @param username - {@code String} containing the username input
+	 * @param password - {@code String} containing the password input
+	 * @return - {@code boolean} whether the register was succesful or not
 	 */
 	public boolean handleRegister(String username, String password) {
 		if (username.length() < 3 || username.length() > 25 || password.length() < 3 || password.length() > 25) {
@@ -88,14 +84,14 @@ public class ClientController {
 	}
 
 	/**
-	 * Method that can be called from GameController to swap back to the clientscene
+	 * Method that can be called from {@code GameController} to swap back to the {@code ClientScene}
 	 */
 	public void returnToClient() {
 		timer.start();
 		mainapplication.setScene(clientscene);
 	}
 
-	// Getters
+	/* GETTERS AND SETTERS */
 	public ArrayList<Integer> getChallenges() {
 		return client.getChallenges();
 	}
@@ -147,11 +143,10 @@ public class ClientController {
 
 	/**
 	 * 
-	 * @param gameID
-	 *            - int containing the gameID
-	 * @param players
-	 *            - List of all the players in the game
-	 * @return - return a two demensional array containing an array of the username and score for every index
+	 * @param gameID - int containing the gameID
+	 * @param players - List of all the players in the game
+	 * @return - return a two demensional array containing an array of the username and score for every
+	 * index
 	 */
 	public ArrayList<ArrayList<String>> getScore(int gameID, ArrayList<Player> players) {
 		ScoreHandler scorehandler = new ScoreHandler(client.getSharedCollectiveGoalCards(gameID));
@@ -181,8 +176,7 @@ public class ClientController {
 
 		// connect every score with the player
 		for (int c = 0; c < players.size(); c++) {
-			result.add(new ArrayList<String>(
-					Arrays.asList(players.get(comparator.get(c).get(0)).getUsername(), String.valueOf(comparator.get(c).get(1)))));
+			result.add(new ArrayList<String>(Arrays.asList(players.get(comparator.get(c).get(0)).getUsername(), String.valueOf(comparator.get(c).get(1)))));
 		}
 		return result;
 	}
@@ -246,7 +240,7 @@ public class ClientController {
 
 		public abstract void doAction();
 	}
-	
+
 	private void createTimer() {
 		timer = new AnimationTimerExt(3000) {
 			@Override

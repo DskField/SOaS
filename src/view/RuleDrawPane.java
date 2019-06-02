@@ -8,12 +8,12 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 class RuleDrawPane extends StackPane {
-	// constants
-	private static final int PANEWIDTH = 800, PANEHEIGHT = 750;
-	// instance variables
+	/* CONSTANTS */
+	private final int PANEWIDTH = 800, PANEHEIGHT = 750;
+
+	/* VARIABLES */
 	private ImageView imageView;
 
-	// constructor
 	public RuleDrawPane() {
 		setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.7), null, null)));
 		imageView = new ImageView();
@@ -29,23 +29,22 @@ class RuleDrawPane extends StackPane {
 		getChildren().add(imageView);
 	}
 
-	
 	/**
-	 * how rules about progression
+	 * Show the rules about the game progression
 	 */
 	public void showProgression() {
 		imageView.setImage(new Image("/images/Rules/Spelverloop.png"));
 	}
 
 	/**
-	 * show rules about die placing
+	 * Show rules about die placing
 	 */
 	public void showDiePlacing() {
 		imageView.setImage(new Image("/images/Rules/Dobbelsteenplaatsen.png"));
 	}
 
 	/**
-	 * show rules about toolcards
+	 * Show rules about toolcards
 	 */
 	public void showToolCard() {
 		imageView.setImage(new Image("/images/Rules/Gereedschapskaarten.png"));

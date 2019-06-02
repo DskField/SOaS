@@ -4,7 +4,6 @@ public class CurrencyStone {
 
 	private int stoneID;
 
-	// duplicate information on purpose
 	private int playerID;
 	private int cardID;
 

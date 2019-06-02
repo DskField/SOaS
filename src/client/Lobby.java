@@ -1,7 +1,7 @@
 package client;
 
 public class Lobby {
-	// variables
+	/* VARIABLES */
 	private int gameID;
 	private String gameState;
 	private boolean isCurrentPlayer;
@@ -13,20 +13,16 @@ public class Lobby {
 	/**
 	 * Constructor used to create a Lobby object
 	 * 
-	 * @param gameID
-	 *            - int containing the game_idgame in the database
-	 * @param gameState
-	 *            - String containing the state the game is currently in ("wachtende", "aan de gang", "uitgespeeld", "afgebroken")
-	 * @param isCurrentPlayer
-	 *            - boolean containing if the user has the turn to place a die
-	 * @param lobbyResponse
-	 *            - int containing how many players have respond to the challenge
-	 * @param lobbySize
-	 *            - int containing te lobby size of all the players who are part of the game
-	 * @param finalScore
-	 *            - int containing the score pushed to the database when the game is finished
-	 * @param currentRound
-	 *            - int containing the current round the game it in
+	 * @param gameID - {@code int} containing the game_idgame in the database
+	 * @param gameState - {@code String} containing the state the game is currently in ("wachtende",
+	 * "aan de gang", "uitgespeeld", "afgebroken")
+	 * @param isCurrentPlayer - {@code boolean} containing if the user has the turn to place a die
+	 * @param lobbyResponse - {@code int} containing how many players have respond to the challenge
+	 * @param lobbySize - {@code int} containing te lobby size of all the players who are part of the
+	 * game
+	 * @param finalScore - {@code int} containing the score pushed to the database when the game is
+	 * finished
+	 * @param currentRound - {@code int} containing the current round of the game that it's in
 	 */
 	public Lobby(int gameID, String gameState, boolean isCurrentPlayer, int lobbyResponse, int lobbySize, int finalScore, int currentRound) {
 		this.gameID = gameID;
@@ -38,7 +34,7 @@ public class Lobby {
 		this.currentRound = currentRound;
 	}
 
-	// GETTERS
+	/* GETEERS AND SETTERS */
 	public int getGameID() {
 		return gameID;
 	}

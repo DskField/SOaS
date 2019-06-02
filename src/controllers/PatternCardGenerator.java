@@ -7,12 +7,13 @@ import game.PatternCard;
 import game.SpacePattern;
 
 public class PatternCardGenerator {
+	/* VARIABLES */
 	private static final double DIFFICULTY_FACTOR = 2.5;
 	private Random rng;
 
-
 	/**
-	 * generates the card
+	 * Generates the card
+	 * 
 	 * @return a new fresh from the press patterncard
 	 */
 	public PatternCard generateCard() {
@@ -32,7 +33,6 @@ public class PatternCardGenerator {
 					if (y > 0) {
 						if ((tempPattern.getColor().getColor().equals(pattern[x][y - 1].getColor().getColor()) && tempPattern.getColor() != GameColor.EMPTY)
 								|| (tempPattern.getValue() == pattern[x][y - 1].getValue() && tempPattern.getValue() != 0)) {
-							//System.out.println("NO Y");
 							noY = true;
 							generatedPattern = null;
 						} else {
@@ -60,34 +60,36 @@ public class PatternCardGenerator {
 		generatedCard.addPattern(pattern);
 		return generatedCard;
 	}
-/**
- * Very scientific way to determine to the difficulty of the card
- * It counts all the spaces that have a requirement and then divides it by 2.5 to get a value between 1 and 6
- * @param the generated pattern
- * @return difficulty
- */
+
+	/**
+	 * Very scientific way to determine to the difficulty of the card It counts all the spaces that have
+	 * a requirement and then divides it by 2.5 to get a value between 1 and 6
+	 * 
+	 * @param pattern - The generated pattern
+	 * @return difficulty - The difficulty of the {@code PatternCard}
+	 */
 	private int generateDifficulty(SpacePattern[][] pattern) {
 		int notEmpty = 0;
-		for(SpacePattern[] pRow: pattern) {
-			for(SpacePattern place: pRow) {
-				if(!place.getColor().equals(GameColor.EMPTY)) {
-					notEmpty +=1;
+		for (SpacePattern[] pRow : pattern) {
+			for (SpacePattern place : pRow) {
+				if (!place.getColor().equals(GameColor.EMPTY)) {
+					notEmpty += 1;
 				}
 			}
 		}
 		double difficulty = notEmpty / DIFFICULTY_FACTOR;
 
-		int intDifficulty = (int)difficulty;
-		if(intDifficulty >= 7) {
+		int intDifficulty = (int) difficulty;
+		if (intDifficulty >= 7) {
 			intDifficulty = 6;
 		}
-		
+
 		return intDifficulty;
 	}
 
-	
 	/**
-	 * Creates a new SpacePattern that is either blank or has a random value/color
+	 * Creates a new {@code SpacePattern} that is either blank or has a random value/color
+	 * 
 	 * @param x
 	 * @param y
 	 * @return one space

@@ -12,20 +12,18 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-
 public class ChatPane extends BorderPane {
-	// constants
+	/* CONSTANTS */
 	private final int chatPaneWidth = 400;
 	private final int chatPaneheight = 200;
 	private final int sendButtonWidth = 100;
 	private final int sendButtonHeight = 20;
 
-	// variables
+	/* VARIABLES */
 	private TextField playerMessage;
 	private Button sendMessage;
 
@@ -35,101 +33,84 @@ public class ChatPane extends BorderPane {
 	private GameController gameController;
 
 	public ChatPane(GameController gameController) {
-		// setting the GameController
+		// Setting the GameController
 		this.gameController = gameController;
 
-		// handles the makeup of the ChatPane
-//		setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
+		// Handles the makeup of the ChatPane
 		setPrefSize(chatPaneWidth, chatPaneheight);
 
-		// creates the Chat
+		// Creates the Chat
 		createChat();
-		
+
 	}
 
 	/**
-	 * Creates the entire chat. Including the send button and the player input bar.
+	 * Creates the entire {@code Chat}. Including the send button and the player input bar.
 	 */
 	private void createChat() {
-		// initialize
+		/* INIT */
 		playerMessage = new TextField();
 		sendMessage = new Button("verstuur");
 		scrollPane = new ScrollPane();
 		bottom = new HBox();
 		center = new VBox();
 
-		// Handles makeup
+		/* MAKUP */
 		sendMessage.setPrefSize(sendButtonWidth, sendButtonHeight);
 		playerMessage.setPrefWidth(chatPaneWidth - sendButtonWidth);
 		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
 		scrollPane.setFitToWidth(true);
 		scrollPane.setContent(center);
 
-		//scrolls scrollbar to bottom
+		// Scrolls scrollbar to bottom
 		scrollPane.setVvalue(1d);
 
-		
-		// sets everything to the ChatPane
+		// Sets everything to the ChatPane
 		bottom.getChildren().addAll(playerMessage, sendMessage);
 		setCenter(scrollPane);
 		setBottom(bottom);
-		
 
-		// handlers
-
-		// handles the Enter key for sending messages
+		/* HANDLERS */
+		// Handles the Enter key for sending messages
 		playerMessage.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
 				if (event.getCode() == KeyCode.ENTER) {
 					sendMessage();
-				}
-				else if(event.getCode() == KeyCode.ESCAPE) {
+				} else if (event.getCode() == KeyCode.ESCAPE) {
 					event.consume();
 				}
 			}
 		});
 
-		// handles the "verzenden"button to send messages
+		// Handles the "verzenden" button to send messages
 		sendMessage.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				sendMessage();
 			}
 		});
-
-		// handles the focus for the scrollPane
-		scrollPane.setOnMouseEntered(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				
-			}
-		});
-	
 	}
 
 	/**
-	 * adds Messages to the Chat.
+	 * Adds Messages to the {@code Chat}.
 	 * 
-	 * @param messages
-	 *            - ArrayList<Message> this list of Messages will be added to the
-	 *            chat
+	 * @param messages - {@code ArrayList<Message>} that will be added to the chat
 	 */
 	public void updateChat(ArrayList<Message> messages) {
-		double scrollPos = 	scrollPane.getVvalue();
+		double scrollPos = scrollPane.getVvalue();
 
 		scrollPane.setVvalue(1d);
 		for (Message message : messages) {
-			center.getChildren()
-					.add(new MessagePane(message.getUserName(), message.getMessage(), message.getChatTime()));
+			center.getChildren().add(new MessagePane(message.getUserName(), message.getMessage(), message.getChatTime()));
 		}
 		scrollPane.setVvalue(scrollPos);
 
 	}
 
 	/**
-	 * Gives the the String from playerMessage to the sendMessage method of the game
-	 * controller and clears the playerMessage field.
+	 * Gives the the String from playerMessage to the sendMessage method of the game controller and
+	 * clears the playerMessage field.
 	 */
 	private void sendMessage() {
 		gameController.sendMessage(playerMessage.getText());

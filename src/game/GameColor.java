@@ -11,12 +11,19 @@ public enum GameColor {
 		this.color = color;
 	}
 
-	// getter for the Color connected to the String
+	/**
+	 * @return - The JavaFX {@code Color} that is connected to the {@code GameColor}
+	 */
 	public Color getColor() {
 		return this.color;
 	}
 
-	// changing dutch input into an enum
+	/**
+	 * Change the dutch input into the enum variable
+	 * 
+	 * @param key - Dutch input
+	 * @return - Enum variable
+	 */
 	public static GameColor getEnum(String key) {
 		switch (key.toLowerCase()) {
 		case "rood":
@@ -34,6 +41,11 @@ public enum GameColor {
 		}
 	}
 
+	/**
+	 * Change the enum variable into the Dutch output
+	 * 
+	 * @return - Dutch output
+	 */
 	public String getDatabaseName() {
 		switch (this) {
 		case RED:

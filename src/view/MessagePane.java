@@ -1,28 +1,29 @@
 package view;
+
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
-
 public class MessagePane extends HBox {
-	//constants
+	/* CONSTANTS */
 	private final int messageWidth = 280;
-	//variables
+
+	/* VARIABLES */
 	private Label name;
 	private Label message;
 	private Label timestamp;
-	
+
 	public MessagePane(String username, String text, String time) {
 		// initialized name label
 		name = new Label(username + ": ");
-		
+
 		//initialize message label and handels makeup
 		message = new Label(text);
 		message.setWrapText(true);
 		message.setPrefWidth(messageWidth);
-		
+
 		//initialize timestamp label
 		timestamp = new Label(" -" + time);
-		
+
 		//adds everything to the MessagePane
 		getChildren().addAll(name, message, timestamp);
 	}

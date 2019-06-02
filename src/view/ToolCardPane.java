@@ -7,8 +7,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 
 public class ToolCardPane extends FlowPane {
-	private static final int vBoxPrefWidth = 230;
-	
+	/* CONSTANTS */
+	private final int vBoxPrefWidth = 230;
+
+	/* VARIABLES */
 	private FlowPane flowPane;
 	private ImageView imageView;
 	private int seqNr;
@@ -24,7 +26,6 @@ public class ToolCardPane extends FlowPane {
 
 	private void lookForImage(int seqNr) {
 		switch (seqNr) {
-
 		case 1:
 			imageView.setImage(new Image("/images/Toolcards/Card1.png"));
 			break;
@@ -65,7 +66,7 @@ public class ToolCardPane extends FlowPane {
 			imageView.setImage(new Image("/images/GoalCard/Private/Back.png"));
 		}
 	}
-	
+
 	public int getSeqNr() {
 		return seqNr;
 	}

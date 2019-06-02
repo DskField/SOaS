@@ -17,9 +17,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
 public class DieOfferPane extends HBox {
-	private static final int squareSize = 55;
-	private static final int WIDTH = 625 , HEIGHT = 65;
-	
+	/* CONTANTS */
+	private final int squareSize = 55;
+	private final int WIDTH = 625, HEIGHT = 65;
+
+	/* VARIABLES */
 	private GameController gameController;
 	private ArrayList<DiePane> dice;
 
@@ -29,12 +31,12 @@ public class DieOfferPane extends HBox {
 
 		setMaxSize(WIDTH, HEIGHT);
 		setMinSize(WIDTH, HEIGHT);
-
 	}
 
 	/**
-	 * adds dice to the pane
-	 * @param roundDice the dice that have to be added
+	 * Adds dice to the pane
+	 * 
+	 * @param roundDice - The dice that have to be added
 	 */
 	public void addDice(ArrayList<Die> roundDice) {
 		if (!checkDice(roundDice)) {
@@ -85,7 +87,7 @@ public class DieOfferPane extends HBox {
 	}
 
 	/**
-	 * refresh this pane
+	 * Refresh this pane
 	 */
 	private void updateDice() {
 		getChildren().clear();
@@ -94,8 +96,9 @@ public class DieOfferPane extends HBox {
 	}
 
 	/**
-	 * remove a die from this pane
-	 * @param diePane the die to be removed
+	 * Remove a die from this pane
+	 * 
+	 * @param diePane - The die to be removed
 	 */
 	public void removeDie(DiePane diePane) {
 		getChildren().remove(diePane);

@@ -3,6 +3,7 @@ package game;
 import java.util.ArrayList;
 
 public class Player {
+	/* VARIABLES */
 	private ArrayList<CurrencyStone> currencyStones;
 	private GlassWindow glassWindow;
 	private GameColor personalGoalCard;
@@ -24,7 +25,7 @@ public class Player {
 		this.currencyStones.add(currencyStone);
 	}
 
-	// GETTERS AND SETTERS
+	/* GETTERS AND SETTERS */
 	public GameColor getColor() {
 		return glassWindow.getColor();
 	}
@@ -68,9 +69,7 @@ public class Player {
 	public int getScore() {
 		return score;
 	}
-	/**
-	 * remove all the currencystones this player has
-	 */
+
 	public void clearCurrencyStones() {
 		currencyStones.clear();
 	}

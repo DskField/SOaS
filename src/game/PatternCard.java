@@ -1,6 +1,7 @@
 package game;
 
 public class PatternCard {
+	/* VARIABLES */
 	private int patternCardId;
 	private String name;
 	private int difficulty;
@@ -13,8 +14,7 @@ public class PatternCard {
 		pattern = new SpacePattern[5][4];
 	}
 
-	// GETTERS AND SETTERS
-	// Is used to add the actual pattern to the patterncard
+	/* GETTERS AND SETTERS */
 	public void addPattern(SpacePattern[][] pattern) {
 		this.pattern = pattern;
 	}

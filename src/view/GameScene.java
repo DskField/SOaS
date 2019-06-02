@@ -34,32 +34,32 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 public class GameScene extends Scene {
-	// constants
-	private static final int MAIN = 0;
+	/* CONSTANTS */
+	private final int MAIN = 0;
 
-	private static final int personalInfoSpacing = 10;
+	private final int personalInfoSpacing = 10;
 
-	private static final int buttonWidth = 200;
-	private static final int buttonheigt = 50;
+	private final int buttonWidth = 200;
+	private final int buttonheigt = 50;
 
-	private static final int centerBoxPaddingTop = 0;
-	private static final int centerBoxPaddingRight = 100;
-	private static final int centerBoxPaddingBottom = 0;
-	private static final int centerBoxPaddingLeft = 100;
+	private final int centerBoxPaddingTop = 0;
+	private final int centerBoxPaddingRight = 100;
+	private final int centerBoxPaddingBottom = 0;
+	private final int centerBoxPaddingLeft = 100;
 
-	private static final int leftBoxSpacing = 10;
-	private static final int leftBoxPaddingTop = 0;
-	private static final int leftBoxPaddingRight = 0;
-	private static final int leftBoxPaddingBottom = 0;
-	private static final int leftBoxPaddingLeft = 10;
+	private final int leftBoxSpacing = 10;
+	private final int leftBoxPaddingTop = 0;
+	private final int leftBoxPaddingRight = 0;
+	private final int leftBoxPaddingBottom = 0;
+	private final int leftBoxPaddingLeft = 10;
 
-	private static final int rightBoxSpacing = 10;
-	private static final int rightBoxPaddingTop = 0;
-	private static final int rightBoxPaddingRight = 10;
-	private static final int rightBoxPaddingBottom = 60;
-	private static final int rightBoxPaddingLeft = 0;
+	private final int rightBoxSpacing = 10;
+	private final int rightBoxPaddingTop = 0;
+	private final int rightBoxPaddingRight = 10;
+	private final int rightBoxPaddingBottom = 60;
+	private final int rightBoxPaddingLeft = 0;
 
-	// variables
+	/* VARIABLES */
 	private BorderPane rootPane;
 	private HBox cardBox;
 	private HBox goalCardsBox;
@@ -91,21 +91,20 @@ public class GameScene extends Scene {
 	 */
 	public GameScene(GameController gameController) {
 		super(new BorderPane());
-		// initialize
+		// Init
 		rootPane = new BorderPane();
 		this.gameController = gameController;
 		glassWindowPanes = new ArrayList<GlassWindowPane>();
 
-		// sets the rootPane and handles makeup
+		// Sets the rootPane and handles makeup
 		setRoot(rootPane);
-		
-		
+
 		BackgroundImage bgImage = new BackgroundImage(new Image("/images/Backgrounds/ChurchTexture.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 		rootPane.setBackground(new Background(bgImage));
 
 		stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
 
-		// creates and sets everything in the right place
+		// Creates and sets everything in the right place
 		createCenter();
 		createLeft();
 		createRight();
@@ -126,9 +125,11 @@ public class GameScene extends Scene {
 			}
 		});
 	}
+
 	/**
+	 * Disable the {@code dieOfferPane}
 	 * 
-	 * @param if the dieOfferPane should be disabled
+	 * @param disable - If the {@code dieOfferPane} should be disabled
 	 */
 	public void disableDieOfferPane(boolean disable) {
 		dieOfferPane.setDisable(disable);
@@ -158,10 +159,9 @@ public class GameScene extends Scene {
 	}
 
 	/**
-	 * gives a list of messages to the ChatPane
+	 * Gives a list of messages to the {@code ChatPane}
 	 * 
-	 * @param messages ArrayList<Message> list of messages that will be added to the
-	 *                 chat.
+	 * @param messages - {@code ArrayList<Message>} will be added to the chat.
 	 */
 	public void updateChat(ArrayList<Message> messages) {
 		chatPane.updateChat(messages);
@@ -177,24 +177,25 @@ public class GameScene extends Scene {
 			}
 		}
 	}
-	
+
 	/**
-	 * @param dice to be added to the OfferPane
+	 * @param dice - The dice that need to be added to the {@code dieOfferPane}
 	 */
 	public void updateTable(ArrayList<Die> dice) {
 		dieOfferPane.addDice(dice);
 	}
-	
+
 	/**
-	 * empties the offerpane
+	 * Empties the {@code OfferPane}
 	 */
 	public void removeDieTable() {
 		dieOfferPane.removeDie(getSelectedDie());
 	}
 
 	/**
-	 * updates the roundtrack
-	 * @param rounds rounds on the roundtrack
+	 * Updates the roundtrack
+	 * 
+	 * @param rounds - rounds on the roundtrack
 	 */
 	public void updateRoundTrack(Round[] rounds) {//TODO Double useless code in here I think, roundPane.getchildren.clear and roundPane.clear
 		roundPane.getChildren().clear();
@@ -214,7 +215,8 @@ public class GameScene extends Scene {
 	}
 
 	/**
-	 * if myTurn is true and dieofferpane isnt empty, disable nextButton
+	 * If {@code myTurn} is true and {@code dieOfferPane} is not empty, disable nextButton
+	 * 
 	 * @param if its your turn
 	 */
 	public void updateTurn(boolean myTurn) {
@@ -226,17 +228,18 @@ public class GameScene extends Scene {
 	}
 
 	/**
-	 * updates currencystones on screen
-	 * @param currencyStones all the currencystones
+	 * Updates {@code CurrencyStones} on screen
+	 * 
+	 * @param currencyStones - All the {@code CurrencyStones}
 	 */
 	public void updateCurrencyStone(ArrayList<CurrencyStone> currencyStones) {
 		ArrayList<CurrencyStonePane> currencyStonePanes = new ArrayList<>();
-		for (CurrencyStone currencyStone : currencyStones) { 
+		for (CurrencyStone currencyStone : currencyStones) {
 			for (Player player : gameController.getPlayers()) {
 				if (player.getColor() == glassWindowPanes.get(MAIN).getColor()) {//Checks what glassWindow is selected and updates currencystones accordingly
 					if (currencyStone.getPlayerID() == player.getPlayerID()) {
 						currencyStonePanes.add(new CurrencyStonePane(player.getColor()));
-	
+
 					}
 				}
 			}
@@ -245,11 +248,10 @@ public class GameScene extends Scene {
 	}
 
 	/**
-	 * Creates the center of the screen containing the following aspects:
-	 * PersonalGoalCard, Currencystones, Roundtrack, PublicGoalCards, ToolCards,
-	 * Dice offer and the necessary buttons.
+	 * Creates the center of the screen containing the following aspects: {@code PersonalGoalCard},
+	 * {@code CurrencyStones}, {@code RoundTrack}, {@code PublicGoalCards}, {@code ToolCards},
+	 * {@code DieOfferPane} and the necessary {@code Buttons}.
 	 */
-
 	private void createCenter() {
 		// initialize everything for personalInfo
 		personalInfo = new VBox();
@@ -330,15 +332,14 @@ public class GameScene extends Scene {
 		centerBox.getChildren().addAll(currentPlayerLabel, roundPane, cardBox, dieOfferPane, buttonBox);
 		centerBox.setAlignment(Pos.CENTER);
 		centerBox.setSpacing(personalInfoSpacing);
-		centerBox.setPadding(
-				new Insets(centerBoxPaddingTop, centerBoxPaddingRight, centerBoxPaddingBottom, centerBoxPaddingLeft));
+		centerBox.setPadding(new Insets(centerBoxPaddingTop, centerBoxPaddingRight, centerBoxPaddingBottom, centerBoxPaddingLeft));
 
 		// adds the centerBox to the rootPane
 		rootPane.setCenter(centerBox);
 	}
 
-	/**if the shake button is pressed the button gets disabled and the sack gets shaken
-	 * 
+	/**
+	 * If the shake button is pressed the button gets disabled and the sack gets shaken
 	 */
 	private void handleShakeButton() {
 		shakeButton.setDisable(true);
@@ -347,7 +348,8 @@ public class GameScene extends Scene {
 	}
 
 	/**
-	 * if the nextButton is pressed it disables the button and does all the stuff needed to go to the next turn
+	 * If the nextButton is pressed it disables the button and does all the stuff needed to go to the
+	 * next turn
 	 */
 	private void handleNextButton() {
 		nextButton.setDisable(true);
@@ -355,8 +357,8 @@ public class GameScene extends Scene {
 	}
 
 	/**
-	 * Creates the left column of the screen containing the following aspects:
-	 * Glaswindow(large), Chat
+	 * Creates the left column of the screen containing the following aspects: {@code Main GlassWindow},
+	 * {@code Chat}
 	 */
 	private void createLeft() {
 		// Initialize everything for the leftBox
@@ -369,16 +371,15 @@ public class GameScene extends Scene {
 		leftBox.getChildren().addAll(glassWindowPanes.get(0), chatPane);
 		leftBox.setAlignment(Pos.BOTTOM_CENTER);
 		leftBox.setSpacing(leftBoxSpacing);
-		leftBox.setPadding(
-				new Insets(leftBoxPaddingTop, leftBoxPaddingRight, leftBoxPaddingBottom, leftBoxPaddingLeft));
+		leftBox.setPadding(new Insets(leftBoxPaddingTop, leftBoxPaddingRight, leftBoxPaddingBottom, leftBoxPaddingLeft));
 
 		// adds the leftBox to the rootPane
 		rootPane.setLeft(leftBox);
 	}
 
 	/**
-	 * Creates the right column on the screen containing the following aspects: 3
-	 * Glaswindows(small)
+	 * Creates the right column on the screen containing the following aspects:
+	 * {@code 3 small GlassWindows}
 	 */
 	private void createRight() {
 		// Initialize everything for the rightBox
@@ -403,8 +404,7 @@ public class GameScene extends Scene {
 		// adds everything to the rightBox and handles makeup
 		rightBox.setSpacing(rightBoxSpacing);
 		rightBox.setAlignment(Pos.BOTTOM_CENTER);
-		rightBox.setPadding(
-				new Insets(rightBoxPaddingTop, rightBoxPaddingRight, rightBoxPaddingBottom, rightBoxPaddingLeft));
+		rightBox.setPadding(new Insets(rightBoxPaddingTop, rightBoxPaddingRight, rightBoxPaddingBottom, rightBoxPaddingLeft));
 
 		// adds the rightBox to the rootPane
 		rootPane.setRight(rightBox);
@@ -440,30 +440,34 @@ public class GameScene extends Scene {
 		Label winner = new Label(winText);
 		rootPane.setCenter(winner);
 	}
-	
+
 	/**
-	 * Updates the currencystones on the toolcards
-	 * @param toolCards the toolcards used in the game
+	 * Updates the {@code CurrencyStones} on the {@code ToolCards}
+	 * 
+	 * @param toolCards - The {@code ToolCards} used in the game
 	 */
 	public void updateToolCards(ArrayList<ToolCard> toolCards) {
 		for (ToolCardPane toolCardPane : toolCardPanes) {
-			for (ToolCard toolCard : toolCards) {// for toolcard make an arralist with currencyStonepaness
+			// For toolcard make an arralist with currencyStonepaness
+			for (ToolCard toolCard : toolCards) {
 				ArrayList<CurrencyStonePane> stonePanes = new ArrayList<>();
 				stonePanes.clear();
 				Player thisPlayer = null;
-				if (!toolCard.getCurrencyStones().isEmpty()) {// if toolcard has currencystones
-					for (CurrencyStone stone : toolCard.getCurrencyStones()) {// for every stone that card has make a
-																				// StonePane and add to ArrayList of
-																				// stonepanes
-						for (Player player : gameController.getPlayers()) {// Check whose currencystone it is
-							if (stone.getPlayerID() == player.getPlayerID()) {// if playerid's match use that player to
-																				// get the color
+				// if toolcard has currencystones
+				if (!toolCard.getCurrencyStones().isEmpty()) {
+					// for every stone that card has make a StonePane and add to ArrayList of currencystonepanes
+					for (CurrencyStone stone : toolCard.getCurrencyStones()) {
+						// Check whose currencystone it is
+						for (Player player : gameController.getPlayers()) {
+							// if playerid's match use that player to get the color
+							if (stone.getPlayerID() == player.getPlayerID()) {
 								thisPlayer = player;
 							}
 						}
 						CurrencyStonePane stonePane = new CurrencyStonePane(thisPlayer.getColor());
 						stonePanes.add(stonePane);
 					}
+
 					if (toolCard.getSeqnr() == toolCardPane.getSeqNr()) {
 						toolCardPane.updateStones(stonePanes);
 					}

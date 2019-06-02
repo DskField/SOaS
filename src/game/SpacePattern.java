@@ -1,7 +1,7 @@
 package game;
 
 public class SpacePattern extends Space {
-
+	/* VARIABLES */
 	private GameColor color;
 	private int value;
 
@@ -11,7 +11,7 @@ public class SpacePattern extends Space {
 		this.color = color;
 	}
 
-	// GETTERS AND SETTERS
+	/* GETTERS AND SETTERS */
 	public GameColor getColor() {
 		return color;
 	}

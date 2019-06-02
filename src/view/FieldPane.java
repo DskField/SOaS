@@ -15,10 +15,12 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 
 public class FieldPane extends FlowPane {
+	/* CONSTANTS */
 	private final int patternWidth = 360;
 	private final int patternHeight = 280;
 	private final static int squareGap = 4;
 
+	/* VARIABLES */
 	private ArrayList<SpacePane> spaces;
 	private SpacePane[][] patternSpaces;
 	private SpacePane[][] glassSpaces;

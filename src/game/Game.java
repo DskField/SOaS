@@ -9,6 +9,7 @@ import controllers.ScoreHandler;
 import database.PersistenceFacade;
 
 public class Game {
+	/* VARIABLES */
 	private GlassWindow[] glassWindows;
 
 	private ArrayList<Player> players;
@@ -18,7 +19,7 @@ public class Game {
 	private ArrayList<CollectiveGoalCard> collectiveGoalCards;
 
 	/**
-	 * dice will only contain Die that did not get rolled
+	 * Dice will only contain {@code Die} that did not get rolled
 	 */
 	private ArrayList<Die> dice;
 	private Round[] roundTrack;
@@ -26,8 +27,8 @@ public class Game {
 	private ScoreHandler scoreHandler;
 
 	/**
-	 * table is the list with die that are rolled but not placed or in the round
-	 * track. That means they are the dice to choose out of this round
+	 * Table is the {@code ArrayList} with {@code Die} that are rolled but not placed or in the
+	 * {@code roundTrack}. That means they are the dice to choose out of this round
 	 */
 	private ArrayList<Die> table;
 
@@ -46,10 +47,9 @@ public class Game {
 	private User clientUser;
 
 	/**
-	 * Initialize the game
+	 * Initialize the {@code Game}
 	 * 
-	 * @param gameID
-	 *            - The id of the game
+	 * @param gameID - The id of the {@code Game}
 	 */
 
 	public Game(int gameID, User clientUser, PersistenceFacade persistencefacade) {
@@ -93,21 +93,20 @@ public class Game {
 	}
 
 	/**
-	 * This method loads all Dice from the DB to the Game.
+	 * This method loads all {@code dice} from the DB to the {@code Game}.
 	 */
 	private void loadDice() {
 		dice = persistenceFacade.getGameDice(gameID);
 		roundTrack = persistenceFacade.getRoundTrack(gameID);
 		table = persistenceFacade.getTableDice(gameID, currentRound);
 		if (currentRound <= 10) {
-			if (table.isEmpty() && roundTrack[currentRound - 1].getDice().isEmpty()
-					&& currentPlayer.getPlayerID() == clientPlayer.getPlayerID()) {
+			if (table.isEmpty() && roundTrack[currentRound - 1].getDice().isEmpty() && currentPlayer.getPlayerID() == clientPlayer.getPlayerID()) {
 			}
 		}
 	}
 
 	/**
-	 * Load the players from this game
+	 * Load the {@code players} from this {@code Game}
 	 */
 	private void loadPlayers() {
 		players = persistenceFacade.getAllPlayersInGame(gameID);
@@ -120,7 +119,7 @@ public class Game {
 	}
 
 	/**
-	 * Get the Tool and Goal cards form the DB
+	 * Get the {@code ToolCards} and {@code CollectiveGoalCards} form the DB
 	 */
 	private void loadCards() {
 		toolCards = persistenceFacade.getGameToolCards(gameID);
@@ -128,7 +127,7 @@ public class Game {
 	}
 
 	/**
-	 * Load the GlassWindow with the right PatternCard
+	 * Load the {@code GlassWindow} with the right {@code PatternCard}
 	 */
 	private void loadGlassWindow() {
 		final GameColor colors[] = { GameColor.RED, GameColor.GREEN, GameColor.BLUE, GameColor.PURPLE };
@@ -151,31 +150,25 @@ public class Game {
 
 	}
 
-	/*
-	 * used for loading and updating currencystones
+	/**
+	 * used for loading and updating {@code CurrencyStones}
 	 */
 	public void loadCurrencyStones() {
 		currencyStones = persistenceFacade.getAllStonesInGame(gameID);
 		for (Player player : players) {
 			player.clearCurrencyStones();
-
 			for (CurrencyStone cs : currencyStones) {
-
 				if (cs.getPlayerID() == player.getPlayerID()) {
 					player.addCurrencyStone(cs);
 				}
-
 			}
-
 		}
+
 		for (ToolCard toolCard : toolCards) {
-			for (CurrencyStone currencyStone : persistenceFacade.getCurrencyStonesOnCard(toolCard.getCardID(),
-					gameID)) {
+			for (CurrencyStone currencyStone : persistenceFacade.getCurrencyStonesOnCard(toolCard.getCardID(), gameID)) {
 				toolCard.addCurrencyStone(currencyStone);
 			}
-
 		}
-
 	}
 
 	public void loadCurrentPlayer() {
@@ -224,10 +217,10 @@ public class Game {
 	public ArrayList<PatternCard> patternChoices(int idPlayer) {
 		return persistenceFacade.getPlayerOptions(idPlayer);
 	}
-	
+
 	/**
-	 * Removes the die from the list with dice and places them on the list table. It
-	 * also rolls the dice
+	 * Removes the {@code Die} from the {@code ArrayList<Die> dice} and places them on the
+	 * {@code ArrayList<Die> table}. It also rolls the {@code Die}
 	 */
 	public void shakeSack() {
 		updateDice();
@@ -273,9 +266,11 @@ public class Game {
 	public void updatePlayerTurn(Player oldPlayer) {
 		persistenceFacade.updatePlayerTurn(oldPlayer, currentPlayer, gameID);
 	}
-/**
- * adds the dice that are on offer to the dicetrack, clears the offering, updates database and updates roundcounter
- */
+
+	/**
+	 * Adds the {@code dice} that are on offer to the {@code roundTrack}, clears the {@code table},
+	 * updates DB and updates {@code currentRound}
+	 */
 	public void nextRound() {
 		if (!table.isEmpty()) {
 			roundTrack[currentRound - 1].addDice(table);
@@ -286,10 +281,9 @@ public class Game {
 	}
 
 	/**
-	 * gets new Messages from the database and adds it to the chat.
+	 * Gets new {@code Messages} from the DB and adds it to the {@code Chat}.
 	 * 
-	 * @return ArrayList<Messages> list of Messages that need to be added to the
-	 *         ChatPane
+	 * @return ArrayList<Messages> - {@code ArrayList} that needs to be added to the {@code ChatPane}
 	 */
 	public ArrayList<Message> updateChat() {
 		ArrayList<Message> messages = persistenceFacade.updateChat(players, chat.getLastTimestamp());
@@ -329,21 +323,17 @@ public class Game {
 	}
 
 	/**
-	 * Checks if the new Message has the same primary key as the message before it.
-	 * If this is the case the method wil return an ArrayList<Message> containing an
-	 * error message. Otherwise the message will be send to the database for
-	 * insertion. After insertion this method will call upon the updateChat function
-	 * to update the chat from the database.
+	 * Checks if the {@code message} has the same primary key as the message before it. If this is the
+	 * case the method will return an {@code ArrayList<Message>} containing an error message. Otherwise
+	 * the {@code message} will be send to the DB for insertion. After insertion this method will call
+	 * upon the {@code updateChat()} function to update the {@code Chat} from the DB.
 	 * 
-	 * @param message
-	 *            - the Message that needs to be send to the database
-	 * @return ArrayList<Message> list of messages that need to be added to the
-	 *         ChatPane
+	 * @param message - the Message that needs to be send to the database
+	 * @return ArrayList<Message> list of messages that need to be added to the ChatPane
 	 */
 	public ArrayList<Message> sendMessage(Message message) {
 		if (message.getChatTime().equals(chat.getLastChatTime())) {
-			Message error = new Message("please don't spam you can only send 1 message a second", getClientPlayer(),
-					new Timestamp(System.currentTimeMillis()));
+			Message error = new Message("please don't spam you can only send 1 message a second", getClientPlayer(), new Timestamp(System.currentTimeMillis()));
 			ArrayList<Message> messages = new ArrayList<Message>();
 			messages.add(error);
 			return messages;
@@ -353,7 +343,7 @@ public class Game {
 		}
 	}
 
-	// GETTERS AND SETTERS
+	/* GETTERS AND SETTERS */
 	public Player getClientPlayer() {
 		return clientPlayer;
 	}

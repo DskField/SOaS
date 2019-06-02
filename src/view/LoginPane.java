@@ -19,7 +19,31 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class LoginPane extends BorderPane {
-	// variables
+	/* CONSTANTS */
+	// Label
+	private final int errorMessageSize = 23;
+	private final Color errorMessageColor = Color.RED;
+	private final Color errorMessageConfirmColor = Color.LIMEGREEN;
+
+	// Constructor
+	private final int paneWidth = 500;
+	private final int paneHeight = 500;
+	private final Color backgroundColor = Color.GRAY;
+
+	// Buttons
+	private final int buttonWidth = 100;
+	private final int buttonHeight = 50;
+	private final int buttonSpacing = 30;
+
+	// TextFields
+	private final int textfieldsSpacing = 20;
+	private final int fieldsSpacing = 10;
+	private final int butAndfieldsSpacing = 10;
+	private final int butAndfieldsWidth = 200;
+	private final int butAndfieldsHeight = 50;
+	private final double textfieldsScaling = 1.3;
+
+	/* VARIABLES */
 	private HBox buttons;
 	private ClientController clientcontroller;
 	private TextField username;
@@ -27,36 +51,9 @@ public class LoginPane extends BorderPane {
 	private Label errorMessage;
 
 	/**
-	 * Magic Numbers
-	 */
-	// Numbers for Label
-	final private static int errorMessageSize = 23;
-	final private static Color errorMessageColor = Color.RED;
-	final private static Color errorMessageConfirmColor = Color.LIMEGREEN;
-
-	// Numbers for constructor
-	final private static int paneWidth = 500;
-	final private static int paneHeight = 500;
-	final private static Color backgroundColor = Color.GRAY;
-
-	// Numbers for buttons
-	final private static int buttonWidth = 100;
-	final private static int buttonHeight = 50;
-	final private static int buttonSpacing = 30;
-
-	// Numbers for textfields
-	final private static int textfieldsSpacing = 20;
-	final private static int fieldsSpacing = 10;
-	final private static int butAndfieldsSpacing = 10;
-	final private static int butAndfieldsWidth = 200;
-	final private static int butAndfieldsHeight = 50;
-	final private static double textfieldsScaling = 1.3;
-
-	/**
 	 * Constructor used to create a LoginPane Object
 	 * 
-	 * @param clientcontroller
-	 *            - Object containing the reference to ClientController
+	 * @param clientcontroller - Object containing the reference to ClientController
 	 */
 	public LoginPane(ClientController clientcontroller) {
 		this.clientcontroller = clientcontroller;
@@ -142,10 +139,8 @@ public class LoginPane extends BorderPane {
 	/**
 	 * Method used to handle the login button. If login failed show an error message
 	 *
-	 * @param username
-	 *            - string containing the username input
-	 * @param password
-	 *            - string containing the password input
+	 * @param username - {@code String} containing the username input
+	 * @param password - {@code String} containing the password input
 	 */
 	private void handleLogin(String username, String password) {
 		if (!clientcontroller.handleLogin(username, password)) {
@@ -157,10 +152,8 @@ public class LoginPane extends BorderPane {
 	/**
 	 * Method used to handle the register button. If register failed show an error message
 	 * 
-	 * @param username
-	 *            - string containing the username input
-	 * @param password
-	 *            - string containing the password input
+	 * @param username - {@code String} containing the username input
+	 * @param password - {@code String} containing the password input
 	 */
 	private void handleRegister(String username, String password) {
 		if (!clientcontroller.handleRegister(username, password)) {

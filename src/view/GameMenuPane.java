@@ -14,20 +14,16 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
-/**
- *
- * the menu when you press escape
- *
- */
-class GameMenuPane extends VBox {
+public class GameMenuPane extends VBox {
+	/* CONSTANTS */
+	private final int BUTTONWIDTH = 300;
+	private final int BUTTONHEIGHT = 100;
+	private final int SPACING = 50;
+	private final int FONTSIZE = 25;
+	private final String FONT = "serif";
+	private final String DEFAULT_BUTTON_COLOR = "#483D8B";
 
-	private static final int BUTTONWIDTH = 300; 
-	private static final int BUTTONHEIGHT = 100;
-	private static final int SPACING = 50;
-	private static final int FONTSIZE = 25;
-	private static final String FONT = "serif";
-	private static final String DEFAULT_BUTTON_COLOR = "#483D8B";
-
+	/* VARIABLES */
 	private Button btn_resume;
 	private Button btn_rules;
 	private Button btn_Cheat;
@@ -39,26 +35,24 @@ class GameMenuPane extends VBox {
 
 	public GameMenuPane(GameController gC) {
 		this.gC = gC;
-		// get the main stage
+		// Get the main stage
 		this.stage = (Stage) Stage.getWindows().filtered(window -> window.isShowing()).get(0);
 		// Do some Styling
 		setAlignment(Pos.CENTER);
 		setSpacing(SPACING);
 		setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.7), null, null)));
-		// set size
+		// Set size
 		setMinSize(stage.getWidth(), stage.getHeight());
 		showButtons();
 	}
 
 	/**
-	 * Shows all them buttons, adds a nice style to them, gives them text and a goal in life
+	 * Shows all them buttons, add a style to them, give them text and a handler
 	 */
 	private void showButtons() {
-
-		
 		// Give buttons text and style
 		btn_resume = new Button("Hervatten");
-		
+
 		btn_rules = new Button("Regels");
 
 		switch (gC.getCheatMode()) {
@@ -73,48 +67,47 @@ class GameMenuPane extends VBox {
 		default:
 			break;
 		}
-		
+
 		btn_toMenu = new Button("Terug naar hoofd menu");
-		
+
 		btn_exit = new Button("Afsluiten");
 
-		
-		// give actions to buttons
+		// Give actions to buttons
 		btn_resume.setOnAction(e -> resume());
 		btn_rules.setOnAction(e -> showRules());
 		btn_Cheat.setOnAction(e -> cycleCheatFunction());
 		btn_toMenu.setOnAction(e -> toMenu());
 		btn_exit.setOnAction(e -> exit());
-		// add button to pane
+
+		// Add button to pane
 		getChildren().addAll(btn_resume, btn_rules, btn_Cheat, btn_toMenu, btn_exit);
-		
-		//Sets default style thats the same for every button like size, and text stuff
-		for(Node item: getChildren()) {
-			if(item.getTypeSelector().toString().equals("Button")) {
+
+		// Sets default style thats the same for every button like size, and text stuff
+		for (Node item : getChildren()) {
+			if (item.getTypeSelector().toString().equals("Button")) {
 				((Button) item).setBackground(new Background(new BackgroundFill(Color.web(DEFAULT_BUTTON_COLOR), null, null)));
 				((Button) item).setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
 				((Button) item).setFont(Font.font(FONT, FontWeight.BOLD, FONTSIZE));
 				((Button) item).setTextFill(Color.WHITE);
 			}
 		}
-		//Sets differentiating colors
+		// Sets differentiating colors
 		btn_resume.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
 		btn_exit.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
-
 
 		// If escape key is pressed it registers it as if btn_resume is clicked
 		btn_resume.setCancelButton(true);
 	}
 
 	/**
-	 * Resumes game, enables everything in the game en hides the gamemenu
+	 * Resumes game, enables everything in the game and hides the game menu
 	 */
 	private void resume() {
 		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
 	}
 
 	/**
-	 * loads the rules and hides game menu
+	 * Loads the rules and hides game menu
 	 */
 	private void showRules() {
 		Popup rulePopup = new Popup();
@@ -128,7 +121,7 @@ class GameMenuPane extends VBox {
 	}
 
 	/**
-	 * the button to cycle throught cheat functions, also sets the text on the button
+	 * The button to cycle through cheat functions, also sets the text on the button
 	 */
 	private void cycleCheatFunction() {
 		gC.cycleCheat();
@@ -155,9 +148,8 @@ class GameMenuPane extends VBox {
 		Stage.getWindows().filtered(window -> window.isShowing()).get(1).hide();
 	}
 
-
 	/**
-	 *  exit game to desktop
+	 * Exit game to desktop
 	 */
 	private void exit() {
 		Platform.exit();
