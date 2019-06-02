@@ -113,17 +113,16 @@ public class ChatPane extends BorderPane {
 	 */
 	public void updateChat(ArrayList<Message> messages) {
 		if (messages.size() != 0) {
-			scrollPane.setVvalue(1d);
 			for (Message message : messages) {
 				center.getChildren()
 						.add(new MessagePane(message.getUserName(), message.getMessage(), message.getChatTime()));
 			}
-			scrollPane.setVvalue(playerMessage.getMaxHeight());
-		}	
+			setScrollBottom();
+		}
 	}
-	
+
 	public void setScrollBottom() {
-		scrollPane.setVvalue(100);
+		scrollPane.setVvalue(1.5);
 	}
 
 	/**
@@ -133,6 +132,5 @@ public class ChatPane extends BorderPane {
 	private void sendMessage() {
 		gameController.sendMessage(playerMessage.getText());
 		playerMessage.clear();
-		scrollPane.setVvalue(1d);
 	}
 }
