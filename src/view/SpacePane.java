@@ -1,7 +1,6 @@
 package view;
 
 import controllers.GameController;
-import controllers.MainApplication;
 import game.GameColor;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -14,19 +13,20 @@ import javafx.scene.paint.Color;
 
 public class SpacePane extends Pane {
 	/* CONSTANTS */
-	private final double squareSize = 64*MainApplication.height;
 	private final double resizeScale = 2.2;
 
 	/* VARIABLESS */
 	private DiePane space;
+	private double size;
 	private int x;
 	private int y;
 
 	private boolean isSmall;
 
-	public SpacePane(int x, int y, GameController controller) {
+	public SpacePane(int x, int y, double size, GameController controller) {
 		this.x = x;
 		this.y = y;
+		this.size = size;
 
 		space = new DiePane(0, 0, GameColor.EMPTY);
 
@@ -41,7 +41,7 @@ public class SpacePane extends Pane {
 
 	public void loadPattern(int eyes, GameColor color) {
 		space = new DiePane(-1, eyes, color);
-		space.resize(squareSize);
+		space.resize(size);
 		getChildren().add(space);
 	}
 
@@ -56,9 +56,9 @@ public class SpacePane extends Pane {
 		this.isSmall = isSmall;
 
 		if (isSmall) {
-			space.resize(squareSize / resizeScale);
+			space.resize(size / resizeScale);
 		} else {
-			space.resize(squareSize);
+			space.resize(size);
 		}
 	}
 

@@ -9,35 +9,34 @@ import game.GlassWindow;
 import game.PatternCard;
 import game.SpaceGlass;
 import game.SpacePattern;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
-public class FieldPane extends FlowPane {
+public class FieldPane extends GridPane {
 	/* CONSTANTS */
-	private final double patternWidth = 360*MainApplication.width;
-	private final double patternHeight = 280*MainApplication.height;
-	private final static double squareGap = 4*MainApplication.height;
+	private final double patternWidth = 360 * MainApplication.width;
+	private final double offset = 4 * MainApplication.width;
+	private final double borderWidth = 10 * MainApplication.width;
 
 	/* VARIABLES */
-	private ArrayList<SpacePane> spaces;
 	private SpacePane[][] patternSpaces;
 	private SpacePane[][] glassSpaces;
 	private int patternCardID;
 
 	public FieldPane(PatternCard patternCard, GameController gameController) {
-		super(squareGap, squareGap);
 		this.patternCardID = patternCard.getPatternCardId();
 
-		spaces = new ArrayList<SpacePane>();
 		patternSpaces = new SpacePane[5][4];
 		glassSpaces = new SpacePane[5][4];
-		for (int y = 0; y < 4; y++) {
-			for (int x = 0; x < 5; x++) {
-				patternSpaces[x][y] = new SpacePane(x, y, gameController);
-				glassSpaces[x][y] = new SpacePane(x, y, gameController);
+
+		for (int x = 0; x < 5; x++) {
+			for (int y = 0; y < 4; y++) {
+				patternSpaces[x][y] = new SpacePane(x, y, (patternWidth / 5) - offset, gameController);
+				glassSpaces[x][y] = new SpacePane(x, y, (patternWidth / 5) - offset, gameController);
 			}
 		}
 
@@ -46,13 +45,15 @@ public class FieldPane extends FlowPane {
 		setAlignment(Pos.CENTER);
 		setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
-		setPrefSize(patternWidth, patternHeight);
-		setMaxSize(patternWidth, patternHeight);
+		setHgap(offset);
+		setVgap(offset);
+
+		setPadding(new Insets(borderWidth));
 	}
 
 	private void loadPatternCard(PatternCard patternCard) {
-		for (int y = 0; y < 4; y++) {
-			for (int x = 0; x < 5; x++) {
+		for (int x = 0; x < 5; x++) {
+			for (int y = 0; y < 4; y++) {
 				SpacePattern space = patternCard.getSpace(x, y);
 				if (space.getValue() > 0 && space.getColor() == GameColor.EMPTY) {
 					patternSpaces[x][y].loadPattern(space.getValue(), GameColor.GREY);
@@ -66,15 +67,19 @@ public class FieldPane extends FlowPane {
 	}
 
 	public void disablesSpaces() {
-		for (SpacePane space : spaces) {
-			space.setDisable(true);
+		for (int x = 0; x < 5; x++) {
+			for (int y = 0; y < 4; y++) {
+				patternSpaces[x][y].setDisable(true);
+				glassSpaces[x][y].setDisable(true);
+				;
+			}
 		}
 	}
 
 	public void loadGlassWindow(GlassWindow glassWindow) {
 		SpaceGlass[][] spaceGlasses = glassWindow.getSpaces();
-		for (int y = 0; y < 4; y++) {
-			for (int x = 0; x < 5; x++) {
+		for (int x = 0; x < 5; x++) {
+			for (int y = 0; y < 4; y++) {
 				SpaceGlass space = spaceGlasses[x][y];
 				if (space.getDieId() != 0) {
 					glassSpaces[x][y].loadGlass(new DiePane(space.getDieId(), space.getDieValue(), space.getDieColor()));
@@ -88,34 +93,36 @@ public class FieldPane extends FlowPane {
 	}
 
 	private void updateSpaces() {
-		spaces.clear();
+		//		spaces.clear();
 		getChildren().clear();
 
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 5; x++) {
 				if (glassSpaces[x][y].getColor() != GameColor.EMPTY) {
-					spaces.add(glassSpaces[x][y]);
+					//	spaces.add(glassSpaces[x][y]);
+					add(glassSpaces[x][y], x, y);
 				} else {
-					spaces.add(patternSpaces[x][y]);
+					//	 spaces.add(patternSpaces[x][y]);
+					add(patternSpaces[x][y], x, y);
 				}
 			}
 		}
 
-		getChildren().addAll(spaces);
+		//		getChildren().addAll(spaces);
 	}
 
 	public void resize(boolean isSmall) {
 
-		if (isSmall) {
-			setPrefSize(patternWidth / 2, patternHeight / 2);
-			setMaxSize(patternWidth / 2, patternHeight / 2);
-		} else {
-			setPrefSize(patternWidth, patternHeight);
-			setMaxSize(patternWidth, patternHeight);
-		}
+		//		if (isSmall) {
+		//			setPrefSize(patternWidth / 2, patternHeight / 2);
+		//			setMaxSize(patternWidth / 2, patternHeight / 2);
+		//		} else {
+		//			setPrefSize(patternWidth, patternHeight);
+		//			setMaxSize(patternWidth, patternHeight);
+		//		}
 
-		for (int y = 0; y < 4; y++) {
-			for (int x = 0; x < 5; x++) {
+		for (int x = 0; x < 5; x++) {
+			for (int y = 0; y < 4; y++) {
 				glassSpaces[x][y].resize(isSmall);
 				patternSpaces[x][y].resize(isSmall);
 			}
@@ -125,18 +132,22 @@ public class FieldPane extends FlowPane {
 	public void highlightSpaces(ArrayList<SpaceGlass> toHiglight) {
 		if (toHiglight == null)
 			return;
-		for (SpacePane spacePane : spaces) {
-			for (SpaceGlass spaceGlass : toHiglight) {
-				if (spacePane.getX() == spaceGlass.getXCor() && spacePane.getY() == spaceGlass.getYCor()) {
-					spacePane.highlight();
+		for (int x = 0; x < 5; x++) {
+			for (int y = 0; y < 4; y++) {
+				for (SpaceGlass highlight : toHiglight) {
+					if (x == highlight.getXCor() && y == highlight.getYCor()) {
+						glassSpaces[x][y].highlight();
+					}
 				}
 			}
 		}
 	}
 
 	public void removeHilightSpaces() {
-		for (SpacePane spacePane : spaces) {
-			spacePane.removeHighlight();
+		for (int x = 0; x < 5; x++) {
+			for (int y = 0; y < 4; y++) {
+				glassSpaces[x][y].removeHighlight();
+			}
 		}
 	}
 
