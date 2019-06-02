@@ -1,11 +1,12 @@
 package view;
 
+import controllers.MainApplication;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
 public class MessagePane extends BorderPane {
 	/* CONSTANTS */
-	private final int messageWidth = 280;
+	private final double messageWidth = 280*MainApplication.width;
 
 	/* VARIABLES */
 	private Label name;

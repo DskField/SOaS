@@ -1,17 +1,24 @@
 package view;
 
+import controllers.MainApplication;
 import game.GameColor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 public class PersonalGoalCardPane extends StackPane {
+	private final double width = 230*MainApplication.width;
+	private final double height = 330*MainApplication.height;
+	
 	/* VARIABLES */
 	private ImageView imageView;
 
 	public PersonalGoalCardPane() {
 		imageView = new ImageView();
+		imageView.setFitWidth(width);
+		imageView.setFitHeight(height);
 		getChildren().add(imageView);
+		
 	}
 
 	public void loadPersonalGoalCardImage(GameColor gameColor) {

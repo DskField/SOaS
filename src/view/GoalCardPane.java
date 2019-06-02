@@ -1,10 +1,14 @@
 package view;
 
+import controllers.MainApplication;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class GoalCardPane extends AnchorPane {
+	private final double width = 230*MainApplication.width;
+	private final double height = 330*MainApplication.height;
+	
 	/* VARIABLES */
 	private ImageView imageView;
 
@@ -12,6 +16,8 @@ public class GoalCardPane extends AnchorPane {
 		imageView = new ImageView();
 		lookForImage(id);
 		getChildren().add(imageView);
+		imageView.setFitWidth(width);
+		imageView.setFitHeight(height);
 
 	}
 

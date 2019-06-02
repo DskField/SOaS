@@ -1,6 +1,7 @@
 package view;
 
 import controllers.GameController;
+import controllers.MainApplication;
 import game.GameColor;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -13,7 +14,7 @@ import javafx.scene.paint.Color;
 
 public class SpacePane extends Pane {
 	/* CONSTANTS */
-	private final int squareSize = 64;
+	private final double squareSize = 64*MainApplication.height;
 	private final double resizeScale = 2.2;
 
 	/* VARIABLESS */

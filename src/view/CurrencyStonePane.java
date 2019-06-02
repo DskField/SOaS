@@ -1,5 +1,6 @@
 package view;
 
+import controllers.MainApplication;
 import game.GameColor;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -8,9 +9,9 @@ import javafx.scene.shape.Shape;
 
 public class CurrencyStonePane extends Pane {
 	/* CONSTANTS */
-	private final int RADIUS = 15;
-	private final int CENTERX = 18;
-	private final int CENTERY = 18;
+	private final double RADIUS = 15*MainApplication.height;
+	private final double CENTERX = 18;
+	private final double CENTERY = 18;
 
 	/**
 	 * Makes circle with a stroke to represent the stone.

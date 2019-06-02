@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 
 import controllers.GameController;
+import controllers.MainApplication;
 import game.GameColor;
 import game.GlassWindow;
 import game.PatternCard;
@@ -16,9 +17,9 @@ import javafx.scene.paint.Color;
 
 public class FieldPane extends FlowPane {
 	/* CONSTANTS */
-	private final int patternWidth = 360;
-	private final int patternHeight = 280;
-	private final static int squareGap = 4;
+	private final double patternWidth = 360*MainApplication.width;
+	private final double patternHeight = 280*MainApplication.height;
+	private final static double squareGap = 4*MainApplication.height;
 
 	/* VARIABLES */
 	private ArrayList<SpacePane> spaces;

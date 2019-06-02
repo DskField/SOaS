@@ -1,5 +1,6 @@
 package view;
 
+import controllers.MainApplication;
 import game.GameColor;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -37,7 +38,7 @@ public class DiePane extends Pane {
 	}
 
 	public void resize(double size) {
-		this.size = size - 1;
+		this.size = (size - 1)*MainApplication.width;
 
 		circleSize = this.size * 0.2;
 		circleRadius = circleSize / 2;
