@@ -103,8 +103,6 @@ class CurrencyStoneDAO {
 
 	void updateGivePlayerCurrencyStones(int idGame, int idPlayer, int ammount) {
 		if (getCurrencyStonesPlayer(idGame, idPlayer).size() == 0) {
-
-			System.out.println(stonesLeft(idGame, idPlayer));
 			try {
 				for (int i = (25 - stonesLeft(idGame, idPlayer)); i < ((25 - stonesLeft(idGame, idPlayer)) + ammount); i++) {
 					PreparedStatement stmt = con.prepareStatement("UPDATE gamefavortoken SET idplayer = ? WHERE idfavortoken = ? AND idgame = ?");

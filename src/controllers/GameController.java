@@ -266,6 +266,9 @@ public class GameController {
 						gameScene.updateTable(game.getTable());
 					}
 				}
+
+				// This return is very important, otherwise the next player will also be switched and you will softlock the game!
+				return;
 			}
 		}
 	}
