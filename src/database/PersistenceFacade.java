@@ -75,7 +75,7 @@ public class PersistenceFacade {
 	public ArrayList<Integer> getAllLobbies(boolean orderASC) {
 		return lobbyDAO.getAllLobbyID(orderASC);
 	}
-	
+
 	public ArrayList<Integer> getAllPlayerLobbies(String username) {
 		return lobbyDAO.getAllPlayerLobbyID(username);
 	}
@@ -87,7 +87,7 @@ public class PersistenceFacade {
 	public ArrayList<ArrayList<String>> getScoreboard(int idGame) {
 		return lobbyDAO.getScoreboard(idGame);
 	}
-	
+
 	// UserDAO
 	public User getUser(String username) {
 		return userDAO.getUser(username);
@@ -101,12 +101,10 @@ public class PersistenceFacade {
 	/**
 	 * Creates a game in the database
 	 * 
-	 * @param users                - List of users in the game, The first user NEEDS
-	 *                             to be the creator
+	 * @param users - List of users in the game, The first user NEEDS to be the creator
 	 * @param patternCardGenerator
 	 */
-	public void createGame(ArrayList<String> users, boolean useRandomPatternCards,
-			PatternCardGenerator patternCardGenerator) {
+	public void createGame(ArrayList<String> users, boolean useRandomPatternCards, PatternCardGenerator patternCardGenerator) {
 		int gameID = gameDAO.createGame();
 		dieDAO.insertDice(gameID);
 		currencyStoneDAO.insertCurrencyStones(gameID);
@@ -115,11 +113,13 @@ public class PersistenceFacade {
 		spaceGlassDAO.insertGlassWindows(playerDAO.getAllPlayersInGame(gameID));
 		setCardsGame(gameID, useRandomPatternCards, patternCardGenerator);
 	}
-/*
- * sets the card options for players
- */
+
+	/*
+	 * sets the card options for players
+	 */
 	/**
 	 * sets the cards and patterncardoptions for all players in that game
+	 * 
 	 * @param idGame
 	 * @param useRandomPatternCards
 	 * @param patternCardGenerator
@@ -296,7 +296,7 @@ public class PersistenceFacade {
 	public ArrayList<PatternCard> getPlayerOptions(int idPlayer) {
 		return patternCardDAO.getPlayerOptions(idPlayer);
 	}
-	
+
 	// Check if the player can join a game
 	public boolean isGameReady(int idGame) {
 		// Check if game has toolcards
@@ -304,13 +304,13 @@ public class PersistenceFacade {
 			System.err.println("no toolcards");
 			return false;
 		}
-		
+
 		// Check if game has public goalcards
 		if (getSharedCollectiveGoalCards(idGame).size() == 0) {
 			System.err.println("no goalcards");
 			return false;
 		}
-		
+
 		// Check if all players have patterncard options
 		for (Player p : getAllPlayersInGame(idGame)) {
 			if (getPlayerOptions(p.getPlayerID()).size() == 0) {
@@ -318,7 +318,7 @@ public class PersistenceFacade {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 }

@@ -193,6 +193,10 @@ public class Game {
 		}
 	}
 
+	public boolean checkScore() {
+		return persistenceFacade.getPlayerScore(clientPlayer.getPlayerID()) != 0;
+	}
+
 	public void updateCurrencyStone(int idPlayer, int ammount) {
 		persistenceFacade.updateGivePlayerCurrencyStones(gameID, idPlayer, ammount);
 	}

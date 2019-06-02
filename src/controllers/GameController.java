@@ -32,12 +32,14 @@ public class GameController {
 	private int cheatMode;
 
 	private boolean dieNotPlaced;
+	private boolean isFinished;
 
 	public GameController(MainApplication mainApplication, PersistenceFacade persistencefacade, ClientController clientcontroller) {
 		this.mainApplication = mainApplication;
 		this.persistencefacade = persistencefacade;
 		this.clientcontroller = clientcontroller;
 		dieNotPlaced = true;
+		isFinished = false;
 
 		cheatMode = 0;
 	}
@@ -140,11 +142,20 @@ public class GameController {
 				}
 			}
 		} else {
-			if (game.getCurrentRound() <= 10) {
-				update();
+			if (!isFinished) {
+				if (game.getCurrentRound() <= 10) {
+					update();
+				} else {
+					if (game.getClientPlayer().getPlayerID() == game.getCurrentPlayer().getPlayerID()) {
+						gameFinish();
+					} else {
+						if (game.checkScore()) {
+							gameFinish();
+						}
+					}
+				}
 			} else {
-				gameFinish();
-				timer.stop();
+				gameScene.updateChat(game.updateChat());
 			}
 		}
 	}
@@ -241,19 +252,20 @@ public class GameController {
 					break;
 				}
 
-				for (Player player2 : game.getPlayers()) {
-					if (player2.getSeqnr() == nextSeqnr) {
-						game.setCurrentPlayer(player2);
+				if (game.getCurrentRound() != 10) {
+					for (Player player2 : game.getPlayers()) {
+						if (player2.getSeqnr() == nextSeqnr) {
+							game.setCurrentPlayer(player2);
+						}
+					}
+
+					game.updatePlayerTurn(player);
+
+					if (nextSeqnr == 1) {
+						game.nextRound();
+						gameScene.updateTable(game.getTable());
 					}
 				}
-
-				game.updatePlayerTurn(player);
-
-				if (nextSeqnr == 1) {
-					game.nextRound();
-					gameScene.updateTable(game.getTable());
-				}
-				return;
 			}
 		}
 	}
@@ -456,6 +468,7 @@ public class GameController {
 		String winText = winner.getUsername() + " heeft het spel gewonnen met een score van:  " + maxScore;
 		gameScene.gameFinish(winText);
 
+		isFinished = true;
 	}
 
 	/**

@@ -17,7 +17,6 @@ class PlayerDAO {
 		con = connection;
 	}
 
-	// kevin stuff
 	int getScore(int idPlayer) {
 		int result = 0;
 		try {
