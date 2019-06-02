@@ -49,8 +49,9 @@ public class LobbyListPane extends BorderPane {
 	// Numbers for createLeft
 	final private Background togglebuttonBackground = new Background(new BackgroundFill(Color.BLUE, null, null));
 	final private Color togglebuttonColor = Color.WHITE;
-	final private double lobbyListHeight = Screen.getPrimary().getVisualBounds().getMaxY() - orderButton.getHeight() - 5;
 	final private int orderButtonHeight = 45;
+	final private double lobbyListHeight = Screen.getPrimary().getVisualBounds().getMaxY() - orderButtonHeight  - 5;
+
 
 	// Numbers for createStats
 	final private int labelSize = 30;

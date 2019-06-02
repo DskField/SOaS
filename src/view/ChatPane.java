@@ -17,7 +17,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-
 public class ChatPane extends BorderPane {
 	// constants
 	private final int chatPaneWidth = 400;
@@ -39,12 +38,12 @@ public class ChatPane extends BorderPane {
 		this.gameController = gameController;
 
 		// handles the makeup of the ChatPane
-//		setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
+		// setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
 		setPrefSize(chatPaneWidth, chatPaneheight);
 
 		// creates the Chat
 		createChat();
-		
+
 	}
 
 	/**
@@ -65,15 +64,13 @@ public class ChatPane extends BorderPane {
 		scrollPane.setFitToWidth(true);
 		scrollPane.setContent(center);
 
-		//scrolls scrollbar to bottom
+		// scrolls scrollbar to bottom
 		scrollPane.setVvalue(1d);
 
-		
 		// sets everything to the ChatPane
 		bottom.getChildren().addAll(playerMessage, sendMessage);
 		setCenter(scrollPane);
 		setBottom(bottom);
-		
 
 		// handlers
 
@@ -83,8 +80,7 @@ public class ChatPane extends BorderPane {
 			public void handle(KeyEvent event) {
 				if (event.getCode() == KeyCode.ENTER) {
 					sendMessage();
-				}
-				else if(event.getCode() == KeyCode.ESCAPE) {
+				} else if (event.getCode() == KeyCode.ESCAPE) {
 					event.consume();
 				}
 			}
@@ -102,10 +98,10 @@ public class ChatPane extends BorderPane {
 		scrollPane.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				
+
 			}
 		});
-	
+
 	}
 
 	/**
@@ -116,15 +112,18 @@ public class ChatPane extends BorderPane {
 	 *            chat
 	 */
 	public void updateChat(ArrayList<Message> messages) {
-		double scrollPos = 	scrollPane.getVvalue();
-
-		scrollPane.setVvalue(1d);
-		for (Message message : messages) {
-			center.getChildren()
-					.add(new MessagePane(message.getUserName(), message.getMessage(), message.getChatTime()));
-		}
-		scrollPane.setVvalue(scrollPos);
-
+		if (messages.size() != 0) {
+			scrollPane.setVvalue(1d);
+			for (Message message : messages) {
+				center.getChildren()
+						.add(new MessagePane(message.getUserName(), message.getMessage(), message.getChatTime()));
+			}
+			scrollPane.setVvalue(playerMessage.getMaxHeight());
+		}	
+	}
+	
+	public void setScrollBottom() {
+		scrollPane.setVvalue(100);
 	}
 
 	/**

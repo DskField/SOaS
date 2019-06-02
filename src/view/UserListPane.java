@@ -50,7 +50,7 @@ public class UserListPane extends BorderPane {
 	final private int viewStatsHeight = 30;
 	final private int inviteRadioButtonWidth = 100;
 	final private int inviteRadioButtonHeight = 30;
-	final private double userListHeight = Screen.getPrimary().getVisualBounds().getMaxY() - orderButton.getHeight() - 5;
+	final private double userListHeight = Screen.getPrimary().getVisualBounds().getMaxY() - orderButtonHeight - 5;
 	
 	// Numbers for createCenter
 	final private int inviteButtonSize = 40;

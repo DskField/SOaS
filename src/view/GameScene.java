@@ -371,6 +371,7 @@ public class GameScene extends Scene {
 		leftBox.setSpacing(leftBoxSpacing);
 		leftBox.setPadding(
 				new Insets(leftBoxPaddingTop, leftBoxPaddingRight, leftBoxPaddingBottom, leftBoxPaddingLeft));
+		chatPane.setScrollBottom();
 
 		// adds the leftBox to the rootPane
 		rootPane.setLeft(leftBox);
@@ -433,11 +434,11 @@ public class GameScene extends Scene {
 			personalGoalCardPane.loadCardBack();
 		}
 	}
-
+	
 	public void gameFinish(String winText) {
-		rootPane.setDisable(true);
-
 		Label winner = new Label(winText);
+		winner.setFont(new Font("Arial", 20));
+		winner.setTextFill(Color.WHITE);
 		rootPane.setCenter(winner);
 	}
 	

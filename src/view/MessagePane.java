@@ -1,9 +1,9 @@
 package view;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
 
 
-public class MessagePane extends HBox {
+public class MessagePane extends BorderPane {
 	//constants
 	private final int messageWidth = 280;
 	//variables
@@ -24,7 +24,9 @@ public class MessagePane extends HBox {
 		timestamp = new Label(" -" + time);
 		
 		//adds everything to the MessagePane
-		getChildren().addAll(name, message, timestamp);
+		setLeft(name);
+		setCenter(message);
+		setRight(timestamp);
 	}
 
 }
