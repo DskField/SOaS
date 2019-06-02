@@ -24,7 +24,7 @@ public class UserListPane extends BorderPane {
 	/* CONSTANTS */
 	// Left
 	private final double listWidth = 250*MainApplication.width;
-	private final double listHeight = (int) Screen.getPrimary().getBounds().getMaxY();
+	private final double listHeight =  Screen.getPrimary().getBounds().getMaxY();
 	private final double viewStatsWidth = 70*MainApplication.width;
 	private final double viewStatsHeight = 30*MainApplication.height;;
 	private final double inviteRadioButtonWidth = 100*MainApplication.width;
@@ -45,7 +45,7 @@ public class UserListPane extends BorderPane {
 	private final double statsBoxWidth = 400*MainApplication.width;
 	private final double statsBoxHeight = 340*MainApplication.height;
 	private final double usernameLabelSize = 50*MainApplication.height;;
-	private final double textSize = 25*MainApplication.height;;
+	private final double textSize = 25*MainApplication.width;;
 
 	/* VARIABLES */
 	private ClientScene clientscene;
@@ -111,8 +111,7 @@ public class UserListPane extends BorderPane {
 			inviteRadioButton.setMaxSize(inviteRadioButtonWidth, inviteRadioButtonHeight);
 
 			Button viewStats = new Button("vergelijk");
-//			viewStats.setMinSize(viewStatsWidth, viewStatsHeight);
-			viewStats.setMaxSize(300, 300);
+			viewStats.setMinSize(viewStatsWidth, viewStatsHeight);
 			viewStats.setOnAction(e -> createCenter(username));
 
 			for (CheckBox box : inviteCheckBoxGroup) {

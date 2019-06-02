@@ -37,6 +37,10 @@ public class DiePane extends Pane {
 		setBorder(new Border(new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.SOLID, null, new BorderWidths(1))));
 	}
 
+	/**
+	 * Resizes the {@code Die}
+	 * @param size - {@code int} the size of the {@code Die}
+	 */
 	public void resize(double size) {
 		this.size = (size - 1)*MainApplication.width;
 
@@ -51,6 +55,9 @@ public class DiePane extends Pane {
 		setMaxSize(this.size, this.size);
 	}
 
+	/**
+	 * Adds the eyes of the {@code Die}
+	 */
 	private void addCircles() {
 		circles = new Circle[7];
 

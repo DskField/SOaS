@@ -16,7 +16,7 @@ public class CurrencyStonePane extends Pane {
 	/**
 	 * Makes circle with a stroke to represent the stone.
 	 * 
-	 * @param color of the stone
+	 * @param color {@code GameColor} of the stone
 	 */
 	public CurrencyStonePane(GameColor color) {
 		Shape stone = new Circle(CENTERX, CENTERY, RADIUS, color.getColor());

@@ -16,7 +16,7 @@ public class CurrencyStonesPane extends FlowPane {
 	/**
 	 * Draws a stone for each {@code CurrencyStone} from player
 	 * 
-	 * @param currencyStonePanes - A list of panes that needs to be drawn to the screen
+	 * @param currencyStonePanes - {@code ArrayList<CurrencyStonePane>} A list of panes that needs to be drawn to the screen
 	 */
 	public void showStones(ArrayList<CurrencyStonePane> currencyStonePanes) {
 		getChildren().clear();

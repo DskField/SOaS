@@ -40,7 +40,7 @@ public class DieOfferPane extends HBox {
 	/**
 	 * Adds dice to the pane
 	 * 
-	 * @param roundDice - The dice that have to be added
+	 * @param roundDice - {@code ArrayList<Die>} The dice that have to be added
 	 */
 	public void addDice(ArrayList<Die> roundDice) {
 		if (!checkDice(roundDice)) {
@@ -77,6 +77,11 @@ public class DieOfferPane extends HBox {
 		}
 	}
 
+	/**
+	 * Checks if the {@code newDice} has the same {@code Die} as the current {@code ArrayList<Die>}
+	 * @param newDice - {@code ArrayList<Die>} that needs to be checked.
+	 * @return {@code boolean}
+	 */
 	private boolean checkDice(ArrayList<Die> newDice) {
 		if (newDice.size() == dice.size()) {
 			for (Die die : newDice) {
@@ -91,7 +96,7 @@ public class DieOfferPane extends HBox {
 	}
 
 	/**
-	 * Refresh this pane
+	 * Refreshes the {@code DieOfferPane}
 	 */
 	private void updateDice() {
 		getChildren().clear();
@@ -100,9 +105,9 @@ public class DieOfferPane extends HBox {
 	}
 
 	/**
-	 * Remove a die from this pane
-	 * 
-	 * @param diePane - The die to be removed
+	 * Remove a {@code Die} from this pane
+	 * @param number - {@code int} the id of the {@code Die}
+	 * @param color - {@code GameColor} the color of the {@code Die}
 	 */
 	public void removeDie(int number, GameColor color) {
 		for (DiePane die : dice) {

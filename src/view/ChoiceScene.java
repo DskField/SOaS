@@ -35,39 +35,63 @@ public class ChoiceScene extends Scene {
 
 	public ChoiceScene(GameController gameController, ArrayList<PatternCard> patternCards) {
 		super(new Pane());
+		//initialize everything
 		this.gameController = gameController;
 		root = new BorderPane();
 		cardBox = new VBox();
+		PersonalGoalCardPane personalGoalCardPane = new PersonalGoalCardPane();
+		
+		//handles makeup
 		cardBox.setSpacing(generalSpacing);
 		cardBox.setAlignment(Pos.CENTER);
-		PersonalGoalCardPane personalGoalCardPane = new PersonalGoalCardPane();
 		personalGoalCardPane.loadPersonalGoalCardImage(gameController.getClientPlayer().getPersonalGoalCard());
 		patternCardBox = new HBox();
 		patternCardBox.setAlignment(Pos.CENTER);
 		patternCardBox.setSpacing(generalSpacing);
+		root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
+		
+		
 		cardBox.getChildren().addAll(patternCardBox, personalGoalCardPane);
 		root.setCenter(cardBox);
-		root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, null, null)));
 		createPatternCards(patternCards);
 		setRoot(root);
 	}
 
+	/**
+	 * This {@code ArrayList<PatternCard>} will be shown to the user to choose his {@code PatternCard} from.
+	 * @param patternCards - {@code ArrayList<PatterCard>} that will be added to the {@code ChoiceScene}.
+	 */
 	private void createPatternCards(ArrayList<PatternCard> patternCards) {
 		for (PatternCard patternCard : patternCards) {
+			//creates the card.
 			VBox vBox = new VBox();
 			Label name = new Label(patternCard.getName());
 			Label difficulity = new Label("" + patternCard.getDifficulty());
 			FieldPane pc = new FieldPane(patternCard, gameController);
+			
+			
+			vBox.getChildren().addAll(name, pc, difficulity);
+			vBox.setAlignment(Pos.CENTER);
+			patternCardBox.getChildren().add(vBox);
+			
+			//disables the spaces so that they are not clickable.
 			pc.disablesSpaces();
+			
+			//handle event when the PatterCard is clicked.
 			pc.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
+					//handles visual feed back that the user has selected their PatternCard.
 					pc.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, null, new BorderWidths(5))));
 					Label selectedLabel = new Label("u heeft uw kaart geselecteerd. wachten op andere spelers.");
 					selectedLabel.setTextFill(Color.RED);
 					selectedLabel.setFont(font);
 					cardBox.getChildren().add(selectedLabel);
+					
+					//disables the the root pane to prevent the user from interacting any further with the pane.
 					root.setDisable(true);
+					
+					//gives the chosen PatternCard to the GameController for further handling.
 					for (PatternCard patternCard : gameController.getPatternChoices()) {
 						if (patternCard.getPatternCardId() == pc.getPatternCardID()) {
 							gameController.setClientPlayerPatternCard(patternCard.getPatternCardId());
@@ -75,9 +99,6 @@ public class ChoiceScene extends Scene {
 					}
 				}
 			});
-			vBox.getChildren().addAll(name, pc, difficulity);
-			vBox.setAlignment(Pos.CENTER);
-			patternCardBox.getChildren().add(vBox);
 		}
 	}
 }
