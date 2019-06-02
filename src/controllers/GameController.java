@@ -252,19 +252,17 @@ public class GameController {
 					break;
 				}
 
-				if (game.getCurrentRound() != 10) {
-					for (Player player2 : game.getPlayers()) {
-						if (player2.getSeqnr() == nextSeqnr) {
-							game.setCurrentPlayer(player2);
-						}
+				for (Player player2 : game.getPlayers()) {
+					if (player2.getSeqnr() == nextSeqnr) {
+						game.setCurrentPlayer(player2);
 					}
+				}
 
-					game.updatePlayerTurn(player);
+				game.updatePlayerTurn(player);
 
-					if (nextSeqnr == 1) {
-						game.nextRound();
-						gameScene.updateTable(game.getTable());
-					}
+				if (nextSeqnr == 1) {
+					game.nextRound();
+					gameScene.updateTable(game.getTable());
 				}
 
 				// This return is very important, otherwise the next player will also be switched and you will softlock the game!

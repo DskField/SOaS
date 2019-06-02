@@ -76,8 +76,8 @@ public class GoalCardHandler {
 	private int handleShadesVariety() {
 		ArrayList<Integer> values = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 0));
 
-		for (int y = 0; y < 4; y++) {
-			for (int x = 0; x < 5; x++) {
+		for (int x = 0; x < 5; x++) {
+			for (int y = 0; y < 4; y++) {
 				Die die = glasswindow.getSpace(x, y).getDie();
 				if (die == null) {
 					continue;
@@ -129,13 +129,15 @@ public class GoalCardHandler {
 					continue;
 				}
 
-				if (values.contains(die.getDieValue()))
+				if (values.contains(die.getDieValue())) {
 					break;
-				else
+				} else {
 					values.add(die.getDieValue());
+				}
 			}
-			if (values.size() == 4)
+			if (values.size() == 4) {
 				column++;
+			}
 		}
 		return column;
 	}
@@ -206,8 +208,8 @@ public class GoalCardHandler {
 	private int handleColorVariety() {
 		ArrayList<Integer> colors = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0));
 
-		for (int y = 0; y < 4; y++) {
-			for (int x = 0; x < 5; x++) {
+		for (int x = 0; x < 5; x++) {
+			for (int y = 0; y < 4; y++) {
 				Die die = glasswindow.getSpace(x, y).getDie();
 				if (die == null) {
 					continue;
@@ -307,9 +309,9 @@ public class GoalCardHandler {
 		ArrayList<Integer> values = new ArrayList<>();
 		int row = 0;
 
-		for (int x = 0; x < 5; x++) {
+		for (int y = 0; y < 4; y++) {
 			values.clear();
-			for (int y = 0; y < 4; y++) {
+			for (int x = 0; x < 5; x++) {
 				Die die = glasswindow.getSpace(x, y).getDie();
 				if (die == null) {
 					continue;
