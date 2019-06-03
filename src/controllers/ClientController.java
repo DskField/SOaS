@@ -38,7 +38,6 @@ public class ClientController {
 		client = new Client(persistencefacade);
 		mainapplication.setScene(new Scene(new LoginPane(this)));
 	}
-	
 
 	/**
 	 * Method that can be called from {@code GameController} to swap back to the {@code ClientScene}
@@ -241,7 +240,7 @@ public class ClientController {
 		if (username.length() < 3 || username.length() > 25 || password.length() < 3 || password.length() > 25) {
 			return false;
 		}
-		if (!username.matches("[a-zA-Z0-9]*") && !password.matches("[a-zA-Z0-9]*")) {
+		if (!username.matches("[a-zA-Z0-9]+") && !password.matches("[a-zA-Z0-9]+")) {
 			return false;
 		}
 
