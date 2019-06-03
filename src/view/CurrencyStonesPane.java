@@ -2,36 +2,24 @@ package view;
 
 import java.util.ArrayList;
 
-import controllers.GameController;
-import game.CurrencyStone;
-import game.GameColor;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
+import controllers.MainApplication;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.paint.Color;
 
 public class CurrencyStonesPane extends FlowPane {
-	GameController gc;
 
-	public CurrencyStonesPane(GameController gc) {
-		this.gc = gc;
-		setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
-		setPrefSize(100, 100);
+	private final double SIZE = 100*MainApplication.height;
 
-		showStones();
+	public CurrencyStonesPane() {
+		setPrefSize(SIZE, SIZE);
 	}
 
-	public void showStones() {
-		ArrayList<CurrencyStone> currencyStones = new ArrayList<>();
-		int i = 0;
-		while (i < 5) {
-			CurrencyStone ff = new CurrencyStone(i + 1, 1);
-			currencyStones.add(ff);
-			i += 1;
-		}
-		for (CurrencyStone cs : currencyStones) {
-			System.out.println("ur mum");
-			getChildren().add(new CurrencyStonePane(GameColor.BLUE));
-		}
+	/**
+	 * Draws a stone for each {@code CurrencyStone} from player
+	 * 
+	 * @param currencyStonePanes - {@code ArrayList<CurrencyStonePane>} A list of panes that needs to be drawn to the screen
+	 */
+	public void showStones(ArrayList<CurrencyStonePane> currencyStonePanes) {
+		getChildren().clear();
+		getChildren().addAll(currencyStonePanes);
 	}
 }

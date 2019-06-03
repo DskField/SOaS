@@ -1,5 +1,6 @@
 package view;
 
+import controllers.MainApplication;
 import game.GameColor;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -12,8 +13,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class DiePane extends Pane {
+	/* VARIABLES */
 	private Circle[] circles;
-	//	private GameColor color;
 
 	private double circleSize;
 	private double circleRadius;
@@ -21,28 +22,27 @@ public class DiePane extends Pane {
 
 	private double size;
 
+	private int number;
 	private int eyes;
+	private GameColor color;
 
-	public DiePane(int eyes, GameColor color) {
+	public DiePane(int number, int eyes, GameColor color) {
+		this.number = number;
 		this.eyes = eyes;
-		size = 79;
-
-		circleSize = size * 0.2;
-		circleRadius = circleSize / 2;
-		spacing = (size - (circleSize * 3)) / 4;
-
-		color = GameColor.PURPLE;
-
-		addCircles();
+		this.color = color;
+		
+		resize(79);
 
 		setBackground(new Background(new BackgroundFill(color.getColor(), null, null)));
 		setBorder(new Border(new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.SOLID, null, new BorderWidths(1))));
-		setMinSize(size, size);
-		setMaxSize(size, size);
 	}
 
+	/**
+	 * Resizes the {@code Die}
+	 * @param size - {@code int} the size of the {@code Die}
+	 */
 	public void resize(double size) {
-		this.size = size - 1;
+		this.size = (size - 1)*MainApplication.width;
 
 		circleSize = this.size * 0.2;
 		circleRadius = circleSize / 2;
@@ -55,6 +55,9 @@ public class DiePane extends Pane {
 		setMaxSize(this.size, this.size);
 	}
 
+	/**
+	 * Adds the eyes of the {@code Die}
+	 */
 	private void addCircles() {
 		circles = new Circle[7];
 
@@ -85,6 +88,21 @@ public class DiePane extends Pane {
 		case 6:
 			getChildren().addAll(circles[0], circles[1], circles[2], circles[4], circles[5], circles[6]);
 			break;
+		default:
+			break;
 		}
+	}
+
+	/* GETTERS AND SETTERS */
+	public int getNumber() {
+		return number;
+	}
+
+	public int getEyes() {
+		return eyes;
+	}
+
+	public GameColor getColor() {
+		return color;
 	}
 }

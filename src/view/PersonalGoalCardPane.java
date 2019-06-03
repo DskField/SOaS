@@ -1,14 +1,51 @@
 package view;
 
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
+import controllers.MainApplication;
+import game.GameColor;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 
-public class PersonalGoalCardPane extends Pane {
+public class PersonalGoalCardPane extends StackPane {
+	private final double width = 230*MainApplication.width;
+	private final double height = 330*MainApplication.height;
 	
+	/* VARIABLES */
+	private ImageView imageView;
+
 	public PersonalGoalCardPane() {
-		setBackground(new Background(new BackgroundFill(Color.GRAY, null, null)));
-		setPrefSize(100, 100);
+		imageView = new ImageView();
+		imageView.setFitWidth(width);
+		imageView.setFitHeight(height);
+		getChildren().add(imageView);
+		
 	}
+
+	public void loadPersonalGoalCardImage(GameColor gameColor) {
+		switch (gameColor) {
+		case RED:
+			imageView.setImage(new Image("/images/GoalCards/Private/Red.png"));
+			break;
+		case GREEN:
+			imageView.setImage(new Image("/images/GoalCards/Private/Green.png"));
+			break;
+		case BLUE:
+			imageView.setImage(new Image("/images/GoalCards/Private/Blue.png"));
+			break;
+		case YELLOW:
+			imageView.setImage(new Image("/images/GoalCards/Private/Yellow.png"));
+			break;
+		case PURPLE:
+			imageView.setImage(new Image("/images/GoalCards/Private/Purple.png"));
+			break;
+		default:
+			imageView.setImage(new Image("/images/GoalCards/Private/Back.png"));
+			break;
+		}
+	}
+
+	public void loadCardBack() {
+		imageView.setImage(new Image("/images/GoalCards/Private/Back.png"));
+	}
+
 }

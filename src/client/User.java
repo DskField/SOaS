@@ -4,56 +4,69 @@ import game.GameColor;
 
 public class User {
 
-	private int userID;
-	private String loginName;
-
-	private String playStatus;
-
-	private int totalGames;
-	private int totalWins;
-	private int totalLosses;
+	/* VARIABLES */
+	private int gamesPlayed;
+	private int gamesWon;
+	private int gamesLost;
 	private int maxScore;
 	private GameColor mostPlacedColor;
 	private int mostPlacedValue;
 	private int totalOpponents;
+	private String username;
 
-	public User(String name) {
-
-		this.loginName = name;
+	/**
+	 * Constructor used to create a User object
+	 * 
+	 * @param username - {@code String} containing the username
+	 * @param gamesPlayed - {@code int} containing the total amount of games played
+	 * @param maxScore - {@code int} containing the maximum score in the database
+	 * @param mostPlacedColor - {@code GameColor} containing the most placed Color in the database
+	 * @param mostPlacedValue - {@code int} containing the most placed eyes in the database
+	 * @param wins - {@code int} containing the amount of won games
+	 * @param loses - {@code int} containing the amount of lost games
+	 * @param totalOpponents - {@code int} containing the total amount of unique opponents
+	 */
+	public User(String username, int gamesPlayed, int maxScore, GameColor mostPlacedColor, int mostPlacedValue, int wins, int loses, int totalOpponents) {
+		this.gamesPlayed = gamesPlayed;
+		this.maxScore = maxScore;
+		this.mostPlacedColor = mostPlacedColor;
+		this.mostPlacedValue = mostPlacedValue;
+		this.username = username;
+		this.gamesWon = wins;
+		this.gamesLost = loses;
+		this.totalOpponents = totalOpponents;
 	}
 
-	public void calcLostGames() {
-		this.totalLosses = this.totalGames - this.totalWins;
+	/* GETTERS AND SETTERS */
+	public int getGamesPlayed() {
+		return gamesPlayed;
 	}
 
-	public void loadStats() {
-
-		// Grab stats from queries in UserDAO
-		// TODO Waiting on ClientController
+	public int getGamesWon() {
+		return gamesWon;
 	}
 
-	// Getters and setters
-	public int getUserID() {
-		return userID;
+	public int getGamesLost() {
+		return gamesLost;
 	}
 
-	public void setUserID(int userID) {
-		this.userID = userID;
+	public int getMaxScore() {
+		return maxScore;
 	}
 
-	public String getLoginName() {
-		return loginName;
+	public GameColor getMostPlacedColor() {
+		return mostPlacedColor;
 	}
 
-	public void setLoginName(String name) {
-		this.loginName = name;
-	}
-	
-	public String getPlayStatus() {
-		return playStatus;
+	public int getMostPlacedValue() {
+		return mostPlacedValue;
 	}
 
-	public void setPlayStatus(String playStatus) {
-		this.playStatus = playStatus;
+	public int getTotalOpponents() {
+		return totalOpponents;
+	}
+
+	public String getUsername() {
+		return username;
 	}
 }

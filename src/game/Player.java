@@ -3,6 +3,7 @@ package game;
 import java.util.ArrayList;
 
 public class Player {
+	/* VARIABLES */
 	private ArrayList<CurrencyStone> currencyStones;
 	private GlassWindow glassWindow;
 	private GameColor personalGoalCard;
@@ -12,8 +13,6 @@ public class Player {
 	private int seqnr;
 	private int score;
 
-	private boolean isCurrentPlayer;
-
 	public Player(int playerID, int seqnr, GameColor personalGoalCard, String username) {
 		currencyStones = new ArrayList<>();
 		this.personalGoalCard = personalGoalCard;
@@ -22,13 +21,17 @@ public class Player {
 		this.username = username;
 	}
 
-	// GETTERS AND SETTERS
-	public ArrayList<CurrencyStone> getCurrencyStones() {
-		return currencyStones;
+	public void addCurrencyStone(CurrencyStone currencyStone) {
+		this.currencyStones.add(currencyStone);
 	}
 
-	public void setCurrencyStones(ArrayList<CurrencyStone> currencyStones) {
-		this.currencyStones = currencyStones;
+	/* GETTERS AND SETTERS */
+	public GameColor getColor() {
+		return glassWindow.getColor();
+	}
+
+	public ArrayList<CurrencyStone> getCurrencyStones() {
+		return currencyStones;
 	}
 
 	public GlassWindow getGlassWindow() {
@@ -47,20 +50,16 @@ public class Player {
 		return playerID;
 	}
 
-	public int getPosition() {
+	public int getSeqnr() {
 		return seqnr;
+	}
+
+	public void setSeqnr(int seqnr) {
+		this.seqnr = seqnr;
 	}
 
 	public String getUsername() {
 		return username;
-	}
-
-	public boolean isCurrentPlayer() {
-		return isCurrentPlayer;
-	}
-
-	public void setCurrentPlayer(boolean isCurrentPlayer) {
-		this.isCurrentPlayer = isCurrentPlayer;
 	}
 
 	public void setScore(int score) {
@@ -69,5 +68,9 @@ public class Player {
 
 	public int getScore() {
 		return score;
+	}
+
+	public void clearCurrencyStones() {
+		currencyStones.clear();
 	}
 }

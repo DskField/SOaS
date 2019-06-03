@@ -10,8 +10,59 @@ import game.Die;
 import game.GameColor;
 import game.Round;
 
-class DieDAO extends BaseDAO {
-	Connection con = super.getConnection();
+class DieDAO {
+	private Connection con;
+
+	public DieDAO(Connection connection) {
+		con = connection;
+	}
+	
+	void insertDice(int idGame) {
+		GameColor[] possibleColors = { GameColor.RED, GameColor.GREEN, GameColor.YELLOW, GameColor.PURPLE, GameColor.BLUE };
+
+		try {
+			for (GameColor color : possibleColors) {
+				for (int i = 1; i <= 18; i++) {
+					PreparedStatement stmt = con.prepareStatement("INSERT INTO gamedie VALUES (?, ?, ?, NULL, NULL, NULL, null);");
+					stmt.setInt(1, idGame);
+					stmt.setInt(2, i);
+					stmt.setString(3, color.getDatabaseName());
+					stmt.executeUpdate();
+					stmt.close();
+				}
+			}
+			con.commit();
+		} catch (SQLException e) {
+			System.err.println("DieDAO (insertDice) --> " + e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				System.err.println("DieDAO (insertDice) --> The rollback failed: Please check the Database!");
+			}
+		}
+	}
+
+	ArrayList<Die> getGameDice(int gameID) {
+		return selectDie("SELECT * FROM gameDie g LEFT JOIN playerframefield p ON g.idgame = p.idgame AND g.dienumber = p.dienumber AND g.diecolor = p.diecolor WHERE g.idgame = " + gameID
+				+ " AND g.roundtrack IS NULL AND p.idgame IS NULL;");
+	}
+
+	Round[] getRoundTrack(int gameID) {
+		return selectTrackDice("SELECT * FROM gameDie WHERE idgame = " + gameID + " AND roundtrack IS NOT NULL;");
+	}
+
+	ArrayList<Die> getTableDice(int gameID, int round) {
+		return selectDiceWithEyes("SELECT * FROM playerframefield AS f  " + "RIGHT JOIN gamedie AS g " + " ON f.idgame = g.idgame AND f.dienumber = g.dienumber AND f.diecolor = g.diecolor "
+				+ " WHERE f.idgame IS NULL AND f.dienumber IS NULL AND f.diecolor IS NULL AND " + "g.roundtrack IS NULL AND g.idgame = " + gameID + " AND g.round =" + round);
+	}
+
+	void updateDiceRoll(int gameID, ArrayList<Die> dice) {
+		updateDice(gameID, dice);
+	}
+
+	void updateDiceRound(int gameID, int round, ArrayList<Die> dice) {
+		updateRound(gameID, round, dice);
+	}
 
 	/**
 	 * Load dice
@@ -27,14 +78,38 @@ class DieDAO extends BaseDAO {
 			ResultSet dbResultSet = stmt.executeQuery();
 			con.commit();
 			while (dbResultSet.next()) {
-				int number = dbResultSet.getInt("number");
-				String color = dbResultSet.getString("color");
+				int number = dbResultSet.getInt("dienumber");
+				String color = dbResultSet.getString("diecolor");
 				Die die = new Die(number, color);
 				results.add(die);
 			}
+			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("DieDAO " + e.getMessage());
+			System.err.println("DieDAO (selectDie) --> " + e.getMessage());
+		}
+		return results;
+	}
+
+	private ArrayList<Die> selectDiceWithEyes(String query) {
+		ArrayList<Die> results = new ArrayList<Die>();
+
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			ResultSet dbResultSet = stmt.executeQuery();
+			con.commit();
+			while (dbResultSet.next()) {
+				int number = dbResultSet.getInt("g.dienumber");
+				String color = dbResultSet.getString("g.diecolor");
+				int round = dbResultSet.getInt("g.round");
+				int value = dbResultSet.getInt("g.eyes");
+				Die die = new Die(number, color, round, value);
+				results.add(die);
+			}
+			con.commit();
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("DieDAO (selectDiceWithEyes) --> " + e.getMessage());
 		}
 		return results;
 	}
@@ -64,9 +139,10 @@ class DieDAO extends BaseDAO {
 				int roundTrack = dbResultSet.getInt("roundtrack");
 				result[roundTrack - 1].addDie(new Die(number, color, round, eyes));
 			}
+			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("DieDAO " + e.getMessage());
+			System.err.println("DieDAO (selectTrackDice) --> " + e.getMessage());
 		}
 		return result;
 	}
@@ -85,17 +161,17 @@ class DieDAO extends BaseDAO {
 				stmt.setInt(2, die.getRound());
 				stmt.setInt(3, gameID);
 				stmt.setInt(4, die.getDieId());
-				stmt.setString(5, GameColor.getDatabaseName(die.getDieColor()));
+				stmt.setString(5, die.getDieColor().getDatabaseName());
 				stmt.executeUpdate();
 				con.commit();
 				stmt.close();
 			}
 		} catch (SQLException e) {
-			System.err.println("MessageDAO " + e.getMessage());
+			System.err.println("DieDAO (updateDice #1) --> " + e.getMessage());
 			try {
 				con.rollback();
 			} catch (SQLException e1) {
-				System.err.println("The rollback failed: Please check the Database!");
+				System.err.println("DieDAO (updateDice #2) --> The rollback failed: Please check the Database!");
 			}
 		}
 	}
@@ -107,7 +183,7 @@ class DieDAO extends BaseDAO {
 	 * @param round - The ID of the currentRound
 	 * @param dice - The dice that didn't got picked
 	 */
-	private void updateDice(int gameID, int round, ArrayList<Die> dice) {
+	private void updateRound(int gameID, int round, ArrayList<Die> dice) {
 		try {
 			for (Die die : dice) {
 				PreparedStatement stmt = con.prepareStatement("UPDATE gameDie SET eyes = ?, round = ?, roundtrack = ? WHERE idgame = ? AND dienumber = ? AND diecolor = ?;");
@@ -116,29 +192,18 @@ class DieDAO extends BaseDAO {
 				stmt.setInt(3, round);
 				stmt.setInt(4, gameID);
 				stmt.setInt(5, die.getDieId());
-				stmt.setString(6, GameColor.getDatabaseName(die.getDieColor()));
+				stmt.setString(6, die.getDieColor().getDatabaseName());
 				stmt.executeUpdate();
-				con.commit();
 				stmt.close();
 			}
+			con.commit();
 		} catch (SQLException e) {
-			System.err.println("The rollback failed: Please check the Database!");
+			System.err.println("DieDAO (updateRound #1) --> " + e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e2) {
+				System.err.println("DieDAO (updateRound #2) --> The rollback failed: Please check the Database!");
+			}
 		}
-	}
-
-	ArrayList<Die> getGameDice(int gameID) {
-		return selectDie("Select * from gameDie WHERE idgame = " + gameID);
-	}
-
-	Round[] getRoundTrack(int gameID) {
-		return selectTrackDice("SELECT * FROM gameDie WHERE idgame = " + gameID + " AND roundtrack IS NOT NULL;");
-	}
-
-	void updateDiceRoll(int gameID, ArrayList<Die> dice) {
-		updateDice(gameID, dice);
-	}
-
-	void updateDiceRound(int gameID, int round, ArrayList<Die> dice) {
-		updateDice(gameID, round, dice);
 	}
 }

@@ -3,16 +3,17 @@ package view;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
+import controllers.MainApplication;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class RoundPane extends Pane {
-	private final int squareSize = 80;
+	/* CONSTANTS */
+	private final double squareSize = 80*MainApplication.width;
 	private final int trackSize = 10;
 
+	/* VARIABLES */
 	private int x;
 	private int y;
 
@@ -21,8 +22,6 @@ public class RoundPane extends Pane {
 	public RoundPane(int x, int y) {
 		this.x = x;
 		this.y = y;
-		
-		setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
 
 		roundTrack = new HashMap<Integer, ArrayList<DiePane>>();
 
@@ -33,19 +32,51 @@ public class RoundPane extends Pane {
 		addTrack();
 	}
 
+	/**
+	 * Updates the roundtrack
+	 */
+	public void update() {
+		addTrack();
+		addDice();
+	}
+
+	/**
+	 * 
+	 * @param round - Which {@code Round} to add the dice
+	 * @param diePane - The {@code DiePanes} to add
+	 */
+	public void addDie(Integer round, DiePane diePane) {
+		roundTrack.get(round).add(diePane);
+	}
+
+	/**
+	 * Clear a round on the roundpane
+	 * 
+	 * @param round - The {@code Round} that has to be cleared
+	 */
+	public void clear(Integer round) {
+		roundTrack.get(round).clear();
+	}
+
+	/**
+	 * Adds the squares in which the dice will be placed
+	 */
 	private void addTrack() {
 		for (int i = 0; i < trackSize; i++) {
 			Rectangle rectangle = new Rectangle(x + i * squareSize, y, squareSize, squareSize);
 			rectangle.setStroke(Color.BLACK);
-			rectangle.setFill(Color.ALICEBLUE);
+			rectangle.setFill(Color.hsb(27, 0.0, 0.8, 0.5));
 			getChildren().add(rectangle);
 		}
 	}
 
+	/**
+	 * Adds dice to the track in the correct position and size
+	 */
 	private void addDice() {
 		for (int i = 1; i <= trackSize; i++) {
 			ArrayList<DiePane> currentRound = roundTrack.get(i);
-			int offset1 = (i - 1) * squareSize;
+			double offset1 = (i - 1) * squareSize;
 			if (currentRound.size() == 1) {
 				DiePane diePane = currentRound.get(0);
 				diePane.setTranslateX(x + offset1);
@@ -74,15 +105,4 @@ public class RoundPane extends Pane {
 		}
 	}
 
-	private void update() {
-		getChildren().clear();
-		addTrack();
-		addDice();
 	}
-
-	//Temporary
-	public void addDie(Integer key, DiePane diePane) {
-		roundTrack.get(key).add(diePane);
-		update();
-	}
-}

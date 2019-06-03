@@ -8,8 +8,93 @@ import java.util.ArrayList;
 
 import game.CurrencyStone;
 
-class CurrencyStoneDAO extends BaseDAO {
-	Connection con = super.getConnection();
+class CurrencyStoneDAO {
+	private Connection con;
+
+	public CurrencyStoneDAO(Connection connection) {
+		con = connection;
+	}
+
+	void insertCurrencyStones(int idGame) {
+		try {
+			for (int i = 0; i < 24; i++) {
+				PreparedStatement stmt = con.prepareStatement("INSERT INTO gamefavortoken VALUES (?, ?, null, null, null, null);");
+				stmt.setInt(1, i);
+				stmt.setInt(2, idGame);
+				stmt.executeUpdate();
+				stmt.close();
+			}
+			con.commit();
+		} catch (SQLException e) {
+			System.err.println("CurrencyStoneDAO (insertCurrencyStones) --> " + e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				System.err.println("The rollback failed: Please check the Database!");
+			}
+		}
+	}
+	
+
+	ArrayList<CurrencyStone> getAllStonesInGame(int idGame) {
+		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE idgame = " + idGame);
+	}
+
+	ArrayList<CurrencyStone> getCurrencyStonesPlayer(int idGame, int playerID) {
+		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE idGame = " + idGame + " AND idplayer = " + playerID);
+	}
+
+	ArrayList<CurrencyStone> getCurrencyStonesOnCard(int idToolCard, int idGame) {
+		return selectCurrencyStone("SELECT * FROM gamefavortoken gf JOIN gametoolcard gt ON gf.gametoolcard = gt.gametoolcard WHERE gt.idtoolcard = " + idToolCard + "  AND gf.idgame = " + idGame);
+	}
+
+	void updateGameFavorTokenUsed(int stoneID, int idGame, int gametoolcard) {
+		if (!isUsed(stoneID, idGame)) {
+
+			try {
+				PreparedStatement stmt = con.prepareStatement("UPDATE gamefavortoken SET gametoolcard = " + gametoolcard + " WHERE idfavortoken = " + stoneID + " AND idgame = " + idGame);
+				stmt.executeUpdate();
+
+				con.commit();
+				stmt.close();
+			} catch (SQLException e) {
+				System.err.println("CurrencyStoneDAO (updateGameFavorTokenUsed #1) --> " + e.getMessage());
+				try {
+					con.rollback();
+				} catch (SQLException e1) {
+					System.err.println("CurrencyStoneDAO (updateGameFavorTokenUsed #2) --> The rollback failed: Please check the Database!");
+				}
+			}
+
+		} else {
+			System.err.println("CurrencyStoneDAO (updateGameFavorTokenUsed #3) --> trying to use a stone that is already used");
+		}
+	}
+
+	void updateGivePlayerCurrencyStones(int idGame, int idPlayer, int ammount) {
+		if (getCurrencyStonesPlayer(idGame, idPlayer).size() == 0) {
+			try {
+				for (int i = (25 - stonesLeft(idGame, idPlayer)); i < ((25 - stonesLeft(idGame, idPlayer)) + ammount); i++) {
+					PreparedStatement stmt = con.prepareStatement("UPDATE gamefavortoken SET idplayer = ? WHERE idfavortoken = ? AND idgame = ?");
+					stmt.setInt(1, idPlayer);
+					stmt.setInt(2, i);
+					stmt.setInt(3, idGame);
+					stmt.executeUpdate();
+					stmt.close();
+				}
+				con.commit();
+			} catch (SQLException e) {
+				System.err.println("CurrencyStoneDAO (updateGivePlayerCurrencyStones #1) --> " + e.getMessage());
+				try {
+					con.rollback();
+				} catch (SQLException e1) {
+					System.err.println("CurrencyStoneDAO (updateGivePlayerCurrencyStones #2) -->The rollback has failed: Please check the Database!");
+				}
+			}
+		} else {
+			System.err.println("CurrencyStoneDAO (updateGivePlayerCurrencyStones #3) --> the player already has currencystones");
+		}
+	}
 
 	private ArrayList<CurrencyStone> selectCurrencyStone(String query) {
 		ArrayList<CurrencyStone> results = new ArrayList<CurrencyStone>();
@@ -19,96 +104,27 @@ class CurrencyStoneDAO extends BaseDAO {
 			ResultSet dbResultSet = stmt.executeQuery();
 
 			while (dbResultSet.next()) {
-				// Separated the variables on purpose for clarity
 				int stoneID = dbResultSet.getInt("idfavortoken");
 				int playerID = dbResultSet.getInt("idplayer");
+				int toolcardID = dbResultSet.getInt("gametoolcard");
 
-				CurrencyStone currencystone = new CurrencyStone(stoneID, playerID);
+				CurrencyStone currencystone = new CurrencyStone(stoneID, playerID, toolcardID);
 				results.add(currencystone);
 			}
+			con.commit();
 			stmt.close();
 		} catch (SQLException e) {
-			System.err.println("CurrencyStoneDAO " + e.getMessage());
+			System.err.println("CurrencyStoneDAO (selectCurrencyStone) --> " + e.getMessage());
 		}
 		return results;
 	}
 
 	private boolean isUsed(int stoneID, int idGame) {
-		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE idfavortoken = " + stoneID + " AND idgame = "
-				+ idGame + " AND gametoolcard IS NULL").size() == 0;
+		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE idfavortoken = " + stoneID + " AND idgame = " + idGame + " AND gametoolcard IS NULL").size() == 0;
 	}
 
 	private int stonesLeft(int idGame, int idPlayer) {
-		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE (idplayer IS NULL OR idplayer = " + idPlayer
-				+ ") AND idgame = " + idGame).size();
+		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE (idplayer IS NULL OR idplayer = " + idPlayer + ") AND idgame = " + idGame).size();
 	}
 
-	ArrayList<CurrencyStone> getAllStonesInGame(int idGame) {
-		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE idgame = " + idGame);
-	}
-
-	ArrayList<CurrencyStone> getCurrencyStonesPlayer(int idGame, int playerID) {
-		return selectCurrencyStone(
-				"SELECT * FROM gamefavortoken WHERE idGame = " + idGame + " AND idplayer = " + playerID);
-	}
-
-	ArrayList<CurrencyStone> getCurrencyStonesOnCard(int idToolCard, int idGame) {
-		return selectCurrencyStone(
-				"SELECT * FROM gamefavortoken JOIN gametoolcard ON gamefavortoken.gametoolcard = gametoolcard.gametoolcard WHERE idtoolcard = "
-						+ idToolCard + " AND idgame = " + idGame);
-	}
-
-	// TODO: check possible logic when actually using this to buy stones
-	void updateGameFavorTokenUsed(int stoneID, int idGame, int gametoolcard) {
-		if (!isUsed(stoneID, idGame)) {
-
-			try {
-				PreparedStatement stmt = con.prepareStatement("UPDATE gamefavortoken SET gametoolcard = " + gametoolcard
-						+ " WHERE idfavortoken = " + stoneID + " AND idgame = " + idGame);
-				stmt.executeUpdate();
-
-				con.commit();
-				stmt.close();
-			} catch (SQLException e) {
-				System.err.println("CurrencyStoneDAO " + e.getMessage());
-				try {
-					con.rollback();
-				} catch (SQLException e1) {
-					System.err.println("The rollback failed: Please check the Database!");
-				}
-			}
-
-		} else {
-			System.err.println("CurrencyStoneDAO trying to use a stone that is already used");
-		}
-	}
-
-	void updateGivePlayerCurrencyStones(int idGame, int idPlayer, int ammount) {
-		if (getCurrencyStonesPlayer(idGame, idPlayer).size() == 0) {
-
-			System.out.println(stonesLeft(idGame, idPlayer));
-			try {
-				for (int i = (25 - stonesLeft(idGame, idPlayer)); i < ((25 - stonesLeft(idGame, idPlayer))
-						+ ammount); i++) {
-					PreparedStatement stmt = con.prepareStatement(
-							"UPDATE gamefavortoken SET idplayer = ? WHERE idfavortoken = ? AND idgame = ?");
-					stmt.setInt(1, idPlayer);
-					stmt.setInt(2, i);
-					stmt.setInt(3, idGame);
-					stmt.executeUpdate();
-					stmt.close();
-				}
-				con.commit();
-			} catch (SQLException e) {
-				System.err.println("CurrencyStoneDAO " + e.getMessage());
-				try {
-					con.rollback();
-				} catch (SQLException e1) {
-					System.err.println("The rollback has failed: Please check the Database!");
-				}
-			}
-		} else {
-			System.err.println("CurrencyStoneDAO the player already has currencystones");
-		}
-	}
 }
