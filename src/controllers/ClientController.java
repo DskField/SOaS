@@ -38,56 +38,7 @@ public class ClientController {
 		client = new Client(persistencefacade);
 		mainapplication.setScene(new Scene(new LoginPane(this)));
 	}
-
-	/**
-	 * Only after a successful login everything will be created
-	 * 
-	 * @param username - {@code String} containing the username input
-	 * @param password - {@code String} containing the password input
-	 * @return - {@code boolean} whether the login was successful or not
-	 * 
-	 */
-	public boolean handleLogin(String username, String password) {
-		if (!checkInformation(username, password)) {
-			return false;
-		}
-
-		if (client.loginCorrect(username, password)) {
-			client.insertUserInClient(username);
-			this.clientscene = new ClientScene(this);
-			mainapplication.setScene(clientscene);
-
-			createTimer();
-		}
-		return client.loginCorrect(username, password);
-	}
-
-	/**
-	 * Register the new user only if the username hasn't been used and if the username and password pass
-	 * the criteria
-	 * 
-	 * @param username - {@code String} containing the username input
-	 * @param password - {@code String} containing the password input
-	 * @return - {@code boolean} whether the register was succesful or not
-	 */
-	public boolean handleRegister(String username, String password) {
-		if (!checkInformation(username, password)) {
-			return false;
-		}
-
-		return client.insertCorrect(username, password);
-	}
-
-	private boolean checkInformation(String username, String password) {
-		if (username.length() < 3 || username.length() > 25 || password.length() < 3 || password.length() > 25) {
-			return false;
-		}
-		if (!username.matches("[a-zA-Z0-9]*") && !password.matches("[a-zA-Z0-9]*")) {
-			return false;
-		}
-
-		return true;
-	}
+	
 
 	/**
 	 * Method that can be called from {@code GameController} to swap back to the {@code ClientScene}
@@ -245,6 +196,56 @@ public class ClientController {
 		}
 
 		public abstract void doAction();
+	}
+
+	/**
+	 * Only after a successful login everything will be created
+	 * 
+	 * @param username - {@code String} containing the username input
+	 * @param password - {@code String} containing the password input
+	 * @return - {@code boolean} whether the login was successful or not
+	 * 
+	 */
+	public boolean handleLogin(String username, String password) {
+		if (!checkInformation(username, password)) {
+			return false;
+		}
+
+		if (client.loginCorrect(username, password)) {
+			client.insertUserInClient(username);
+			this.clientscene = new ClientScene(this);
+			mainapplication.setScene(clientscene);
+
+			createTimer();
+		}
+		return client.loginCorrect(username, password);
+	}
+
+	/**
+	 * Register the new user only if the username hasn't been used and if the username and password pass
+	 * the criteria
+	 * 
+	 * @param username - {@code String} containing the username input
+	 * @param password - {@code String} containing the password input
+	 * @return - {@code boolean} whether the register was succesful or not
+	 */
+	public boolean handleRegister(String username, String password) {
+		if (!checkInformation(username, password)) {
+			return false;
+		}
+
+		return client.insertCorrect(username, password);
+	}
+
+	private boolean checkInformation(String username, String password) {
+		if (username.length() < 3 || username.length() > 25 || password.length() < 3 || password.length() > 25) {
+			return false;
+		}
+		if (!username.matches("[a-zA-Z0-9]*") && !password.matches("[a-zA-Z0-9]*")) {
+			return false;
+		}
+
+		return true;
 	}
 
 	private void createTimer() {

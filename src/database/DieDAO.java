@@ -16,6 +16,53 @@ class DieDAO {
 	public DieDAO(Connection connection) {
 		con = connection;
 	}
+	
+	void insertDice(int idGame) {
+		GameColor[] possibleColors = { GameColor.RED, GameColor.GREEN, GameColor.YELLOW, GameColor.PURPLE, GameColor.BLUE };
+
+		try {
+			for (GameColor color : possibleColors) {
+				for (int i = 1; i <= 18; i++) {
+					PreparedStatement stmt = con.prepareStatement("INSERT INTO gamedie VALUES (?, ?, ?, NULL, NULL, NULL, null);");
+					stmt.setInt(1, idGame);
+					stmt.setInt(2, i);
+					stmt.setString(3, color.getDatabaseName());
+					stmt.executeUpdate();
+					stmt.close();
+				}
+			}
+			con.commit();
+		} catch (SQLException e) {
+			System.err.println("DieDAO (insertDice) --> " + e.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				System.err.println("DieDAO (insertDice) --> The rollback failed: Please check the Database!");
+			}
+		}
+	}
+
+	ArrayList<Die> getGameDice(int gameID) {
+		return selectDie("SELECT * FROM gameDie g LEFT JOIN playerframefield p ON g.idgame = p.idgame AND g.dienumber = p.dienumber AND g.diecolor = p.diecolor WHERE g.idgame = " + gameID
+				+ " AND g.roundtrack IS NULL AND p.idgame IS NULL;");
+	}
+
+	Round[] getRoundTrack(int gameID) {
+		return selectTrackDice("SELECT * FROM gameDie WHERE idgame = " + gameID + " AND roundtrack IS NOT NULL;");
+	}
+
+	ArrayList<Die> getTableDice(int gameID, int round) {
+		return selectDiceWithEyes("SELECT * FROM playerframefield AS f  " + "RIGHT JOIN gamedie AS g " + " ON f.idgame = g.idgame AND f.dienumber = g.dienumber AND f.diecolor = g.diecolor "
+				+ " WHERE f.idgame IS NULL AND f.dienumber IS NULL AND f.diecolor IS NULL AND " + "g.roundtrack IS NULL AND g.idgame = " + gameID + " AND g.round =" + round);
+	}
+
+	void updateDiceRoll(int gameID, ArrayList<Die> dice) {
+		updateDice(gameID, dice);
+	}
+
+	void updateDiceRound(int gameID, int round, ArrayList<Die> dice) {
+		updateRound(gameID, round, dice);
+	}
 
 	/**
 	 * Load dice
@@ -158,52 +205,5 @@ class DieDAO {
 				System.err.println("DieDAO (updateRound #2) --> The rollback failed: Please check the Database!");
 			}
 		}
-	}
-
-	void insertDice(int idGame) {
-		GameColor[] possibleColors = { GameColor.RED, GameColor.GREEN, GameColor.YELLOW, GameColor.PURPLE, GameColor.BLUE };
-
-		try {
-			for (GameColor color : possibleColors) {
-				for (int i = 1; i <= 18; i++) {
-					PreparedStatement stmt = con.prepareStatement("INSERT INTO gamedie VALUES (?, ?, ?, NULL, NULL, NULL, null);");
-					stmt.setInt(1, idGame);
-					stmt.setInt(2, i);
-					stmt.setString(3, color.getDatabaseName());
-					stmt.executeUpdate();
-					stmt.close();
-				}
-			}
-			con.commit();
-		} catch (SQLException e) {
-			System.err.println("DieDAO (insertDice) --> " + e.getMessage());
-			try {
-				con.rollback();
-			} catch (SQLException e1) {
-				System.err.println("DieDAO (insertDice) --> The rollback failed: Please check the Database!");
-			}
-		}
-	}
-
-	ArrayList<Die> getGameDice(int gameID) {
-		return selectDie("SELECT * FROM gameDie g LEFT JOIN playerframefield p ON g.idgame = p.idgame AND g.dienumber = p.dienumber AND g.diecolor = p.diecolor WHERE g.idgame = " + gameID
-				+ " AND g.roundtrack IS NULL AND p.idgame IS NULL;");
-	}
-
-	Round[] getRoundTrack(int gameID) {
-		return selectTrackDice("SELECT * FROM gameDie WHERE idgame = " + gameID + " AND roundtrack IS NOT NULL;");
-	}
-
-	ArrayList<Die> getTableDice(int gameID, int round) {
-		return selectDiceWithEyes("SELECT * FROM playerframefield AS f  " + "RIGHT JOIN gamedie AS g " + " ON f.idgame = g.idgame AND f.dienumber = g.dienumber AND f.diecolor = g.diecolor "
-				+ " WHERE f.idgame IS NULL AND f.dienumber IS NULL AND f.diecolor IS NULL AND " + "g.roundtrack IS NULL AND g.idgame = " + gameID + " AND g.round =" + round);
-	}
-
-	void updateDiceRoll(int gameID, ArrayList<Die> dice) {
-		updateDice(gameID, dice);
-	}
-
-	void updateDiceRound(int gameID, int round, ArrayList<Die> dice) {
-		updateRound(gameID, round, dice);
 	}
 }

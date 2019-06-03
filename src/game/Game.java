@@ -91,65 +91,7 @@ public class Game {
 	public void loadCurrentRound() {
 		currentRound = persistenceFacade.getCurrentRound(gameID);
 	}
-
-	/**
-	 * This method loads all {@code dice} from the DB to the {@code Game}.
-	 */
-	private void loadDice() {
-		dice = persistenceFacade.getGameDice(gameID);
-		roundTrack = persistenceFacade.getRoundTrack(gameID);
-		table = persistenceFacade.getTableDice(gameID, currentRound);
-		if (currentRound <= 10) {
-			if (table.isEmpty() && roundTrack[currentRound - 1].getDice().isEmpty() && currentPlayer.getPlayerID() == clientPlayer.getPlayerID()) {
-			}
-		}
-	}
-
-	/**
-	 * Load the {@code players} from this {@code Game}
-	 */
-	private void loadPlayers() {
-		players = persistenceFacade.getAllPlayersInGame(gameID);
-		for (Player player : players) {
-			if (player.getUsername().equals(clientUser.getUsername())) {
-				clientPlayer = player;
-				break;
-			}
-		}
-	}
-
-	/**
-	 * Get the {@code ToolCards} and {@code CollectiveGoalCards} form the DB
-	 */
-	private void loadCards() {
-		toolCards = persistenceFacade.getGameToolCards(gameID);
-		collectiveGoalCards = persistenceFacade.getSharedCollectiveGoalCards(gameID);
-	}
-
-	/**
-	 * Load the {@code GlassWindow} with the right {@code PatternCard}
-	 */
-	private void loadGlassWindow() {
-		final GameColor colors[] = { GameColor.RED, GameColor.GREEN, GameColor.BLUE, GameColor.PURPLE };
-		int num = 1;
-		for (Player player : players) {
-			player.loadGlassWindow(persistenceFacade.getGlassWindow(player.getPlayerID()));
-			PatternCard card = persistenceFacade.getplayerPatternCard(player.getPlayerID());
-			if (card != null) {
-				player.getGlassWindow().loadPatternCard(card);
-			} else {
-				player.getGlassWindow().loadPatternCard(null);
-			}
-
-			if (player.getPlayerID() == clientPlayer.getPlayerID()) {
-				player.getGlassWindow().setColor(colors[0]);
-			} else {
-				player.getGlassWindow().setColor(colors[num++]);
-			}
-		}
-
-	}
-
+	
 	/**
 	 * used for loading and updating {@code CurrencyStones}
 	 */
@@ -346,6 +288,66 @@ public class Game {
 			return updateChat();
 		}
 	}
+
+	/**
+	 * This method loads all {@code dice} from the DB to the {@code Game}.
+	 */
+	private void loadDice() {
+		dice = persistenceFacade.getGameDice(gameID);
+		roundTrack = persistenceFacade.getRoundTrack(gameID);
+		table = persistenceFacade.getTableDice(gameID, currentRound);
+		if (currentRound <= 10) {
+			if (table.isEmpty() && roundTrack[currentRound - 1].getDice().isEmpty() && currentPlayer.getPlayerID() == clientPlayer.getPlayerID()) {
+			}
+		}
+	}
+
+	/**
+	 * Load the {@code players} from this {@code Game}
+	 */
+	private void loadPlayers() {
+		players = persistenceFacade.getAllPlayersInGame(gameID);
+		for (Player player : players) {
+			if (player.getUsername().equals(clientUser.getUsername())) {
+				clientPlayer = player;
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Get the {@code ToolCards} and {@code CollectiveGoalCards} form the DB
+	 */
+	private void loadCards() {
+		toolCards = persistenceFacade.getGameToolCards(gameID);
+		collectiveGoalCards = persistenceFacade.getSharedCollectiveGoalCards(gameID);
+	}
+
+	/**
+	 * Load the {@code GlassWindow} with the right {@code PatternCard}
+	 */
+	private void loadGlassWindow() {
+		final GameColor colors[] = { GameColor.RED, GameColor.GREEN, GameColor.BLUE, GameColor.PURPLE };
+		int num = 1;
+		for (Player player : players) {
+			player.loadGlassWindow(persistenceFacade.getGlassWindow(player.getPlayerID()));
+			PatternCard card = persistenceFacade.getplayerPatternCard(player.getPlayerID());
+			if (card != null) {
+				player.getGlassWindow().loadPatternCard(card);
+			} else {
+				player.getGlassWindow().loadPatternCard(null);
+			}
+
+			if (player.getPlayerID() == clientPlayer.getPlayerID()) {
+				player.getGlassWindow().setColor(colors[0]);
+			} else {
+				player.getGlassWindow().setColor(colors[num++]);
+			}
+		}
+
+	}
+
+	
 
 	/* GETTERS AND SETTERS */
 	public Player getClientPlayer() {

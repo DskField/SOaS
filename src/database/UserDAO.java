@@ -15,6 +15,17 @@ class UserDAO {
 		con = connection;
 	}
 
+	User getUser(String username) {
+		return selectUser(username);
+	}
+
+	boolean checkUpdate(String username, User oldUser) {
+		if (oldUser.equals(getUser(username)))
+			return true;
+		else
+			return false;
+	}
+
 	private User selectUser(String username) {
 		User result = null;
 		try {
@@ -105,16 +116,5 @@ class UserDAO {
 			e.printStackTrace();
 		}
 		return result;
-	}
-
-	User getUser(String username) {
-		return selectUser(username);
-	}
-
-	boolean checkUpdate(String username, User oldUser) {
-		if (oldUser.equals(getUser(username)))
-			return true;
-		else
-			return false;
 	}
 }

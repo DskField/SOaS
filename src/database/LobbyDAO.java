@@ -15,6 +15,23 @@ class LobbyDAO {
 	public LobbyDAO(Connection con) {
 		this.con = con;
 	}
+	
+	ArrayList<ArrayList<String>> getScoreboard(int idGame) {
+		return selectScoreboard("SELECT username, score FROM player WHERE game_idgame = ? ORDER BY score DESC", idGame);
+	}
+
+	Lobby getLobby(int idGame) {
+		return selectLobby("SELECT * FROM player WHERE game_idgame = ?", idGame);
+	}
+
+	ArrayList<Integer> getAllLobbyID(boolean orderASC) {
+		return selectAllLobbies(orderASC ? "SELECT idgame FROM game ORDER BY creationdate ASC" : "SELECT idgame FROM game ORDER BY creationdate DESC",
+				true);
+	}
+
+	ArrayList<Integer> getAllPlayerLobbyID(String username) {
+		return selectAllLobbies("SELECT * FROM player WHERE playstatus_playstatus != \"uitgedaagde\" AND username = \"" + username + "\"", false);
+	}
 
 	private Lobby selectLobby(String query, int idGame) {
 		Lobby lobby = null;
@@ -118,22 +135,5 @@ class LobbyDAO {
 			System.err.println("LobbyDAO: " + e.getMessage());
 		}
 		return results;
-	}
-
-	ArrayList<ArrayList<String>> getScoreboard(int idGame) {
-		return selectScoreboard("SELECT username, score FROM player WHERE game_idgame = ? ORDER BY score DESC", idGame);
-	}
-
-	Lobby getLobby(int idGame) {
-		return selectLobby("SELECT * FROM player WHERE game_idgame = ?", idGame);
-	}
-
-	ArrayList<Integer> getAllLobbyID(boolean orderASC) {
-		return selectAllLobbies(orderASC ? "SELECT idgame FROM game ORDER BY creationdate ASC" : "SELECT idgame FROM game ORDER BY creationdate DESC",
-				true);
-	}
-
-	ArrayList<Integer> getAllPlayerLobbyID(String username) {
-		return selectAllLobbies("SELECT * FROM player WHERE playstatus_playstatus != \"uitgedaagde\" AND username = \"" + username + "\"", false);
 	}
 }

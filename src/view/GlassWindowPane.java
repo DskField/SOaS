@@ -95,28 +95,6 @@ public class GlassWindowPane extends BorderPane {
 		resize();
 	}
 
-	private void resize() {
-		if (isSmall) {
-			setPrefSize(glassWindowWidth / 2, glassWindowHeight / 2.5);
-			setMaxSize(glassWindowWidth / 2, glassWindowHeight / 2.5);
-			setMargin(fieldPane, new Insets(smallInset));
-			circle.setRadius(smalRadius);
-			labelScore.setFont(Font.font(smallFont));
-			labelName.setFont(Font.font(smallFont));
-			setMargin(scoreField, insets);
-		} else {
-			setPrefSize(glassWindowWidth, glassWindowHeight);
-			setMaxSize(glassWindowWidth, glassWindowHeight);
-			circle.setRadius(bigRadius);
-			labelScore.setFont(Font.font(bigFont));
-			labelName.setFont(Font.font(bigFont));
-			setMargin(scoreField, new Insets(spacingAmount));
-			setMargin(fieldPane, new Insets(spacingAmount));
-		}
-
-		fieldPane.resize(isSmall);
-	}
-
 	public void updateScore(int score) {
 		labelScore.setText(String.valueOf(score));
 	}
@@ -124,31 +102,7 @@ public class GlassWindowPane extends BorderPane {
 	public void updateGlassWindow(GlassWindow glassWindow) {
 		fieldPane.loadGlassWindow(glassWindow);
 	}
-
-	private void setName(String name) {
-		labelName = new Label(name);
-		labelName.setTextFill(Color.WHITE);
-		labelName.setFont(Font.font(bigFont));
-
-		setCenter(labelName);
-	}
-
-	private void setScore() {
-		scoreField = new StackPane();
-		labelScore = new Label();
-		labelScore.setTextFill(Color.BLACK);
-		labelScore.setFont(Font.font(bigFont));
-
-		circle = new Circle(scoreCircleX, scoreCircleY, scoreCircleRadius);
-		circle.setFill(color.getColor());
-		circle.setStroke(Color.BLACK);
-
-		setMargin(scoreField, new Insets(spacingAmount));
-
-		scoreField.getChildren().addAll(circle, labelScore);
-		setTop(scoreField);
-	}
-
+	
 	public void setSwitchingNumber(int num) {
 		switchingNumber = num;
 	}
@@ -179,5 +133,51 @@ public class GlassWindowPane extends BorderPane {
 
 	public void setInactiveBorder() {
 		setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, windowCurve, new BorderWidths(borderwidth))));
+	}
+	
+	private void resize() {
+		if (isSmall) {
+			setPrefSize(glassWindowWidth / 2, glassWindowHeight / 2.5);
+			setMaxSize(glassWindowWidth / 2, glassWindowHeight / 2.5);
+			setMargin(fieldPane, new Insets(smallInset));
+			circle.setRadius(smalRadius);
+			labelScore.setFont(Font.font(smallFont));
+			labelName.setFont(Font.font(smallFont));
+			setMargin(scoreField, insets);
+		} else {
+			setPrefSize(glassWindowWidth, glassWindowHeight);
+			setMaxSize(glassWindowWidth, glassWindowHeight);
+			circle.setRadius(bigRadius);
+			labelScore.setFont(Font.font(bigFont));
+			labelName.setFont(Font.font(bigFont));
+			setMargin(scoreField, new Insets(spacingAmount));
+			setMargin(fieldPane, new Insets(spacingAmount));
+		}
+
+		fieldPane.resize(isSmall);
+	}
+
+	private void setName(String name) {
+		labelName = new Label(name);
+		labelName.setTextFill(Color.WHITE);
+		labelName.setFont(Font.font(bigFont));
+
+		setCenter(labelName);
+	}
+
+	private void setScore() {
+		scoreField = new StackPane();
+		labelScore = new Label();
+		labelScore.setTextFill(Color.BLACK);
+		labelScore.setFont(Font.font(bigFont));
+
+		circle = new Circle(scoreCircleX, scoreCircleY, scoreCircleRadius);
+		circle.setFill(color.getColor());
+		circle.setStroke(Color.BLACK);
+
+		setMargin(scoreField, new Insets(spacingAmount));
+
+		scoreField.getChildren().addAll(circle, labelScore);
+		setTop(scoreField);
 	}
 }

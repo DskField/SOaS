@@ -33,6 +33,32 @@ public class RoundPane extends Pane {
 	}
 
 	/**
+	 * Updates the roundtrack
+	 */
+	public void update() {
+		addTrack();
+		addDice();
+	}
+
+	/**
+	 * 
+	 * @param round - Which {@code Round} to add the dice
+	 * @param diePane - The {@code DiePanes} to add
+	 */
+	public void addDie(Integer round, DiePane diePane) {
+		roundTrack.get(round).add(diePane);
+	}
+
+	/**
+	 * Clear a round on the roundpane
+	 * 
+	 * @param round - The {@code Round} that has to be cleared
+	 */
+	public void clear(Integer round) {
+		roundTrack.get(round).clear();
+	}
+
+	/**
 	 * Adds the squares in which the dice will be placed
 	 */
 	private void addTrack() {
@@ -79,29 +105,4 @@ public class RoundPane extends Pane {
 		}
 	}
 
-	/**
-	 * Updates the roundtrack
-	 */
-	public void update() {
-		addTrack();
-		addDice();
 	}
-
-	/**
-	 * 
-	 * @param round - Which {@code Round} to add the dice
-	 * @param diePane - The {@code DiePanes} to add
-	 */
-	public void addDie(Integer round, DiePane diePane) {
-		roundTrack.get(round).add(diePane);
-	}
-
-	/**
-	 * Clear a round on the roundpane
-	 * 
-	 * @param round - The {@code Round} that has to be cleared
-	 */
-	public void clear(Integer round) {
-		roundTrack.get(round).clear();
-	}
-}

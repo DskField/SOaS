@@ -264,6 +264,94 @@ public class GameScene extends Scene {
 		}
 		currencyStonesPane.showStones(currencyStonePanes);
 	}
+	
+	public void switchGlassWindows(int source) {
+		removeHighlight();
+		GlassWindowPane temp = glassWindowPanes.get(MAIN);
+
+		leftBox.getChildren().remove(glassWindowPanes.get(MAIN));
+		rightBox.getChildren().remove(glassWindowPanes.get(source));
+
+		glassWindowPanes.set(MAIN, glassWindowPanes.get(source));
+		glassWindowPanes.set(source, temp);
+		glassWindowPanes.get(MAIN).toggleIsSmall();
+		glassWindowPanes.get(source).toggleIsSmall();
+		glassWindowPanes.get(MAIN).setSwitchingNumber(MAIN);
+		glassWindowPanes.get(source).setSwitchingNumber(source);
+
+		rightBox.getChildren().add((source - 1 >= 0) ? source - 1 : 0, glassWindowPanes.get(source));
+		leftBox.getChildren().add(MAIN, glassWindowPanes.get(MAIN));
+
+		if (glassWindowPanes.get(MAIN).isClientPlayer()) {
+			personalGoalCardPane.loadPersonalGoalCardImage(gameController.getClientPlayer().getPersonalGoalCard());
+		} else {
+			personalGoalCardPane.loadCardBack();
+		}
+	}
+
+	public void gameFinish(String winText) {
+		Label winner = new Label(winText);
+		winner.setFont(font);
+		winner.setTextFill(Color.WHITE);
+		rootPane.setCenter(winner);
+	}
+
+	/**
+	 * Updates the {@code CurrencyStones} on the {@code ToolCards}
+	 * 
+	 * @param toolCards - The {@code ToolCards} used in the game
+	 */
+	public void updateToolCards(ArrayList<ToolCard> toolCards) {
+		for (ToolCardPane toolCardPane : toolCardPanes) {
+			// For toolcard make an arralist with currencyStonepaness
+			for (ToolCard toolCard : toolCards) {
+				ArrayList<CurrencyStonePane> stonePanes = new ArrayList<>();
+				stonePanes.clear();
+				Player thisPlayer = null;
+				// if toolcard has currencystones
+				if (!toolCard.getCurrencyStones().isEmpty()) {
+					// for every stone that card has make a StonePane and add to ArrayList of currencystonepanes
+					for (CurrencyStone stone : toolCard.getCurrencyStones()) {
+						// Check whose currencystone it is
+						for (Player player : gameController.getPlayers()) {
+							// if playerid's match use that player to get the color
+							if (stone.getPlayerID() == player.getPlayerID()) {
+								thisPlayer = player;
+							}
+						}
+						CurrencyStonePane stonePane = new CurrencyStonePane(thisPlayer.getColor());
+						stonePanes.add(stonePane);
+					}
+
+					if (toolCard.getSeqnr() == toolCardPane.getSeqNr()) {
+						toolCardPane.updateStones(stonePanes);
+					}
+				}
+			}
+		}
+	}
+
+	public void updateCurrentPlayerBorder(GameColor color) {
+		for (GlassWindowPane glassWindowPane : glassWindowPanes) {
+			if (glassWindowPane.getColor() == color) {
+				for (GlassWindowPane glassWindowPane1 : glassWindowPanes) {
+					glassWindowPane1.setInactiveBorder();
+				}
+				glassWindowPane.setActiveBorder();
+			}
+		}
+	}
+
+	public void updateCurrentPlayerLabel(String userName) {
+		currentPlayerLabel.setText(userName + " is momenteel aan de beurt");
+	}
+
+	public void updateShakeButton(boolean checkStartPlayer) {
+		if (checkStartPlayer) {
+			shakeButton.setDisable(false);
+		}
+
+	}
 
 	/**
 	 * Creates the center of the screen containing the following aspects: {@code PersonalGoalCard},
@@ -428,91 +516,5 @@ public class GameScene extends Scene {
 		rootPane.setRight(rightBox);
 	}
 
-	public void switchGlassWindows(int source) {
-		removeHighlight();
-		GlassWindowPane temp = glassWindowPanes.get(MAIN);
-
-		leftBox.getChildren().remove(glassWindowPanes.get(MAIN));
-		rightBox.getChildren().remove(glassWindowPanes.get(source));
-
-		glassWindowPanes.set(MAIN, glassWindowPanes.get(source));
-		glassWindowPanes.set(source, temp);
-		glassWindowPanes.get(MAIN).toggleIsSmall();
-		glassWindowPanes.get(source).toggleIsSmall();
-		glassWindowPanes.get(MAIN).setSwitchingNumber(MAIN);
-		glassWindowPanes.get(source).setSwitchingNumber(source);
-
-		rightBox.getChildren().add((source - 1 >= 0) ? source - 1 : 0, glassWindowPanes.get(source));
-		leftBox.getChildren().add(MAIN, glassWindowPanes.get(MAIN));
-
-		if (glassWindowPanes.get(MAIN).isClientPlayer()) {
-			personalGoalCardPane.loadPersonalGoalCardImage(gameController.getClientPlayer().getPersonalGoalCard());
-		} else {
-			personalGoalCardPane.loadCardBack();
-		}
-	}
-
-	public void gameFinish(String winText) {
-		Label winner = new Label(winText);
-		winner.setFont(font);
-		winner.setTextFill(Color.WHITE);
-		rootPane.setCenter(winner);
-	}
-
-	/**
-	 * Updates the {@code CurrencyStones} on the {@code ToolCards}
-	 * 
-	 * @param toolCards - The {@code ToolCards} used in the game
-	 */
-	public void updateToolCards(ArrayList<ToolCard> toolCards) {
-		for (ToolCardPane toolCardPane : toolCardPanes) {
-			// For toolcard make an arralist with currencyStonepaness
-			for (ToolCard toolCard : toolCards) {
-				ArrayList<CurrencyStonePane> stonePanes = new ArrayList<>();
-				stonePanes.clear();
-				Player thisPlayer = null;
-				// if toolcard has currencystones
-				if (!toolCard.getCurrencyStones().isEmpty()) {
-					// for every stone that card has make a StonePane and add to ArrayList of currencystonepanes
-					for (CurrencyStone stone : toolCard.getCurrencyStones()) {
-						// Check whose currencystone it is
-						for (Player player : gameController.getPlayers()) {
-							// if playerid's match use that player to get the color
-							if (stone.getPlayerID() == player.getPlayerID()) {
-								thisPlayer = player;
-							}
-						}
-						CurrencyStonePane stonePane = new CurrencyStonePane(thisPlayer.getColor());
-						stonePanes.add(stonePane);
-					}
-
-					if (toolCard.getSeqnr() == toolCardPane.getSeqNr()) {
-						toolCardPane.updateStones(stonePanes);
-					}
-				}
-			}
-		}
-	}
-
-	public void updateCurrentPlayerBorder(GameColor color) {
-		for (GlassWindowPane glassWindowPane : glassWindowPanes) {
-			if (glassWindowPane.getColor() == color) {
-				for (GlassWindowPane glassWindowPane1 : glassWindowPanes) {
-					glassWindowPane1.setInactiveBorder();
-				}
-				glassWindowPane.setActiveBorder();
-			}
-		}
-	}
-
-	public void updateCurrentPlayerLabel(String userName) {
-		currentPlayerLabel.setText(userName + " is momenteel aan de beurt");
-	}
-
-	public void updateShakeButton(boolean checkStartPlayer) {
-		if (checkStartPlayer) {
-			shakeButton.setDisable(false);
-		}
-
-	}
+	
 }

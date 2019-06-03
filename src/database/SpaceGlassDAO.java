@@ -25,43 +25,7 @@ class SpaceGlassDAO {
 	void updatePlayerFields(int idPlayer, int gameId, GlassWindow glassWindow) {
 		updateSpaceGlass(idPlayer, glassWindow, gameId);
 	}
-
-	//Is used to obtain a GlassWindow Object containing playerframefields from the database as SpaceGlass Objects
-	private GlassWindow selectSpaceGlass(String query) {
-		SpaceGlass[][] result = new SpaceGlass[5][4];
-		GlassWindow playerFrame = new GlassWindow();
-
-		try {
-			PreparedStatement stmt = con.prepareStatement(query);
-			ResultSet dbResultSet = stmt.executeQuery();
-			while (dbResultSet.next()) {
-				int x = dbResultSet.getInt("position_x");
-				int y = dbResultSet.getInt("position_y");
-				SpaceGlass spaceGlass = new SpaceGlass(x - 1, y - 1);
-
-				int dienumber = dbResultSet.getInt("dienumber");
-				int eyes = dbResultSet.getInt("eyes");
-				int round = dbResultSet.getInt("round");
-				String color = dbResultSet.getString("diecolor");
-				Die die;
-				if (dienumber != 0 && color != null && round != 0 && eyes != 0) {
-					die = new Die(dienumber, color, round, eyes);
-				} else {
-					die = null;
-				}
-				spaceGlass.setDie(die);
-
-				result[x - 1][y - 1] = spaceGlass;
-			}
-			con.commit();
-			stmt.close();
-		} catch (SQLException e) {
-			System.err.println("SpaceGlassDAO (selectSpaceGlass) --> " + e.getMessage());
-		}
-		playerFrame.loadSpaces(result);
-		return playerFrame;
-	}
-
+	
 	void insertGlassWindows(ArrayList<Player> players) {
 		try {
 			for (Player player : players) {
@@ -114,5 +78,41 @@ class SpaceGlassDAO {
 				System.err.println("SpaceGlassDAO (updateSpaceGlass #2) the rollback failed: Please check the Database!");
 			}
 		}
+	}
+
+	//Is used to obtain a GlassWindow Object containing playerframefields from the database as SpaceGlass Objects
+	private GlassWindow selectSpaceGlass(String query) {
+		SpaceGlass[][] result = new SpaceGlass[5][4];
+		GlassWindow playerFrame = new GlassWindow();
+
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			ResultSet dbResultSet = stmt.executeQuery();
+			while (dbResultSet.next()) {
+				int x = dbResultSet.getInt("position_x");
+				int y = dbResultSet.getInt("position_y");
+				SpaceGlass spaceGlass = new SpaceGlass(x - 1, y - 1);
+
+				int dienumber = dbResultSet.getInt("dienumber");
+				int eyes = dbResultSet.getInt("eyes");
+				int round = dbResultSet.getInt("round");
+				String color = dbResultSet.getString("diecolor");
+				Die die;
+				if (dienumber != 0 && color != null && round != 0 && eyes != 0) {
+					die = new Die(dienumber, color, round, eyes);
+				} else {
+					die = null;
+				}
+				spaceGlass.setDie(die);
+
+				result[x - 1][y - 1] = spaceGlass;
+			}
+			con.commit();
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("SpaceGlassDAO (selectSpaceGlass) --> " + e.getMessage());
+		}
+		playerFrame.loadSpaces(result);
+		return playerFrame;
 	}
 }

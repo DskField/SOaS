@@ -25,6 +25,10 @@ public class ClientScene extends Scene {
 	private LobbyListPane lobbyListPane;
 	private UserListPane userListPane;
 	private ChallengeListPane challengeListPane;
+	
+	private boolean isVisibleLobbyList;
+	private boolean isVisibleChallengeList;
+	private boolean isVisibleUserList;
 
 	/**
 	 * Constructor to create a {@code ClientScene}
@@ -70,13 +74,19 @@ public class ClientScene extends Scene {
 	 * Handles when the users switches between panes
 	 */
 	public void handleUserListButton() {
-		clientcontroller.showUserLiest();
+		isVisibleUserList = true;
+		isVisibleLobbyList = false;
+		isVisibleChallengeList = false;
+		clientcontroller.updateClient();
 		userListPane.createLeft();
 		rootPane.setCenter(userListPane);
 	}
 
 	public void handleLobbyListButton() {
-		clientcontroller.showLobbyList();
+		isVisibleUserList = false;
+		isVisibleLobbyList = true;
+		isVisibleChallengeList = false;
+		clientcontroller.updateClient();
 		if (lobbyListPane.getIDGame() != 0)
 			lobbyListPane.createStats(lobbyListPane.getIDGame());
 		lobbyListPane.createLeft();
@@ -84,7 +94,10 @@ public class ClientScene extends Scene {
 	}
 
 	public void handleChallengeListButton() {
-		clientcontroller.showChallengeList();
+		isVisibleUserList = false;
+		isVisibleLobbyList = false;
+		isVisibleChallengeList = true;
+		clientcontroller.updateClient();
 		challengeListPane.createLeft();
 		rootPane.setCenter(challengeListPane);
 	}
@@ -170,5 +183,19 @@ public class ClientScene extends Scene {
 	public ArrayList<ArrayList<String>> getScoreboard(int idGame) {
 		return clientcontroller.getScoreboard(idGame);
 	}
+
+	public boolean isShownLobbyList() {
+		return isVisibleLobbyList;
+	}
+	
+	public boolean isShownChallengeList() {
+		return isVisibleChallengeList;
+	}
+	
+	public boolean isShownUserList() {
+		return isVisibleUserList;
+	}
+	
+	
 
 }

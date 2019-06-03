@@ -21,28 +21,6 @@ class SpacePatternDAO {
 		return selectSpacePattern("SELECT * FROM patterncardfield WHERE patterncard_idpatterncard = " + idPatternCard);
 	}
 
-	//Is used to obtain a single PatternCard from the database
-	private SpacePattern[][] selectSpacePattern(String query) {
-		SpacePattern[][] result = new SpacePattern[5][4];
-
-		try {
-			PreparedStatement stmt = con.prepareStatement(query);
-			ResultSet dbResultSet = stmt.executeQuery();
-			while (dbResultSet.next()) {
-				int x = dbResultSet.getInt("position_x");
-				int y = dbResultSet.getInt("position_y");
-				GameColor color = GameColor.getEnum(dbResultSet.getString("color"));
-				int value = dbResultSet.getInt("value");
-				result[x - 1][y - 1] = new SpacePattern(x, y, color, value);
-			}
-			con.commit();
-			stmt.close();
-		} catch (SQLException e) {
-			System.err.println("SpacePatternDAO (selectSpacePattern) --> " + e.getMessage());
-		}
-		return result;
-	}
-
 	/**
 	 * inserts the pattern of the patterncard into the database
 	 * @param patternCard the patterncard that has to be added
@@ -78,5 +56,27 @@ class SpacePatternDAO {
 				System.err.println("SpacePatternDAO (insertPattern) --> the rollback failed: Please check the Database!");
 			}
 		}
+	}
+
+	//Is used to obtain a single PatternCard from the database
+	private SpacePattern[][] selectSpacePattern(String query) {
+		SpacePattern[][] result = new SpacePattern[5][4];
+
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			ResultSet dbResultSet = stmt.executeQuery();
+			while (dbResultSet.next()) {
+				int x = dbResultSet.getInt("position_x");
+				int y = dbResultSet.getInt("position_y");
+				GameColor color = GameColor.getEnum(dbResultSet.getString("color"));
+				int value = dbResultSet.getInt("value");
+				result[x - 1][y - 1] = new SpacePattern(x, y, color, value);
+			}
+			con.commit();
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("SpacePatternDAO (selectSpacePattern) --> " + e.getMessage());
+		}
+		return result;
 	}
 }

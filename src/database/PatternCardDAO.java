@@ -44,6 +44,40 @@ class PatternCardDAO {
 				"SELECT * FROM patterncard WHERE idpatterncard IN (SELECT patterncard_idpatterncard FROM patterncardoption WHERE player_idplayer = "
 						+ idPlayer + ")");
 	}
+	
+	/**
+	 * THis method adds the information to the database a generated patterncard to the database
+	 * @param patternCard the generated patterncard
+	 * @return the ID of the patterncard
+	 */
+	int insertPatternCard(PatternCard patternCard) {
+		int last = 0;
+		try {
+			PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncard(name, difficulty, standard) VALUES (?,?,FALSE)");
+			stmt.setString(1, patternCard.getName());
+			stmt.setInt(2, patternCard.getDifficulty());
+			stmt.executeUpdate();
+			con.commit();
+			stmt.close();
+			PreparedStatement stmt2 = con.prepareStatement("SELECT LAST_INSERT_ID() last;");
+			ResultSet dbResultSet = stmt2.executeQuery();
+			
+			while (dbResultSet.next()) {
+				last = dbResultSet.getInt("last");
+			}
+			con.commit();
+			stmt2.close();
+		} catch (SQLException e1) {
+			System.err.println("PatternCardDAO (insertPatternCard #1) --> " + e1.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException e2) {
+				System.err.println(
+						"PatternCardDAO (insertPatternCard #2) --> the rollback failed: Please check the Database!");
+			}
+		}
+		return last;
+	}
 
 	/**
 	 * add the pattencard option for players
@@ -152,40 +186,5 @@ class PatternCardDAO {
 			System.err.println("PatternCardDAO (selectSpacePatterns) --> " + e.getMessage());
 		}
 		return result;
-	}
-
-
-	/**
-	 * THis method adds the information to the database a generated patterncard to the database
-	 * @param patternCard the generated patterncard
-	 * @return the ID of the patterncard
-	 */
-	int insertPatternCard(PatternCard patternCard) {
-		int last = 0;
-		try {
-			PreparedStatement stmt = con.prepareStatement("INSERT INTO patterncard(name, difficulty, standard) VALUES (?,?,FALSE)");
-			stmt.setString(1, patternCard.getName());
-			stmt.setInt(2, patternCard.getDifficulty());
-			stmt.executeUpdate();
-			con.commit();
-			stmt.close();
-			PreparedStatement stmt2 = con.prepareStatement("SELECT LAST_INSERT_ID() last;");
-			ResultSet dbResultSet = stmt2.executeQuery();
-			
-			while (dbResultSet.next()) {
-				last = dbResultSet.getInt("last");
-			}
-			con.commit();
-			stmt2.close();
-		} catch (SQLException e1) {
-			System.err.println("PatternCardDAO (insertPatternCard #1) --> " + e1.getMessage());
-			try {
-				con.rollback();
-			} catch (SQLException e2) {
-				System.err.println(
-						"PatternCardDAO (insertPatternCard #2) --> the rollback failed: Please check the Database!");
-			}
-		}
-		return last;
 	}
 }

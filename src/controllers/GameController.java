@@ -111,17 +111,6 @@ public class GameController {
 		public abstract void doAction();
 	}
 
-	private void createTimer() {
-		timer = new AnimationTimerExt(3000) {
-			@Override
-			public void doAction() {
-				check();
-			}
-		};
-
-		timer.start();
-	}
-
 	/**
 	 * Updates the view by using information out of the game model.
 	 */
@@ -283,6 +272,88 @@ public class GameController {
 		return game.getToolCards().get(arrayNumber).getCardID();
 	}
 
+
+	public void selectDie(GameColor color, int eyes) {
+		if (cheatMode == 0) {
+			gameScene.selectDie(null);
+		} else if (cheatMode == 1) {
+			gameScene.selectDie(getAvailableSpaces(color, eyes));
+
+		} else if (cheatMode == 2) {
+			gameScene.selectDie(getBestPlaces(getAvailableSpaces(color, eyes), color, eyes));
+		}
+	}
+
+	public void placeDie(int x, int y) {
+		GameColor color = gameScene.getSelectedDieColor();
+		int eyes = gameScene.getSelectedDieEyes();
+		int id = gameScene.getSelectedDieId();
+		if (color != null) {
+			ArrayList<SpaceGlass> available = getAvailableSpaces(color, eyes);
+			for (SpaceGlass spaceGlass : available) {
+				if (spaceGlass.getXCor() == x && spaceGlass.getYCor() == y) {
+					game.placeDie(id, color, x, y);
+					gameScene.removeDieTable();
+					gameScene.removeHighlight();
+					gameScene.disableDieOfferPane(true);
+					dieNotPlaced = false;
+					update();
+					break;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Cycles through {@code cheatmode}
+	 */
+	public void cycleCheat() {
+		if (cheatMode == 2)
+			cheatMode = 0;
+		else
+			cheatMode++;
+	}
+
+	/**
+	 * @return cheatMode - 0 = no cheat, 1 = basic cheat, 2 = advanced cheat
+	 */
+	public int getCheatMode() {
+		return cheatMode;
+	}
+
+	
+	/**
+	 * Shakes the sack
+	 */
+	public void shakeSack() {
+		game.shakeSack();
+
+	}
+
+	/**
+	 * Used to check if you are allowed to throw the dice
+	 * 
+	 * @return - True if you are the start player
+	 */
+	public boolean checkStartPlayer() {
+		if (getClientPlayer().getSeqnr() == 1 && getClientPlayer().equals(game.getCurrentPlayer()) && game.getTable().isEmpty() && game.getCurrentRound() <= 10) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private void createTimer() {
+		timer = new AnimationTimerExt(3000) {
+			@Override
+			public void doAction() {
+				check();
+			}
+		};
+
+		timer.start();
+	}
+	
 	/**
 	 * @return boolean - True if its clientplayer's turn
 	 */
@@ -423,38 +494,7 @@ public class GameController {
 		}
 		return available;
 	}
-
-	public void selectDie(GameColor color, int eyes) {
-		if (cheatMode == 0) {
-			gameScene.selectDie(null);
-		} else if (cheatMode == 1) {
-			gameScene.selectDie(getAvailableSpaces(color, eyes));
-
-		} else if (cheatMode == 2) {
-			gameScene.selectDie(getBestPlaces(getAvailableSpaces(color, eyes), color, eyes));
-		}
-	}
-
-	public void placeDie(int x, int y) {
-		GameColor color = gameScene.getSelectedDieColor();
-		int eyes = gameScene.getSelectedDieEyes();
-		int id = gameScene.getSelectedDieId();
-		if (color != null) {
-			ArrayList<SpaceGlass> available = getAvailableSpaces(color, eyes);
-			for (SpaceGlass spaceGlass : available) {
-				if (spaceGlass.getXCor() == x && spaceGlass.getYCor() == y) {
-					game.placeDie(id, color, x, y);
-					gameScene.removeDieTable();
-					gameScene.removeHighlight();
-					gameScene.disableDieOfferPane(true);
-					dieNotPlaced = false;
-					update();
-					break;
-				}
-			}
-		}
-	}
-
+	
 	private void gameFinish() {
 		int maxScore = -99;
 		Player winner = game.getPlayers().get(0);
@@ -471,24 +511,7 @@ public class GameController {
 
 		isFinished = true;
 	}
-
-	/**
-	 * Cycles through {@code cheatmode}
-	 */
-	public void cycleCheat() {
-		if (cheatMode == 2)
-			cheatMode = 0;
-		else
-			cheatMode++;
-	}
-
-	/**
-	 * @return cheatMode - 0 = no cheat, 1 = basic cheat, 2 = advanced cheat
-	 */
-	public int getCheatMode() {
-		return cheatMode;
-	}
-
+	
 	/**
 	 * Returns best places based on whats next to the available spaces and the die you want to place if
 	 * a space next to the availble space requires the same value or color it wont be added to best
@@ -544,24 +567,6 @@ public class GameController {
 		return best;
 	}
 
-	/**
-	 * Shakes the sack
-	 */
-	public void shakeSack() {
-		game.shakeSack();
 
-	}
 
-	/**
-	 * Used to check if you are allowed to throw the dice
-	 * 
-	 * @return - True if you are the start player
-	 */
-	public boolean checkStartPlayer() {
-		if (getClientPlayer().getSeqnr() == 1 && getClientPlayer().equals(game.getCurrentPlayer()) && game.getTable().isEmpty() && game.getCurrentRound() <= 10) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 }

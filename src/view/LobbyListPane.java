@@ -221,16 +221,7 @@ public class LobbyListPane extends BorderPane {
 	public int getIDGame() {
 		return idGame;
 	}
-
-	/**
-	 * Method used to sort the Usernames in the list
-	 */
-	private void handleOrderButton() {
-		orderASC = orderASC ? false : true;
-		clientscene.changeLobbyOrder(orderASC);
-		createLeft();
-	}
-
+	
 	/**
 	 * Method used to join a game
 	 * 
@@ -257,6 +248,16 @@ public class LobbyListPane extends BorderPane {
 			}
 		}
 	}
+
+	/**
+	 * Method used to sort the Usernames in the list
+	 */
+	private void handleOrderButton() {
+		orderASC = orderASC ? false : true;
+		clientscene.changeLobbyOrder(orderASC);
+		createLeft();
+	}
+
 
 	/**
 	 * Method used to create the statsPane based on the button

@@ -28,6 +28,15 @@ public class ToolCardPane extends FlowPane {
 		this.seqNr = seqNr;
 	}
 
+	public int getSeqNr() {
+		return seqNr;
+	}
+
+	public void updateStones(ArrayList<CurrencyStonePane> stones) {
+		flowPane.getChildren().clear();
+		flowPane.getChildren().addAll(stones);
+	}
+	
 	private void lookForImage(int seqNr) {
 		switch (seqNr) {
 		case 1:
@@ -71,12 +80,4 @@ public class ToolCardPane extends FlowPane {
 		}
 	}
 
-	public int getSeqNr() {
-		return seqNr;
-	}
-
-	public void updateStones(ArrayList<CurrencyStonePane> stones) {
-		flowPane.getChildren().clear();
-		flowPane.getChildren().addAll(stones);
-	}
 }

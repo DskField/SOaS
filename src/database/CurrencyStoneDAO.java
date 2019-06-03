@@ -34,37 +34,7 @@ class CurrencyStoneDAO {
 			}
 		}
 	}
-
-	private ArrayList<CurrencyStone> selectCurrencyStone(String query) {
-		ArrayList<CurrencyStone> results = new ArrayList<CurrencyStone>();
-
-		try {
-			PreparedStatement stmt = con.prepareStatement(query);
-			ResultSet dbResultSet = stmt.executeQuery();
-
-			while (dbResultSet.next()) {
-				int stoneID = dbResultSet.getInt("idfavortoken");
-				int playerID = dbResultSet.getInt("idplayer");
-				int toolcardID = dbResultSet.getInt("gametoolcard");
-
-				CurrencyStone currencystone = new CurrencyStone(stoneID, playerID, toolcardID);
-				results.add(currencystone);
-			}
-			con.commit();
-			stmt.close();
-		} catch (SQLException e) {
-			System.err.println("CurrencyStoneDAO (selectCurrencyStone) --> " + e.getMessage());
-		}
-		return results;
-	}
-
-	private boolean isUsed(int stoneID, int idGame) {
-		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE idfavortoken = " + stoneID + " AND idgame = " + idGame + " AND gametoolcard IS NULL").size() == 0;
-	}
-
-	private int stonesLeft(int idGame, int idPlayer) {
-		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE (idplayer IS NULL OR idplayer = " + idPlayer + ") AND idgame = " + idGame).size();
-	}
+	
 
 	ArrayList<CurrencyStone> getAllStonesInGame(int idGame) {
 		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE idgame = " + idGame);
@@ -125,4 +95,36 @@ class CurrencyStoneDAO {
 			System.err.println("CurrencyStoneDAO (updateGivePlayerCurrencyStones #3) --> the player already has currencystones");
 		}
 	}
+
+	private ArrayList<CurrencyStone> selectCurrencyStone(String query) {
+		ArrayList<CurrencyStone> results = new ArrayList<CurrencyStone>();
+
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			ResultSet dbResultSet = stmt.executeQuery();
+
+			while (dbResultSet.next()) {
+				int stoneID = dbResultSet.getInt("idfavortoken");
+				int playerID = dbResultSet.getInt("idplayer");
+				int toolcardID = dbResultSet.getInt("gametoolcard");
+
+				CurrencyStone currencystone = new CurrencyStone(stoneID, playerID, toolcardID);
+				results.add(currencystone);
+			}
+			con.commit();
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("CurrencyStoneDAO (selectCurrencyStone) --> " + e.getMessage());
+		}
+		return results;
+	}
+
+	private boolean isUsed(int stoneID, int idGame) {
+		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE idfavortoken = " + stoneID + " AND idgame = " + idGame + " AND gametoolcard IS NULL").size() == 0;
+	}
+
+	private int stonesLeft(int idGame, int idPlayer) {
+		return selectCurrencyStone("SELECT * FROM gamefavortoken WHERE (idplayer IS NULL OR idplayer = " + idPlayer + ") AND idgame = " + idGame).size();
+	}
+
 }
