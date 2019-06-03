@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 
 import controllers.GameController;
+import controllers.MainApplication;
 import game.PatternCard;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -26,7 +27,10 @@ import javafx.scene.text.Font;
 public class ChoiceScene extends Scene {
 	/* CONSTANTS */
 	private final int generalSpacing = 10;
-	private final Font font = Font.font("arial", 25);
+	private final Font FONT = Font.font("arial", 25);
+	private final double BUTTONWIDTH = 300 * MainApplication.width;
+	private final double BUTTONHEIGHT = 100 * MainApplication.height;;
+	private final Color DEFAULT_BUTTON_COLOR = Color.web("#483D8B");
 
 	/* VARIABLES */
 	private BorderPane root;
@@ -53,6 +57,10 @@ public class ChoiceScene extends Scene {
 
 		Button menuButton = new Button("Terug naar het menu");
 		menuButton.setOnAction(e -> gameController.returnToClient());
+		menuButton.setBackground(new Background(new BackgroundFill(DEFAULT_BUTTON_COLOR, null, null)));
+		menuButton.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
+		menuButton.setFont(FONT);
+		menuButton.setTextFill(Color.WHITE);
 
 		cardBox.getChildren().addAll(patternCardBox, personalGoalCardPane, menuButton);
 		root.setCenter(cardBox);
@@ -90,7 +98,7 @@ public class ChoiceScene extends Scene {
 					pc.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, null, new BorderWidths(5))));
 					Label selectedLabel = new Label("U heeft uw kaart geselecteerd. Wachten op andere spelers.");
 					selectedLabel.setTextFill(Color.RED);
-					selectedLabel.setFont(font);
+					selectedLabel.setFont(FONT);
 					cardBox.getChildren().add(selectedLabel);
 
 					//disables the the root pane to prevent the user from interacting any further with the pane.
