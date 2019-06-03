@@ -39,6 +39,7 @@ public class BaseDAO {
 
 	final void closeConnection() {
 		try {
+			System.out.println("close");
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

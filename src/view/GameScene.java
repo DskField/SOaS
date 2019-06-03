@@ -140,6 +140,11 @@ public class GameScene extends Scene {
 	 */
 	public void disableDieOfferPane(boolean disable) {
 		dieOfferPane.setDisable(disable);
+		if (disable) {
+			nextButton.setText("Beurt beëindigen");
+		} else {
+			nextButton.setText("Beurt overslaan");
+		}
 	}
 
 	public void selectDie(ArrayList<SpaceGlass> available) {
@@ -380,7 +385,7 @@ public class GameScene extends Scene {
 		dieOfferPane = new DieOfferPane(gameController);
 
 		shakeButton = new Button("Schudden");
-		nextButton = new Button("Beurt klaar");
+		nextButton = new Button("Beurt beëindigen");
 
 		// Handles everything regarding buttons
 		shakeButton.setPrefSize(buttonWidth, buttonheigt);
