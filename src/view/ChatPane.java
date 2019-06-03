@@ -121,7 +121,9 @@ public class ChatPane extends BorderPane {
 	 * clears the playerMessage field.
 	 */
 	private void sendMessage() {
-		gameController.sendMessage(playerMessage.getText());
-		playerMessage.clear();
+		if (!playerMessage.getText().equals("")) {
+			gameController.sendMessage(playerMessage.getText());
+			playerMessage.clear();
+		}
 	}
 }
