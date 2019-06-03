@@ -21,14 +21,14 @@ import javafx.scene.text.Font;
 
 public class ChallengeListPane extends BorderPane {
 	/* CONSTANTS */
-	private final double reactionButtonWidth = 180*MainApplication.width;
-	private final double reactionButtonHeight = 150*MainApplication.height;
-	private final double buttonBoxSpacing = 40*MainApplication.height;
-	private final double boxSpacing = 50*MainApplication.height;
-	private final double statsWidth = 400*MainApplication.width;
-	private final double statsHeight = 75*MainApplication.height;;
+	private final double reactionButtonWidth = 180 * MainApplication.width;
+	private final double reactionButtonHeight = 150 * MainApplication.height;
+	private final double buttonBoxSpacing = 40 * MainApplication.height;
+	private final double boxSpacing = 50 * MainApplication.height;
+	private final double statsWidth = 400 * MainApplication.width;
+	private final double statsHeight = 75 * MainApplication.height;;
 	private final Color statsBackgroundColor = Color.AQUAMARINE;
-	private final double labelSize = 30*MainApplication.height;;
+	private final double labelSize = 30 * MainApplication.height;;
 
 	/* VARIABLES */
 	private ClientScene clientscene;
@@ -77,7 +77,7 @@ public class ChallengeListPane extends BorderPane {
 	 * @param idGame - {@code int} containing the {@code idGame} for which you did not respond yet
 	 */
 	private void createCenter(int idGame) {
-		Label challengeInfo = new Label("Uitdaging: Game " + idGame);
+		Label challengeInfo = new Label("Uitdaging: Spel " + idGame);
 		challengeInfo.setMinSize(statsWidth, statsHeight);
 		challengeInfo.setMaxSize(statsWidth, statsHeight);
 		challengeInfo.setBackground(new Background(new BackgroundFill(statsBackgroundColor, null, null)));
