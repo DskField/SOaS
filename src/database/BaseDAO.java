@@ -6,28 +6,25 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class BaseDAO {
-	private static final String USER = "amhkempe";
-	private static final String PASS = "Ab12345";
-	private static final String DB = "amhkempe_db2";
+	private static final String USER = "42IN04SOa";
+	private static final String PASS = "aanmoediging";
+	private static final String DB = "2019_soprj4_sagrada_abcdef";
 
 	private Properties props = new Properties();
 	private Connection con;
 
 	public BaseDAO() {
-		// https://jdbc.postgresql.org/documentation/80/connect.html
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			props.setProperty("user", USER);
 			props.setProperty("password", PASS);
-			// props.setProperty("ssl", "true");
-			// props.setProperty("sslfactory", "org.postgresql.ssl.NonValidatingFactory");
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("Contact the developer with a screenshot of this error" + e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
 		}
 		System.out.println("Opened database successfully");
-		String url = "jdbc:mysql://databases.aii.avans.nl:3306/" + DB;
+		String url = "jdbc:mysql://databases.aii.avans.nl/" + DB;
 		try {
 			con = DriverManager.getConnection(url, props);
 			con.setAutoCommit(false);
