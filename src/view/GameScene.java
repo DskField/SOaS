@@ -39,32 +39,32 @@ public class GameScene extends Scene {
 	private final int MAIN = 0;
 	private final double generalSpacing = 10 * MainApplication.height;
 
-	private final double personalInfoSpacing = 10* MainApplication.height;
+	private final double personalInfoSpacing = 10 * MainApplication.height;
 
-	private final double buttonWidth = 200*MainApplication.width;
-	private final double buttonheigt = 50*MainApplication.height;
+	private final double buttonWidth = 200 * MainApplication.width;
+	private final double buttonheigt = 50 * MainApplication.height;
 
-	private final double centerBoxMaxWidth = 800*MainApplication.width;
-	private final double centerBoxPaddingTop = 0*MainApplication.height;
-	private final double centerBoxPaddingRight = 100*MainApplication.width;
-	private final double centerBoxPaddingBottom = 0*MainApplication.height;
-	private final double centerBoxPaddingLeft = 100*MainApplication.width;
+	private final double centerBoxMaxWidth = 800 * MainApplication.width;
+	private final double centerBoxPaddingTop = 0 * MainApplication.height;
+	private final double centerBoxPaddingRight = 100 * MainApplication.width;
+	private final double centerBoxPaddingBottom = 0 * MainApplication.height;
+	private final double centerBoxPaddingLeft = 100 * MainApplication.width;
 
-	private final double leftBoxSpacing = 10*MainApplication.height;
-	private final double leftBoxPaddingTop = 0*MainApplication.height;
-	private final double leftBoxPaddingRight = 0*MainApplication.width;
-	private final double leftBoxPaddingBottom = 0*MainApplication.height;
-	private final double leftBoxPaddingLeft = 10*MainApplication.width;
+	private final double leftBoxSpacing = 10 * MainApplication.height;
+	private final double leftBoxPaddingTop = 0 * MainApplication.height;
+	private final double leftBoxPaddingRight = 0 * MainApplication.width;
+	private final double leftBoxPaddingBottom = 0 * MainApplication.height;
+	private final double leftBoxPaddingLeft = 10 * MainApplication.width;
 
-	private final double rightBoxSpacing = 10*MainApplication.height;
-	private final double rightBoxPaddingTop = 0*MainApplication.height;
-	private final double rightBoxPaddingRight = 10*MainApplication.width;
-	private final double rightBoxPaddingBottom = 60*MainApplication.height;
-	private final double rightBoxPaddingLeft = 0*MainApplication.width;
+	private final double rightBoxSpacing = 10 * MainApplication.height;
+	private final double rightBoxPaddingTop = 0 * MainApplication.height;
+	private final double rightBoxPaddingRight = 10 * MainApplication.width;
+	private final double rightBoxPaddingBottom = 60 * MainApplication.height;
+	private final double rightBoxPaddingLeft = 0 * MainApplication.width;
 
-	private final double cardBoxHeight = 480*MainApplication.height;
+	private final double cardBoxHeight = 480 * MainApplication.height;
 
-	private final Font font = Font.font("arial", 25*MainApplication.height);
+	private final Font font = Font.font("arial", 25 * MainApplication.height);
 
 	/* VARIABLES */
 	private BorderPane rootPane;
@@ -264,7 +264,7 @@ public class GameScene extends Scene {
 		}
 		currencyStonesPane.showStones(currencyStonePanes);
 	}
-	
+
 	public void switchGlassWindows(int source) {
 		removeHighlight();
 		GlassWindowPane temp = glassWindowPanes.get(MAIN);
@@ -516,5 +516,4 @@ public class GameScene extends Scene {
 		rootPane.setRight(rightBox);
 	}
 
-	
 }

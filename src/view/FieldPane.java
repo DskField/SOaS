@@ -112,7 +112,7 @@ public class FieldPane extends GridPane {
 			for (int y = 0; y < 4; y++) {
 				for (SpaceGlass highlight : toHiglight) {
 					if (x == highlight.getXCor() && y == highlight.getYCor()) {
-						glassSpaces[x][y].highlight();
+						patternSpaces[x][y].highlight();
 					}
 				}
 			}
@@ -125,7 +125,7 @@ public class FieldPane extends GridPane {
 	public void removeHilightSpaces() {
 		for (int x = 0; x < 5; x++) {
 			for (int y = 0; y < 4; y++) {
-				glassSpaces[x][y].removeHighlight();
+				patternSpaces[x][y].removeHighlight();
 			}
 		}
 	}
@@ -154,7 +154,6 @@ public class FieldPane extends GridPane {
 	 * Updates all the {@code SpacePane}
 	 */
 	private void updateSpaces() {
-		//		spaces.clear();
 		getChildren().clear();
 
 		for (int y = 0; y < 4; y++) {

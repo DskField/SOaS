@@ -81,10 +81,18 @@ public class ChatPane extends BorderPane {
 			public void handle(KeyEvent event) {
 				if (event.getCode() == KeyCode.ENTER) {
 					sendMessage();
-				} else if (event.getCode() == KeyCode.ESCAPE) {
+				}
+			}
+		});
+
+		playerMessage.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode() == KeyCode.ESCAPE) {
 					event.consume();
 				}
 			}
+
 		});
 
 		// Handles the "verzenden" button to send messages
