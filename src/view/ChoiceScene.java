@@ -37,6 +37,7 @@ public class ChoiceScene extends Scene {
 	private HBox patternCardBox;
 	private GameController gameController;
 	private VBox cardBox;
+	private VBox buttons;
 
 	public ChoiceScene(GameController gameController, ArrayList<PatternCard> patternCards) {
 		super(new Pane());
@@ -44,6 +45,7 @@ public class ChoiceScene extends Scene {
 		this.gameController = gameController;
 		root = new BorderPane();
 		cardBox = new VBox();
+		buttons = new VBox();
 		PersonalGoalCardPane personalGoalCardPane = new PersonalGoalCardPane();
 
 		//handles makeup
@@ -61,9 +63,12 @@ public class ChoiceScene extends Scene {
 		menuButton.setMinSize(BUTTONWIDTH, BUTTONHEIGHT);
 		menuButton.setFont(FONT);
 		menuButton.setTextFill(Color.WHITE);
+		buttons.getChildren().add(menuButton);
+		buttons.setAlignment(Pos.CENTER);
 
-		cardBox.getChildren().addAll(patternCardBox, personalGoalCardPane, menuButton);
+		cardBox.getChildren().addAll(patternCardBox, personalGoalCardPane);
 		root.setCenter(cardBox);
+		root.setBottom(buttons);
 		createPatternCards(patternCards);
 		setRoot(root);
 	}
@@ -102,7 +107,7 @@ public class ChoiceScene extends Scene {
 					cardBox.getChildren().add(selectedLabel);
 
 					//disables the the root pane to prevent the user from interacting any further with the pane.
-					root.setDisable(true);
+					cardBox.setDisable(true);
 
 					//gives the chosen PatternCard to the GameController for further handling.
 					for (PatternCard patternCard : gameController.getPatternChoices()) {
