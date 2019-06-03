@@ -21,10 +21,10 @@ import javafx.scene.layout.VBox;
 
 public class ChatPane extends BorderPane {
 	/* CONSTANTS */
-	private final double chatPaneWidth = 400*MainApplication.width;
-	private final double chatPaneheight = 200*MainApplication.height;
-	private final double sendButtonWidth = 100*MainApplication.width;
-	private final double sendButtonHeight = 20*MainApplication.height;
+	private final double chatPaneWidth = 400 * MainApplication.width;
+	private final double chatPaneheight = 200 * MainApplication.height;
+	private final double sendButtonWidth = 100 * MainApplication.width;
+	private final double sendButtonHeight = 20 * MainApplication.height;
 	private final double maxScroll = 1.0;
 
 	/* VARIABLES */
@@ -76,7 +76,7 @@ public class ChatPane extends BorderPane {
 
 		/* HANDLERS */
 		// Handles the Enter key for sending messages
-		playerMessage.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		playerMessage.setOnKeyReleased(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
 				if (event.getCode() == KeyCode.ENTER) {
