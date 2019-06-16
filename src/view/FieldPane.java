@@ -19,8 +19,8 @@ import javafx.scene.paint.Color;
 public class FieldPane extends GridPane {
 	/* CONSTANTS */
 	private final double patternWidth = 360 * MainApplication.width;
-	private final double offset = 4 * MainApplication.width;
-	private final double borderWidth = 10 * MainApplication.width;
+	private final double offset = 4;
+	private final double borderWidth = 10;
 
 	/* VARIABLES */
 	private SpacePane[][] patternSpaces;
@@ -35,8 +35,8 @@ public class FieldPane extends GridPane {
 
 		for (int x = 0; x < 5; x++) {
 			for (int y = 0; y < 4; y++) {
-				patternSpaces[x][y] = new SpacePane(x, y, (patternWidth / 5) - offset, gameController);
-				glassSpaces[x][y] = new SpacePane(x, y, (patternWidth / 5) - offset, gameController);
+				patternSpaces[x][y] = new SpacePane(x, y, (patternWidth / 5) - borderWidth, gameController);
+				glassSpaces[x][y] = new SpacePane(x, y, (patternWidth / 5) - borderWidth, gameController);
 			}
 		}
 
@@ -50,7 +50,7 @@ public class FieldPane extends GridPane {
 
 		setPadding(new Insets(borderWidth));
 	}
-	
+
 	/**
 	 * Disables the {@code SpacePane}s to prevent any further interaction.
 	 */
@@ -66,6 +66,7 @@ public class FieldPane extends GridPane {
 
 	/**
 	 * Takes a given {@code GlasWindow} and takes over its attributes to visualize it
+	 * 
 	 * @param glassWindow - {@code GlasWindow} that needs to be visualized
 	 */
 	public void loadGlassWindow(GlassWindow glassWindow) {
@@ -83,10 +84,10 @@ public class FieldPane extends GridPane {
 
 		updateSpaces();
 	}
-	
 
 	/**
 	 * Gives isSmall to the {@code SpacePane}s to resize it.
+	 * 
 	 * @param isSmall - {@code boolean}
 	 */
 	public void resize(boolean isSmall) {
@@ -100,6 +101,7 @@ public class FieldPane extends GridPane {
 
 	/**
 	 * Highlights the spaces from the cheatfunction
+	 * 
 	 * @param toHiglight - {@code ArrayList<SpaceGlass>}
 	 */
 	public void highlightSpaces(ArrayList<SpaceGlass> toHiglight) {
@@ -110,7 +112,7 @@ public class FieldPane extends GridPane {
 			for (int y = 0; y < 4; y++) {
 				for (SpaceGlass highlight : toHiglight) {
 					if (x == highlight.getXCor() && y == highlight.getYCor()) {
-						glassSpaces[x][y].highlight();
+						patternSpaces[x][y].highlight();
 					}
 				}
 			}
@@ -123,13 +125,14 @@ public class FieldPane extends GridPane {
 	public void removeHilightSpaces() {
 		for (int x = 0; x < 5; x++) {
 			for (int y = 0; y < 4; y++) {
-				glassSpaces[x][y].removeHighlight();
+				patternSpaces[x][y].removeHighlight();
 			}
 		}
 	}
 
 	/**
 	 * Takes a given {@code PatternCard} and takes over its attributes to visualize the card
+	 * 
 	 * @param patternCard {@code PatternCard} that need to be visualized
 	 */
 	private void loadPatternCard(PatternCard patternCard) {
@@ -146,13 +149,11 @@ public class FieldPane extends GridPane {
 
 		updateSpaces();
 	}
-	
-	
+
 	/**
-	 * Updates all the {@code SpacePane} 
+	 * Updates all the {@code SpacePane}
 	 */
 	private void updateSpaces() {
-		//		spaces.clear();
 		getChildren().clear();
 
 		for (int y = 0; y < 4; y++) {
@@ -165,7 +166,6 @@ public class FieldPane extends GridPane {
 			}
 		}
 	}
-
 
 	//getter
 	public int getPatternCardID() {

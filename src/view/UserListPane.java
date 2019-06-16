@@ -23,29 +23,29 @@ import javafx.stage.Screen;
 public class UserListPane extends BorderPane {
 	/* CONSTANTS */
 	// Left
-	private final double listWidth = 250*MainApplication.width;
-	private final double listHeight =  Screen.getPrimary().getBounds().getMaxY();
-	private final double viewStatsWidth = 70*MainApplication.width;
-	private final double viewStatsHeight = 30*MainApplication.height;;
-	private final double inviteRadioButtonWidth = 100*MainApplication.width;
-	private final double inviteRadioButtonHeight = 30*MainApplication.height;;
+	private final double listWidth = 250 * MainApplication.width;
+	private final double listHeight = Screen.getPrimary().getBounds().getMaxY();
+	private final double viewStatsWidth = 70 * MainApplication.width;
+	private final double viewStatsHeight = 30 * MainApplication.height;;
+	private final double inviteRadioButtonWidth = 100 * MainApplication.width;
+	private final double inviteRadioButtonHeight = 30 * MainApplication.height;;
 
-	private final double orderButtonHeight = 45*MainApplication.height;;
+	private final double orderButtonHeight = 45 * MainApplication.height;;
 	private final double userListHeight = Screen.getPrimary().getVisualBounds().getMaxY() - orderButtonHeight - 5;
 
 	// Center
-	private final double inviteButtonSize = 40*MainApplication.height;;
-	private final double errorMessageSize = 23*MainApplication.height;;
+	private final double inviteButtonSize = 40 * MainApplication.height;;
+	private final double errorMessageSize = 23 * MainApplication.height;;
 	private final Color errorMessageColorRed = Color.RED;
 	private final Color errorMessageColorGreen = Color.LIMEGREEN;
-	private final double buttonAndLabelSpacing = 10*MainApplication.height;;
+	private final double buttonAndLabelSpacing = 10 * MainApplication.height;;
 
 	// StatsPane
 	private final Color statsBackgroundColor = Color.AQUAMARINE;
-	private final double statsBoxWidth = 400*MainApplication.width;
-	private final double statsBoxHeight = 340*MainApplication.height;
-	private final double usernameLabelSize = 50*MainApplication.height;;
-	private final double textSize = 25*MainApplication.width;;
+	private final double statsBoxWidth = 400 * MainApplication.width;
+	private final double statsBoxHeight = 340 * MainApplication.height;
+	private final double usernameLabelSize = 50 * MainApplication.height;;
+	private final double textSize = 25 * MainApplication.width;;
 
 	/* VARIABLES */
 	private ClientScene clientscene;
@@ -96,9 +96,9 @@ public class UserListPane extends BorderPane {
 		users = clientscene.getUsers();
 
 		// Remove yourself from selectable list
-			users.remove(clientscene.getUsername());
-	
-			orderButton = new Button(orderASC ? "gesorteerd op meeste wins" : "gesorteerd op minste wins");
+		users.remove(clientscene.getUsername());
+
+		orderButton = new Button(orderASC ? "gesorteerd op meeste wins" : "gesorteerd op minste wins");
 		orderButton.setOnAction(e -> handleOrderButton());
 		orderButton.setMinHeight(orderButtonHeight);
 		orderButton.setMaxHeight(orderButtonHeight);
@@ -110,7 +110,7 @@ public class UserListPane extends BorderPane {
 			inviteRadioButton.setMinSize(inviteRadioButtonWidth, inviteRadioButtonHeight);
 			inviteRadioButton.setMaxSize(inviteRadioButtonWidth, inviteRadioButtonHeight);
 
-			Button viewStats = new Button("vergelijk");
+			Button viewStats = new Button("Vergelijk");
 			viewStats.setMinSize(viewStatsWidth, viewStatsHeight);
 			viewStats.setOnAction(e -> createCenter(username));
 
@@ -194,13 +194,13 @@ public class UserListPane extends BorderPane {
 		Label username = new Label(user.getUsername());
 		username.setFont(Font.font(usernameLabelSize));
 
-		Label gamesPlayed = new Label("Potjes gespeeld: " + Integer.toString(user.getGamesPlayed()));
+		Label gamesPlayed = new Label("Spellen gespeeld: " + Integer.toString(user.getGamesPlayed()));
 		gamesPlayed.setFont(Font.font(textSize));
 
-		Label gamesWon = new Label("Potjes gewonnen: " + Integer.toString(user.getGamesWon()));
+		Label gamesWon = new Label("Spellen gewonnen: " + Integer.toString(user.getGamesWon()));
 		gamesWon.setFont(Font.font(textSize));
 
-		Label gamesLost = new Label("Potjes verloren: " + Integer.toString(user.getGamesLost()));
+		Label gamesLost = new Label("Spellen verloren: " + Integer.toString(user.getGamesLost()));
 		gamesLost.setFont(Font.font(textSize));
 
 		Label maxScore = new Label("Hoogste score: " + Integer.toString(user.getMaxScore()));
@@ -250,7 +250,7 @@ public class UserListPane extends BorderPane {
 			errorMessage.setTextFill(errorMessageColorGreen);
 			errorMessage.setVisible(true);
 		} else {
-			errorMessage.setText("Je hebt een speler al recent uitgenodigd");
+			errorMessage.setText("Je hebt de speler(s) al recent uitgenodigd");
 			errorMessage.setTextFill(errorMessageColorRed);
 			errorMessage.setVisible(true);
 		}

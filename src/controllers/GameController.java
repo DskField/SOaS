@@ -16,6 +16,7 @@ import game.Player;
 import game.SpaceGlass;
 import game.SpacePattern;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import view.ChoiceScene;
 import view.GameScene;
 
@@ -272,7 +273,6 @@ public class GameController {
 		return game.getToolCards().get(arrayNumber).getCardID();
 	}
 
-
 	public void selectDie(GameColor color, int eyes) {
 		if (cheatMode == 0) {
 			gameScene.selectDie(null);
@@ -321,7 +321,6 @@ public class GameController {
 		return cheatMode;
 	}
 
-	
 	/**
 	 * Shakes the sack
 	 */
@@ -342,7 +341,12 @@ public class GameController {
 			return false;
 		}
 	}
-	
+
+	public void handleQuit() {
+		clientcontroller.closeApp();
+		Platform.exit();
+	}
+
 	private void createTimer() {
 		timer = new AnimationTimerExt(3000) {
 			@Override
@@ -353,7 +357,7 @@ public class GameController {
 
 		timer.start();
 	}
-	
+
 	/**
 	 * @return boolean - True if its clientplayer's turn
 	 */
@@ -494,7 +498,7 @@ public class GameController {
 		}
 		return available;
 	}
-	
+
 	private void gameFinish() {
 		int maxScore = -99;
 		Player winner = game.getPlayers().get(0);
@@ -511,7 +515,7 @@ public class GameController {
 
 		isFinished = true;
 	}
-	
+
 	/**
 	 * Returns best places based on whats next to the available spaces and the die you want to place if
 	 * a space next to the availble space requires the same value or color it wont be added to best
@@ -566,7 +570,5 @@ public class GameController {
 
 		return best;
 	}
-
-
 
 }

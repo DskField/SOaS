@@ -321,4 +321,8 @@ public class PersistenceFacade {
 
 		return true;
 	}
+
+	public void closeConnection() {
+		baseDAO.closeConnection();
+	}
 }

@@ -124,7 +124,7 @@ public class LoginPane extends BorderPane {
 
 		Button quit = new Button("Afsluiten");
 		quit.setPrefSize((buttonWidth * 2), buttonHeight);
-		quit.setOnAction(e -> Platform.exit());
+		quit.setOnAction(e -> handleQuit());
 
 		errorMessage = new Label();
 		errorMessage.setFont(Font.font(errorMessageSize));
@@ -134,6 +134,11 @@ public class LoginPane extends BorderPane {
 		textfields.getChildren().addAll(sagrada, butAndfields, quit, errorMessage);
 		textfields.setAlignment(Pos.CENTER);
 		setCenter(textfields);
+	}
+
+	private void handleQuit() {
+		clientcontroller.closeApp();
+		Platform.exit();
 	}
 
 	/**

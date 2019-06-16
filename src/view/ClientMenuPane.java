@@ -1,7 +1,6 @@
 package view;
 
 import controllers.MainApplication;
-import javafx.application.Platform;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Border;
@@ -16,8 +15,8 @@ import javafx.stage.Screen;
 
 public class ClientMenuPane extends VBox {
 	/* CONSTANTS */
-	private final double buttonWidth = 300*MainApplication.width;
-	private final double buttonHeight = 100*MainApplication.height;;
+	private final double buttonWidth = 300 * MainApplication.width;
+	private final double buttonHeight = 100 * MainApplication.height;;
 	private final double paneHeight = Screen.getPrimary().getBounds().getMaxY();
 
 	/* VARIABLES */
@@ -70,7 +69,7 @@ public class ClientMenuPane extends VBox {
 		quitButton = new ToggleButton("Afsluiten");
 		quitButton.setMinSize(buttonWidth, buttonHeight);
 		quitButton.setMaxSize(buttonWidth, buttonHeight);
-		quitButton.setOnAction(e -> Platform.exit());
+		quitButton.setOnAction(e -> clientscene.handleQuit());
 
 		VBox topbox = new VBox();
 		topbox.getChildren().addAll(userListButton, lobbyListButton, challengeListButton);

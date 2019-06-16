@@ -56,7 +56,7 @@ public class PatternCardGenerator {
 			}
 		}
 
-		PatternCard generatedCard = new PatternCard(0, "Generated_Card", generateDifficulty(pattern));
+		PatternCard generatedCard = new PatternCard(0, "Gegenereerde Kaart", generateDifficulty(pattern));
 		generatedCard.addPattern(pattern);
 		return generatedCard;
 	}

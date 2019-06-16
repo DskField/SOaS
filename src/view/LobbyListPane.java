@@ -25,21 +25,21 @@ public class LobbyListPane extends BorderPane {
 	// Left
 	private final Background togglebuttonBackground = new Background(new BackgroundFill(Color.BLUE, null, null));
 	private final Color togglebuttonColor = Color.WHITE;
-	private final double orderButtonHeight = 45*MainApplication.height;;
+	private final double orderButtonHeight = 45 * MainApplication.height;;
 	private final double lobbyListHeight = Screen.getPrimary().getVisualBounds().getMaxY() - orderButtonHeight - 5;
 
 	// Stats
-	private final double labelSize = 30*MainApplication.height;;
-	private final double textSize = 25*MainApplication.height;;
-	private final double titleLabelSize = 50*MainApplication.height;;
+	private final double labelSize = 30 * MainApplication.height;;
+	private final double textSize = 25 * MainApplication.height;;
+	private final double titleLabelSize = 50 * MainApplication.height;;
 	private final Color statsBackgroundColor = Color.AQUAMARINE;
-	private final double statsBoxWidth = 400*MainApplication.width;
-	private final double statsBoxHeight = 400*MainApplication.height;;
-	private final double bottomLineSpacing = 50*MainApplication.height;;
-	private final double statsPaneSpacing = 10*MainApplication.height;;
-	private final double lobbyJoinPannelSpacing = 50*MainApplication.height;;
-	private final double joinGameButtonWidth = 400*MainApplication.width;
-	private final double joinGameButtonHeight = 150*MainApplication.height;;
+	private final double statsBoxWidth = 400 * MainApplication.width;
+	private final double statsBoxHeight = 400 * MainApplication.height;;
+	private final double bottomLineSpacing = 50 * MainApplication.height;;
+	private final double statsPaneSpacing = 10 * MainApplication.height;;
+	private final double lobbyJoinPannelSpacing = 50 * MainApplication.height;;
+	private final double joinGameButtonWidth = 400 * MainApplication.width;
+	private final double joinGameButtonHeight = 150 * MainApplication.height;;
 	private final Color errorMessageColor = Color.RED;
 
 	/* VARIABLES */
@@ -95,7 +95,7 @@ public class LobbyListPane extends BorderPane {
 		orderButton.setMaxHeight(orderButtonHeight);
 
 		for (Integer lob : lobbies) {
-			ToggleButton togglebutton = new ToggleButton("Game " + lob);
+			ToggleButton togglebutton = new ToggleButton("Spel " + lob);
 			togglebutton.setAlignment(Pos.CENTER);
 			togglebutton.setOnMouseClicked(handlebutton);
 			if (playerLobbies.contains(lob)) {
@@ -127,10 +127,10 @@ public class LobbyListPane extends BorderPane {
 	public void createStats(int idGame) {
 		BorderPane statsBox = new BorderPane();
 
-		titleLabel = new Label("Lobby " + idGame);
+		titleLabel = new Label("Spel " + idGame);
 		titleLabel.setFont(Font.font(titleLabelSize));
 
-		gamestateLabel = new Label("Game Status:");
+		gamestateLabel = new Label("Spel Status:");
 		gamestateLabel.setFont(Font.font(labelSize));
 
 		// check if gamestate is 'aan de gang'
@@ -153,7 +153,7 @@ public class LobbyListPane extends BorderPane {
 		gamestateBox.setAlignment(Pos.CENTER);
 
 		// Scoreboard
-		scoreboardLabel = new Label("Scoreboard:");
+		scoreboardLabel = new Label("Scorebord:");
 		scoreboardLabel.setFont(Font.font(labelSize));
 
 		VBox playerList = new VBox();
@@ -198,7 +198,7 @@ public class LobbyListPane extends BorderPane {
 		statsBox.setMinSize(statsBoxWidth, statsBoxHeight);
 		statsBox.setMaxSize(statsBoxWidth, statsBoxHeight);
 
-		Button joinGameButton = new Button("Game Betreden");
+		Button joinGameButton = new Button("Spel Betreden");
 		joinGameButton.setOnAction(e -> joinGameButton(idGame));
 		joinGameButton.setMinSize(joinGameButtonWidth, joinGameButtonHeight);
 		joinGameButton.setMaxSize(joinGameButtonWidth, joinGameButtonHeight);
@@ -221,7 +221,7 @@ public class LobbyListPane extends BorderPane {
 	public int getIDGame() {
 		return idGame;
 	}
-	
+
 	/**
 	 * Method used to join a game
 	 * 
@@ -236,14 +236,14 @@ public class LobbyListPane extends BorderPane {
 		}
 
 		if (!playerInGame) {
-			errorMessage.setText("Jij neemt niet deel aan dit potje");
+			errorMessage.setText("Jij neemt niet deel aan dit spel");
 			errorMessage.setVisible(true);
 		} else {
 			if ((gamestateTextLabel.getText().equals("aan de gang") || gamestateTextLabel.getText().equals("uitgespeeld"))) {
 				errorMessage.setVisible(false);
 				clientscene.joinGame(idGame);
 			} else {
-				errorMessage.setText(gamestateTextLabel.getText().equals("afgebroken") ? "het potje is afgebroken" : "Het potje is nog niet begonnen");
+				errorMessage.setText(gamestateTextLabel.getText().equals("afgebroken") ? "het spel is afgebroken" : "Het spel is nog niet begonnen");
 				errorMessage.setVisible(true);
 			}
 		}
@@ -257,7 +257,6 @@ public class LobbyListPane extends BorderPane {
 		clientscene.changeLobbyOrder(orderASC);
 		createLeft();
 	}
-
 
 	/**
 	 * Method used to create the statsPane based on the button

@@ -7,6 +7,7 @@ import client.Lobby;
 import client.User;
 import controllers.ClientController;
 import game.Player;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -25,7 +26,7 @@ public class ClientScene extends Scene {
 	private LobbyListPane lobbyListPane;
 	private UserListPane userListPane;
 	private ChallengeListPane challengeListPane;
-	
+
 	private boolean isVisibleLobbyList;
 	private boolean isVisibleChallengeList;
 	private boolean isVisibleUserList;
@@ -114,6 +115,11 @@ public class ClientScene extends Scene {
 		clientcontroller.handleReaction(accepted, idGame);
 	}
 
+	public void handleQuit() {
+		clientcontroller.closeApp();
+		Platform.exit();
+	}
+
 	/* GETTETS AND SETTERS */
 	public void changeLobbyOrder(boolean orderASC) {
 		clientcontroller.changeLobbyOrder(orderASC);
@@ -187,15 +193,12 @@ public class ClientScene extends Scene {
 	public boolean isShownLobbyList() {
 		return isVisibleLobbyList;
 	}
-	
+
 	public boolean isShownChallengeList() {
 		return isVisibleChallengeList;
 	}
-	
+
 	public boolean isShownUserList() {
 		return isVisibleUserList;
 	}
-	
-	
-
 }
