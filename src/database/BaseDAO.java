@@ -6,9 +6,9 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class BaseDAO {
-	private static final String USER = "42IN04SOa";
-	private static final String PASS = "aanmoediging";
-	private static final String DB = "2019_soprj4_sagrada_abcdef";
+	private static final String USER = "amhkempe";
+	private static final String PASS = "Ab12345";
+	private static final String DB = "amhkempe_db2";
 
 	private Properties props = new Properties();
 	private Connection con;
